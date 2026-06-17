@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import { getPublishedPosts } from '../../lib/posts';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title="Writing — Shanahan Suresh" description="Articles on full-stack engineering, Django, Next.js, MCP tooling, and building in public.">
+  <div class="container section">
+    <SectionHeading
+      eyebrow="WRITING"
+      title="Writing"
+      intro="Notes on full-stack engineering, AI/MCP tooling, and shipping real projects."
+    />
+    <div class="stack">
+      {posts.map((post) => <PostCard post={post} showTags />)}
+    </div>
+  </div>
+</BaseLayout>

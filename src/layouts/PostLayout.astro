@@ -1,0 +1,38 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { formatPostDateLong } from '../lib/posts';
+
+interface Props {
+  title: string;
+  description?: string;
+  pubDate?: Date;
+  tags?: string[];
+  canonicalUrl?: string;
+}
+
+const { title, description, pubDate, tags, canonicalUrl } = Astro.props;
+const formattedDate = pubDate ? formatPostDateLong(pubDate) : null;
+---
+
+<BaseLayout title={`${title} — Shanahan Suresh`} description={description} canonical={canonicalUrl}>
+  <div class="container section">
+    <div class="narrow">
+      <header style="margin-bottom:var(--space-8);">
+        <a href="/writing" class="btn btn-subtle text-sm" style="margin-bottom:var(--space-5);display:inline-flex;align-items:center;gap:0.375rem;">
+          ← Writing
+        </a>
+        <h1 class="h1">{title}</h1>
+        {description && <p class="lead" style="margin-top:var(--space-3);">{description}</p>}
+        <div class="flex-row wrap gap-3" style="margin-top:var(--space-4);">
+          {formattedDate && <time class="text-sm muted" style="font-variant-numeric:tabular-nums;">{formattedDate}</time>}
+          {tags && tags.length > 0 && tags.map(tag => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </div>
+  </div>
+</BaseLayout>

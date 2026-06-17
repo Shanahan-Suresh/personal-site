@@ -1,0 +1,38 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import BentoTile from './BentoTile.astro';
+import Tag from './Tag.astro';
+
+const mainTools = ['Next.js', 'React', 'Svelte', 'TypeScript', 'Python', 'Django', 'Docker', 'Google Cloud', 'Terraform', 'GitHub Actions'];
+const learning = ['AWS', 'Kubernetes'];
+---
+
+<section id="skills" class="section">
+  <div class="container">
+    <SectionHeading eyebrow="CURRENTLY" title="What I'm into lately" />
+
+    <div class="bento">
+      <BentoTile span={4}>
+        <div class="stack">
+          <p class="prose-body">
+            Lately I've gone deep on infrastructure — picked up Terraform and now use it in real projects, and I'm learning AWS on my own time since we don't use it at work. Kubernetes is next when the moment's right.
+          </p>
+          <p class="prose-body">
+            I also live in the agentic-coding world and try to keep pace with LLMs — they've genuinely changed how I work and build, in and out of the office.
+          </p>
+        </div>
+      </BentoTile>
+
+      <BentoTile span={2}>
+        <h3 class="h3 mb-4">Tools I reach for</h3>
+        <div class="flex-row wrap gap-2 mb-5">
+          {mainTools.map(t => <Tag variant="plain">{t}</Tag>)}
+        </div>
+        <p class="text-xs muted mb-2">Currently learning</p>
+        <div class="flex-row wrap gap-2">
+          {learning.map(t => <Tag>{t}</Tag>)}
+        </div>
+      </BentoTile>
+    </div>
+  </div>
+</section>

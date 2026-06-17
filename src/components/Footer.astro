@@ -1,0 +1,35 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer-wrapper">
+  <div class="container">
+    <p class="text-sm muted">
+      Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> &amp; <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer">Tailwind CSS</a>.
+    </p>
+    <p class="text-sm muted">&copy; {year} Shanahan Suresh</p>
+  </div>
+</footer>
+
+<style>
+  .footer-wrapper {
+    padding: var(--space-8) 0;
+    text-align: center;
+  }
+
+  .footer-wrapper .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .footer-wrapper a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .footer-wrapper a:hover {
+    text-decoration: underline;
+  }
+</style>

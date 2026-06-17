@@ -1,0 +1,49 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import BentoTile from './BentoTile.astro';
+---
+
+<section id="about" class="section">
+  <div class="container">
+    <SectionHeading eyebrow="ABOUT" title="The short version" />
+
+    <div class="bento">
+      <BentoTile span={4}>
+        <h3 class="h3" class="mb-5">From wanting to be an inventor to building products</h3>
+        <div class="stack">
+          <p class="prose-body">
+            I wanted to be an inventor before I knew what code was. The appeal never changed: take a problem, build the thing that solves it. High-school programming turned that itch into a craft — and I've been building ever since.
+          </p>
+          <p class="prose-body">
+            I care about the product, not just the code. A clever backend nobody enjoys using isn't a win. I gravitate toward work where the experience matters — modern, polished, the kind of thing that makes someone go "oh, nice." That's why I call myself a product engineer, not a code-monkey.
+          </p>
+          <p class="prose-body">
+            And I can't leave a bug alone. If I see one, it's getting squashed. That part's non-negotiable.
+          </p>
+        </div>
+      </BentoTile>
+
+      <BentoTile span={2}>
+        <h3 class="h3" class="mb-5">At a glance</h3>
+        <div class="stack">
+          <div>
+            <p class="text-sm muted" style="margin-bottom:var(--space-1);">Education</p>
+            <p class="text-sm">BSc Computer Science with AI, University of Nottingham</p>
+          </div>
+          <div>
+            <p class="text-sm muted" style="margin-bottom:var(--space-1);">Focus</p>
+            <p class="text-sm">Full-stack products &amp; AI tooling</p>
+          </div>
+          <div>
+            <p class="text-sm muted" style="margin-bottom:var(--space-1);">Lately</p>
+            <p class="text-sm">Infra (Terraform/AWS) &amp; agentic coding</p>
+          </div>
+          <div>
+            <p class="text-sm muted" style="margin-bottom:var(--space-1);">Off the clock</p>
+            <p class="text-sm">Anime, games, the gym</p>
+          </div>
+        </div>
+      </BentoTile>
+    </div>
+  </div>
+</section>

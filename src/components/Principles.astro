@@ -1,0 +1,38 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import BentoTile from './BentoTile.astro';
+
+const principles = [
+  {
+    index: '01',
+    title: 'Product over code',
+    body: 'Tech serves the experience, not the other way around.',
+  },
+  {
+    index: '02',
+    title: 'See a bug, squash a bug',
+    body: 'Integrity isn\'t optional.',
+  },
+  {
+    index: '03',
+    title: 'Modern by default',
+    body: 'I like building things that feel current, and a little impressive.',
+  },
+];
+---
+
+<section class="section">
+  <div class="container">
+    <SectionHeading eyebrow="HOW I THINK" title="Principles I build by" />
+
+    <div class="bento">
+      {principles.map(p => (
+        <BentoTile span={2}>
+          <p class="eyebrow" class="mb-3">{p.index}</p>
+          <h3 class="h3" class="mb-3">{p.title}</h3>
+          <p class="prose-body">{p.body}</p>
+        </BentoTile>
+      ))}
+    </div>
+  </div>
+</section>

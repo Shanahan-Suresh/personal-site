@@ -1,0 +1,22 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import GlassCard from './GlassCard.astro';
+import Tag from './Tag.astro';
+
+const interests = ['Anime', 'Games', 'Light novels', 'Travel', 'Gym'];
+---
+
+<section class="section">
+  <div class="container">
+    <SectionHeading eyebrow="BEYOND CODE" title="When I'm not building" />
+
+    <GlassCard tier={2} glow={true} class="reveal" style="padding:var(--space-7);">
+      <p class="prose-body" style="max-width:680px;margin-bottom:var(--space-5);">
+        When I'm not building: deep into anime, games, and light novels; always planning the next trip; and in the gym four mornings a week. Broad taste, hard to summarize — ask me about any of it.
+      </p>
+      <div class="flex-row wrap gap-2">
+        {interests.map(i => <Tag variant="plain">{i}</Tag>)}
+      </div>
+    </GlassCard>
+  </div>
+</section>

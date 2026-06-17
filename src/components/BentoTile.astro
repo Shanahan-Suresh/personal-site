@@ -1,0 +1,20 @@
+---
+import GlassCard from './GlassCard.astro';
+
+interface Props {
+  span?: 2 | 3 | 4 | 6;
+  glow?: boolean;
+  tier?: 1 | 2 | 3;
+  class?: string;
+}
+
+const { span = 2, glow = true, tier = 2, class: className = '' } = Astro.props;
+---
+
+<GlassCard
+  tier={tier}
+  glow={glow}
+  class={`bento-tile col-${span} lift reveal ${className}`}
+>
+  <slot />
+</GlassCard>

@@ -1,0 +1,100 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import ProjectCard from './ProjectCard.astro';
+
+const personal = [
+  {
+    title: 'pixiv-censorit',
+    description: 'Desktop tool that auto-detects and censors regions of artwork using an anime-tuned YOLO + FastSAM pipeline. Batch processing, EN/JP i18n, packaged with PyInstaller.',
+    tags: ['Python', 'YOLO', 'FastSAM'],
+    meta: 'Private',
+  },
+  {
+    title: 'tech-scouter',
+    description: 'A cloud-native daily tech-intelligence pipeline: LLM-curated digests scoped to a team\'s stack, config-driven, and scales to zero on GCP.',
+    tags: ['Python', 'Cloud Run', 'Terraform', 'LLMs'],
+    meta: 'Private',
+  },
+  {
+    title: 'OpenAPI → MCP server + chat UI',
+    description: 'An MCP server that auto-generates tools from any OpenAPI schema with multi-LLM fallback, paired with a Next.js chat front-end.',
+    tags: ['Python', 'MCP', 'FastAPI', 'Next.js'],
+    meta: 'Private',
+  },
+  {
+    title: 'ascii-vid-converter',
+    description: 'Turns video into ASCII-art frames, in real time.',
+    tags: ['Python', 'OpenCV'],
+    link: { label: 'GitHub', href: 'https://github.com/Shanahan-Suresh/ascii-vid-converter' },
+  },
+];
+
+const product = [
+  {
+    title: 'Workforce performance platform',
+    description: 'Full-stack ownership of a Django REST + SvelteKit system: class registration, performance ratings, contribution tracking, admin tooling, and scheduled jobs.',
+    tags: ['Django', 'SvelteKit', 'PostgreSQL'],
+  },
+  {
+    title: 'OHSE incident-management system',
+    description: 'A full-stack incident reporting and investigation app with complex role-based workflows across managers, safety officers, and investigators.',
+    tags: ['Django', 'Next.js'],
+  },
+  {
+    title: 'HR enrollment platform',
+    description: 'A large Next.js / TypeScript enrollment app with role-aware UX and reCAPTCHA, built and owned over hundreds of commits.',
+    tags: ['Next.js', 'TypeScript'],
+  },
+];
+
+const academic = [
+  {
+    title: 'HeatGen (SEGP)',
+    description: 'A deep-learning neural-network application built with a team; associated with a journal publication (JEST, 2023).',
+    tags: ['Python', 'Deep Learning'],
+    link: { label: 'GitHub', href: 'https://github.com/Shanahan-Suresh/segp-group4a-deep-learning-network' },
+  },
+];
+
+const categories = [
+  { label: 'Personal', items: personal },
+  { label: 'Product work', subtitle: 'Shown without client/employer detail', items: product },
+  { label: 'Academic', items: academic },
+];
+---
+
+<section id="work" class="section-lg">
+  <div class="container">
+    <SectionHeading
+      eyebrow="SELECTED WORK"
+      title="A few things I've built"
+      intro="Personal experiments and real products."
+    />
+
+    <div class="flex-col" style="gap:var(--space-8);">
+      {categories.map(cat => (
+        <div>
+          {cat.subtitle ? (
+            <div class="flex-row gap-3 mb-4" style="align-items:baseline;">
+              <p class="eyebrow">{cat.label}</p>
+              <p class="text-xs muted">{cat.subtitle}</p>
+            </div>
+          ) : (
+            <p class="eyebrow mb-4">{cat.label}</p>
+          )}
+          <div class="grid-2">
+            {cat.items.map(p => (
+              <ProjectCard
+                title={p.title}
+                description={p.description}
+                tags={p.tags}
+                link={'link' in p ? p.link : undefined}
+                meta={'meta' in p ? p.meta : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

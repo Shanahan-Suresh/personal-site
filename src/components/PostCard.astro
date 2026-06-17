@@ -1,0 +1,28 @@
+---
+import GlassCard from './GlassCard.astro';
+import { formatPostDate, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+  showTags?: boolean;
+}
+
+const { post, showTags = false } = Astro.props;
+---
+
+<a href={`/writing/${post.id}`} class="no-underline">
+  <GlassCard tier={1} class="lift reveal" style="padding:var(--space-5);">
+    <div class="flex-row between items-start wrap gap-4 mb-2">
+      <h3 class="h3" style="margin:0;">{post.data.title}</h3>
+      <time class="text-sm muted" style="white-space:nowrap;font-family:var(--font-mono);">
+        {formatPostDate(post.data.pubDate)}
+      </time>
+    </div>
+    <p class="text-sm muted">{post.data.description}</p>
+    {showTags && post.data.tags && post.data.tags.length > 0 && (
+      <div class="flex-row wrap gap-2" style="margin-top:var(--space-3);">
+        {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+      </div>
+    )}
+  </GlassCard>
+</a>

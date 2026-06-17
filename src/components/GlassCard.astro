@@ -1,0 +1,23 @@
+---
+interface Props {
+  tier?: 1 | 2 | 3;
+  glow?: boolean;
+  class?: string;
+  id?: string;
+  style?: string;
+}
+
+const { tier = 2, glow = false, class: className = '', id, style } = Astro.props;
+---
+
+<div
+  class={`glass-${tier} ${className}`}
+  id={id}
+  style={`overflow:hidden;position:relative;${style ?? ''}`}
+  data-mouse-glow={glow ? 'true' : undefined}
+>
+  {glow && <div class="glow-overlay"></div>}
+  <div style="position:relative;z-index:1;">
+    <slot />
+  </div>
+</div>

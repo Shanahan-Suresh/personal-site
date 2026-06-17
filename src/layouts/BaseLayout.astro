@@ -1,0 +1,119 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import interWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import monoWoff2 from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+}
+
+const { title, description, image, canonical } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href={interWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={monoWoff2} as="font" type="font/woff2" crossorigin />
+    <style is:inline set:html={`@font-face{font-family:'Inter Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${interWoff2}) format('woff2-variations')}@font-face{font-family:'JetBrains Mono Variable';font-style:normal;font-display:swap;font-weight:100 900;src:url(${monoWoff2}) format('woff2-variations')}`} />
+    <script is:inline>
+      (function() {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
+    <BaseHead title={title} description={description} image={image} canonical={canonical} />
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true">
+      <div class="aurora__orb aurora__orb--a"></div>
+      <div class="aurora__orb aurora__orb--b"></div>
+      <div class="aurora__orb aurora__orb--c"></div>
+      <div class="aurora__orb aurora__orb--d"></div>
+    </div>
+    <div class="app-shell">
+      <Nav />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <script is:inline>
+      (function () {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* Scroll-reveal */
+        function initReveal() {
+          var els = document.querySelectorAll('.reveal');
+          if (reduce || !('IntersectionObserver' in window)) {
+            els.forEach(function (el) { el.classList.add('is-visible'); });
+            return;
+          }
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+            });
+          }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+          els.forEach(function (el) { io.observe(el); });
+        }
+
+        /* Cursor parallax on aurora */
+        function initParallax() {
+          if (reduce) return;
+          var aurora = document.querySelector('.aurora');
+          if (!aurora) return;
+          var tx = 0, ty = 0, cx = 0, cy = 0, raf = null;
+          function loop() {
+            cx += (tx - cx) * 0.06;
+            cy += (ty - cy) * 0.06;
+            aurora.style.setProperty('--px', cx.toFixed(2) + 'px');
+            aurora.style.setProperty('--py', cy.toFixed(2) + 'px');
+            if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) { raf = requestAnimationFrame(loop); }
+            else { raf = null; }
+          }
+          window.addEventListener('pointermove', function (e) {
+            if (e.pointerType === 'touch') return;
+            tx = (e.clientX / window.innerWidth - 0.5) * 40;
+            ty = (e.clientY / window.innerHeight - 0.5) * 40;
+            if (!raf) raf = requestAnimationFrame(loop);
+          }, { passive: true });
+        }
+
+        /* Cursor glow on [data-mouse-glow] cards */
+        function initGlow() {
+          if (reduce) return;
+          document.querySelectorAll('[data-mouse-glow="true"]').forEach(function (card) {
+            if (card.dataset.glowBound) return;
+            card.dataset.glowBound = '1';
+            var overlay = card.querySelector('.glow-overlay');
+            if (!overlay) return;
+            card.addEventListener('pointermove', function (e) {
+              var rect = card.getBoundingClientRect();
+              overlay.style.background = 'radial-gradient(520px circle at ' + (e.clientX - rect.left) + 'px ' + (e.clientY - rect.top) + 'px, rgba(56,189,248,0.12), transparent 75%)';
+              overlay.style.opacity = '1';
+            });
+            card.addEventListener('pointerleave', function () { overlay.style.opacity = '0'; });
+          });
+        }
+
+        function init() { initReveal(); initParallax(); initGlow(); }
+        init();
+        document.addEventListener('astro:page-load', init);
+      })();
+    </script>
+  </body>
+</html>

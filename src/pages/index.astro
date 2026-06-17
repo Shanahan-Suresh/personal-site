@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Principles from '../components/Principles.astro';
+import Now from '../components/Now.astro';
+import Work from '../components/Work.astro';
+import Beyond from '../components/Beyond.astro';
+import Contact from '../components/Contact.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getPublishedPosts } from '../lib/posts';
+import PostCard from '../components/PostCard.astro';
+
+const recentPosts = (await getPublishedPosts()).slice(0, 3);
+---
+
+<BaseLayout
+  title="Shanahan Suresh — product-minded software engineer"
+  description="Product-minded software engineer building full-stack products and AI tooling. Next.js, Django, Python, Terraform, and whatever else the problem needs."
+>
+  <Hero />
+  <About />
+  <Principles />
+  <Now />
+  <Work />
+  <Beyond />
+
+  {recentPosts.length > 0 && (
+    <section id="writing" class="section">
+      <div class="container">
+        <div class="flex-row between" style="align-items:baseline;margin-bottom:var(--space-7);">
+          <div>
+            <p class="eyebrow mb-3">WRITING</p>
+            <h2 class="h2">Writing</h2>
+          </div>
+          <a href="/writing" class="btn btn-subtle text-sm">All posts →</a>
+        </div>
+
+        <div class="flex-col gap-3">
+          {recentPosts.map((post) => <PostCard post={post} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Contact />
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import GlassCard from './GlassCard.astro';
+import StatusChip from './StatusChip.astro';
+---
+
+<section class="flex-row center" style="min-height:88vh;padding:clamp(5rem,10vw,8rem) var(--space-5) var(--space-8);">
+  <GlassCard
+    tier={3}
+    glow={true}
+    style="max-width:880px;width:100%;padding:clamp(2rem,5vw,4rem);text-align:center;"
+    class="reveal"
+  >
+    <div class="mb-5">
+      <StatusChip>Open to interesting work &amp; projects</StatusChip>
+    </div>
+
+    <h1 class="display gradient-text" style="margin-bottom:var(--space-4);">Shanahan Suresh</h1>
+
+    <p style="color:var(--accent);font-weight:600;font-size:var(--fs-lead);margin-bottom:var(--space-4);letter-spacing:-0.01em;">
+      Product-minded software engineer.
+    </p>
+
+    <p class="prose-body" style="max-width:600px;margin:0 auto var(--space-6);">
+      I've wanted to build things for as long as I can remember — started as a kid who wanted to be an inventor, found code in high school, and never looked back. These days I build full-stack products and AI tooling, with a soft spot for things that feel modern and just a little bit impressive.
+    </p>
+
+    <div class="flex-row wrap center gap-3">
+      <a href="#work" class="btn btn-primary">See what I build</a>
+      <a href="#contact" class="btn btn-ghost">Say hi</a>
+    </div>
+  </GlassCard>
+</section>
