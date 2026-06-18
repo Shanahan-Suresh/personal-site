@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
 import About from '../components/About.astro';
 import Principles from '../components/Principles.astro';
 import Now from '../components/Now.astro';
@@ -16,9 +17,10 @@ const recentPosts = (await getPublishedPosts()).slice(0, 3);
 
 <BaseLayout
   title="Shanahan Suresh — product-minded software engineer"
-  description="Product-minded software engineer building full-stack products and AI tooling. Next.js, Django, Python, Terraform, and whatever else the problem needs."
+  description="Shanahan Suresh, a software engineer and University of Nottingham Computer Science graduate who builds full-stack products and AI tooling people enjoy using."
 >
   <Hero />
+  <Marquee />
   <About />
   <Principles />
   <Now />
@@ -28,15 +30,15 @@ const recentPosts = (await getPublishedPosts()).slice(0, 3);
   {recentPosts.length > 0 && (
     <section id="writing" class="section">
       <div class="container">
-        <div class="flex-row between" style="align-items:baseline;margin-bottom:var(--space-7);">
+        <div class="row-wrap between reveal" style="align-items:flex-end;gap:var(--space-4);margin-bottom:var(--space-7);">
           <div>
-            <p class="eyebrow mb-3">WRITING</p>
-            <h2 class="h2">Writing</h2>
+            <p class="section-label">WRITING</p>
+            <h2 class="section-title">Writing</h2>
           </div>
-          <a href="/writing" class="btn btn-subtle text-sm">All posts →</a>
+          <a href="/writing" class="btn btn-ghost">All posts →</a>
         </div>
 
-        <div class="flex-col gap-3">
+        <div class="stack gap-4">
           {recentPosts.map((post) => <PostCard post={post} />)}
         </div>
       </div>

@@ -13,24 +13,28 @@ const learning = ['AWS', 'Kubernetes'];
 
     <div class="bento">
       <BentoTile span={4}>
-        <div class="stack">
-          <p class="prose-body">
-            Lately I've gone deep on infrastructure — picked up Terraform and now use it in real projects, and I'm learning AWS on my own time since we don't use it at work. Kubernetes is next when the moment's right.
+        <div class="stack stack-4">
+          <p>
+            Right now I'm deep in infrastructure. I picked up Terraform and use it on real projects, and I'm teaching myself AWS in my own time. Kubernetes is next on the list.
           </p>
-          <p class="prose-body">
-            I also live in the agentic-coding world and try to keep pace with LLMs — they've genuinely changed how I work and build, in and out of the office.
+          <p>
+            I also spend most of my days in the agentic-coding world, trying to keep pace with how fast LLMs are changing the way software gets built. It has reshaped how I work, in the office and out of it.
           </p>
         </div>
       </BentoTile>
 
-      <BentoTile span={2}>
-        <h3 class="h3 mb-4">Tools I reach for</h3>
-        <div class="flex-row wrap gap-2 mb-5">
-          {mainTools.map(t => <Tag variant="plain">{t}</Tag>)}
-        </div>
-        <p class="text-xs muted mb-2">Currently learning</p>
-        <div class="flex-row wrap gap-2">
-          {learning.map(t => <Tag>{t}</Tag>)}
+      <BentoTile span={2} accent="1" stripe>
+        <div class="stack stack-5">
+          <h3 class="h3">Tools I reach for</h3>
+          <div class="row-wrap gap-2">
+            {mainTools.map(t => <Tag variant="plain">{t}</Tag>)}
+          </div>
+          <div class="stack stack-3">
+            <p class="mono muted">Currently learning</p>
+            <div class="row-wrap gap-2">
+              {learning.map(t => <Tag>{t}</Tag>)}
+            </div>
+          </div>
         </div>
       </BentoTile>
     </div>

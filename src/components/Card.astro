@@ -1,0 +1,34 @@
+---
+interface Props {
+  as?: string;
+  accent?: '1' | '2' | 'pop' | 'ink';
+  stripe?: boolean;
+  pad?: boolean;
+  press?: boolean;
+  class?: string;
+  id?: string;
+  style?: string;
+}
+
+const {
+  as: Tag = 'div',
+  accent,
+  stripe = false,
+  pad = true,
+  press = false,
+  class: className = '',
+  id,
+  style,
+} = Astro.props;
+
+const classes = [
+  'card',
+  accent && `card--${accent}`,
+  stripe && 'card--stripe',
+  pad && 'card-pad',
+  press && 'press',
+  className,
+].filter(Boolean).join(' ');
+---
+
+<Tag class={classes} id={id} style={style}><slot /></Tag>

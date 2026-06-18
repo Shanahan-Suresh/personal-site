@@ -6,17 +6,20 @@ const principles = [
   {
     index: '01',
     title: 'Product over code',
-    body: 'Tech serves the experience, not the other way around.',
+    body: 'The experience comes first. The tech is there to serve it.',
+    accent: '1' as const,
   },
   {
     index: '02',
     title: 'See a bug, squash a bug',
-    body: 'Integrity isn\'t optional.',
+    body: "If it's broken, it gets fixed. Quietly, and before it ships.",
+    accent: '2' as const,
   },
   {
     index: '03',
     title: 'Modern by default',
-    body: 'I like building things that feel current, and a little impressive.',
+    body: 'I like building things that feel current, and a step or two ahead.',
+    accent: 'pop' as const,
   },
 ];
 ---
@@ -26,11 +29,17 @@ const principles = [
     <SectionHeading eyebrow="HOW I THINK" title="Principles I build by" />
 
     <div class="bento">
-      {principles.map(p => (
-        <BentoTile span={2}>
-          <p class="eyebrow" class="mb-3">{p.index}</p>
-          <h3 class="h3" class="mb-3">{p.title}</h3>
-          <p class="prose-body">{p.body}</p>
+      {principles.map((p, i) => (
+        <BentoTile span={2} accent={p.accent} stripe>
+          <div class="stack stack-4">
+            <span
+              class="ghost-num"
+              style={`font-size:clamp(4rem,10vw,7rem);margin-bottom:calc(-1 * var(--space-4));`}
+              aria-hidden="true"
+            >{p.index}</span>
+            <h3 class="h3">{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
         </BentoTile>
       ))}
     </div>

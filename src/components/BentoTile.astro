@@ -1,20 +1,21 @@
 ---
-import GlassCard from './GlassCard.astro';
+import Card from './Card.astro';
 
 interface Props {
   span?: 2 | 3 | 4 | 6;
-  glow?: boolean;
-  tier?: 1 | 2 | 3;
+  accent?: '1' | '2' | 'pop' | 'ink';
+  stripe?: boolean;
   class?: string;
 }
 
-const { span = 2, glow = true, tier = 2, class: className = '' } = Astro.props;
+const { span = 2, accent, stripe = false, class: className = '' } = Astro.props;
 ---
 
-<GlassCard
-  tier={tier}
-  glow={glow}
-  class={`bento-tile col-${span} lift reveal ${className}`}
+<Card
+  accent={accent}
+  stripe={stripe}
+  press
+  class={`col-${span} reveal ${className}`}
 >
   <slot />
-</GlassCard>
+</Card>

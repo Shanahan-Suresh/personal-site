@@ -1,26 +1,34 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#eef7ff"/>
-      <stop offset="100%" stop-color="#dcefff"/>
-    </linearGradient>
-    <linearGradient id="name" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#0b1220"/>
-      <stop offset="70%" stop-color="#0ea5e9"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
-    </linearGradient>
-    <filter id="blur1"><feGaussianBlur stdDeviation="70"/></filter>
-  </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="180" cy="140" r="320" fill="#38bdf8" opacity="0.28" filter="url(#blur1)"/>
-  <circle cx="1040" cy="500" r="280" fill="#6366f1" opacity="0.20" filter="url(#blur1)"/>
-  <circle cx="640" cy="120" r="220" fill="#2dd4bf" opacity="0.16" filter="url(#blur1)"/>
-  <rect x="90" y="95" width="1020" height="440" rx="44" fill="rgba(255,255,255,0.55)" stroke="rgba(255,255,255,0.65)" stroke-width="1.5"/>
-  <rect x="120" y="150" width="300" height="40" rx="20" fill="rgba(14,165,233,0.10)" stroke="rgba(14,165,233,0.25)" stroke-width="1"/>
-  <circle cx="150" cy="170" r="6" fill="#22c55e"/>
-  <text x="172" y="177" font-family="JetBrains Mono,monospace" font-size="18" fill="#0284c7">Open to interesting work &amp; projects</text>
-  <text x="120" y="300" font-family="Inter,system-ui,sans-serif" font-size="86" font-weight="800" fill="url(#name)" letter-spacing="-4">Shanahan Suresh</text>
-  <text x="122" y="358" font-family="Inter,system-ui,sans-serif" font-size="34" font-weight="600" fill="#0ea5e9" letter-spacing="-1">Product-minded software engineer</text>
-  <text x="122" y="438" font-family="Inter,system-ui,sans-serif" font-size="24" fill="#475569">Full-stack products &amp; AI tooling</text>
-  <text x="122" y="478" font-family="JetBrains Mono,monospace" font-size="20" fill="#64748b">shanahansuresh.dev</text>
+  <!-- Warm paper background -->
+  <rect width="1200" height="630" fill="#f5f2e9"/>
+
+  <!-- Hard offset shadow block (ink, offset 12px) -->
+  <rect x="44" y="44" width="1112" height="542" fill="#0d0d0d"/>
+
+  <!-- Main bordered card -->
+  <rect x="32" y="32" width="1112" height="542" fill="#f5f2e9" stroke="#0d0d0d" stroke-width="4"/>
+
+  <!-- Coral accent stripe top-left -->
+  <rect x="32" y="32" width="320" height="12" fill="#ff5436"/>
+
+  <!-- Blue accent block — top-right corner sticker area -->
+  <rect x="980" y="32" width="164" height="80" fill="#2b4cf0" stroke="#0d0d0d" stroke-width="3"/>
+  <text x="1062" y="83" font-family="Arial Black, Impact, sans-serif" font-size="13" font-weight="900" fill="#f5f2e9" text-anchor="middle" letter-spacing="2">S·S</text>
+
+  <!-- Acid-yellow asterisk sticker (bottom-right) -->
+  <rect x="980" y="490" width="164" height="84" fill="#e8ff2a" stroke="#0d0d0d" stroke-width="3" transform="rotate(-2 1062 532)"/>
+  <text x="1062" y="540" font-family="Arial Black, Impact, sans-serif" font-size="32" font-weight="900" fill="#0d0d0d" text-anchor="middle" dominant-baseline="middle" transform="rotate(-2 1062 532)">✳</text>
+
+  <!-- Main display name — Anton-style, uppercase, oversized -->
+  <text x="72" y="240" font-family="Anton, Arial Black, Impact, sans-serif" font-size="148" font-weight="900" fill="#0d0d0d" letter-spacing="-2">SHANAHAN</text>
+  <text x="72" y="390" font-family="Anton, Arial Black, Impact, sans-serif" font-size="148" font-weight="900" fill="#0d0d0d" letter-spacing="-2">SURESH</text>
+
+  <!-- Coral underline accent bar under "SURESH" -->
+  <rect x="72" y="400" width="560" height="8" fill="#ff5436"/>
+
+  <!-- Subtitle in monospace -->
+  <text x="72" y="480" font-family="Courier New, Courier, monospace" font-size="24" font-weight="400" fill="#0d0d0d" letter-spacing="3">PRODUCT-MINDED SOFTWARE ENGINEER</text>
+
+  <!-- URL caption -->
+  <text x="72" y="530" font-family="Courier New, Courier, monospace" font-size="18" fill="#3c3a34" letter-spacing="2">shanahansuresh.dev</text>
 </svg>

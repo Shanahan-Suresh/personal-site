@@ -8,8 +8,8 @@ interface Props {
 const { eyebrow, title, intro } = Astro.props;
 ---
 
-<div style="margin-bottom:var(--space-7);">
-  {eyebrow && <p class="eyebrow" style="margin-bottom:var(--space-3);">{eyebrow}</p>}
-  <h2 class="h2">{title}</h2>
-  {intro && <p class="lead muted" style="margin-top:var(--space-3);max-width:600px;">{intro}</p>}
+<div class="reveal" style="margin-bottom:var(--space-7);">
+  {eyebrow && <p class="section-label">{eyebrow}</p>}
+  <h2 class="section-title">{title}</h2>
+  {intro && <p class="lead" style="margin-top:var(--space-4);">{intro}</p>}
 </div>

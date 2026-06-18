@@ -1,19 +1,130 @@
 ---
-import GlassCard from './GlassCard.astro';
 ---
 
-<section id="contact" class="section-lg">
+<section class="section-lg" id="contact">
   <div class="container">
-    <GlassCard tier={3} glow={true} class="reveal" style="padding:clamp(2.5rem,6vw,4.5rem);text-align:center;">
-      <h2 class="h2 mb-4">Say hi.</h2>
-      <p class="lead" style="max-width:520px;margin:0 auto var(--space-6);">
-        I'm always open to interesting work and projects — full-time, contract, or something weird and fun. If any of this resonated, drop me a line.
-      </p>
-      <div class="flex-row wrap center gap-3">
-        <a href="mailto:hello@shanahansuresh.dev" class="btn btn-primary">Email me</a>
-        <a href="https://www.linkedin.com/in/shanahan-suresh" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">LinkedIn</a>
-        <a href="https://github.com/Shanahan-Suresh" target="_blank" rel="noopener noreferrer" class="btn btn-subtle">GitHub</a>
+
+    <div class="contact-block reveal" style="--d:0ms">
+
+      <div class="contact-inner">
+
+        <div class="contact-copy">
+          <h2 class="display contact-headline">
+            Let's<br><span class="tx-pop">build.</span>
+          </h2>
+
+          <p class="lead contact-lead">
+            I'm always up for interesting work and a good conversation, whether that's full-time, contract, or something a bit weird and fun. If anything here caught your eye, my inbox is open.
+          </p>
+
+          <div class="row row-wrap gap-4 contact-ctas">
+            <a href="mailto:hello@shanahansuresh.dev" class="btn btn-pop">Email me</a>
+            <a
+              href="https://www.linkedin.com/in/shanahan-suresh"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-surface"
+            >LinkedIn ↗</a>
+            <a
+              href="https://github.com/Shanahan-Suresh"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-surface"
+            >GitHub ↗</a>
+          </div>
+        </div>
+
+        <!-- decorative ghost text -->
+        <div class="contact-ghost" aria-hidden="true">✦</div>
+
       </div>
-    </GlassCard>
+
+    </div>
+
   </div>
 </section>
+
+<style>
+  .contact-block {
+    background: var(--ink);
+    color: var(--paper);
+    border: var(--bw-thick) solid var(--ink);
+    box-shadow: var(--shadow-hard-lg);
+    padding: clamp(2.5rem, 7vw, 5rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-inner {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-7);
+  }
+
+  .contact-copy {
+    flex: 1;
+    max-width: 700px;
+  }
+
+  .contact-headline {
+    color: var(--paper);
+    margin-bottom: var(--space-6);
+    line-height: 0.88;
+  }
+
+  /* accent-pop on dark ink bg — guaranteed AA via --on-pop */
+  .tx-pop {
+    color: var(--accent-pop);
+  }
+
+  .contact-lead {
+    color: color-mix(in srgb, var(--paper) 80%, transparent);
+    max-width: 52ch;
+    margin-bottom: var(--space-7);
+  }
+
+  .contact-ctas {
+    flex-wrap: wrap;
+  }
+
+  /* surface-toned button so it reads on ink bg */
+  .btn-surface {
+    background: transparent;
+    color: var(--paper);
+    border-color: color-mix(in srgb, var(--paper) 45%, transparent);
+    box-shadow: none;
+  }
+  .btn-surface:hover {
+    background: var(--paper);
+    color: var(--ink);
+    border-color: var(--paper);
+    box-shadow: none;
+    transform: translate(var(--off-sm), var(--off-sm));
+  }
+
+  /* decorative large asterisk */
+  .contact-ghost {
+    font-family: var(--font-display);
+    font-size: clamp(6rem, 18vw, 16rem);
+    line-height: 1;
+    color: var(--paper);
+    opacity: 0.04;
+    pointer-events: none;
+    user-select: none;
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: -0.05em;
+  }
+
+  @media (max-width: 640px) {
+    .contact-inner {
+      flex-direction: column;
+    }
+    .contact-ghost {
+      display: none;
+    }
+  }
+</style>

@@ -7,14 +7,14 @@ import PostCard from '../../components/PostCard.astro';
 const posts = await getPublishedPosts();
 ---
 
-<BaseLayout title="Writing — Shanahan Suresh" description="Articles on full-stack engineering, Django, Next.js, MCP tooling, and building in public.">
+<BaseLayout title="Writing — Shanahan Suresh" description="Working notes on full-stack engineering, AI and MCP tooling, and what it's like to build in the open.">
   <div class="container section">
     <SectionHeading
       eyebrow="WRITING"
       title="Writing"
-      intro="Notes on full-stack engineering, AI/MCP tooling, and shipping real projects."
+      intro="Working notes on building software: full-stack patterns, AI and MCP tooling, and the messy parts of shipping it."
     />
-    <div class="stack">
+    <div class="stack gap-4">
       {posts.map((post) => <PostCard post={post} showTags />)}
     </div>
   </div>

@@ -1,10 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#0ea5e9" stop-opacity="1"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="16" fill="url(#bg)"/>
-  <text x="32" y="46" font-family="Inter,system-ui,sans-serif" font-size="38" font-weight="800" text-anchor="middle" fill="white">S</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Hard offset shadow block (ink, offset 4px down-right) -->
+  <rect x="8" y="8" width="48" height="48" fill="#0d0d0d"/>
+  <!-- Main blue-filled square with thick ink border -->
+  <rect x="4" y="4" width="48" height="48" fill="#2b4cf0" stroke="#0d0d0d" stroke-width="3.5"/>
+  <!-- Bold "S" centered in the blue square -->
+  <text
+    x="28"
+    y="42"
+    font-family="Arial Black, Impact, sans-serif"
+    font-size="38"
+    font-weight="900"
+    fill="#f5f2e9"
+    text-anchor="middle"
+  >S</text>
 </svg>

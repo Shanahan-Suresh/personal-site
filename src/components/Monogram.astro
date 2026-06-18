@@ -1,0 +1,61 @@
+---
+interface Props {
+  size?: number;
+  class?: string;
+}
+
+const { size = 32, class: className } = Astro.props;
+
+// The offset shadow is proportional: ~12.5% of size
+const offset = Math.round(size * 0.125);
+// Inner square inset from edge
+const inset = Math.round(size * 0.0625); // 2px at 32px
+const sqSize = size - inset * 2;
+const borderW = Math.max(2, Math.round(size * 0.075));
+---
+
+<!--
+  Monogram "S" brutalist bordered-block mark.
+  Token-driven: uses var(--ink) for borders/shadow, var(--accent-1) for fill.
+  Falls back to currentColor if tokens are absent.
+  aria-hidden — decorative mark only.
+-->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={`0 0 ${size} ${size}`}
+  width={size}
+  height={size}
+  aria-hidden="true"
+  class={className}
+  style="display:block;overflow:visible;"
+>
+  <!-- Hard offset shadow block -->
+  <rect
+    x={inset + offset}
+    y={inset + offset}
+    width={sqSize}
+    height={sqSize}
+    fill="var(--ink, currentColor)"
+  />
+  <!-- Main accent-filled square with thick ink border -->
+  <rect
+    x={inset}
+    y={inset}
+    width={sqSize}
+    height={sqSize}
+    fill="var(--accent-1, currentColor)"
+    stroke="var(--ink, currentColor)"
+    stroke-width={borderW}
+  />
+  <!-- Bold "S" -->
+  <text
+    x={inset + sqSize / 2}
+    y={inset + sqSize * 0.76}
+    font-family="Anton, Arial Black, Impact, sans-serif"
+    font-size={Math.round(sqSize * 0.68)}
+    font-weight="900"
+    fill="var(--paper, #f5f2e9)"
+    text-anchor="middle"
+    dominant-baseline="auto"
+  >S</text>
+</svg>

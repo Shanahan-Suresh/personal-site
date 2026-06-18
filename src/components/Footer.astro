@@ -2,34 +2,50 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer-wrapper">
+<footer class="site-footer">
   <div class="container">
-    <p class="text-sm muted">
-      Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> &amp; <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer">Tailwind CSS</a>.
-    </p>
-    <p class="text-sm muted">&copy; {year} Shanahan Suresh</p>
+    <div class="row-wrap between gap-4">
+      <p class="mono footer-text">
+        Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="footer-link">Astro</a> &amp; <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="footer-link">Tailwind CSS</a>
+      </p>
+      <p class="mono footer-text">&copy; {year} Shanahan Suresh</p>
+    </div>
   </div>
 </footer>
 
 <style>
-  .footer-wrapper {
-    padding: var(--space-8) 0;
-    text-align: center;
+  .site-footer {
+    background: var(--ink);
+    color: var(--paper);
+    border-top: var(--bw-thick) solid var(--ink);
+    padding-block: var(--space-7);
   }
 
-  .footer-wrapper .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
+  .footer-text {
+    font-size: var(--fs-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.75;
   }
 
-  .footer-wrapper a {
-    color: var(--accent);
+  .footer-link {
+    color: var(--paper);
     text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out);
+  }
+  .footer-link:hover {
+    color: var(--accent-pop);
+    border-bottom-color: var(--accent-pop);
   }
 
-  .footer-wrapper a:hover {
-    text-decoration: underline;
+  @media (max-width: 640px) {
+    .site-footer .row-wrap {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-3);
+    }
   }
 </style>

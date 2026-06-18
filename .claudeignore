@@ -1,0 +1,19 @@
+# Generated / vendored — not useful for agents to read
+node_modules/
+dist/
+.astro/
+
+# Lockfile (large, low signal)
+package-lock.json
+
+# Throwaway design mockups, not part of the site
+design-previews/
+
+# Binary assets
+public/og-image.jpg
+*.png
+*.jpg
+*.jpeg
+*.ico
+*.woff
+*.woff2

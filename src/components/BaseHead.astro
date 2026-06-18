@@ -8,7 +8,7 @@ interface Props {
 
 const {
   title,
-  description = 'Shanahan Suresh — product-minded software engineer who builds full-stack products and AI tooling.',
+  description = 'Shanahan Suresh, a software engineer and University of Nottingham Computer Science graduate who builds full-stack products and AI tooling people enjoy using.',
   image = '/og-image.jpg',
   canonical,
 } = Astro.props;
@@ -33,8 +33,8 @@ const jsonLd = JSON.stringify({
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalURL} />
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#eef7ff" />
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#020617" />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f2e9" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#12110d" />
 
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

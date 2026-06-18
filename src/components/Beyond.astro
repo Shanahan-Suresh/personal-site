@@ -1,22 +1,36 @@
 ---
 import SectionHeading from './SectionHeading.astro';
-import GlassCard from './GlassCard.astro';
-import Tag from './Tag.astro';
+import Card from './Card.astro';
 
-const interests = ['Anime', 'Games', 'Light novels', 'Travel', 'Gym'];
+const interests: { label: string; accent: string; rot: string }[] = [
+  { label: 'Anime',        accent: 'sticker-1',   rot: 'rot-r' },
+  { label: 'Games',        accent: 'sticker-2',   rot: 'rot-l' },
+  { label: 'Light novels', accent: 'sticker-pop', rot: 'rot-r' },
+  { label: 'Travel',       accent: 'sticker-ink', rot: 'rot-l' },
+  { label: 'Gym',          accent: 'sticker-1',   rot: 'rot-r' },
+];
 ---
 
-<section class="section">
+<section class="section" id="beyond">
   <div class="container">
     <SectionHeading eyebrow="BEYOND CODE" title="When I'm not building" />
 
-    <GlassCard tier={2} glow={true} class="reveal" style="padding:var(--space-7);">
-      <p class="prose-body" style="max-width:680px;margin-bottom:var(--space-5);">
-        When I'm not building: deep into anime, games, and light novels; always planning the next trip; and in the gym four mornings a week. Broad taste, hard to summarize — ask me about any of it.
+    <Card accent="2" stripe pad class="reveal" style="--d:0ms">
+      <p class="lead" style="max-width:68ch;">
+        Outside of work I'm deep into anime, games, and light novels, usually half-planning a trip somewhere, and in the gym four mornings a week. Ask me about any of it and I can go a while.
       </p>
-      <div class="flex-row wrap gap-2">
-        {interests.map(i => <Tag variant="plain">{i}</Tag>)}
+
+      <div class="row row-wrap gap-3 beyond-stickers">
+        {interests.map(({ label, accent, rot }) => (
+          <span class={`sticker ${accent} ${rot}`}>{label}</span>
+        ))}
       </div>
-    </GlassCard>
+    </Card>
   </div>
 </section>
+
+<style>
+  .beyond-stickers {
+    margin-top: var(--space-6);
+  }
+</style>

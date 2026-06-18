@@ -1,0 +1,43 @@
+---
+interface Props {
+  items?: string[];
+}
+
+const {
+  items = [
+    'Next.js',
+    'React',
+    'Svelte',
+    'TypeScript',
+    'Python',
+    'Django',
+    'Docker',
+    'Google Cloud',
+    'Terraform',
+    'GitHub Actions',
+    'MCP',
+    'FastAPI',
+  ],
+} = Astro.props;
+---
+
+<div class="marquee">
+  <div class="marquee-track">
+    <!-- primary copy (readable by AT) -->
+    <div>
+      {items.map((item) => (
+        <div class="marquee-item">
+          {item}<span aria-hidden="true">✦</span>
+        </div>
+      ))}
+    </div>
+    <!-- duplicate copy for seamless loop — hidden from AT -->
+    <div aria-hidden="true">
+      {items.map((item) => (
+        <div class="marquee-item">
+          {item}<span aria-hidden="true">✦</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
