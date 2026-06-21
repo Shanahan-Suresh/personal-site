@@ -1,0 +1,212 @@
+
+/* ================================================================== *
+ * 12. MOTION — scroll reveal (staggered)
+ * ================================================================== */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out),
+    clip-path var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 0 0);
+}
+
+/* default + explicit fade-up: vertical rise (original behaviour) */
+.reveal,
+.reveal[data-reveal="fade-up"] {
+  transform: translateY(28px);
+}
+
+/* slam: scales/tilts in, snapping flat with a stamped overshoot */
+.reveal[data-reveal="slam"] {
+  transform: scale(1.04) rotate(-1.2deg);
+  transition-timing-function: var(--ease-slam);
+}
+
+/* clip-wipe: printed ink wipe, left -> right (no fade) */
+.reveal[data-reveal="clip-wipe"] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--dur-slow) var(--ease-snap);
+  transition-delay: var(--d, 0ms);
+}
+
+/* promote the heavy transform only while pending; release once shown.
+   Note: clip-wipe is deliberately excluded. Its hidden state clips the element
+   to zero width (clip-path: inset(0 100% 0 0)), which makes IntersectionObserver
+   report intersectionRatio 0; the reveal observer therefore uses threshold 0
+   (see BaseLayout.astro) so it still fires on entry. */
+.reveal[data-reveal="slam"] {
+  will-change: transform;
+}
+.reveal[data-reveal="slam"].is-visible {
+  will-change: auto;
+}
+/* open the wipe on reveal — needs higher specificity than the hidden state
+   above (equal-specificity + later source order would otherwise keep it clipped) */
+.reveal[data-reveal="clip-wipe"].is-visible {
+  clip-path: inset(0 0 0 0);
+}
+
+/* stagger-children: container stays put; its children rise in sequence */
+.reveal[data-reveal="stagger-children"] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.reveal[data-reveal="stagger-children"] > .reveal-child {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.reveal[data-reveal="stagger-children"].is-visible > .reveal-child {
+  opacity: 1;
+  transform: none;
+}
+
+/* ------------------------------------------------------------------ *
+ * HERO entrance choreography (plays on .hero-loaded) + idle motion
+ * ------------------------------------------------------------------ */
+
+/* Stamp cadence — single source of truth for the sticker → facts-card
+   sequence. Each beat lands one --stamp-step after the previous; the card
+   enters on the beat right after the last sticker, so it reads as the
+   closing member of the same cascade and can't drift when stickers change. */
+.hero-section {
+  --stamp-from: 620ms; /* first sticker stamps */
+  --stamp-step: 80ms; /* gap between consecutive beats */
+  --stamp-count: 5; /* sticker count; card enters on beat #--stamp-count */
+}
+
+/* headline lines slam up from behind a hard clip edge */
+.hero-headline .slam-line {
+  display: block;
+  overflow: hidden;
+  padding-block: 0.06em; /* keep Anton ascenders/underline out of the clip */
+}
+.hero-headline .slam-line > span {
+  display: inline-block;
+  transform: translateY(110%) skewY(3deg);
+  opacity: 0;
+  transition:
+    transform var(--dur) var(--ease-slam),
+    opacity 0.18s linear;
+  transition-delay: var(--d, 0ms);
+}
+.hero-loaded .hero-headline .slam-line > span {
+  transform: none;
+  opacity: 1;
+}
+
+/* coral marker draws across after the second line lands */
+.hero-headline .marker {
+  background-size: 0% 0.28em;
+  transition: background-size 0.42s var(--ease-snap);
+  transition-delay: 520ms;
+}
+.hero-loaded .hero-headline .marker {
+  background-size: 100% 0.28em;
+}
+
+/* supporting copy: small quick rise */
+.hero-rise {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.hero-loaded .hero-rise {
+  opacity: 1;
+  transform: none;
+}
+
+/* stickers stamp in (overshoot scale dropping onto resting tilt) */
+.sticker-cluster .sticker {
+  opacity: 0; /* hidden until stamped (mirrors .reveal; JS-gated) */
+}
+@keyframes sticker-stamp {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1.18) rotate(0deg);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(var(--rot, 0deg));
+  }
+}
+.hero-loaded .sticker-cluster .sticker {
+  animation: sticker-stamp var(--dur-stamp) var(--ease-slam) forwards;
+  /* one beat per --i (set in markup) off the shared cadence */
+  animation-delay: calc(var(--stamp-from) + var(--i, 0) * var(--stamp-step));
+}
+
+/* idle: pinned-paper sway, started by .is-alive after the stamp settles */
+@keyframes paper-sway {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--rot, 0deg));
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px)
+      rotate(calc(var(--rot, 0deg) + var(--sway, 1deg)));
+  }
+}
+.hero-section.is-alive .sticker-cluster .sticker {
+  animation: paper-sway var(--per, 7s) var(--ease-out) infinite;
+}
+.hero-section.is-alive .sticker-cluster .sticker:nth-child(1) {
+  --sway: -1.4deg;
+  --per: 7.5s;
+  animation-delay: -1.1s;
+}
+.hero-section.is-alive .sticker-cluster .sticker:nth-child(2) {
+  --sway: 1.2deg;
+  --per: 6.5s;
+  animation-delay: -3.4s;
+}
+.hero-section.is-alive .sticker-cluster .sticker:nth-child(3) {
+  --sway: 1.5deg;
+  --per: 8.2s;
+  animation-delay: -0.5s;
+}
+.hero-section.is-alive .sticker-cluster .sticker:nth-child(4) {
+  --sway: -1.1deg;
+  --per: 7.1s;
+  animation-delay: -2.2s;
+}
+.hero-section.is-alive .sticker-cluster .sticker:nth-child(5) {
+  --sway: 1.3deg;
+  --per: 9s;
+  animation-delay: -4s;
+}
+
+/* touch to freeze; pause when scrolled offscreen */
+.sticker-cluster:hover .sticker,
+.sticker-cluster.is-paused .sticker {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}

@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+/* Dark mode driven by a `.dark` class on <html> (set pre-paint in BaseLayout). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ *
+ * THEME (Tailwind tokens exposed as utilities: font-display, etc.)
+ * ------------------------------------------------------------------ */
+@theme {
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Anton", "Archivo Variable", system-ui, sans-serif;
+  --font-head: "Archivo Variable", system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "Cascadia Code", monospace;
+
+  /* sharp by default — neobrutalism */
+  --radius-none: 0px;
+  --radius-pill: 999px;
+}
+
+/* ================================================================== *
+ * 1. STRUCTURAL TOKENS  (palette-independent, theme-independent)
+ * ================================================================== */
+:root {
+  /* spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* widths */
+  --container: 1200px;
+  --container-narrow: 880px;
+  --content: 760px;
+
+  /* brutalist structure */
+  --bw: 2px; /* base border weight */
+  --bw-thick: 3px; /* heavy border weight */
+  --radius: 0px;
+  --radius-pill: 999px;
+  --off-sm: 4px; /* hard offset shadow distances */
+  --off: 6px;
+  --off-lg: 10px;
+
+  /* derived structure (resolve against the live --ink, so they flip with theme) */
+  --border: var(--bw) solid var(--ink);
+  --border-thick: var(--bw-thick) solid var(--ink);
+  --shadow-hard-sm: var(--off-sm) var(--off-sm) 0 var(--ink);
+  --shadow-hard: var(--off) var(--off) 0 var(--ink);
+  --shadow-hard-lg: var(--off-lg) var(--off-lg) 0 var(--ink);
+
+  /* fluid type scale */
+  --fs-display: clamp(3rem, 9vw, 8rem);
+  --fs-h1: clamp(2.4rem, 6.2vw, 5rem);
+  --fs-h2: clamp(1.9rem, 4vw, 3.2rem);
+  --fs-h3: clamp(1.25rem, 2.2vw, 1.85rem);
+  --fs-lead: clamp(1.08rem, 1.5vw, 1.35rem);
+  --fs-body: 1.0625rem;
+  --fs-sm: 0.9rem;
+  --fs-mono: 0.76rem;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 0.16s;
+  --dur: 0.28s;
+  --dur-slow: 0.6s;
+
+  /* extended motion — animation layer helpers */
+  --ease-slam: cubic-bezier(0.16, 1.2, 0.3, 1); /* fast-in, slight overshoot, settle */
+  --ease-snap: cubic-bezier(0.2, 0, 0, 1); /* mechanical hard-stop */
+  --dur-stamp: 0.34s;
+}
+
+/* ================================================================== *
+ * 2. THEME COLOR TOKENS  (palette-independent)
+ *    --ink = foreground used for text, borders AND hard shadows;
+ *    it flips light↔dark so the whole brutalist structure inverts.
+ * ================================================================== */
+:root {
+  --paper: #f5f2e9; /* page background — warm paper */
+  --surface: #fffdf7; /* raised panel — brighter than paper */
+  --surface-2: #ece7d8; /* alternate panel tint */
+  --ink: #0d0d0d; /* foreground: text / borders / shadows */
+  --ink-soft: #3c3a34; /* strong secondary text */
+  --muted: #6b6862; /* muted text */
+  --hairline: rgba(13, 13, 13, 0.14);
+
+  /* accents — Blue / Coral / Yellow. --on-* sits ON each fill (WCAG AA). */
+  --accent-1: #2b4cf0;
+  --on-1: #ffffff; /* electric blue */
+  --accent-2: #ef4322;
+  --on-2: #0d0d0d; /* coral (deepened to pass AA as text on paper) */
+  --accent-pop: #e8ff2a;
+  --on-pop: #0d0d0d; /* acid yellow */
+  --accent-3: #2fbf71;
+  --on-3: #0d0d0d; /* green */
+  --accent-4: #7c4dff;
+  --on-4: #ffffff; /* violet */
+  --accent-5: #ff4da6;
+  --on-5: #0d0d0d; /* hot pink */
+
+  color-scheme: light;
+}
+
+.dark {
+  --paper: #12110d; /* warm near-black */
+  --surface: #1b1914; /* raised panel */
+  --surface-2: #232017; /* alternate panel tint */
+  --ink: #f3eee3; /* light foreground */
+  --ink-soft: #d3cdbf;
+  --muted: #9b958a;
+  --hairline: rgba(243, 238, 227, 0.16);
+
+  /* accents — brighter for the dark base */
+  --accent-1: #4566ff;
+  --on-1: #ffffff;
+  --accent-2: #ff6a4d;
+  --on-2: #0d0d0d;
+  --accent-pop: #e8ff2a;
+  --on-pop: #0d0d0d;
+  --accent-3: #34d27d;
+  --on-3: #0d0d0d;
+  --accent-4: #8a5cff;
+  --on-4: #ffffff;
+  --accent-5: #ff5fb0;
+  --on-5: #0d0d0d;
+
+  color-scheme: dark;
+}
