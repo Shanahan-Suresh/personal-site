@@ -8,13 +8,6 @@ import Now from "../components/Now.astro";
 import Work from "../components/Work.astro";
 import Beyond from "../components/Beyond.astro";
 import Contact from "../components/Contact.astro";
-// MASCOT (WIP — parked, do not re-enable unless asked): hero entrance mascot still
-// needs work, so it is not mounted. Its code lives in src/components/Mascot.astro.
-// import Mascot from "../components/Mascot.astro";
-/* import { getPublishedPosts } from "../lib/posts"; */
-/* import PostCard from "../components/PostCard.astro"; */
-
-/* const recentPosts = (await getPublishedPosts()).slice(0, 3); */
 ---
 
 <BaseLayout
@@ -29,34 +22,5 @@ import Contact from "../components/Contact.astro";
   <Work />
   <Beyond />
 
-  {/*
-    recentPosts.length > 0 && (
-      <section id="writing" class="section">
-        <div class="container">
-          <div
-            class="row-wrap between reveal"
-            style="align-items:flex-end;gap:var(--space-4);margin-bottom:var(--space-7);"
-          >
-            <div>
-              <p class="section-label">WRITING</p>
-              <h2 class="section-title">Writing</h2>
-            </div>
-            <a href="/writing" class="btn btn-ghost">
-              All posts →
-            </a>
-          </div>
-
-          <div class="stack gap-4">
-            {recentPosts.map((post) => (
-              <PostCard post={post} />
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  */}
-
   <Contact />
-  {/* MASCOT (WIP — parked): disabled until further notice. Do not delete or re-add unless explicitly asked. */}
-  {/* <Mascot /> */}
 </BaseLayout>

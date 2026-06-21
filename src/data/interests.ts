@@ -1,6 +1,8 @@
+import type { StickerAccent } from "@/lib/types";
+
 export interface Interest {
   label: string;
-  accent: string;
+  accent: `sticker-${StickerAccent}`;
   rot: string;
 }
 
