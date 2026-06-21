@@ -1,6 +1,6 @@
 ---
-import Card from './Card.astro';
-import { formatPostDate, type Post } from '../lib/posts';
+import Card from "./Card.astro";
+import { formatPostDate, type Post } from "../lib/posts";
 
 interface Props {
   post: Post;
@@ -12,15 +12,28 @@ const { post, showTags = false } = Astro.props;
 
 <a href={`/writing/${post.id}`}>
   <Card press class="reveal">
-    <div class="row-wrap between" style="align-items:flex-start;gap:var(--space-3);">
+    <div
+      class="row-wrap between"
+      style="align-items:flex-start;gap:var(--space-3);"
+    >
       <h3 class="h3" style="margin:0;">{post.data.title}</h3>
-      <time class="mono muted" datetime={post.data.pubDate.toISOString()} style="white-space:nowrap;">{formatPostDate(post.data.pubDate)}</time>
+      <time
+        class="mono muted"
+        datetime={post.data.pubDate.toISOString()}
+        style="white-space:nowrap;">{formatPostDate(post.data.pubDate)}</time
+      >
     </div>
-    <p class="muted" style="margin-top:var(--space-3);">{post.data.description}</p>
-    {showTags && post.data.tags && post.data.tags.length > 0 && (
-      <div class="row-wrap gap-2" style="margin-top:var(--space-4);">
-        {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
-      </div>
-    )}
+    <p class="muted" style="margin-top:var(--space-3);">
+      {post.data.description}
+    </p>
+    {
+      showTags && post.data.tags && post.data.tags.length > 0 && (
+        <div class="row-wrap gap-2" style="margin-top:var(--space-4);">
+          {post.data.tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
   </Card>
 </a>

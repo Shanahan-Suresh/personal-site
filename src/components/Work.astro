@@ -1,68 +1,14 @@
 ---
-import SectionHeading from './SectionHeading.astro';
-import ProjectCard from './ProjectCard.astro';
+import SectionHeading from "./SectionHeading.astro";
+import ProjectCard from "./ProjectCard.astro";
+import { categories, accentCycle } from "@/data/projects";
 
-const personal = [
-  {
-    title: 'pixiv-censorit',
-    description: 'A desktop app that detects and censors regions of artwork automatically, using an anime-tuned pipeline (YOLO + FastSAM). It handles batch jobs, speaks English and Japanese, and is packaged so non-developers can run it without touching a terminal.',
-    tags: ['Python', 'YOLO', 'FastSAM'],
-    meta: 'Private',
-  },
-  {
-    title: 'tech-scouter',
-    description: 'A daily tech-intelligence digest that reads the firehose so you don\'t have to. It curates the news to a team\'s exact stack with an LLM, runs entirely from config, and scales to zero on GCP when nobody\'s looking.',
-    tags: ['Python', 'Cloud Run', 'Terraform', 'LLMs'],
-    meta: 'Private',
-  },
-  {
-    title: 'OpenAPI → MCP server + chat UI',
-    description: 'Point it at any API\'s schema and it generates a set of LLM-callable tools on its own, falling back across models if one stalls, all wired into a Next.js chat interface. It lets an AI assistant pick up a brand-new tool in seconds.',
-    tags: ['Python', 'MCP', 'FastAPI', 'Next.js'],
-    meta: 'Private',
-  },
-  {
-    title: 'ascii-vid-converter',
-    description: 'Turns any video into live ASCII art, frame by frame, in real time. Pure fun, and far trickier to keep smooth than it looks.',
-    tags: ['Python', 'OpenCV'],
-    link: { label: 'GitHub', href: 'https://github.com/Shanahan-Suresh/ascii-vid-converter' },
-  },
-];
-
-const product = [
-  {
-    title: 'Workforce performance platform',
-    description: 'The sole engineer on a Django REST and SvelteKit platform covering registration, performance ratings, contribution tracking, admin tooling, and the scheduled jobs that keep it all in sync.',
-    tags: ['Django', 'SvelteKit', 'PostgreSQL'],
-  },
-  {
-    title: 'OHSE incident-management system',
-    description: 'An incident reporting and investigation system built around some seriously tangled role-based workflows, where managers, safety officers, and investigators each get what amounts to a different app. It\'s now live across 10 business units.',
-    tags: ['Django', 'Next.js'],
-  },
-  {
-    title: 'HR enrollment platform',
-    description: 'A large Next.js and TypeScript enrollment platform built to handle tens of thousands of users, with role-aware flows, bot protection, and a lot of careful UX. I owned it over hundreds of commits.',
-    tags: ['Next.js', 'TypeScript'],
-  },
-];
-
-const academic = [
-  {
-    title: 'HeatGen (SEGP)',
-    description: 'A deep-learning project I built with a team in my final year, later published in a peer-reviewed journal (JESTEC, 2023). My first real piece of research-grade ML.',
-    tags: ['Python', 'Deep Learning'],
-    link: { label: 'GitHub', href: 'https://github.com/Shanahan-Suresh/segp-group4a-deep-learning-network' },
-  },
-];
-
-const categories = [
-  { label: 'Personal', items: personal },
-  { label: 'Product work', items: product },
-  { label: 'Academic', items: academic },
-];
-
-const accentCycle: Array<'1' | '2' | 'pop' | 'ink'> = ['1', '2', 'pop', 'ink'];
+let offset = 0;
+const numberedCategories = categories.map((cat) => {
+  const start = offset;
+  offset += cat.items.length;
+  return { ...cat, start };
+});
 ---
 
 <section id="work" class="section-lg">
@@ -70,32 +16,22 @@ const accentCycle: Array<'1' | '2' | 'pop' | 'ink'> = ['1', '2', 'pop', 'ink'];
     <SectionHeading
       eyebrow="SELECTED WORK"
       title="A few things I've built"
-      intro="A mix of things I shipped at work and things I built because I couldn't not."
+      intro="Mix of things I shipped at work, plus stuff outside it too."
     />
 
     <div class="stack" style="gap:var(--space-8);">
-      {(() => {
-        let counter = 0;
-        return categories.map(cat => (
+      {
+        numberedCategories.map((cat) => (
           <div>
-            <div class="section-label">
-              {cat.label}
-              {cat.subtitle && (
-                <span class="mono muted" style="margin-left:var(--space-3);">{cat.subtitle}</span>
-              )}
-            </div>
+            <div class="section-label">{cat.label}</div>
             <div class="grid-2">
-              {cat.items.map(p => {
-                const idx = counter++;
-                const num = String(idx + 1).padStart(2, '0');
-                const accent = accentCycle[idx % 4];
+              {cat.items.map((p, j) => {
+                const idx = cat.start + j;
+                const num = String(idx + 1).padStart(2, "0");
+                const accent = p.accent ?? accentCycle[idx % accentCycle.length];
                 return (
                   <ProjectCard
-                    title={p.title}
-                    description={p.description}
-                    tags={p.tags}
-                    link={'link' in p ? p.link : undefined}
-                    meta={'meta' in p ? p.meta : undefined}
+                    project={p}
                     num={num}
                     accent={accent}
                     class="reveal"
@@ -105,8 +41,8 @@ const accentCycle: Array<'1' | '2' | 'pop' | 'ink'> = ['1', '2', 'pop', 'ink'];
               })}
             </div>
           </div>
-        ));
-      })()}
+        ))
+      }
     </div>
   </div>
 </section>

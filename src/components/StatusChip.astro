@@ -1,4 +1,6 @@
 ---
+interface Props { class?: string; }
+const { class: className } = Astro.props;
 ---
 
-<span class="status"><span class="status-dot" aria-hidden="true"></span><slot /></span>
+<span class:list={["status", className]}><slot /></span>

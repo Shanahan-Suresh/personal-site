@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- sparkle.svg — 4-point star cluster in yellow (#e8ff2a) + black outline + white keyline -->
+  <!-- One big 4-point star center-left, two small stars top-right and bottom-right -->
+
+  <!-- Big 4-point star polygon (center ~44,50) -->
+  <!-- Points computed for a 4-pointed star: sharp diamond tips -->
+  <defs>
+    <path id="star-lg"
+      d="M 44 18
+         L 48.5 42
+         L 72 47
+         L 48.5 52
+         L 44 76
+         L 39.5 52
+         L 16 47
+         L 39.5 42
+         Z" />
+    <path id="star-sm-a"
+      d="M 74 22
+         L 76 32
+         L 86 35
+         L 76 37
+         L 74 47
+         L 72 37
+         L 62 35
+         L 72 32
+         Z" />
+    <path id="star-sm-b"
+      d="M 76 58
+         L 77.5 65
+         L 85 67
+         L 77.5 69
+         L 76 76
+         L 74.5 69
+         L 67 67
+         L 74.5 65
+         Z" />
+  </defs>
+
+  <!-- White keyline layer -->
+  <use href="#star-lg"   fill="none" stroke="#ffffff" stroke-width="12" stroke-linejoin="round" />
+  <use href="#star-sm-a" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" />
+  <use href="#star-sm-b" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round" />
+
+  <!-- Black outline layer -->
+  <use href="#star-lg"   fill="none" stroke="#0d0d0d" stroke-width="6" stroke-linejoin="round" />
+  <use href="#star-sm-a" fill="none" stroke="#0d0d0d" stroke-width="5" stroke-linejoin="round" />
+  <use href="#star-sm-b" fill="none" stroke="#0d0d0d" stroke-width="5" stroke-linejoin="round" />
+
+  <!-- Yellow fill -->
+  <use href="#star-lg"   fill="#e8ff2a" stroke="none" />
+  <use href="#star-sm-a" fill="#e8ff2a" stroke="none" />
+  <use href="#star-sm-b" fill="#e8ff2a" stroke="none" />
+</svg>

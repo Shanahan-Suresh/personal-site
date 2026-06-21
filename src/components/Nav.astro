@@ -1,15 +1,25 @@
 ---
-import ThemeToggle from './ThemeToggle.astro';
+import ThemeToggle from "./ThemeToggle.astro";
+import { navLinks } from "@/data/navigation";
+import Monogram from "./Monogram.astro";
 ---
 
 <header class="nav-header">
   <nav class="container nav-inner">
-    <a href="/" class="nav-wordmark">Shanahan Suresh</a>
+    <a href="/" class="nav-wordmark" aria-label="Shanahan Suresh — home"
+      ><Monogram size={30} /><span class="nav-wordmark-text">hanahan</span></a
+    >
     <div class="row gap-5 nav-right">
       <ul class="row gap-5 nav-links" role="list">
-        <li><a href="/#work" class="mono nav-link">Work</a></li>
-        <li><a href="/writing" class="mono nav-link">Writing</a></li>
-        <li><a href="/#contact" class="mono nav-link">Contact</a></li>
+        {
+          navLinks.map((l) => (
+            <li>
+              <a href={l.href} class="mono nav-link">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
       <ThemeToggle />
     </div>
@@ -26,7 +36,13 @@ import ThemeToggle from './ThemeToggle.astro';
     height: 68px;
     display: flex;
     align-items: center;
-    transition: background var(--dur) var(--ease-out);
+    box-shadow: 0 0 0 transparent;
+    transition:
+      background var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+  .nav-header.is-scrolled {
+    box-shadow: var(--shadow-hard-sm);
   }
 
   .nav-inner {
@@ -37,17 +53,23 @@ import ThemeToggle from './ThemeToggle.astro';
   }
 
   .nav-wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
     font-family: var(--font-head);
     font-weight: 800;
-    font-size: 1.15rem;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
+    font-size: 1.3rem;
+    text-transform: none;
+    letter-spacing: -0.01em;
     color: var(--ink);
     text-decoration: none;
     position: relative;
   }
+  .nav-wordmark-text {
+    line-height: 1;
+  }
   .nav-wordmark::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -3px;
     left: 0;
@@ -69,11 +91,29 @@ import ThemeToggle from './ThemeToggle.astro';
   }
 
   .nav-link {
+    position: relative;
     color: var(--ink);
     text-decoration: none;
     transition: color var(--dur-fast) var(--ease-out);
   }
-  .nav-link:hover {
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    background: var(--accent-1);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-fast) var(--ease-out);
+  }
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+  .nav-link:hover,
+  .nav-link.is-active {
     color: var(--accent-1);
   }
 

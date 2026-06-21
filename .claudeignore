@@ -9,6 +9,11 @@ package-lock.json
 # Throwaway design mockups, not part of the site
 design-previews/
 
+# Playwright test artifacts (regenerated)
+test-results/
+playwright-report/
+blob-report/
+
 # Binary assets
 public/og-image.jpg
 *.png

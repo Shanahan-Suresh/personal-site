@@ -1,10 +1,8 @@
 ---
-import SectionHeading from './SectionHeading.astro';
-import BentoTile from './BentoTile.astro';
-import Tag from './Tag.astro';
-
-const mainTools = ['Next.js', 'React', 'Svelte', 'TypeScript', 'Python', 'Django', 'Docker', 'Google Cloud', 'Terraform', 'GitHub Actions'];
-const learning = ['AWS', 'Kubernetes'];
+import SectionHeading from "./SectionHeading.astro";
+import BentoTile from "./BentoTile.astro";
+import Tag from "./Tag.astro";
+import { mainTools, learning } from "@/data/skills";
 ---
 
 <section id="skills" class="section">
@@ -15,10 +13,14 @@ const learning = ['AWS', 'Kubernetes'];
       <BentoTile span={4}>
         <div class="stack stack-4">
           <p>
-            Right now I'm deep in infrastructure. I picked up Terraform and use it on real projects, and I'm teaching myself AWS in my own time. Kubernetes is next on the list.
+            Right now I'm diving into deployment infrastructure and DevOps. Picked up on Terraform and use
+            it on real projects, plus I'm teaching myself AWS in my own time.
+            Kubernetes is next on the list.
           </p>
           <p>
-            I also spend most of my days in the agentic-coding world, trying to keep pace with how fast LLMs are changing the way software gets built. It has reshaped how I work, in the office and out of it.
+            I also spend most of my days in the agentic-coding world, trying to
+            keep pace with how fast LLMs are changing the way software gets
+            built. It has reshaped how I work, in the office and out of it.
           </p>
         </div>
       </BentoTile>
@@ -27,12 +29,12 @@ const learning = ['AWS', 'Kubernetes'];
         <div class="stack stack-5">
           <h3 class="h3">Tools I reach for</h3>
           <div class="row-wrap gap-2">
-            {mainTools.map(t => <Tag variant="plain">{t}</Tag>)}
+            {mainTools.map((t) => <Tag variant="plain">{t}</Tag>)}
           </div>
           <div class="stack stack-3">
             <p class="mono muted">Currently learning</p>
             <div class="row-wrap gap-2">
-              {learning.map(t => <Tag>{t}</Tag>)}
+              {learning.map((t) => <Tag>{t}</Tag>)}
             </div>
           </div>
         </div>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- heart.svg — chunky heart in coral (#ef4322) with white keyline + black outline -->
+  <!-- Heart built with two cubic bezier lobes meeting at a bottom point -->
+
+  <defs>
+    <path id="heart"
+      d="M 50 80
+         C 50 80, 14 58, 14 36
+         C 14 22, 24 14, 34 16
+         C 40 17, 46 22, 50 28
+         C 54 22, 60 17, 66 16
+         C 76 14, 86 22, 86 36
+         C 86 58, 50 80, 50 80
+         Z" />
+  </defs>
+
+  <!-- White keyline -->
+  <use href="#heart" fill="none" stroke="#ffffff" stroke-width="18" stroke-linejoin="round" />
+
+  <!-- Black outline -->
+  <use href="#heart" fill="none" stroke="#0d0d0d" stroke-width="8" stroke-linejoin="round" />
+
+  <!-- Coral fill -->
+  <use href="#heart" fill="#ef4322" stroke="none" />
+
+  <!-- Small white highlight blob (top-left lobe) -->
+  <ellipse cx="37" cy="34" rx="7" ry="4.5"
+           fill="#ffffff" opacity="0.55"
+           transform="rotate(-35 37 34)" />
+</svg>

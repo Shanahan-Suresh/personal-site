@@ -1,60 +1,127 @@
 ---
-import Card from './Card.astro';
+import Card from "./Card.astro";
+import type { Project, Accent } from "@/lib/types";
 
 interface Props {
-  title: string;
-  description: string;
-  tags?: string[];
-  link?: { label: string; href: string };
-  meta?: string;
+  project: Project;
   num?: string;
-  accent?: '1' | '2' | 'pop' | 'ink';
+  accent?: Accent;
   class?: string;
   style?: string;
 }
 
-const { title, description, tags = [], link, meta, num, accent = '1', class: className = '', style: styleProp = '' } = Astro.props;
-
-const cardStyle = ['height:100%;position:relative;overflow:hidden;', styleProp].filter(Boolean).join('');
+const {
+  project,
+  num,
+  accent = "1",
+  class: className = "",
+  style: styleProp = "",
+} = Astro.props;
+const { title, description, tags = [], link, meta } = project;
 ---
 
-<Card press accent={accent} stripe class={className} style={cardStyle}>
-  {num && (
-    <span
-      class="ghost-num"
-      aria-hidden="true"
-      style="position:absolute;top:-0.1em;right:0.3rem;font-size:clamp(4rem,9vw,7rem);line-height:0.85;pointer-events:none;"
-    >{num}</span>
-  )}
+<Card
+  press
+  accent={accent}
+  stripe
+  class={`project-card ${className}`}
+  style={styleProp}
+>
+  {
+    num && (
+      <span class="ghost-num" aria-hidden="true">
+        {num}
+      </span>
+    )
+  }
 
-  <div class="stack" style="height:100%;gap:var(--space-4);">
-    <div class="row between gap-3" style="align-items:flex-start;">
-      <h3 class="h3" style="position:relative;">{title}</h3>
-      {meta && (
-        <span class="tag tag-ink" style="flex-shrink:0;white-space:nowrap;">{meta}</span>
-      )}
+  <div class="stack project-body">
+    <div class="row between gap-3 title-row">
+      <h3 class="h3 project-title">{title}</h3>
+      {meta && <span class="tag tag-ink meta-tag">{meta}</span>}
     </div>
 
-    <p class="muted" style="position:relative;line-height:1.65;">{description}</p>
+    <p class="muted project-desc">{description}</p>
 
-    {tags.length > 0 && (
-      <div class="row-wrap gap-2" style="position:relative;">
-        {tags.map(tag => <span class="tag">{tag}</span>)}
-      </div>
-    )}
+    {
+      tags.length > 0 && (
+        <div class="row-wrap gap-2 tags-row">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )
+    }
 
-    {link && (
-      <div style="margin-top:auto;padding-top:var(--space-3);">
-        <a
-          href={link.href}
-          class="tag tag-pop"
-          target="_blank"
-          rel="noopener noreferrer"
-          style="text-decoration:none;"
-        >
-          {link.label} ↗
-        </a>
-      </div>
-    )}
+    {
+      link && (
+        <div class="project-link">
+          <a
+            href={link.href}
+            class="tag link-anchor arrow-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {link.label}
+          </a>
+        </div>
+      )
+    }
   </div>
 </Card>
+
+<style>
+  .project-card {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ghost-num {
+    position: absolute;
+    top: -0.1em;
+    right: 0.3rem;
+    font-size: clamp(4rem, 9vw, 7rem);
+    line-height: 0.85;
+    pointer-events: none;
+  }
+
+  .project-body {
+    height: 100%;
+    gap: var(--space-4);
+  }
+
+  .title-row {
+    align-items: flex-start;
+  }
+
+  .project-title {
+    position: relative;
+  }
+
+  .meta-tag {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .project-desc {
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .tags-row {
+    position: relative;
+  }
+
+  .project-link {
+    margin-top: auto;
+    padding-top: var(--space-3);
+  }
+
+  /* the link tag picks up its card's accent so it reads as part of the card */
+  .link-anchor {
+    background: var(--card-accent);
+    color: var(--card-on-accent);
+    text-decoration: none;
+  }
+</style>

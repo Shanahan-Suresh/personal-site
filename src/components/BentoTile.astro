@@ -1,14 +1,15 @@
 ---
-import Card from './Card.astro';
+import Card from "./Card.astro";
+import type { Accent } from "@/lib/types";
 
 interface Props {
   span?: 2 | 3 | 4 | 6;
-  accent?: '1' | '2' | 'pop' | 'ink';
+  accent?: Accent;
   stripe?: boolean;
   class?: string;
 }
 
-const { span = 2, accent, stripe = false, class: className = '' } = Astro.props;
+const { span = 2, accent, stripe = false, class: className = "" } = Astro.props;
 ---
 
 <Card

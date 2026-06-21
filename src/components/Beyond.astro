@@ -1,14 +1,7 @@
 ---
-import SectionHeading from './SectionHeading.astro';
-import Card from './Card.astro';
-
-const interests: { label: string; accent: string; rot: string }[] = [
-  { label: 'Anime',        accent: 'sticker-1',   rot: 'rot-r' },
-  { label: 'Games',        accent: 'sticker-2',   rot: 'rot-l' },
-  { label: 'Light novels', accent: 'sticker-pop', rot: 'rot-r' },
-  { label: 'Travel',       accent: 'sticker-ink', rot: 'rot-l' },
-  { label: 'Gym',          accent: 'sticker-1',   rot: 'rot-r' },
-];
+import SectionHeading from "./SectionHeading.astro";
+import Card from "./Card.astro";
+import { interests } from "@/data/interests";
 ---
 
 <section class="section" id="beyond">
@@ -16,14 +9,18 @@ const interests: { label: string; accent: string; rot: string }[] = [
     <SectionHeading eyebrow="BEYOND CODE" title="When I'm not building" />
 
     <Card accent="2" stripe pad class="reveal" style="--d:0ms">
-      <p class="lead" style="max-width:68ch;">
-        Outside of work I'm deep into anime, games, and light novels, usually half-planning a trip somewhere, and in the gym four mornings a week. Ask me about any of it and I can go a while.
+      <p class="lead" style="max-width:72ch;">
+        Outside of work I'm deep into anime, games, and light novels, usually
+        half-planning a trip somewhere, and in the gym four evenings a week. Ask
+        me about any of it and I can go a while.
       </p>
 
       <div class="row row-wrap gap-3 beyond-stickers">
-        {interests.map(({ label, accent, rot }) => (
-          <span class={`sticker ${accent} ${rot}`}>{label}</span>
-        ))}
+        {
+          interests.map(({ label, accent, rot }) => (
+            <span class={`sticker ${accent} ${rot}`}>{label}</span>
+          ))
+        }
       </div>
     </Card>
   </div>

@@ -1,0 +1,389 @@
+---
+/*
+  ⚠ MASCOT v2 — WORK IN PROGRESS, CURRENTLY DISABLED ⚠
+
+  The hero rope-swing entrance mascot is parked. It needs more work before it
+  can ship, so it is NOT mounted on any page: <Mascot /> is commented out in
+  src/pages/index.astro.
+
+  Everything for the feature now lives in THIS one file — markup, styles
+  (<style is:global> below) and behaviour (<script> below). Nothing about it
+  remains in BaseLayout.astro or global.css.
+
+  DO NOT delete this file, and DO NOT re-enable the mascot (uncomment <Mascot />
+  or wire it in elsewhere) unless explicitly asked. It is kept intact on purpose
+  so the work can be resumed later.
+
+  Sprites: /mascot/*.png (height-sized <img>, swapped by src). Emotes: /mascot/emotes/*.svg
+*/
+---
+<div class="mascot-stage" data-mascot aria-hidden="true">
+  <div class="mascot-rig" data-mascot-rig>
+    <div class="mascot-swing" data-mascot-swing>
+      <span class="mascot-rope" data-mascot-rope></span>
+      <div class="mascot-body" data-mascot-body>
+        <img class="mascot-sprite" data-mascot-sprite
+             src="/mascot/mascot-static.png" alt="" decoding="async" draggable="false" />
+        <span class="mascot-emote" data-mascot-emote></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+.mascot-stage {
+  position: fixed; inset: 0;
+  z-index: 40; /* below nav (50), above content */
+  pointer-events: none;
+  contain: layout paint;
+}
+.mascot-stage:not(.is-ready) { visibility: hidden; }   /* no flash before measure */
+
+/* rig: pivot at the rope's top anchor. JS writes --ax/--ay (px). */
+.mascot-rig {
+  position: absolute; top: 0; left: 0;
+  transform: translate3d(var(--ax, -300px), var(--ay, -300px), 0);
+}
+.mascot-stage.is-active .mascot-swing { will-change: transform; }
+
+/* swing: rotates about the anchor (top). JS writes --rot (deg) during the swing;
+   CSS sway takes over after settle. Negative --rot swings the body toward the gutter (right). */
+.mascot-swing {
+  position: absolute; top: 0; left: 0;
+  transform-origin: top center;
+  transform: rotate(calc(var(--rot, 0) * -1deg));
+}
+
+/* rope: tan strand from the anchor straight down; JS writes --rope-h. */
+.mascot-rope {
+  position: absolute; top: 0; left: 0;
+  width: 3px; height: var(--rope-h, 0px);
+  transform: translateX(-50%);
+  transform-origin: top center;
+  background: repeating-linear-gradient(45deg, #b98a4e 0 4px, #caa169 4px 8px);  /* subtle braid */
+  border-radius: 2px;
+}
+
+/* body: hangs from the rope end (hands). JS writes --body-y (≈ rope-h) + per-pose --bx-nudge/--by-nudge. */
+.mascot-body {
+  position: absolute; top: 0; left: 0;
+  transform: translate3d(var(--bx-nudge, 0px), var(--body-y, 0px), 0);
+}
+.mascot-sprite {
+  position: absolute; left: 0; top: var(--by-nudge, 0px);
+  height: var(--mascot-size, clamp(64px, 6.5vw, 90px)); width: auto;
+  max-width: none; /* override the global img{max-width:100%} reset — body is width:0, which would clamp the sprite to 0 */
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+/* settled swing: upright, no sway — JS has already zeroed --rot */
+.mascot-stage.is-settled .mascot-swing { transform: rotate(0deg); animation: none; }
+
+/* rope release fade — JS drives --rope-h to 0 via rAF; opacity dims the strand out in sync */
+.mascot-rope.is-releasing { opacity: 0; transition: opacity 340ms var(--ease-out); }
+
+/* idle wave-bob — body bobs gently once standing; lean is from the feet */
+@keyframes mascot-wave-bob {
+  0%, 100% { transform: translate3d(var(--bx-nudge, 0px), calc(var(--body-y, 0px) + 0px), 0) rotate(0deg); }
+  50%      { transform: translate3d(var(--bx-nudge, 0px), calc(var(--body-y, 0px) - 4px), 0) rotate(-1.2deg); }
+}
+.mascot-stage.is-settled .mascot-body {
+  transform-origin: bottom center;   /* lean pivots from the feet, not the head */
+  animation: mascot-wave-bob var(--bob-dur, 2800ms) ease-in-out infinite;
+}
+.mascot-stage.is-paused .mascot-body { animation-play-state: paused; }
+
+/* contact bumps — finite (run once), transform-only; class removed by JS on animationend */
+@keyframes headline-bump {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(3px) scaleY(0.94) scaleX(1.03); }
+  60%  { transform: translateY(-2px) scaleY(1.03) scaleX(0.99); }
+  100% { transform: translateY(0) scale(1); }
+}
+.hero-headline .slam-line.is-bumped { animation: headline-bump 420ms var(--ease-out) 1; }
+
+@keyframes card-bump {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.035) translateY(-2px); }
+  70%  { transform: scale(0.992) translateY(1px); }
+  100% { transform: scale(1); }
+}
+/* .hero-facts has no resting transform (plain .card — no rotate/offset), so scale-only is clean */
+.hero-facts.is-bumped { animation: card-bump 460ms var(--ease-out) 1; }
+
+/* emote overlay — pops above the head, JS sets background-image then clears */
+.mascot-emote {
+  position: absolute; left: 0; bottom: calc(var(--mascot-size, 84px) * 0.95);
+  width: 34px; height: 34px; transform: translateX(-50%) scale(0);
+  background: center/contain no-repeat; opacity: 0;
+}
+@keyframes emote-pop {
+  0%   { transform: translateX(-50%) translateY(6px) scale(0); opacity: 0; }
+  35%  { transform: translateX(-50%) translateY(-2px) scale(1.15); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+}
+.mascot-emote.is-shown { animation: emote-pop .2s var(--ease-slam) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot-rope { display: none; }
+  .mascot-stage.is-settled .mascot-body { animation: none; }
+  .hero-headline .slam-line.is-bumped, .hero-facts.is-bumped { animation: none; }
+}
+@media (max-width: 820px) { .mascot-stage { display: none; } }   /* belt-and-suspenders; JS also skips */
+</style>
+
+<script is:inline>
+  /* Mascot v2 (WIP — parked). Self-contained: this script is the entire behaviour.
+     Only runs if <Mascot /> is mounted, which it currently is NOT (see index.astro).
+     Do not wire this up elsewhere unless explicitly asked. */
+  (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var teardowns = [];
+    function cleanup() {
+      teardowns.forEach(function (fn) { try { fn(); } catch (e) {} });
+      teardowns = [];
+    }
+
+    /* === initMascot: pasted verbatim from the old BaseLayout IIFE === */
+    function initMascot() {
+          var stage = document.querySelector("[data-mascot]");
+          if (!stage) return;
+
+          var MOUNT_MIN = 820;
+          if (window.innerWidth < MOUNT_MIN) return;                 // mobile: don't mount
+
+          var rig    = stage.querySelector("[data-mascot-rig]");
+          var swing  = stage.querySelector("[data-mascot-swing]");
+          var rope   = stage.querySelector("[data-mascot-rope]");
+          var body   = stage.querySelector("[data-mascot-body]");
+          var sprite = stage.querySelector("[data-mascot-sprite]");
+          var emote  = stage.querySelector("[data-mascot-emote]");
+
+          // --- tunables (single source of truth) -----------------------------------
+          // v2: rope-swing serpentine. He drops from the nav seam, swings LEFT to tap
+          // the headline (bump), swings RIGHT to tap the info card (bump), drops into
+          // the gutter, the rope flies up, and he lands, stands, and waves.
+          var CHOREO = {
+            // pacing (ms)
+            descent: 760,          // S1: anchor seam -> W1 (drop + swing to headline)
+            braceHold: 200,        // plant feet on the headline
+            toBox: 700,            // S2: W1 -> W2 (swing across to the card)
+            boxHold: 150,          // tap the card
+            toStand: 580,          // S3: W2 -> W3 (drop into the gutter, rope verticalises)
+            landHold: 220,         // crouch on landing
+            ropeFly: 420,          // rope retracts/flies up to the anchor
+            // geometry
+            anchorY: -24,          // rope top, behind the nav (z-40 < hero z-50)
+            anchorBiasX: -28,      // anchor x = card.left + this (the column seam, just left of the card)
+            handsFrac: 0.80,       // hands sit ~80% up the sprite (rope-end -> feet body length)
+            // waypoint placement (fractions of the measured rects)
+            w1xFrac: 0.52, w1yFrac: 0.34,   // W1 feet target within the headline rect
+            w2xOff: 10,    w2yOff: 14,       // W2 feet target, px in from the card's top-left
+            standGapFrac: 0.42,              // W3 x: fraction across the gutter right of the card...
+            standMaxGap: 104,                // ...but never further than this from the card (stay "beside" it on ultrawide)
+            standYFrac: 0.42,                // W3 y: feet height as a fraction of the card height
+            // idle
+            bobDur: 2800           // ms wave-bob loop (also set --bob-dur)
+          };
+          var SRC = {                                                // pose -> sprite file
+            hang:"/mascot/mascot-hang.png", brace:"/mascot/mascot-brace.png",
+            land:"/mascot/mascot-land.png", wave:"/mascot/mascot-wave.png",
+            static:"/mascot/mascot-static.png"
+          };
+          // per-pose attach nudge so the painted hands meet the rope end (one-time eyeball)
+          var ATTACH = { hang:{x:0,y:0}, brace:{x:6,y:-4}, land:{x:0,y:0}, wave:{x:0,y:0}, static:{x:0,y:0} };
+          var EMO = { sparkle:"/mascot/emotes/sparkle.svg", impact:"/mascot/emotes/impact.svg" };
+
+          // --- helpers --------------------------------------------------------------
+          function setPose(p){
+            if (sprite.getAttribute("src") !== SRC[p]) sprite.setAttribute("src", SRC[p]);
+            var a = ATTACH[p] || {x:0,y:0};
+            body.style.setProperty("--bx-nudge", a.x + "px");
+            sprite.style.setProperty("--by-nudge", a.y + "px");
+          }
+          function showEmote(name, ms){
+            if (!EMO[name]) return;
+            emote.style.backgroundImage = "url("+EMO[name]+")";
+            emote.classList.remove("is-shown"); void emote.offsetWidth; emote.classList.add("is-shown");
+            var t = setTimeout(function(){ emote.classList.remove("is-shown"); emote.style.backgroundImage=""; }, ms||900);
+            teardowns.push(function(){ clearTimeout(t); });
+          }
+          function place(ax, ay){ rig.style.setProperty("--ax", ax+"px"); rig.style.setProperty("--ay", ay+"px"); }
+          function rotate(deg){ swing.style.setProperty("--rot", deg); }     // deg; CSS negates for gutter-ward
+          function ropeTo(L){ var v=Math.max(0,L); rope.style.setProperty("--rope-h", v+"px"); body.style.setProperty("--body-y", v+"px"); }
+          function ropeOnly(L){ rope.style.setProperty("--rope-h", Math.max(0,L)+"px"); }  // shrink rope, leave body frozen
+          // contact bump: toggle an .is-bumped class, auto-clear on animationend
+          function bump(el){
+            if (!el) return;
+            el.classList.remove("is-bumped"); void el.offsetWidth; el.classList.add("is-bumped");
+            var h = function(){ el.classList.remove("is-bumped"); el.removeEventListener("animationend", h); };
+            el.addEventListener("animationend", h);
+            teardowns.push(function(){ el.classList.remove("is-bumped"); el.removeEventListener("animationend", h); });
+          }
+          function bumpHeadlineAt(y){                                 // bump the slam-line the feet actually tap
+            var lines = document.querySelectorAll(".hero-headline .slam-line");
+            var target = null;
+            for (var i=0;i<lines.length;i++){ var r=lines[i].getBoundingClientRect(); if (y>=r.top && y<=r.bottom) target=lines[i]; }
+            bump(target || document.querySelector(".hero-headline"));
+          }
+          var lerp = function(a,b,t){ return a + (b-a)*t; };
+          var easeOutBack    = function(t){ var c1=1.70158,c3=c1+1; return 1 + c3*Math.pow(t-1,3) + c1*Math.pow(t-1,2); };
+          var easeOutCubic   = function(t){ return 1 - Math.pow(1-t,3); };
+          var easeInOutCubic = function(t){ return t<0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2; };
+
+          // --- geometry: measure rects, solve every waypoint by inverse kinematics ---
+          // The rig hangs the body at (rope-h length, --rot angle) from a fixed anchor.
+          // So for a measured feet target (tx,ty): dist = hypot(tx-ax, ty-ay),
+          // rope-h = dist - bodyLen, rot = atan2(dx,dy) deg (matches rotate(--rot * -1)).
+          var G = {};
+          function measure(){
+            var hl   = document.querySelector(".hero-headline");
+            var card = document.querySelector(".hero-facts");
+            var size = sprite.offsetHeight || parseFloat(getComputedStyle(sprite).height) || 84;
+            var bodyLen = size * CHOREO.handsFrac;                  // rope-end (hands) -> feet
+            var hb = hl   ? hl.getBoundingClientRect()   : { left:80, top:180, width:360, height:120 };
+            var cb = card ? card.getBoundingClientRect() : { left: window.innerWidth*0.64, top:200, width:320, height:300, right: window.innerWidth*0.64+320 };
+            var ay = CHOREO.anchorY;
+            var ax = cb.left + CHOREO.anchorBiasX;                  // fixed anchor at the column seam, just left of the card
+            var w1x = hb.left + hb.width  * CHOREO.w1xFrac;
+            var w1y = hb.top  + hb.height * CHOREO.w1yFrac;
+            var w2x = cb.left + CHOREO.w2xOff;
+            var w2y = cb.top  + CHOREO.w2yOff;
+            var gutterRoom = window.innerWidth - cb.right;
+            var gap = Math.min(gutterRoom * CHOREO.standGapFrac, CHOREO.standMaxGap, Math.max(8, gutterRoom - size*0.6));
+            var w3x = cb.right + gap;
+            w3x = Math.min(w3x, window.innerWidth - size*0.6 - 12); // never off the right edge
+            w3x = Math.max(w3x, cb.right + 6);                      // always beside the card
+            var w3y = cb.top + cb.height * CHOREO.standYFrac;
+            function solve(tx,ty){ var dx=tx-ax, dy=ty-ay, d=Math.hypot(dx,dy); return { x:tx, y:ty, L:Math.max(0,d-bodyLen), rot:Math.atan2(dx,dy)*180/Math.PI }; }
+            G = { size:size, bodyLen:bodyLen, ax:ax, ay:ay,
+                  W1:solve(w1x,w1y), W2:solve(w2x,w2y), W3:solve(w3x,w3y),
+                  ropeAtStand: (w3y - ay) - bodyLen };
+          }
+
+          // park standing in the gutter beside the card (used by reduced-motion / scroll / resize)
+          function standNow(pose){
+            setPose(pose || "static");
+            place(G.W3.x, G.W3.y - G.bodyLen); rotate(0);
+            rope.style.setProperty("--rope-h", "0px");
+            body.style.setProperty("--body-y", "0px");
+          }
+
+          // --- reduced motion: standing in the gutter, no rope/path/bumps -----------
+          if (reduce) {
+            measure(); standNow("static");
+            stage.classList.add("is-ready","is-settled","is-static"); return;
+          }
+
+          // --- the timeline ---------------------------------------------------------
+          stage.style.setProperty("--bob-dur", CHOREO.bobDur + "ms");
+          var b1=CHOREO.descent, b2=b1+CHOREO.braceHold, b3=b2+CHOREO.toBox,
+              b4=b3+CHOREO.boxHold, b5=b4+CHOREO.toStand, b6=b5+CHOREO.landHold, b7=b6+CHOREO.ropeFly;
+          var phase=-1, t0=0, raf=0;
+          function once(n, fn){ if (phase < n){ phase=n; fn(); } }
+
+          function tick(now){
+            var e = now - t0, p;
+            if (e < b1) {                                            // S1 DESCENT - drop from the seam, swing to the headline
+              once(0, function(){ setPose("hang"); place(G.ax, G.ay); });
+              p = Math.min(1, e/b1);
+              ropeTo(lerp(0, G.W1.L, easeOutBack(p)));               // rope pays out with a catch
+              rotate(lerp(0, G.W1.rot, easeOutCubic(p)));
+            } else if (e < b2) {                                     // BRACE - plant on the headline, bump it
+              once(1, function(){ setPose("brace"); ropeTo(G.W1.L); rotate(G.W1.rot); bumpHeadlineAt(G.W1.y); showEmote("sparkle", 720); });
+            } else if (e < b3) {                                     // S2 SWING - pendulum across to the card
+              once(2, function(){ setPose("hang"); });
+              p = easeInOutCubic((e-b2)/CHOREO.toBox);
+              ropeTo(lerp(G.W1.L, G.W2.L, p));
+              rotate(lerp(G.W1.rot, G.W2.rot, p));
+            } else if (e < b4) {                                     // TAP - bump the card
+              once(3, function(){ ropeTo(G.W2.L); rotate(G.W2.rot); bump(document.querySelector(".hero-facts")); showEmote("impact", 520); });
+            } else if (e < b5) {                                     // S3 DROP - into the gutter; anchor glides over W3 so the rope verticalises
+              once(4, function(){ setPose("hang"); });
+              p = easeOutCubic((e-b4)/CHOREO.toStand);
+              var tx = lerp(G.W2.x, G.W3.x, p), ty = lerp(G.W2.y, G.W3.y, p);
+              var axT = lerp(G.ax, G.W3.x, p);
+              place(axT, G.ay);
+              var dx = tx-axT, dy = ty-G.ay, d = Math.hypot(dx,dy);
+              ropeTo(d - G.bodyLen); rotate(Math.atan2(dx,dy)*180/Math.PI);
+              if (p > 0.72) setPose("land");                         // tuck into a crouch just before touchdown
+            } else if (e < b6) {                                     // LAND - hold the crouch
+              once(5, function(){ setPose("land"); place(G.W3.x, G.ay); ropeTo(G.ropeAtStand); rotate(0); });
+            } else if (e < b7) {                                     // RELEASE - rope flies up; body frozen at the landing
+              once(6, function(){ rope.classList.add("is-releasing"); });
+              ropeOnly(lerp(G.ropeAtStand, 0, easeOutCubic((e-b6)/CHOREO.ropeFly)));
+            } else {                                                 // SETTLE - stand upright at W3 and wave (CSS bob)
+              standNow("wave");
+              rope.classList.remove("is-releasing");
+              stage.classList.remove("is-active"); stage.classList.add("is-settled");
+              raf = 0; return;
+            }
+            raf = requestAnimationFrame(tick);
+          }
+
+          function start(){
+            measure();
+            if (window.innerWidth < MOUNT_MIN) return;               // re-check (resize race)
+            if (window.scrollY > 40) {                               // already scrolled - don't float detached; stand immediately
+              standNow("wave");
+              stage.classList.add("is-ready","is-settled");
+              return;
+            }
+            setPose("hang"); place(G.ax, G.ay); ropeTo(0); rotate(0);
+            stage.classList.add("is-ready","is-active");
+            t0 = performance.now();
+            raf = requestAnimationFrame(tick);
+          }
+
+          // --- kickoff: drift-proof headline-done cue + fallback --------------------
+          var started=false, fired=function(){ if(started) return; started=true; cleanupKick(); preloadThenStart(); };
+          var lastSpan = document.querySelector(".hero-headline .slam-line:last-of-type > span");
+          var onEnd = function(ev){ if (!ev || ev.propertyName === "transform") fired(); };
+          var fb = setTimeout(fired, 1000);
+          if (lastSpan) lastSpan.addEventListener("transitionend", onEnd);
+          document.addEventListener("hero:headline-done", onEnd);
+          function cleanupKick(){ clearTimeout(fb); if (lastSpan) lastSpan.removeEventListener("transitionend", onEnd); document.removeEventListener("hero:headline-done", onEnd); }
+
+          function preloadThenStart(){
+            var imgs = [SRC.hang, SRC.brace, SRC.land, SRC.wave, SRC.static].map(function(s){ var i=new Image(); i.src=s; return i; });
+            var decodes = imgs.map(function(i){ return i.decode ? i.decode().catch(function(){}) : Promise.resolve(); });
+            var fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+            var fontTimeout = new Promise(function(res){ var ft = setTimeout(res, 1500); teardowns.push(function(){ clearTimeout(ft); }); });
+            Promise.all(decodes.concat([Promise.race([fontsReady, fontTimeout])])).then(start, start);
+          }
+
+          // --- post-settle: re-measure parked spot on resize (debounced) ------------
+          var rz;
+          function onResize(){
+            clearTimeout(rz);
+            rz = setTimeout(function(){
+              if (!stage.classList.contains("is-settled")) return;
+              if (window.innerWidth < MOUNT_MIN) { stage.style.display="none"; return; }
+              measure(); standNow(stage.classList.contains("is-static") ? "static" : "wave");
+            }, 150);
+          }
+          window.addEventListener("resize", onResize);
+
+          // --- pause idle while offscreen (existing idiom) --------------------------
+          var io;
+          if ("IntersectionObserver" in window) {
+            io = new IntersectionObserver(function(es){ stage.classList.toggle("is-paused", !es[0].isIntersecting); }, { threshold: 0 });
+            var heroEl = document.querySelector(".hero-section"); if (heroEl) io.observe(heroEl);
+          }
+
+          // --- teardown (view transitions / cleanup) --------------------------------
+          teardowns.push(function(){
+            if (raf) cancelAnimationFrame(raf);
+            cleanupKick(); clearTimeout(rz);
+            window.removeEventListener("resize", onResize);
+            if (io) io.disconnect();
+          });
+        }
+
+    function init() { cleanup(); initMascot(); }
+    init();
+    document.addEventListener("astro:page-load", init);
+    document.addEventListener("astro:before-swap", cleanup);
+  })();
+</script>

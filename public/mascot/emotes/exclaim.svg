@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- exclaim.svg — bold "!" in coral (#ef4322) with white keyline + black outline -->
+
+  <!-- White keyline layer (drawn wider, behind everything) -->
+  <g stroke="#ffffff" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <!-- Exclamation shaft -->
+    <rect x="42" y="15" width="16" height="46" rx="7" ry="7"
+          stroke-width="18" />
+    <!-- Exclamation dot -->
+    <rect x="42" y="72" width="16" height="16" rx="7" ry="7"
+          stroke-width="18" />
+  </g>
+
+  <!-- Black outline layer -->
+  <g stroke="#0d0d0d" stroke-linejoin="round" stroke-linecap="round" fill="none">
+    <rect x="42" y="15" width="16" height="46" rx="7" ry="7"
+          stroke-width="8" />
+    <rect x="42" y="72" width="16" height="16" rx="7" ry="7"
+          stroke-width="8" />
+  </g>
+
+  <!-- Coral fill layer (on top) -->
+  <rect x="42" y="15" width="16" height="46" rx="7" ry="7"
+        fill="#ef4322" stroke="none" />
+  <rect x="42" y="72" width="16" height="16" rx="7" ry="7"
+        fill="#ef4322" stroke="none" />
+</svg>

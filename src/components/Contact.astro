@@ -1,53 +1,60 @@
 ---
+import { socialLinks } from "@/data/navigation";
 ---
 
 <section class="section-lg" id="contact">
   <div class="container">
-
-    <div class="contact-block reveal" style="--d:0ms">
-
+    <div class="contact-block reveal" data-reveal="clip-wipe" style="--d:0ms">
       <div class="contact-inner">
-
         <div class="contact-copy">
+          <p class="mono contact-status-line">
+            Always open to interesting work &amp; projects
+          </p>
           <h2 class="display contact-headline">
-            Let's<br><span class="tx-pop">build.</span>
+            Let's<br /><span class="tx-pop">build.</span>
           </h2>
 
           <p class="lead contact-lead">
-            I'm always up for interesting work and a good conversation, whether that's full-time, contract, or something a bit weird and fun. If anything here caught your eye, my inbox is open.
+            I'm always up for interesting work and a good conversation, whether
+            that's professional, a passion project, or something a bit weird
+            and fun. If
+            anything here caught your eye, my inbox is open.
           </p>
 
           <div class="row row-wrap gap-4 contact-ctas">
-            <a href="mailto:hello@shanahansuresh.dev" class="btn btn-pop">Email me</a>
-            <a
-              href="https://www.linkedin.com/in/shanahan-suresh"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-surface"
-            >LinkedIn ↗</a>
-            <a
-              href="https://github.com/Shanahan-Suresh"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-surface"
-            >GitHub ↗</a>
+            <a href={`mailto:${socialLinks.email}`} class="btn btn-pop">Email me</a>
           </div>
+
+          <ul class="contact-list" role="list">
+            <li>
+              <span class="mono contact-list-label">LinkedIn</span>
+              <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="contact-list-link">linkedin.com/in/shanahan-suresh ↗</a>
+            </li>
+            <li>
+              <span class="mono contact-list-label">GitHub</span>
+              <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" class="contact-list-link">github.com/Shanahan-Suresh ↗</a>
+            </li>
+          </ul>
         </div>
 
         <!-- decorative ghost text -->
         <div class="contact-ghost" aria-hidden="true">✦</div>
-
       </div>
-
     </div>
-
   </div>
 </section>
 
 <style>
+  /* A deliberately dark CTA slab in BOTH themes — the acid-yellow "build."
+     and the accent hovers are designed as dark-bg pops, so the block must
+     not invert to a light panel in dark mode. Background + text are pinned;
+     border and shadow stay on the flipping --ink token on purpose:
+       · light theme → dark offset shadow lifts the slab off the light page
+       · dark theme  → light border + light shadow frame it against the dark page */
   .contact-block {
-    background: var(--ink);
-    color: var(--paper);
+    --c-fg: #f5f2e9; /* always-light text, regardless of theme */
+    background: #0d0d0d; /* always-dark slab */
+    color: var(--c-fg);
     border: var(--bw-thick) solid var(--ink);
     box-shadow: var(--shadow-hard-lg);
     padding: clamp(2.5rem, 7vw, 5rem);
@@ -68,7 +75,7 @@
   }
 
   .contact-headline {
-    color: var(--paper);
+    color: var(--c-fg);
     margin-bottom: var(--space-6);
     line-height: 0.88;
   }
@@ -79,28 +86,63 @@
   }
 
   .contact-lead {
-    color: color-mix(in srgb, var(--paper) 80%, transparent);
+    color: color-mix(in srgb, var(--c-fg) 80%, transparent);
     max-width: 52ch;
     margin-bottom: var(--space-7);
+  }
+
+  /* status reads as a kicker tied to the headline, not a floating chip */
+  .contact-status-line {
+    margin: 0 0 var(--space-4);
+    font-size: var(--fs-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-fg) 68%, transparent);
   }
 
   .contact-ctas {
     flex-wrap: wrap;
   }
 
-  /* surface-toned button so it reads on ink bg */
-  .btn-surface {
-    background: transparent;
-    color: var(--paper);
-    border-color: color-mix(in srgb, var(--paper) 45%, transparent);
-    box-shadow: none;
+  .contact-list {
+    list-style: none;
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 52ch;
   }
-  .btn-surface:hover {
-    background: var(--paper);
-    color: var(--ink);
-    border-color: var(--paper);
-    box-shadow: none;
-    transform: translate(var(--off-sm), var(--off-sm));
+  .contact-list li {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-2);
+    border-top: var(--bw) solid color-mix(in srgb, var(--c-fg) 18%, transparent);
+  }
+  .contact-list-label {
+    flex: 0 0 5.5rem;
+    font-size: var(--fs-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--c-fg) 60%, transparent);
+  }
+  .contact-list-link {
+    color: var(--c-fg);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    word-break: break-word;
+  }
+  .contact-list-link:hover {
+    color: var(--accent-pop);
+    border-bottom-color: var(--accent-pop);
+  }
+
+  @keyframes ghost-spin {
+    to {
+      transform: translateY(-50%) rotate(360deg);
+    }
   }
 
   /* decorative large asterisk */
@@ -108,7 +150,7 @@
     font-family: var(--font-display);
     font-size: clamp(6rem, 18vw, 16rem);
     line-height: 1;
-    color: var(--paper);
+    color: var(--c-fg);
     opacity: 0.04;
     pointer-events: none;
     user-select: none;
@@ -117,6 +159,7 @@
     top: 50%;
     transform: translateY(-50%);
     letter-spacing: -0.05em;
+    animation: ghost-spin 44s linear infinite;
   }
 
   @media (max-width: 640px) {

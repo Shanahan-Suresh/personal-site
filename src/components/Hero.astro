@@ -1,74 +1,96 @@
 ---
-import StatusChip from './StatusChip.astro';
-import Card from './Card.astro';
+import Card from "./Card.astro";
 ---
 
-<section
-  class="hero-section"
-  aria-label="Introduction"
->
+<section class="hero-section" aria-label="Introduction">
   <div class="container">
     <div class="hero-inner">
-
       <!-- Left column: all copy -->
       <div class="hero-copy">
-
-        <div class="reveal" style="--d:0ms">
-          <StatusChip>Open to interesting work &amp; projects</StatusChip>
-        </div>
-
-        <p class="eyebrow hero-eyebrow reveal" style="--d:60ms" aria-label="Name: Shanahan Suresh">
+        <p
+          class="eyebrow hero-eyebrow hero-rise"
+          style="--d:60ms"
+          aria-label="Name: Shanahan Suresh"
+        >
           SHANAHAN SURESH
         </p>
 
-        <h1 class="display hero-headline reveal" style="--d:120ms">
-          I build full-stack<br>
-          products &amp;&nbsp;<span class="tx-2 underline-skew">AI tooling.</span>
+        <h1 class="display hero-headline">
+          <span class="slam-line" style="--d:120ms"
+            ><span>I build full-stack</span></span
+          >
+          <span class="slam-line" style="--d:200ms"
+            ><span
+              >products &amp;&nbsp;<span class="tx-2 underline-skew marker"
+                >AI tooling.</span
+              ></span
+            ></span
+          >
         </h1>
 
-        <p class="lead reveal" style="--d:220ms">
-          I'm a software engineer and a Computer Science with AI graduate from the University of Nottingham. I like turning ideas into products people enjoy using, so I build across the full stack, and lately a lot of that is AI tooling. How something feels to use matters to me as much as how it's built.
+        <p class="lead hero-rise" style="--d:280ms">
+          I'm a software engineer and a Computer Science with AI graduate from
+          the University of Nottingham. I like turning ideas into products
+          people enjoy using, so I build across the full stack, and lately a lot
+          of that is agentic coding. How something feels to use matters to me as
+          much as how it's built.
         </p>
 
-        <div class="row row-wrap gap-4 reveal" style="--d:320ms">
+        <div class="row row-wrap gap-4 hero-rise" style="--d:360ms">
           <a href="#work" class="btn btn-primary">See what I build</a>
           <a href="#contact" class="btn btn-ghost">Say hi</a>
         </div>
-
       </div>
 
       <!-- Right column: sticker cluster + quick-facts card -->
       <div class="hero-aside" aria-hidden="true">
-
-        <div class="sticker-cluster reveal" style="--d:200ms">
-          <span class="sticker sticker-1 rot-r">✦ Full-stack</span>
-          <span class="sticker sticker-2 rot-l">Next.js</span>
-          <span class="sticker sticker-pop rot-r">Python</span>
-          <span class="sticker rot-l">AI tooling</span>
-          <span class="sticker sticker-ink rot-r">UK educated</span>
+        <div class="sticker-cluster">
+          <span class="sticker sticker-1 rot-r" style="--i:0">✦ Full-stack</span>
+          <span class="sticker sticker-2 rot-l" style="--i:1">Next.js</span>
+          <span class="sticker sticker-4 rot-r" style="--i:2">Python</span>
+          <span class="sticker rot-l" style="--i:3">MCP servers</span>
+          <span class="sticker sticker-ink rot-r" style="--i:4">UK Graduate</span>
         </div>
 
-        <Card accent="1" stripe pad class="hero-facts reveal" style="--d:300ms">
+        <!-- enters on the beat after the last sticker — derived from the
+             shared stamp cadence in global.css, so it never drifts -->
+        <Card
+          accent="1"
+          stripe
+          pad
+          class="hero-facts hero-rise"
+          style="--d: calc(var(--stamp-from) + var(--stamp-count) * var(--stamp-step))"
+        >
           <ul class="facts-list">
-            <li><span class="eyebrow">Degree</span><span>BSc CS with AI · Univ. of Nottingham</span></li>
-            <li><span class="eyebrow">Stack</span><span>Next.js · Django · FastAPI · GCP</span></li>
-            <li><span class="eyebrow">Focus</span><span>Product thinking · shipped end to end</span></li>
+            <li>
+              <span class="eyebrow">Degree</span><span
+                >BSc (Hons) CS with AI · Univ. of Nottingham</span
+              >
+            </li>
+            <li>
+              <span class="eyebrow">Main Stack</span><span
+                >Next.js · Django · FastAPI · GCP</span
+              >
+            </li>
+            <li>
+              <span class="eyebrow">Focus</span><span
+                >Product thinking · shipped end to end</span
+              >
+            </li>
           </ul>
         </Card>
-
       </div>
-
     </div>
   </div>
 </section>
 
 <style>
   .hero-section {
-    min-height: 88vh;
     display: flex;
     align-items: center;
-    padding-block: clamp(4rem, 10vw, 8rem);
-    border-bottom: var(--border-thick);
+    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3.5rem, 9vw, 7rem);
+    /* no bottom rule: the marquee below frames itself with its own
+       border, so a rule here would stack into a double line */
   }
 
   .hero-inner {

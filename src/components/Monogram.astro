@@ -35,8 +35,7 @@ const borderW = Math.max(2, Math.round(size * 0.075));
     y={inset + offset}
     width={sqSize}
     height={sqSize}
-    fill="var(--ink, currentColor)"
-  />
+    fill="var(--ink, currentColor)"></rect>
   <!-- Main accent-filled square with thick ink border -->
   <rect
     x={inset}
@@ -45,8 +44,7 @@ const borderW = Math.max(2, Math.round(size * 0.075));
     height={sqSize}
     fill="var(--accent-1, currentColor)"
     stroke="var(--ink, currentColor)"
-    stroke-width={borderW}
-  />
+    stroke-width={borderW}></rect>
   <!-- Bold "S" -->
   <text
     x={inset + sqSize / 2}
@@ -56,6 +54,6 @@ const borderW = Math.max(2, Math.round(size * 0.075));
     font-weight="900"
     fill="var(--paper, #f5f2e9)"
     text-anchor="middle"
-    dominant-baseline="auto"
-  >S</text>
+    dominant-baseline="auto">S</text
+  >
 </svg>

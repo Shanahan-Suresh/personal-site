@@ -4,7 +4,7 @@ Personal website and portfolio for **Shanahan Suresh** — product-minded softwa
 
 Live: [shanahansuresh.dev](https://shanahansuresh.dev)
 
-> **Status:** A refined-neobrutalism visual redesign is in progress (bold borders, hard offset shadows, oversized type, swappable color palettes, light/dark themes). The commit history preserves the previous glassmorphism design.
+> **Design:** Refined neobrutalism — bold borders, hard offset shadows, oversized type, light/dark themes. The previous glassmorphism design is preserved in the commit history.
 
 ## Tech stack
 
@@ -13,6 +13,8 @@ Live: [shanahansuresh.dev](https://shanahansuresh.dev)
 - **MDX** (`@astrojs/mdx`) — blog/writing content
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)
 - Self-hosted fonts via `@fontsource`
+- **Prettier** (`prettier-plugin-astro`) and `astro check` for formatting and type-checking
+- **[Playwright](https://playwright.dev/)** — end-to-end / visual-regression tests (Chromium, Firefox, WebKit)
 
 ## Prerequisites
 
@@ -22,11 +24,37 @@ Live: [shanahansuresh.dev](https://shanahansuresh.dev)
 ## Getting started
 
 ```bash
-npm install        # install dependencies
-npm run dev        # start dev server → http://localhost:4321
-npm run build      # build static site to ./dist
-npm run preview    # preview the production build locally
+npm install         # install dependencies
+npm run dev         # start dev server → http://localhost:4321
+npm run build       # type-check + build static site to ./dist
+npm run preview     # preview the production build locally
+npm run format      # format with Prettier
+npm run check       # type-check only (astro check)
+npm test            # run the Playwright test suite (see Testing)
 ```
+
+## Testing
+
+End-to-end and visual-regression tests live in `tests/` and run with [Playwright](https://playwright.dev/).
+
+By default the suite builds the site and serves it with `astro preview` (so tests
+exercise the production artifact). If a dev server is already running on port `4321`,
+it's reused. First-time setup downloads the browser binaries:
+
+```bash
+npx playwright install      # one-time: download Chromium, Firefox, WebKit
+npm test                    # run all tests headless across all three browsers
+npm run test:ui             # interactive UI mode (watch, time-travel, pick tests)
+npm run test:headed         # run with visible browser windows
+npm run test:report         # open the last HTML report
+```
+
+Useful filters: `npm test -- --project=chromium` (one browser),
+`npm test -- tests/mascot.spec.ts` (one file).
+
+Current coverage: home-page smoke test, plus the hero mascot's settled render
+(an image-aspect-ratio regression guard), its `<820px` mobile fallback, and its
+reduced-motion static park.
 
 ## Project structure
 
@@ -36,11 +64,14 @@ personal-site/
 ├── src/
 │   ├── components/      # Astro UI components (Hero, Work, Nav, cards, etc.)
 │   ├── content/         # MDX content (blog posts)
+│   ├── data/            # structured content (projects, skills, interests, navigation)
 │   ├── layouts/         # BaseLayout + PostLayout
-│   ├── lib/             # helpers (e.g. posts.ts)
+│   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts
 │   ├── pages/           # routes — index.astro, writing/, rss.xml.ts
 │   └── styles/          # global.css (design tokens + component classes)
+├── tests/               # Playwright e2e / visual-regression specs
 ├── astro.config.mjs     # Astro + integrations + Tailwind (Vite) config
+├── playwright.config.ts # Playwright runner + dev-server config
 └── package.json
 ```
 

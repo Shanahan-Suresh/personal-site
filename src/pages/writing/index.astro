@@ -1,13 +1,16 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHeading from '../../components/SectionHeading.astro';
-import { getPublishedPosts } from '../../lib/posts';
-import PostCard from '../../components/PostCard.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { getPublishedPosts } from "../../lib/posts";
+import PostCard from "../../components/PostCard.astro";
 
 const posts = await getPublishedPosts();
 ---
 
-<BaseLayout title="Writing — Shanahan Suresh" description="Working notes on full-stack engineering, AI and MCP tooling, and what it's like to build in the open.">
+<BaseLayout
+  title="Writing — Shanahan Suresh"
+  description="Working notes on full-stack engineering, AI and MCP tooling, and what it's like to build in the open."
+>
   <div class="container section">
     <SectionHeading
       eyebrow="WRITING"

@@ -1,25 +1,25 @@
 ---
-import SectionHeading from './SectionHeading.astro';
-import BentoTile from './BentoTile.astro';
+import SectionHeading from "./SectionHeading.astro";
+import BentoTile from "./BentoTile.astro";
 
 const principles = [
   {
-    index: '01',
-    title: 'Product over code',
-    body: 'The experience comes first. The tech is there to serve it.',
-    accent: '1' as const,
+    index: "01",
+    title: "Make it a joy to use",
+    body: "People remember how software feels. Every engineering design decision should start there.",
+    accent: "1" as const,
   },
   {
-    index: '02',
-    title: 'See a bug, squash a bug',
-    body: "If it's broken, it gets fixed. Quietly, and before it ships.",
-    accent: '2' as const,
+    index: "02",
+    title: "Love is in the details",
+    body: "Small imperfections add up. The little interactions and polish are worth the extra mile to me.",
+    accent: "2" as const,
   },
   {
-    index: '03',
-    title: 'Modern by default',
-    body: 'I like building things that feel current, and a step or two ahead.',
-    accent: 'pop' as const,
+    index: "03",
+    title: "Let robots handle the boring bits",
+    body: "Life's too short for repetitive work, that's what LLMs are for. So we can focus crafting the fun stuff.",
+    accent: "pop" as const,
   },
 ];
 ---
@@ -29,19 +29,23 @@ const principles = [
     <SectionHeading eyebrow="HOW I THINK" title="Principles I build by" />
 
     <div class="bento">
-      {principles.map((p, i) => (
-        <BentoTile span={2} accent={p.accent} stripe>
-          <div class="stack stack-4">
-            <span
-              class="ghost-num"
-              style={`font-size:clamp(4rem,10vw,7rem);margin-bottom:calc(-1 * var(--space-4));`}
-              aria-hidden="true"
-            >{p.index}</span>
-            <h3 class="h3">{p.title}</h3>
-            <p>{p.body}</p>
-          </div>
-        </BentoTile>
-      ))}
+      {
+        principles.map((p) => (
+          <BentoTile span={2} accent={p.accent} stripe>
+            <div class="stack stack-4">
+              <span
+                class="ghost-num"
+                style={`font-size:clamp(4rem,10vw,7rem);margin-bottom:calc(-1 * var(--space-4));`}
+                aria-hidden="true"
+              >
+                {p.index}
+              </span>
+              <h3 class="h3">{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          </BentoTile>
+        ))
+      }
     </div>
   </div>
 </section>

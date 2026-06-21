@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- impact.svg — spiky cartoon burst/impact star in yellow (#e8ff2a) -->
+  <!-- 8-point starburst: alternating long outer tips and short inner notches -->
+  <!-- Centered at 50,50. Outer radius 42, inner radius 20 -->
+
+  <defs>
+    <!-- 8-point starburst polygon -->
+    <!-- Angles: outer tips at 0°,45°,90°...315°; inner notches between them -->
+    <!-- Pre-computed coords (outer r=42, inner r=20, center 50,50) -->
+    <polygon id="burst"
+      points="
+        50,8
+        56.5,30
+        78.7,21.3
+        70.0,43.5
+        92,50
+        70.0,56.5
+        78.7,78.7
+        56.5,70.0
+        50,92
+        43.5,70.0
+        21.3,78.7
+        30.0,56.5
+        8,50
+        30.0,43.5
+        21.3,21.3
+        43.5,30
+      " />
+  </defs>
+
+  <!-- White keyline -->
+  <use href="#burst" fill="none" stroke="#ffffff" stroke-width="12" stroke-linejoin="round" />
+
+  <!-- Black outline -->
+  <use href="#burst" fill="none" stroke="#0d0d0d" stroke-width="6" stroke-linejoin="round" />
+
+  <!-- Yellow fill -->
+  <use href="#burst" fill="#e8ff2a" stroke="none" />
+
+  <!-- Small dark center circle to add weight/readability -->
+  <circle cx="50" cy="50" r="10" fill="#0d0d0d" opacity="0.12" />
+</svg>

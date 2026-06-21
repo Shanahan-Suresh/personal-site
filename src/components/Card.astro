@@ -1,7 +1,9 @@
 ---
+import type { Accent } from "@/lib/types";
+
 interface Props {
   as?: string;
-  accent?: '1' | '2' | 'pop' | 'ink';
+  accent?: Accent;
   stripe?: boolean;
   pad?: boolean;
   press?: boolean;
@@ -11,24 +13,26 @@ interface Props {
 }
 
 const {
-  as: Tag = 'div',
+  as: Tag = "div",
   accent,
   stripe = false,
   pad = true,
   press = false,
-  class: className = '',
+  class: className = "",
   id,
   style,
 } = Astro.props;
 
 const classes = [
-  'card',
+  "card",
   accent && `card--${accent}`,
-  stripe && 'card--stripe',
-  pad && 'card-pad',
-  press && 'press',
+  stripe && "card--stripe",
+  pad && "card-pad",
+  press && "press",
   className,
-].filter(Boolean).join(' ');
+]
+  .filter(Boolean)
+  .join(" ");
 ---
 
 <Tag class={classes} id={id} style={style}><slot /></Tag>

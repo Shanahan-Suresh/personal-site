@@ -1,15 +1,11 @@
 ---
+import { site } from "@/lib/site-config";
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container">
-    <div class="row-wrap between gap-4">
-      <p class="mono footer-text">
-        Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="footer-link">Astro</a> &amp; <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="footer-link">Tailwind CSS</a>
-      </p>
-      <p class="mono footer-text">&copy; {year} Shanahan Suresh</p>
-    </div>
+    <p class="mono footer-text">&copy; {year} {site.name}</p>
   </div>
 </footer>
 
@@ -27,25 +23,5 @@ const year = new Date().getFullYear();
     text-transform: uppercase;
     color: var(--paper);
     opacity: 0.75;
-  }
-
-  .footer-link {
-    color: var(--paper);
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: color var(--dur-fast) var(--ease-out),
-                border-color var(--dur-fast) var(--ease-out);
-  }
-  .footer-link:hover {
-    color: var(--accent-pop);
-    border-bottom-color: var(--accent-pop);
-  }
-
-  @media (max-width: 640px) {
-    .site-footer .row-wrap {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-3);
-    }
   }
 </style>
