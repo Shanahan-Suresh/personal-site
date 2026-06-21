@@ -11,7 +11,7 @@ const personal: Project[] = [
     title: "AI-curated tech-news digest",
     description:
       "A daily tech-intelligence digest that reads the firehose so you don't have to. It curates the news to a team's exact stack with an LLM, runs entirely from config, and scales to zero on GCP when nobody's looking.",
-    tags: ["Python", "Cloud Run", "Terraform", "LLMs"],
+    tags: ["Python", "GCP", "Terraform", "LLMs"],
   },
   {
     title: "OpenAPI → MCP server + chat UI",
@@ -26,14 +26,16 @@ const product: Project[] = [
     title: "OHSE incident-reporting module",
     description: [
       "When something goes wrong on a worksite, this is where it gets reported, investigated, and put right. It's now live across 10 business units.",
-      "The tricky part was never the forms, it was the people: managers, safety officers, and investigators each need what's effectively a different app, so I built the role-based workflows to match. I owned it from the first round of SDLC planning through the GCP rollout, stood up the team's first Playwright test suite along the way, and added an MCP server that turns the module's OpenAPI schema into tools an AI assistant can actually call.",
+      "The tricky part was never the forms, it was the people: managers, safety officers, and investigators each need what's effectively a different app, so I built the role-based workflows to match.",
+      "I owned it from the first round of SDLC planning through to the GCP rollout, set up the team's first Playwright test suite along the way, and added an MCP server that turns the module's OpenAPI schema into tools an AI assistant can actually call.",
     ],
     tags: ["Next.js", "Django", "GCP", "MCP"],
   },
   {
     title: "Automated RSVP & check-in web app",
     description: [
-      "Built to welcome 75,000 guests without breaking a sweat. It's a serverless Next.js app that runs RSVPs and check-in behind a glassmorphism UI, sends confirmations over email and WhatsApp, and hands everyone a scannable QR ticket, with SendGrid and Respond.io doing the talking.",
+      "Built to welcome 75,000 guests without breaking a sweat.",
+      "It's a serverless Next.js app that runs RSVPs and check-in behind a glassmorphism UI, sends confirmations over email and WhatsApp, and hands everyone a scannable QR ticket, with SendGrid and Respond.io doing the talking.",
       "The whole stack is defined in Terraform and ships through GitHub Actions, so scaling up for a crowd that size comes down to a config value rather than a late night.",
     ],
     tags: ["Next.js", "Terraform", "Respond.io", "SendGrid"],
