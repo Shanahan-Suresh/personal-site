@@ -1,28 +1,27 @@
-# Plan: Phase B / P0 — behavior-preserving elegance refactor
+# Plan: Phase D2 — Extract BaseLayout interaction IIFE into src/scripts modules
 
 ## Goal
-Remove dead code/assets (mascot subsystem, writing commented block, unused CSS) and tighten the Accent type. No rendered change; regression suite (home.spec.ts) must stay green.
+Extract the large inline behavior IIFE from `src/layouts/BaseLayout.astro` into typed
+`src/scripts/` modules, with IDENTICAL runtime behavior. FOUC/theme script stays inline.
+Approach: test-first (add regression tests, baseline green, then extract, confirm still green).
 
 ## Steps
-- [ ] 1. Delete mascot subsystem (Mascot.astro, public/mascot/, mascot.spec.ts, index.astro comments, global.css tombstone)
-- [ ] 2. Remove commented "Recent writing" block from index.astro and nav entry from navigation.ts
-- [ ] 3. Purge unused CSS: .grid-3, .grid-4, .chip, .divider-strip, .fill-*, .tag-1, .tag-pop (all confirmed zero usage)
-- [ ] 4. Add StickerAccent type to types.ts; type interests.ts accent field; verify Beyond.astro class composition unchanged
-- [ ] 5. Run gates: astro check, npm run build, npx playwright test
-- [ ] 6. Commit on refactor/elegance-pass
+- [x] A. Read BaseLayout.astro + tests — understand IIFE structure and existing test conventions.
+- [ ] B. Add 3 test groups to tests/home.spec.ts (scrolled-nav, scroll-spy, hero-entrance). Run npm run build + npx playwright test. Fix assertions to match reality if needed. Commit.
+- [ ] C. Create src/scripts/home-interactions.ts (single file, all 5 init fns + cleanup exported). Replace IIFE block in BaseLayout.astro with bundled <script> import.
+- [ ] D. Gates: astro check 0 errors → npm run build → npx playwright test all browsers green. Confirm FOUC script in dist/index.html.
+- [ ] E. Final extraction commit.
 
 ## Key files
-- `src/pages/index.astro` — mascot comments lines 11-13, 60-61; writing block lines 14-57
-- `src/styles/global.css` — line 1142 mascot tombstone; CSS utility rules
-- `src/data/navigation.ts` — commented writing nav line 10
-- `src/lib/types.ts` — add StickerAccent
-- `src/data/interests.ts` — type accent field with StickerAccent
-- `src/components/Beyond.astro` — class composition: `sticker ${accent} ${rot}` (must stay identical)
+- `src/layouts/BaseLayout.astro` — contains both the FOUC script (lines 48-62, MUST stay) and the big IIFE (lines 79-287, to be extracted)
+- `src/scripts/` — new directory: reveal.ts, hero.ts, scroll-spy.ts, scrolled-nav.ts, idle-pause.ts
+- `tests/home.spec.ts` — existing 7 test groups (24 cases across 3 browsers); add 3 new behavior tests
 
 ## Decisions made
-- Beyond.astro uses full class strings from interests.ts (sticker-1, sticker-2 etc), NOT accent tokens from Accent type
-- StickerAccent = Accent | "4" | "5" is additive (no breaking change)
-- All CSS candidates (.grid-3, .grid-4, .chip, .divider-strip, .fill-*, .tag-1, .tag-pop) confirmed zero usage in src/
+- IIFE guard: `init()` called IMMEDIATELY (not in DOMContentLoaded — it's `is:inline` at end of body), then `document.addEventListener("astro:page-load", init)` and `document.addEventListener("astro:before-swap", cleanup)` wired up. Extraction MUST reproduce this: use `<script>` (bundled), which Astro defers; need to verify timing equivalence.
+- Constants: STAGGER_STEP_DEFAULT=70, HERO_ALIVE_DELAY=1400 (from Phase C1 — move into shared constants or inline per module)
+- Teardown: `teardowns` array + `cleanup()` must be module-level state shared across all init functions
+- FOUC script (lines 48-62): DO NOT TOUCH — `is:inline`, runs synchronously in <head>
 
 ## Open questions / blockers
-- None
+- Timing: original IIFE runs synchronously at end of body (no DOMContentLoaded guard). Astro bundled `<script>` is deferred. In practice this is fine (DOM fully parsed by then), but must verify via tests.
