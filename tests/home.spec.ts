@@ -125,7 +125,45 @@ test("at 600px viewport nav links are hidden and hero is single-column", async (
   expect(trackCount).toBe(1);
 });
 
-// ── 6. Reduced motion ─────────────────────────────────────────────────────────
+// ── 6. Corporate-work descriptions split into multiple paragraphs ─────────────
+test("corporate-work cards render multiple .project-desc paragraphs; personal cards render one; TODO marker absent", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  // Assert "TODO SPLIT IN PARAGRAPHS" does not appear anywhere on the page
+  await expect(page.locator("body")).not.toContainText("TODO SPLIT IN PARAGRAPHS");
+
+  // Locate the Corporate work section label, then find its sibling project cards.
+  // The section-label text is "Corporate work"; project cards follow in the same grid.
+  // Strategy: find all project cards within the #work section that are in the
+  // "Corporate work" category by matching the title text of known corporate projects.
+  const corporateTitles = [
+    "OHSE incident-reporting module",
+    "Automated RSVP & check-in web app",
+    "Enterprise HR platform",
+  ];
+
+  for (const title of corporateTitles) {
+    // Find the project card containing this title
+    const card = page.locator(".project-card", { hasText: title });
+    await expect(card).toBeAttached();
+    // Must have more than one .project-desc paragraph
+    const descs = card.locator(".project-desc");
+    const count = await descs.count();
+    expect(count, `Expected multiple .project-desc in card "${title}"`).toBeGreaterThan(1);
+  }
+
+  // A personal-section card should still have exactly one .project-desc
+  const personalCard = page.locator(".project-card", {
+    hasText: "Automated artwork censoring app",
+  });
+  await expect(personalCard).toBeAttached();
+  const personalDescs = personalCard.locator(".project-desc");
+  await expect(personalDescs).toHaveCount(1);
+});
+
+// ── 7. Reduced motion ─────────────────────────────────────────────────────────
 test.describe("reduced motion", () => {
   test.use({ contextOptions: { reducedMotion: "reduce" } });
 

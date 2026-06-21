@@ -8,7 +8,7 @@ export interface ProjectLink {
 
 export interface Project {
   title: string;
-  description: string;
+  description: string | string[];
   tags?: string[];
   link?: ProjectLink;
   meta?: string;

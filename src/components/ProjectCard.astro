@@ -41,7 +41,13 @@ const { title, description, tags = [], link, meta } = project;
       {meta && <span class="tag tag-ink meta-tag">{meta}</span>}
     </div>
 
-    <p class="muted project-desc">{description}</p>
+    {Array.isArray(description) ? (
+      <div class="project-desc-group">
+        {description.map((para) => <p class="muted project-desc">{para}</p>)}
+      </div>
+    ) : (
+      <p class="muted project-desc">{description}</p>
+    )}
 
     {
       tags.length > 0 && (
@@ -107,6 +113,12 @@ const { title, description, tags = [], link, meta } = project;
   .project-desc {
     position: relative;
     line-height: 1.65;
+  }
+
+  .project-desc-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
   }
 
   .tags-row {
