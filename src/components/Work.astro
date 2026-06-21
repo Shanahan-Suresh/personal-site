@@ -3,6 +3,8 @@ import SectionHeading from "./SectionHeading.astro";
 import ProjectCard from "./ProjectCard.astro";
 import { categories, accentCycle } from "@/data/projects";
 
+const CARD_STAGGER_MS = 60; /* ms per card index — matches STAGGER_STEP_DEFAULT in BaseLayout only for this section */
+
 let offset = 0;
 const numberedCategories = categories.map((cat) => {
   const start = offset;
@@ -35,7 +37,7 @@ const numberedCategories = categories.map((cat) => {
                     num={num}
                     accent={accent}
                     class="reveal"
-                    style={`--d:${idx * 60}ms`}
+                    style={`--d:${idx * CARD_STAGGER_MS}ms`}
                   />
                 );
               })}

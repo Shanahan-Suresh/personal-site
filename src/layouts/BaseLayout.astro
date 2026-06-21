@@ -78,6 +78,9 @@ const fontFaces = `
 
     <script is:inline>
       (function () {
+        var STAGGER_STEP_DEFAULT = 70; /* ms — default data-stagger value */
+        var HERO_ALIVE_DELAY = 1400; /* ms — delay before hero idle motion starts */
+
         var reduce = window.matchMedia(
           "(prefers-reduced-motion: reduce)",
         ).matches;
@@ -99,7 +102,7 @@ const fontFaces = `
             .querySelectorAll('.reveal[data-reveal="stagger-children"]')
             .forEach(function (container) {
               var step = parseInt(
-                container.getAttribute("data-stagger") || "70",
+                container.getAttribute("data-stagger") || String(STAGGER_STEP_DEFAULT),
                 10,
               );
               Array.prototype.forEach.call(
@@ -160,7 +163,7 @@ const fontFaces = `
           });
           var t = setTimeout(function () {
             hero.classList.add("is-alive");
-          }, 1400);
+          }, HERO_ALIVE_DELAY);
           teardowns.push(function () {
             clearTimeout(t);
           });
