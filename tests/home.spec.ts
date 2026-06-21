@@ -184,3 +184,32 @@ test.describe("reduced motion", () => {
     await expect(headline).toBeVisible();
   });
 });
+
+// ── 8. Scrolled-nav ───────────────────────────────────────────────────────────
+test("scrolled-nav: scrolling down adds is-scrolled to .nav-header; scrolling to top removes it", async ({ page }) => {
+  await page.goto("/");
+  const header = page.locator(".nav-header");
+  await expect(header).not.toHaveClass(/is-scrolled/);
+  await page.evaluate(() => window.scrollTo(0, 500));
+  await page.waitForTimeout(200);
+  await expect(header).toHaveClass(/is-scrolled/);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(200);
+  await expect(header).not.toHaveClass(/is-scrolled/);
+});
+
+// ── 9. Scroll-spy ─────────────────────────────────────────────────────────────
+test("scroll-spy: scrolling to #work section activates the Work nav link", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("#work").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  const workLink = page.locator('a.nav-link[href="/#work"]');
+  await expect(workLink).toHaveClass(/is-active/);
+  await expect(workLink).toHaveAttribute("aria-current", "true");
+});
+
+// ── 10. Hero entrance ─────────────────────────────────────────────────────────
+test("hero entrance: .hero-section gets hero-loaded class after page load", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".hero-section")).toHaveClass(/hero-loaded/, { timeout: 3000 });
+});
