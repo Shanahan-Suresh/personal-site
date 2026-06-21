@@ -13,7 +13,8 @@ personal site, not a resume.
 
 - **Astro 5**, `output: 'static'` (see `astro.config.mjs`). Builds to `./dist`.
 - **Tailwind CSS 4**, config-less, wired via `@tailwindcss/vite`. There is **no `tailwind.config.js`** —
-  the entire theme (design tokens + component classes) lives in `src/styles/global.css`.
+  the entire theme (design tokens + component classes) lives in `src/styles/`, split into `tokens.css`,
+  `components.css`, `motion.css`, and `prose.css`, all imported by `global.css`.
 - **MDX** for posts (`@astrojs/mdx`), plus `@astrojs/sitemap` and `@astrojs/rss`.
 - Self-hosted fonts via `@fontsource` (Anton, Archivo Variable, DM Mono).
 
@@ -27,11 +28,13 @@ npm run preview      # preview the production build
 npm run check        # type-check only (astro check)
 npm run format       # format everything with Prettier
 npm run format:check # verify formatting (CI-style, no writes)
+npm test             # Playwright e2e/visual suite (tests/home.spec.ts)
 ```
 
-There are no unit tests. **`npm run build` is the verification step.** It now runs `astro check`
-first (so type errors fail the build), then the static build, which also catches broken Astro/MDX.
-Formatting is enforced by Prettier (`prettier-plugin-astro`); run `npm run format` before committing.
+**Verification = `npm run build` then `npm test`.** `npm run build` runs `astro check` first (so type
+errors fail the build), then the static build, which also catches broken Astro/MDX. `npm test` runs the
+Playwright e2e/visual suite in `tests/home.spec.ts` (Chromium/Firefox/WebKit; it builds + previews the
+site). Formatting is enforced by Prettier (`prettier-plugin-astro`); run `npm run format` before committing.
 
 ## Where things live
 
@@ -43,7 +46,8 @@ src/
 ├── layouts/      # BaseLayout.astro (wraps pages), PostLayout.astro (wraps posts)
 ├── lib/          # posts.ts (post helpers), site-config.ts (identity/meta), types.ts (shared types)
 ├── pages/        # routes: index.astro (homepage), writing/, rss.xml.ts
-└── styles/global.css  # design tokens + every component class
+├── scripts/      # home-interactions.ts — bundled client JS extracted from BaseLayout
+└── styles/       # global.css aggregator + tokens/components/motion/prose partials
 public/           # favicon, og-image, robots.txt
 design-previews/  # throwaway design mockups — NOT part of the site (gitignored)
 ```
@@ -69,7 +73,7 @@ Use `@/*` import aliases (`@/data/...`, `@/lib/...`) — the alias maps to `src/
 
 ## Design system / theming
 
-`src/styles/global.css` is the single source of truth. It's a neobrutalist look: thick borders,
+`src/styles/` is the single source of truth (`global.css` imports the tokens/components/motion/prose partials). It's a neobrutalist look: thick borders,
 hard offset shadows, oversized display type. Colors come from CSS custom-property tokens.
 
 - Light/dark themes are token swaps under `:root` and `.dark`. The brutalist structure **inverts**:

@@ -9,7 +9,7 @@ Live: [shanahansuresh.dev](https://shanahansuresh.dev)
 ## Tech stack
 
 - **[Astro 5](https://astro.build/)** — static site generator (`output: 'static'`)
-- **[Tailwind CSS 4](https://tailwindcss.com/)** — CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/global.css`)
+- **[Tailwind CSS 4](https://tailwindcss.com/)** — CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/`, split across `tokens.css`/`components.css`/`motion.css`/`prose.css` and aggregated by `global.css`)
 - **MDX** (`@astrojs/mdx`) — blog/writing content
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)
 - Self-hosted fonts via `@fontsource`
@@ -50,11 +50,13 @@ npm run test:report         # open the last HTML report
 ```
 
 Useful filters: `npm test -- --project=chromium` (one browser),
-`npm test -- tests/mascot.spec.ts` (one file).
+`npm test -- tests/home.spec.ts` (one file).
 
-Current coverage: home-page smoke test, plus the hero mascot's settled render
-(an image-aspect-ratio regression guard), its `<820px` mobile fallback, and its
-reduced-motion static park.
+Current coverage (`tests/home.spec.ts`): home-page smoke (hero headline, major
+sections, nav + theme toggle presence, contact mailto), theme-toggle dark-class
+persistence to localStorage, the 600px mobile layout (nav hidden, hero
+single-column), the project-card paragraph split, reduced-motion static render,
+and the extracted BaseLayout interactions (scrolled-nav, scroll-spy, hero entrance).
 
 ## Project structure
 
@@ -68,7 +70,8 @@ personal-site/
 │   ├── layouts/         # BaseLayout + PostLayout
 │   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts
 │   ├── pages/           # routes — index.astro, writing/, rss.xml.ts
-│   └── styles/          # global.css (design tokens + component classes)
+│   ├── scripts/         # home-interactions.ts (bundled client JS for BaseLayout)
+│   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
 ├── tests/               # Playwright e2e / visual-regression specs
 ├── astro.config.mjs     # Astro + integrations + Tailwind (Vite) config
 ├── playwright.config.ts # Playwright runner + dev-server config
@@ -77,7 +80,7 @@ personal-site/
 
 ## Design system
 
-All visual styling is centralized in `src/styles/global.css` using CSS custom properties (design tokens) plus a small set of component classes. Theming (light/dark and color palettes) is driven by tokens, so the look can be retuned from one place.
+All visual styling is centralized in `src/styles/` (the `global.css` entry point imports `tokens.css`, `components.css`, `motion.css`, and `prose.css`) using CSS custom properties (design tokens) plus a small set of component classes. Theming (light/dark and color palettes) is driven by tokens, so the look can be retuned from one place.
 
 ## Deployment
 
