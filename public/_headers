@@ -1,0 +1,20 @@
+# Cloudflare honours this file when serving the static assets (Pages & Workers
+# static assets). Security headers for the whole site, plus long-cache for the
+# content-hashed build assets.
+#
+# CSP note: script-src/style-src allow 'unsafe-inline' because the site ships an
+# inline theme pre-paint script (BaseLayout) and inline style attributes (reveal
+# --d delays, font-face block). There is no third-party script, form POST, or
+# user-reflected content, so the practical XSS surface is ~nil. Tightening to
+# nonces/hashes is a future iteration, not a v1 blocker.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
