@@ -31,3 +31,8 @@ Thumbs.db
 
 # scratch design-direction mockups (not part of the site)
 design-previews/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
