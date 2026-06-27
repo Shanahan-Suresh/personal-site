@@ -10,7 +10,17 @@ import Monogram from "./Monogram.astro";
       ><Monogram size={30} /><span class="nav-wordmark-text">hanahan</span></a
     >
     <div class="row gap-5 nav-right">
-      <ul class="row gap-5 nav-links" role="list">
+      <button
+        class="nav-burger"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="row gap-5 nav-links" role="list" id="mobile-nav">
         {
           navLinks.map((l) => (
             <li>
@@ -75,13 +85,47 @@ import Monogram from "./Monogram.astro";
     left: 0;
     right: 0;
     height: 3px;
-    background: var(--accent-2);
+    background: var(--ink);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform var(--dur-fast) var(--ease-out);
   }
-  .nav-wordmark:hover::after {
-    transform: scaleX(1);
+
+  /* Hamburger button — hidden on desktop */
+  .nav-burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    background: var(--surface);
+    color: var(--ink);
+    border: var(--border-thick);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-hard-sm);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .nav-burger span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--ink);
+    border-radius: 0;
+    transition: transform var(--dur-fast) var(--ease-out),
+      opacity var(--dur-fast) var(--ease-out);
+  }
+  .nav-burger:active {
+    transform: translate(var(--off-sm), var(--off-sm));
+    box-shadow: 0 0 0 var(--ink);
   }
 
   .nav-links {
@@ -108,18 +152,99 @@ import Monogram from "./Monogram.astro";
     transform-origin: left;
     transition: transform var(--dur-fast) var(--ease-out);
   }
-  .nav-link:hover::after,
   .nav-link.is-active::after {
     transform: scaleX(1);
   }
-  .nav-link:hover,
   .nav-link.is-active {
     color: var(--accent-1);
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .nav-wordmark:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-wordmark:hover {
+      color: var(--ink);
+    }
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+    .nav-link:hover {
+      color: var(--accent-1);
+    }
+  }
+
+  /* ── Mobile nav (≤768px) ─────────────────────────────────────────── */
   @media (max-width: 768px) {
+    /* Show hamburger, hide on desktop */
+    .nav-burger {
+      display: inline-flex;
+    }
+
+    /* The header must be a positioning ancestor for the absolute panel */
+    .nav-header {
+      position: sticky; /* already sticky — adding relative here is safe */
+    }
+
+    /* Dropdown sheet — collapsed by default */
     .nav-links {
       display: none;
+      position: absolute;
+      top: 68px; /* sits flush under the 68px header */
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0; /* override .gap-5 — rows sit flush, separated by dividers */
+      background: var(--paper);
+      border-bottom: var(--bw-thick) solid var(--ink);
+      box-shadow: var(--shadow-hard);
+      padding: 0;
+      margin: 0;
+      z-index: 49;
+    }
+
+    /* Open state — toggled by JS adding .nav-open to .nav-header */
+    .nav-header.nav-open .nav-links {
+      display: flex;
+    }
+
+    /* Each nav item becomes a full-width tap row */
+    .nav-links li {
+      border-top: var(--bw) solid var(--hairline);
+      width: 100%;
+    }
+    .nav-links li:first-child {
+      border-top: none;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: 48px;
+      padding: 0 var(--space-5);
+      font-family: var(--font-mono);
+      font-size: var(--fs-mono);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    /* trailing arrow affordance */
+    .nav-link::after {
+      content: "→";
+      position: static;
+      width: auto;
+      height: auto;
+      background: none;
+      transform: none;
+      color: var(--accent-1);
+      font-family: inherit;
+      font-size: inherit;
+      opacity: 0.7;
+      transition: none;
+    }
+    .nav-link.is-active::after {
+      transform: none;
     }
   }
 </style>

@@ -52,9 +52,18 @@
       box-shadow var(--dur-fast) var(--ease-out);
     flex-shrink: 0;
   }
-  .theme-btn:hover {
-    transform: translate(var(--off-sm), var(--off-sm));
-    box-shadow: 0 0 0 var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .theme-btn:hover {
+      transform: translate(var(--off-sm), var(--off-sm));
+      box-shadow: 0 0 0 var(--ink);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .theme-btn {
+      min-width: 44px;
+      min-height: 44px;
+    }
   }
   .theme-btn:active {
     transform: translate(var(--off), var(--off));

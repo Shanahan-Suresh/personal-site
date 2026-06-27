@@ -22,7 +22,7 @@ import { socialLinks } from "@/data/navigation";
           </p>
 
           <div class="row row-wrap gap-4 contact-ctas">
-            <a href={`mailto:${socialLinks.email}`} class="btn btn-pop">Email me</a>
+            <a href={`mailto:${socialLinks.email}`} class="btn btn-pop" data-magnetic>Email me</a>
           </div>
 
           <ul class="contact-list" role="list">
@@ -134,9 +134,11 @@ import { socialLinks } from "@/data/navigation";
     transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
     word-break: break-word;
   }
-  .contact-list-link:hover {
-    color: var(--accent-pop);
-    border-bottom-color: var(--accent-pop);
+  @media (hover: hover) and (pointer: fine) {
+    .contact-list-link:hover {
+      color: var(--accent-pop);
+      border-bottom-color: var(--accent-pop);
+    }
   }
 
   @keyframes ghost-spin {

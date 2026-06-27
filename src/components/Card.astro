@@ -10,6 +10,7 @@ interface Props {
   class?: string;
   id?: string;
   style?: string;
+  [key: string]: unknown;
 }
 
 const {
@@ -21,6 +22,7 @@ const {
   class: className = "",
   id,
   style,
+  ...rest
 } = Astro.props;
 
 const classes = [
@@ -35,4 +37,4 @@ const classes = [
   .join(" ");
 ---
 
-<Tag class={classes} id={id} style={style}><slot /></Tag>
+<Tag class={classes} id={id} style={style} {...rest}><slot /></Tag>

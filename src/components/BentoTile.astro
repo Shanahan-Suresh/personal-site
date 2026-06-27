@@ -17,6 +17,7 @@ const { span = 2, accent, stripe = false, class: className = "" } = Astro.props;
   stripe={stripe}
   press
   class={`col-${span} reveal ${className}`}
+  data-tilt
 >
   <slot />
 </Card>

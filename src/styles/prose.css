@@ -33,6 +33,17 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
 }
+@media (hover: hover) and (pointer: fine) {
+  .prose a {
+    transition: text-decoration-color var(--dur-fast) var(--ease-out),
+                text-underline-offset var(--dur-fast) var(--ease-out),
+                color var(--dur-fast) var(--ease-out);
+  }
+  .prose a:hover {
+    color: var(--accent-2);
+    text-underline-offset: 5px;
+  }
+}
 .prose strong {
   color: var(--ink);
   font-weight: 700;

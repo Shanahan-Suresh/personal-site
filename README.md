@@ -84,4 +84,21 @@ All visual styling is centralized in `src/styles/` (the `global.css` entry point
 
 ## Deployment
 
-Static build (`./dist`) — deployable to any static host.
+Static build (`./dist`) — deployable to any static host. No SSR adapter is needed
+(`output: 'static'`).
+
+### Cloudflare Pages
+
+Connect the GitHub repo in the Cloudflare Pages dashboard and use:
+
+| Setting              | Value           |
+| -------------------- | --------------- |
+| Framework preset     | Astro           |
+| Build command        | `npm run build` |
+| Build output directory | `dist`        |
+| Node version         | pinned to `22` via `.nvmrc` |
+
+`npm run build` runs `astro check` (type-check) before `astro build`, so a deploy
+fails fast on type errors rather than shipping a broken build. The `site` value in
+`astro.config.mjs` (`https://shanahansuresh.dev`) drives the sitemap/canonical URLs —
+update it if the production domain changes.

@@ -9,7 +9,14 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
   scroll-behavior: smooth;
+  /* Never scroll horizontally. Decorative transforms shear past the viewport
+     edge for a frame — chiefly the scroll-velocity skew on .marquee (see
+     initScrollVelocity), plus the slam reveal's scale+rotate — which would flash
+     a horizontal scrollbar mid-scroll. `clip` (not `hidden`) contains them
+     without creating a scroll container, so sticky positioning still works. */
+  overflow-x: clip;
 }
 
 body {
@@ -31,6 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 .app-shell > main {
   flex: 1 0 auto;
@@ -77,7 +85,8 @@ p {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 5vw, 3rem);
+  padding-left: max(clamp(1.25rem, 5vw, 3rem), env(safe-area-inset-left));
+  padding-right: max(clamp(1.25rem, 5vw, 3rem), env(safe-area-inset-right));
 }
 .narrow {
   max-width: var(--container-narrow);
@@ -367,36 +376,31 @@ p {
     transform var(--dur-fast) var(--ease-out),
     box-shadow var(--dur-fast) var(--ease-out);
 }
-.press:hover {
-  transform: translate(var(--off-sm), var(--off-sm));
-  box-shadow: var(--shadow-hard-sm);
-}
 .press:active {
   transform: translate(var(--off), var(--off));
   box-shadow: 0 0 0 var(--ink);
 }
 
 /* project-card micro-interactions (layered on .press) */
-.project-card .ghost-num {
-  transition:
-    transform var(--dur-fast) var(--ease-out),
-    opacity var(--dur-fast) var(--ease-out);
-}
-.project-card:hover .ghost-num {
-  transform: translate(-6px, 4px) scale(1.08);
-  opacity: 0.12;
-}
-.project-card.press:hover {
-  box-shadow: var(--off-sm) var(--off-sm) 0 var(--card-accent);
-}
 .project-card .arrow-link::after {
   content: "↗";
   display: inline-block;
   margin-left: 0.3em;
   transition: transform var(--dur-fast) var(--ease-out);
 }
-.project-card:hover .arrow-link::after {
-  transform: translate(2px, -2px);
+
+@media (hover: hover) and (pointer: fine) {
+  .press:hover {
+    transform: translate(var(--off-sm), var(--off-sm));
+    box-shadow: var(--shadow-hard-sm);
+  }
+  .project-card.press:hover {
+    box-shadow: var(--off-sm) var(--off-sm) 0 var(--card-accent);
+  }
+  .project-card:hover .arrow-link::after {
+    transform: translate(2px, -2px);
+  }
+  [data-tilt].press:hover { transform: none; } /* JS owns the transform */
 }
 
 /* ================================================================== *
@@ -426,10 +430,6 @@ p {
     background var(--dur-fast) var(--ease-out),
     color var(--dur-fast) var(--ease-out);
 }
-.btn:hover {
-  transform: translate(var(--off-sm), var(--off-sm));
-  box-shadow: 0 0 0 var(--ink);
-}
 .btn:active {
   transform: translate(var(--off-sm), var(--off-sm));
 }
@@ -449,9 +449,16 @@ p {
 .btn-ghost {
   background: transparent;
 }
-.btn-ghost:hover {
-  background: var(--ink);
-  color: var(--paper);
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    transform: translate(var(--off-sm), var(--off-sm));
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .btn-ghost:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
 }
 
 /* ================================================================== *
@@ -493,6 +500,16 @@ p {
   background: var(--surface);
   color: var(--ink);
   border: var(--bw) solid var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tag {
+    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .tag:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hard-sm);
+  }
 }
 
 /* sticker — small rotated badge with offset shadow */
@@ -547,6 +564,20 @@ p {
   transform: rotate(var(--rot));
 }
 
+/* sticker interactive states (JS-driven) */
+.sticker { position: relative; } /* enable z-index */
+@media (hover: hover) and (pointer: fine) {
+  .sticker { transition: transform .28s var(--ease-out), box-shadow .28s var(--ease-out); }
+  .sticker.is-pulled { box-shadow: var(--shadow-hard); z-index: 2; }
+  .sticker.is-peeled { box-shadow: var(--off-lg) var(--off-lg) 0 var(--ink); z-index: 3; }
+  /* CSS fallback — applies only when JS isn't driving (no inline transform set) */
+  .sticker:hover:not(.is-peeled):not(.is-pulled) {
+    transform: translateY(-7px) rotate(0deg) scale(1.05);
+    box-shadow: var(--off-lg) var(--off-lg) 0 var(--ink);
+    z-index: 3; animation: none;
+  }
+}
+
 /* ================================================================== *
  * 11. MARQUEE
  * ================================================================== */
@@ -555,6 +586,8 @@ p {
   background: var(--ink);
   border-top: var(--bw-thick) solid var(--paper);
   border-bottom: var(--bw-thick) solid var(--paper);
+  transform: skewX(var(--mq-skew, 0deg));
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 .marquee-track {
   display: flex;
@@ -564,11 +597,13 @@ p {
   will-change: transform;
   backface-visibility: hidden;
 }
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
-}
 .marquee.is-paused .marquee-track {
   animation-play-state: paused;
+}
+@media (hover: hover) and (pointer: fine) {
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
 }
 .marquee-item {
   display: inline-flex;
@@ -592,7 +627,15 @@ p {
   font-size: 0.7em;
   opacity: 0.85;
 }
+@media (hover: hover) and (pointer: fine) {
+  .marquee-item:hover {
+    color: var(--accent-pop);
+    transform: scale(1.04);
+    transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+}
 .dark .marquee {
   background: #0d0d0d;
   border-color: var(--hairline);
 }
+

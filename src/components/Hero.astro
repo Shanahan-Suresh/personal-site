@@ -37,7 +37,7 @@ import Card from "./Card.astro";
         </p>
 
         <div class="row row-wrap gap-4 hero-rise" style="--d:360ms">
-          <a href="#work" class="btn btn-primary">See what I build</a>
+          <a href="#work" class="btn btn-primary" data-magnetic>See what I build</a>
           <a href="#contact" class="btn btn-ghost">Say hi</a>
         </div>
       </div>
@@ -54,13 +54,11 @@ import Card from "./Card.astro";
 
         <!-- enters on the beat after the last sticker — derived from the
              shared stamp cadence in global.css, so it never drifts -->
-        <Card
-          accent="1"
-          stripe
-          pad
-          class="hero-facts hero-rise"
+        <div
+          class="hero-facts-wrap hero-rise"
           style="--d: calc(var(--stamp-from) + var(--stamp-count) * var(--stamp-step))"
         >
+          <Card accent="1" stripe pad press data-tilt class="hero-facts">
           <ul class="facts-list">
             <li>
               <span class="eyebrow">Degree</span><span
@@ -69,7 +67,7 @@ import Card from "./Card.astro";
             </li>
             <li>
               <span class="eyebrow">Main Stack</span><span
-                >Next.js · Django · FastAPI · GCP</span
+                >Next.js · Django · GCP</span
               >
             </li>
             <li>
@@ -78,7 +76,8 @@ import Card from "./Card.astro";
               >
             </li>
           </ul>
-        </Card>
+          </Card>
+        </div>
       </div>
     </div>
   </div>
@@ -149,6 +148,16 @@ import Card from "./Card.astro";
     line-height: 1.4;
   }
 
+  /* Match the damped tilt of the other content cards exactly. The .reveal cards
+     transition ONLY transform over --dur-slow; the hard offset shadow is left out
+     of the shorthand so it snaps instantly on hover. This card isn't a .reveal, so
+     without this rule it falls back to .press's snappy --dur-fast (twitchy). Just
+     as important: transform ONLY — animating box-shadow over 0.6s makes the sharp
+     shadow crawl under the 3D tilt, which reads as jagged edges. Snap it like the rest. */
+  .hero-facts {
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
   @media (max-width: 820px) {
     .hero-inner {
       grid-template-columns: 1fr;
@@ -164,7 +173,7 @@ import Card from "./Card.astro";
       flex-direction: row;
       flex-wrap: wrap;
     }
-    .hero-facts {
+    .hero-facts-wrap {
       flex: 1 1 260px;
     }
   }

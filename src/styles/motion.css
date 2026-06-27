@@ -107,14 +107,65 @@
   opacity: 1;
 }
 
-/* coral marker draws across after the second line lands */
+/* "AI tooling." — coral text with a thin coral rule that draws in below the
+   baseline like a hand underline after the second line lands. The width wipes
+   0→100%; padding-bottom holds a clear gap so the rule sits under the glyphs
+   rather than crossing them (the old bar's "blocking" problem). */
 .hero-headline .marker {
-  background-size: 0% 0.28em;
+  display: inline-block; /* enables transform; keeps the phrase as one unit */
+  padding-bottom: 0.12em; /* gap below the caps for the underline to live in */
+  background-position: 0 100%; /* rule hugs the bottom, clear of the glyphs */
+  background-size: 0% 0.09em; /* thin true underline; wipes open below */
   transition: background-size 0.42s var(--ease-snap);
   transition-delay: 520ms;
+  transform-origin: 0% 50%; /* left-edge pivot — sweeps like a clock hand */
 }
 .hero-loaded .hero-headline .marker {
-  background-size: 100% 0.28em;
+  background-size: 100% 0.09em;
+}
+
+/* once the swipe lands, the phrase gives one snappy stamp and snaps back — a
+   punctuation beat reinforcing the highlight. JS adds .is-settled to the
+   slam-line on the marker's transitionend (see home-interactions.ts), which
+   un-clips the line and runs the pop. */
+/* clock-hand sweep (dips to 6 o'clock, settles at 3): a touch of wind-back
+   (anticipation), a decelerating swing down to vertical (pointing down), a brief
+   hold at the apex, then a weighted swing back up that overshoots flat and
+   settles. Per-keyframe easing shapes the velocity of each phase so it reads as
+   one fluid, deliberate gesture — not a nervous flick. Pivots on the left edge
+   (see transform-origin above), so the free end dips through the lower-right. */
+@keyframes marker-sweep {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); /* ease into the wind-back */
+  }
+  13% {
+    transform: rotate(-7deg); /* anticipation: load up before the swing */
+    animation-timing-function: cubic-bezier(0.16, 0.82, 0.28, 1); /* fling down, decelerate into apex */
+  }
+  47% {
+    transform: rotate(90deg); /* vertical — clock hand pointing down */
+    animation-timing-function: linear; /* hold, so the apex registers */
+  }
+  61% {
+    transform: rotate(90deg);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.4, 1); /* weighted swing back up */
+  }
+  88% {
+    transform: rotate(-3deg); /* slight overshoot past flat for momentum */
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1); /* soft settle */
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+.hero-headline .slam-line.is-settled {
+  overflow: visible; /* un-clip the rotation arc (slam reveal is long done) */
+}
+.hero-headline .slam-line.is-settled .marker {
+  /* overall timing is linear; the per-keyframe curves above drive the feel */
+  animation: marker-sweep 920ms linear;
+  will-change: transform; /* own compositor layer → jank-free rotation */
 }
 
 /* supporting copy: small quick rise */
@@ -196,8 +247,7 @@
   animation-delay: -4s;
 }
 
-/* touch to freeze; pause when scrolled offscreen */
-.sticker-cluster:hover .sticker,
+/* pause when scrolled offscreen (JS handles per-sticker on hover) */
 .sticker-cluster.is-paused .sticker {
   animation-play-state: paused;
 }
