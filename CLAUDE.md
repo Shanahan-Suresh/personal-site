@@ -5,7 +5,7 @@ Guidance for Claude Code agents working in this repo. Read this first.
 ## What this is
 
 Personal website + portfolio for **Shanahan Suresh** (software engineer; BSc Computer Science
-with AI, University of Nottingham). Single static site, deployed at `shanahansuresh.dev`.
+with AI, University of Nottingham). Single static site, deployed at `shanahansuresh.com`.
 Audience is _everyone_ — clients, recruiters, colleagues, friends, strangers — so it reads as a
 personal site, not a resume.
 

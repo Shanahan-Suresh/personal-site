@@ -1,11 +1,11 @@
 export const site = {
   name: "Shanahan Suresh",
-  url: "https://shanahansuresh.dev",
+  url: "https://shanahansuresh.com",
   jobTitle: "Product-minded software engineer",
   description:
     "Shanahan Suresh, a software engineer and University of Nottingham Computer Science graduate who builds full-stack products and AI tooling people enjoy using.",
   social: {
-    email: "hello@shanahansuresh.dev",
+    email: "hello@shanahansuresh.com",
     linkedin: "https://www.linkedin.com/in/shanahan-suresh",
     github: "https://github.com/Shanahan-Suresh",
   },

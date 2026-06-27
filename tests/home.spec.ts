@@ -58,11 +58,11 @@ test("major sections are present on the page", async ({ page }) => {
 test("contact email link has correct mailto href", async ({ page }) => {
   await page.goto("/");
 
-  const emailLink = page.locator('a[href="mailto:hello@shanahansuresh.dev"]');
+  const emailLink = page.locator('a[href="mailto:hello@shanahansuresh.com"]');
   await expect(emailLink).toBeAttached();
   await expect(emailLink).toHaveAttribute(
     "href",
-    "mailto:hello@shanahansuresh.dev",
+    "mailto:hello@shanahansuresh.com",
   );
 });
 

@@ -2,7 +2,7 @@
 
 Personal website and portfolio for **Shanahan Suresh** — product-minded software engineer building full-stack products and AI tooling.
 
-Live: [shanahansuresh.dev](https://shanahansuresh.dev)
+Live: [shanahansuresh.com](https://shanahansuresh.com)
 
 > **Design:** Refined neobrutalism — bold borders, hard offset shadows, oversized type, light/dark themes. The previous glassmorphism design is preserved in the commit history.
 
@@ -100,5 +100,5 @@ Connect the GitHub repo in the Cloudflare Pages dashboard and use:
 
 `npm run build` runs `astro check` (type-check) before `astro build`, so a deploy
 fails fast on type errors rather than shipping a broken build. The `site` value in
-`astro.config.mjs` (`https://shanahansuresh.dev`) drives the sitemap/canonical URLs —
+`astro.config.mjs` (`https://shanahansuresh.com`) drives the sitemap/canonical URLs —
 update it if the production domain changes.
