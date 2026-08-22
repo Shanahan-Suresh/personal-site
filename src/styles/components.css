@@ -400,7 +400,40 @@ p {
   .project-card:hover .arrow-link::after {
     transform: translate(2px, -2px);
   }
-  [data-tilt].press:hover { transform: none; } /* JS owns the transform */
+  [data-tilt].press:hover {
+    transform: none;
+  } /* JS owns the transform */
+}
+
+/* ------------------------------------------------------------------ *
+ * Skip link — first focusable element on every page. Visually parked above
+ * the viewport until keyboard focus lands on it, then drops in as a button.
+ * ------------------------------------------------------------------ */
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 100;
+  padding: 0.7em 1.1em;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  background: var(--accent-pop);
+  color: var(--on-pop);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-hard-sm);
+  transform: translateY(calc(-100% - var(--space-5)));
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline-offset: 4px;
+}
+#main:focus {
+  outline: none;
 }
 
 /* ================================================================== *
@@ -504,7 +537,9 @@ p {
 
 @media (hover: hover) and (pointer: fine) {
   .tag {
-    transition: transform var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
   }
   .tag:hover {
     transform: translateY(-2px);
@@ -565,16 +600,29 @@ p {
 }
 
 /* sticker interactive states (JS-driven) */
-.sticker { position: relative; } /* enable z-index */
+.sticker {
+  position: relative;
+} /* enable z-index */
 @media (hover: hover) and (pointer: fine) {
-  .sticker { transition: transform .28s var(--ease-out), box-shadow .28s var(--ease-out); }
-  .sticker.is-pulled { box-shadow: var(--shadow-hard); z-index: 2; }
-  .sticker.is-peeled { box-shadow: var(--off-lg) var(--off-lg) 0 var(--ink); z-index: 3; }
+  .sticker {
+    transition:
+      transform 0.28s var(--ease-out),
+      box-shadow 0.28s var(--ease-out);
+  }
+  .sticker.is-pulled {
+    box-shadow: var(--shadow-hard);
+    z-index: 2;
+  }
+  .sticker.is-peeled {
+    box-shadow: var(--off-lg) var(--off-lg) 0 var(--ink);
+    z-index: 3;
+  }
   /* CSS fallback — applies only when JS isn't driving (no inline transform set) */
   .sticker:hover:not(.is-peeled):not(.is-pulled) {
     transform: translateY(-7px) rotate(0deg) scale(1.05);
     box-shadow: var(--off-lg) var(--off-lg) 0 var(--ink);
-    z-index: 3; animation: none;
+    z-index: 3;
+    animation: none;
   }
 }
 
@@ -631,11 +679,12 @@ p {
   .marquee-item:hover {
     color: var(--accent-pop);
     transform: scale(1.04);
-    transition: color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+    transition:
+      color var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
   }
 }
 .dark .marquee {
   background: #0d0d0d;
   border-color: var(--hairline);
 }
-

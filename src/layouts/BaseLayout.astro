@@ -13,9 +13,11 @@ interface Props {
   description?: string;
   image?: string;
   canonical?: string;
+  /** Keep the page out of search indexes (parked sections like /writing). */
+  noindex?: boolean;
 }
 
-const { title, description, image, canonical } = Astro.props;
+const { title, description, image, canonical, noindex = false } = Astro.props;
 
 const fontFaces = `
 @font-face{font-family:'Anton';font-style:normal;font-display:swap;font-weight:400;src:url(${antonWoff2}) format('woff2')}
@@ -29,7 +31,10 @@ const fontFaces = `
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
     <link
       rel="preload"
       href={antonWoff2}
@@ -65,12 +70,14 @@ const fontFaces = `
       description={description}
       image={image}
       canonical={canonical}
+      noindex={noindex}
     />
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to content</a>
     <div class="app-shell">
       <Nav />
-      <main>
+      <main id="main" tabindex="-1">
         <slot />
       </main>
       <Footer />
