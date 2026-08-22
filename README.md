@@ -2,7 +2,19 @@
 
 Personal website and portfolio for **Shanahan Suresh** — product-minded software engineer building full-stack products and AI tooling.
 
-Live: [shanahansuresh.com](https://shanahansuresh.com)
+Live: [shanahansuresh.com](https://shanahansuresh.com) · [Colophon](https://shanahansuresh.com/colophon) (how it is built, with numbers)
+
+[![CI](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml/badge.svg)](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/code-MIT-2b4cf0.svg)](LICENSE)
+
+## Why this repo is public
+
+The site is meant to be its own code sample. Rather than describe how it is built, the source is
+here to read: the design-token system in `src/styles/`, the single interaction module in
+`src/scripts/`, the Playwright suite that runs against the production build, and the deploy
+hardening in `public/_headers`. The footer of every page links to the exact commit it was built
+from. The code is MIT; the copy, project descriptions and images are not licensed for reuse
+(see `LICENSE`).
 
 > **Design:** Refined neobrutalism — bold borders, hard offset shadows, oversized type, light/dark themes. The previous glassmorphism design is preserved in the commit history.
 
@@ -82,6 +94,12 @@ personal-site/
 
 All visual styling is centralized in `src/styles/` (the `global.css` entry point imports `tokens.css`, `components.css`, `motion.css`, and `prose.css`) using CSS custom properties (design tokens) plus a small set of component classes. Theming (light/dark and color palettes) is driven by tokens, so the look can be retuned from one place.
 
+## CI
+
+`.github/workflows/ci.yml` runs on every push and pull request to `main`: `npm ci`, `format:check`,
+`npm run build` (type-check + placeholder guard + static build, the same command Cloudflare runs),
+then the Playwright suite in Chromium. The report is uploaded as an artifact on failure.
+
 ## Deployment
 
 Static build (`./dist`) — deployable to any static host. No SSR adapter is needed
@@ -91,12 +109,12 @@ Static build (`./dist`) — deployable to any static host. No SSR adapter is nee
 
 Connect the GitHub repo in the Cloudflare Pages dashboard and use:
 
-| Setting              | Value           |
-| -------------------- | --------------- |
-| Framework preset     | Astro           |
-| Build command        | `npm run build` |
-| Build output directory | `dist`        |
-| Node version         | pinned to `22` via `.nvmrc` |
+| Setting                | Value                       |
+| ---------------------- | --------------------------- |
+| Framework preset       | Astro                       |
+| Build command          | `npm run build`             |
+| Build output directory | `dist`                      |
+| Node version           | pinned to `22` via `.nvmrc` |
 
 `npm run build` runs `astro check` (type-check) before `astro build`, so a deploy
 fails fast on type errors rather than shipping a broken build. The `site` value in
