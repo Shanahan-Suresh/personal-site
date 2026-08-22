@@ -1,0 +1,264 @@
+---
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import BentoTile from "../components/BentoTile.astro";
+import Card from "../components/Card.astro";
+import Tag from "../components/Tag.astro";
+import { site } from "@/lib/site-config";
+import {
+  measuredOn,
+  repoFile,
+  stack,
+  stats,
+  writingElsewhere,
+} from "@/data/colophon";
+
+/* Count the e2e tests at build time so the number on this page can never
+   drift from the suite. Matches every top-level or nested `test(` call. */
+const testsDir = join(process.cwd(), "tests");
+const testCount = readdirSync(testsDir)
+  .filter((f) => f.endsWith(".spec.ts"))
+  .map((f) => readFileSync(join(testsDir, f), "utf8"))
+  .reduce((n, src) => n + (src.match(/^\s*test\(/gm)?.length ?? 0), 0);
+---
+
+<BaseLayout
+  title="Colophon — Shanahan Suresh"
+  description="How shanahansuresh.com is built: Astro 5, Tailwind 4, self-hosted fonts, no framework JavaScript, a three-browser Playwright suite, and the numbers to back it up."
+>
+  <div class="container section">
+    <SectionHeading
+      eyebrow="COLOPHON"
+      title="How this site is built"
+      intro="The site is its own code sample. The source is public, and every claim below links to the file that backs it."
+    />
+
+    <div class="bento">
+      <BentoTile span={4}>
+        <div class="stack stack-5">
+          <h3 class="h3">The stack, and why it is small</h3>
+          <p>
+            A personal site should load fast and get out of the way, so there is
+            no framework runtime on the page. Astro renders everything to HTML
+            at build time. The styling is a hand-written token system on top of
+            Tailwind 4. The only JavaScript is one module for the interactions
+            you can feel (reveals, scroll-spy, the tilt and the magnetic
+            buttons).
+          </p>
+          <ul class="stack-list" role="list">
+            {
+              stack.map((item) => (
+                <li>
+                  <span class="stack-name">
+                    {item.path ? (
+                      <a
+                        href={repoFile(item.path)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="stack-link"
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      item.name
+                    )}
+                  </span>
+                  <span class="stack-detail">{item.detail}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </BentoTile>
+
+      <BentoTile span={2} accent="1" stripe>
+        <div class="stack stack-5">
+          <h3 class="h3">By the numbers</h3>
+          <ul class="facts-list" role="list">
+            {
+              stats.map((s) => (
+                <li>
+                  <span class="eyebrow">{s.label}</span>
+                  <span class="stat-value">{s.value}</span>
+                  {s.note && <span class="stat-note">{s.note}</span>}
+                </li>
+              ))
+            }
+            <li>
+              <span class="eyebrow">End-to-end tests</span>
+              <span class="stat-value">{testCount}</span>
+              <span class="stat-note">Counted from the suite at build time</span
+              >
+            </li>
+          </ul>
+          <p class="mono muted">Measured {measuredOn}</p>
+        </div>
+      </BentoTile>
+
+      <BentoTile span={3} accent="2" stripe>
+        <div class="stack stack-4">
+          <h3 class="h3">Design system</h3>
+          <p>
+            Neobrutalist on purpose. Thick borders, hard offset shadows and
+            oversized display type on a warm paper ground. Light and dark share
+            one structure that inverts. The <code>--ink</code> token carries text,
+            borders and shadows, so flipping it flips the whole page without touching
+            a component.
+          </p>
+          <p>
+            Accents are rationed. The acid yellow only ever sits on dark ink,
+            the coral is tuned to pass AA as text on paper, and motion respects
+            <code>prefers-reduced-motion</code> down to the blinking cursor.
+          </p>
+          <div class="row-wrap gap-2">
+            <Tag variant="plain">tokens.css</Tag>
+            <Tag variant="plain">components.css</Tag>
+            <Tag variant="plain">motion.css</Tag>
+            <Tag variant="plain">prose.css</Tag>
+          </div>
+        </div>
+      </BentoTile>
+
+      <BentoTile span={3} accent="pop" stripe>
+        <div class="stack stack-4">
+          <h3 class="h3">Testing and shipping</h3>
+          <p>
+            <code>npm run build</code> type-checks first, so a bad type fails the
+            deploy rather than shipping. Playwright runs the suite against the built
+            output in Chromium, Firefox and WebKit, including a performance budget
+            that fails if the home page grows past 150 KB.
+          </p>
+          <p>
+            Cloudflare Pages serves the static output behind CSP, HSTS and
+            Permissions-Policy headers. The footer on every page links to the
+            exact commit it was built from.
+          </p>
+          <div class="row-wrap gap-2">
+            <Tag variant="plain">astro check</Tag>
+            <Tag variant="plain">Playwright</Tag>
+            <Tag variant="plain">Prettier</Tag>
+            <Tag variant="plain">GitHub Actions</Tag>
+          </div>
+        </div>
+      </BentoTile>
+    </div>
+
+    <div class="colophon-foot">
+      <Card accent="3" stripe pad class="reveal" style="--d:0ms">
+        <div class="stack stack-4">
+          <p class="mono muted">Writing elsewhere</p>
+          <h3 class="h3">
+            <a
+              href={writingElsewhere.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="stack-link">{writingElsewhere.title} ↗</a
+            >
+          </h3>
+          <p class="muted">{writingElsewhere.meta}</p>
+          <div class="row-wrap gap-3">
+            <a
+              href={writingElsewhere.repo.href}
+              class="tag tag-ink arrow-link"
+              target="_blank"
+              rel="noopener noreferrer">{writingElsewhere.repo.label}</a
+            >
+            <a
+              href={site.repo}
+              class="tag arrow-link"
+              target="_blank"
+              rel="noopener noreferrer">This site's source</a
+            >
+            <a
+              href={repoFile("src/pages/colophon.astro")}
+              class="tag arrow-link"
+              target="_blank"
+              rel="noopener noreferrer">This page's source</a
+            >
+          </div>
+        </div>
+      </Card>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .stack-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .stack-list li {
+    display: grid;
+    grid-template-columns: minmax(9rem, 12rem) 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    border-top: var(--bw) solid var(--hairline);
+  }
+  .stack-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+  }
+  .stack-detail {
+    color: var(--ink-soft);
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+  .stack-link {
+    color: inherit;
+    border-bottom: 2px solid var(--accent-1);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .stack-link:hover {
+      color: var(--accent-1);
+    }
+  }
+
+  .facts-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .facts-list li {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    line-height: 1;
+  }
+  .stat-note {
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  .colophon-foot {
+    margin-top: var(--space-6);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    background: var(--surface-2);
+    border: var(--bw) solid var(--ink);
+    padding: 0.05em 0.35em;
+  }
+
+  @media (max-width: 640px) {
+    .stack-list li {
+      grid-template-columns: 1fr;
+      gap: var(--space-1);
+    }
+  }
+</style>

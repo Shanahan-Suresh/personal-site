@@ -285,3 +285,37 @@ test("writing pages carry noindex while the section is parked", async ({
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
   await expect(page.locator('a.nav-link[href^="/writing"]')).toHaveCount(0);
 });
+
+// ── Performance budget ──────────────────────────────────────────────────────
+// The colophon quotes a wire size for the home page; this keeps it honest.
+test("home page stays under the 150 KB transfer budget", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  const total = await page.evaluate(() => {
+    const nav = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+    const res = performance.getEntriesByType(
+      "resource",
+    ) as PerformanceResourceTiming[];
+    return nav.transferSize + res.reduce((sum, r) => sum + r.transferSize, 0);
+  });
+  expect(total).toBeGreaterThan(0);
+  expect(total).toBeLessThan(150 * 1024);
+});
+
+// ── Colophon ────────────────────────────────────────────────────────────────
+test("colophon renders with a live test count and repo deep links", async ({
+  page,
+}) => {
+  const response = await page.goto("/colophon/");
+  expect(response?.ok()).toBeTruthy();
+  await expect(page.locator("h2.section-title")).toContainText(
+    /how this site is built/i,
+  );
+  const repoLinks = page.locator(
+    'a[href^="https://github.com/Shanahan-Suresh/personal-site/blob/main/"]',
+  );
+  expect(await repoLinks.count()).toBeGreaterThan(3);
+  // The test count is computed from the suite at build time; must be numeric
+  await expect(page.locator(".stat-value").last()).toHaveText(/^\d+$/);
+});
