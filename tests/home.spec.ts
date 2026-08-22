@@ -319,3 +319,18 @@ test("colophon renders with a live test count and repo deep links", async ({
   // The test count is computed from the suite at build time; must be numeric
   await expect(page.locator(".stat-value").last()).toHaveText(/^\d+$/);
 });
+
+// ── Placeholder guard (belt and braces to scripts/guard-placeholders.mjs) ───
+// Without ALLOW_PLACEHOLDERS the build itself refuses to run, so this test
+// only ever sees a site with no placeholders in it. With the flag set (local
+// builds) it is skipped with a note, so the suite stays usable while images
+// are being sourced.
+test("no placeholder image is rendered", async ({ page }) => {
+  test.skip(
+    process.env.ALLOW_PLACEHOLDERS === "1",
+    "ALLOW_PLACEHOLDERS=1: local build, placeholder images permitted",
+  );
+  await page.goto("/");
+  const placeholders = page.locator('img[src*="placeholder"]');
+  await expect(placeholders).toHaveCount(0);
+});

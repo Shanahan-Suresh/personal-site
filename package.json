@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build",
+    "build": "astro check && node scripts/guard-placeholders.mjs && astro build",
+    "guard": "node scripts/guard-placeholders.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "format": "prettier --write .",

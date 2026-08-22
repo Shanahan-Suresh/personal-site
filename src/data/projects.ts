@@ -1,6 +1,18 @@
 import type { Project, ProjectCategory, Accent } from "@/lib/types";
+import digestVisual from "@/assets/work/_placeholder-digest.svg";
+import rsvpVisual from "@/assets/work/_placeholder-rsvp.svg";
 
 const personal: Project[] = [
+  {
+    title: "AI-curated tech-news digest",
+    description:
+      "A daily tech-intelligence digest that reads the firehose so you don't have to. It curates the news to a team's exact stack with an LLM, runs entirely from config, and scales to zero on GCP when nobody's looking.",
+    tags: ["Python", "GCP", "Terraform", "LLMs"],
+    featured: {
+      image: digestVisual,
+      alt: "A generated Tech Scout Digest email, cropped to the newsletter column.",
+    },
+  },
   {
     title: "Automated artwork censoring app",
     description:
@@ -8,29 +20,18 @@ const personal: Project[] = [
     tags: ["Python", "YOLO", "FastSAM"],
   },
   {
-    title: "AI-curated tech-news digest",
-    description:
-      "A daily tech-intelligence digest that reads the firehose so you don't have to. It curates the news to a team's exact stack with an LLM, runs entirely from config, and scales to zero on GCP when nobody's looking.",
-    tags: ["Python", "GCP", "Terraform", "LLMs"],
-  },
-  {
     title: "OpenAPI → MCP server + chat UI",
     description:
       "Point it at any API's schema and it generates a set of LLM-callable tools on its own, falling back across models if one stalls, all wired into a Next.js chat interface. It lets an AI assistant pick up a brand-new tool in seconds.",
     tags: ["Python", "MCP", "FastAPI", "Next.js"],
+    link: {
+      label: "Read the write-up",
+      href: "https://dev.to/shanahansuresh/wiring-django-to-claude-generating-an-mcp-server-from-openapi-1e8a",
+    },
   },
 ];
 
 const product: Project[] = [
-  {
-    title: "OHSE incident-reporting module",
-    description: [
-      "When something goes wrong on a worksite, this is where it gets reported, investigated, and put right. It's now live across 10 business units.",
-      "The tricky part was never the forms, it was the people: managers, safety officers, and investigators each need what's effectively a different app, so I built the role-based workflows to match.",
-      "I owned it from the first round of SDLC planning through to the GCP rollout, set up the team's first Playwright test suite along the way, and added an MCP server that turns the module's OpenAPI schema into tools an AI assistant can actually call.",
-    ],
-    tags: ["Next.js", "Django", "GCP", "MCP"],
-  },
   {
     title: "Automated RSVP & check-in web app",
     description: [
@@ -39,6 +40,19 @@ const product: Project[] = [
       "The whole stack is defined in Terraform and ships through GitHub Actions, so scaling up for a crowd that size comes down to a config value rather than a late night.",
     ],
     tags: ["Next.js", "Terraform", "Respond.io", "SendGrid"],
+    featured: {
+      image: rsvpVisual,
+      alt: "The RSVP landing page with the enrolment form and live QR ticket preview.",
+    },
+  },
+  {
+    title: "OHSE incident-reporting module",
+    description: [
+      "When something goes wrong on a worksite, this is where it gets reported, investigated, and put right. It's now live across 10 business units.",
+      "The tricky part was never the forms, it was the people: managers, safety officers, and investigators each need what's effectively a different app, so I built the role-based workflows to match.",
+      "I owned it from the first round of SDLC planning through to the GCP rollout, set up the team's first Playwright test suite along the way, and added an MCP server that turns the module's OpenAPI schema into tools an AI assistant can actually call.",
+    ],
+    tags: ["Next.js", "Django", "GCP", "MCP"],
   },
   {
     title: "Enterprise HR platform",

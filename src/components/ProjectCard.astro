@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Card from "./Card.astro";
 import type { Project, Accent } from "@/lib/types";
 
@@ -17,14 +18,14 @@ const {
   class: className = "",
   style: styleProp = "",
 } = Astro.props;
-const { title, description, tags = [], link, meta } = project;
+const { title, description, tags = [], link, meta, featured } = project;
 ---
 
 <Card
   press
   accent={accent}
   stripe
-  class={`project-card ${className}`}
+  class={`project-card ${featured ? "project-card--featured" : ""} ${className}`}
   style={styleProp}
   data-tilt
 >
@@ -42,13 +43,17 @@ const { title, description, tags = [], link, meta } = project;
       {meta && <span class="tag tag-ink meta-tag">{meta}</span>}
     </div>
 
-    {Array.isArray(description) ? (
-      <div class="project-desc-group">
-        {description.map((para) => <p class="muted project-desc">{para}</p>)}
-      </div>
-    ) : (
-      <p class="muted project-desc">{description}</p>
-    )}
+    {
+      Array.isArray(description) ? (
+        <div class="project-desc-group">
+          {description.map((para) => (
+            <p class="muted project-desc">{para}</p>
+          ))}
+        </div>
+      ) : (
+        <p class="muted project-desc">{description}</p>
+      )
+    }
 
     {
       tags.length > 0 && (
@@ -75,6 +80,21 @@ const { title, description, tags = [], link, meta } = project;
       )
     }
   </div>
+
+  {
+    featured && (
+      <figure class="project-visual">
+        <Image
+          src={featured.image}
+          alt={featured.alt}
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 92vw, 520px"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    )
+  }
 </Card>
 
 <style>
@@ -136,5 +156,46 @@ const { title, description, tags = [], link, meta } = project;
     background: var(--card-accent);
     color: var(--card-on-accent);
     text-decoration: none;
+  }
+
+  /* ── Featured variant: full grid width, copy beside a framed visual ────── */
+  .project-card--featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 520px);
+    gap: var(--space-6);
+    align-items: start;
+  }
+  .project-card--featured .ghost-num {
+    /* keep the numeral behind the copy, clear of the visual */
+    right: auto;
+    left: 40%;
+  }
+  .project-visual {
+    margin: 0;
+    position: relative;
+    border: var(--border-thick);
+    box-shadow: var(--shadow-hard-sm);
+    background: var(--surface-2);
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .project-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 900px) {
+    .project-card--featured {
+      grid-template-columns: 1fr;
+    }
+    .project-card--featured .ghost-num {
+      left: auto;
+      right: 0.3rem;
+    }
+    .project-visual {
+      order: -1;
+    }
   }
 </style>

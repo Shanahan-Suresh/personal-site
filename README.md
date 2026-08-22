@@ -94,6 +94,14 @@ personal-site/
 
 All visual styling is centralized in `src/styles/` (the `global.css` entry point imports `tokens.css`, `components.css`, `motion.css`, and `prose.css`) using CSS custom properties (design tokens) plus a small set of component classes. Theming (light/dark and color palettes) is driven by tokens, so the look can be retuned from one place.
 
+## Placeholder images
+
+Featured project cards can point at a stand-in image whose filename starts with `_placeholder-`.
+`npm run build` runs `scripts/guard-placeholders.mjs` first and fails if one exists or is referenced,
+so Cloudflare can never deploy a placeholder. For a local build while images are being sourced:
+`ALLOW_PLACEHOLDERS=1 npm run build` (PowerShell: `$env:ALLOW_PLACEHOLDERS=1; npm run build`).
+See `CLAUDE.md` for the swap procedure.
+
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request to `main`: `npm ci`, `format:check`,

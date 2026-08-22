@@ -23,7 +23,8 @@ personal site, not a resume.
 ```bash
 npm install
 npm run dev          # dev server → http://localhost:4321
-npm run build        # astro check + static build → ./dist (verify changes compile)
+npm run build        # astro check + placeholder guard + static build → ./dist
+npm run guard        # placeholder guard on its own (see "Placeholder images")
 npm run preview      # preview the production build
 npm run check        # type-check only (astro check)
 npm run format       # format everything with Prettier
@@ -103,6 +104,25 @@ Project descriptions and other copy now live in `src/data/*.ts`. Prettier normal
 **double quotes**, so apostrophes no longer need escaping (`"don't"`, `"team's"` are fine). If you
 hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) or just let
 `npm run format` convert it — an unescaped apostrophe in a single-quoted literal breaks the build.
+
+## Placeholder images (must never deploy)
+
+Featured project cards (`featured` on a `Project` in `src/data/projects.ts`) show an image from
+`src/assets/work/`. While a real screenshot is still being sourced, the card points at a stand-in
+whose filename starts with `_placeholder-`. That prefix is the single source of truth:
+
+- `scripts/guard-placeholders.mjs` runs inside `npm run build` (before `astro build`) and **fails the
+  build** if any `_placeholder-` file exists under `src/` or is referenced from it. Cloudflare Pages
+  runs the same command, so a placeholder can never reach production; the previous deploy stays live.
+- Local builds and `npm test` need the override while placeholders exist:
+  PowerShell `$env:ALLOW_PLACEHOLDERS=1; npm run build`, bash `ALLOW_PLACEHOLDERS=1 npm run build`.
+  `npm run dev` is unaffected.
+- The Playwright test "no placeholder image is rendered" is skipped under the override and enforces
+  the rule otherwise. CI runs without the override, so CI is red until the images are real.
+
+**Swap procedure:** drop the real image (PNG/JPG/WebP, 16:10, at least 1040px wide) into
+`src/assets/work/` with a normal name (`digest.png`), change the import line in `projects.ts`, delete the
+`_placeholder-*.svg` file, run `npm run build` with no override. Green build = safe to push.
 
 ## Git / deployment
 
