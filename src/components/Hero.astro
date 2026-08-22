@@ -37,7 +37,9 @@ import Card from "./Card.astro";
         </p>
 
         <div class="row row-wrap gap-4 hero-rise" style="--d:360ms">
-          <a href="#work" class="btn btn-primary" data-magnetic>See what I build</a>
+          <a href="#work" class="btn btn-primary" data-magnetic
+            >See what I build</a
+          >
           <a href="#contact" class="btn btn-ghost">Say hi</a>
         </div>
       </div>
@@ -45,11 +47,14 @@ import Card from "./Card.astro";
       <!-- Right column: sticker cluster + quick-facts card -->
       <div class="hero-aside" aria-hidden="true">
         <div class="sticker-cluster">
-          <span class="sticker sticker-1 rot-r" style="--i:0">✦ Full-stack</span>
+          <span class="sticker sticker-1 rot-r" style="--i:0">✦ Full-stack</span
+          >
           <span class="sticker sticker-2 rot-l" style="--i:1">Next.js</span>
           <span class="sticker sticker-4 rot-r" style="--i:2">Python</span>
           <span class="sticker rot-l" style="--i:3">MCP servers</span>
-          <span class="sticker sticker-ink rot-r" style="--i:4">UK Graduate</span>
+          <span class="sticker sticker-ink rot-r" style="--i:4"
+            >UK Graduate</span
+          >
         </div>
 
         <!-- enters on the beat after the last sticker — derived from the
@@ -59,23 +64,23 @@ import Card from "./Card.astro";
           style="--d: calc(var(--stamp-from) + var(--stamp-count) * var(--stamp-step))"
         >
           <Card accent="1" stripe pad press data-tilt class="hero-facts">
-          <ul class="facts-list">
-            <li>
-              <span class="eyebrow">Degree</span><span
-                >BSc (Hons) CS with AI · Univ. of Nottingham</span
-              >
-            </li>
-            <li>
-              <span class="eyebrow">Main Stack</span><span
-                >Next.js · Django · GCP</span
-              >
-            </li>
-            <li>
-              <span class="eyebrow">Focus</span><span
-                >Product thinking · shipped end to end</span
-              >
-            </li>
-          </ul>
+            <ul class="facts-list">
+              <li>
+                <span class="eyebrow">Degree</span><span
+                  >BSc (Hons) CS with AI · Univ. of Nottingham</span
+                >
+              </li>
+              <li>
+                <span class="eyebrow">Main Stack</span><span
+                  >Next.js · Django · GCP</span
+                >
+              </li>
+              <li>
+                <span class="eyebrow">Focus</span><span
+                  >Product thinking · shipped end to end</span
+                >
+              </li>
+            </ul>
           </Card>
         </div>
       </div>

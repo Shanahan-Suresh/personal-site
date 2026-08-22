@@ -16,23 +16,36 @@ import { socialLinks } from "@/data/navigation";
 
           <p class="lead contact-lead">
             I'm always up for interesting work and a good conversation, whether
-            that's professional, a passion project, or something a bit weird
-            and fun. If
-            anything here caught your eye, my inbox is open.
+            that's professional, a passion project, or something a bit weird and
+            fun. If anything here caught your eye, my inbox is open.
           </p>
 
           <div class="row row-wrap gap-4 contact-ctas">
-            <a href={`mailto:${socialLinks.email}`} class="btn btn-pop" data-magnetic>Email me</a>
+            <a
+              href={`mailto:${socialLinks.email}`}
+              class="btn btn-pop"
+              data-magnetic>Email me</a
+            >
           </div>
 
           <ul class="contact-list" role="list">
             <li>
               <span class="mono contact-list-label">LinkedIn</span>
-              <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" class="contact-list-link">linkedin.com/in/shanahan-suresh ↗</a>
+              <a
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-list-link">linkedin.com/in/shanahan-suresh ↗</a
+              >
             </li>
             <li>
               <span class="mono contact-list-label">GitHub</span>
-              <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" class="contact-list-link">github.com/Shanahan-Suresh ↗</a>
+              <a
+                href={socialLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-list-link">github.com/Shanahan-Suresh ↗</a
+              >
             </li>
           </ul>
         </div>
@@ -131,7 +144,9 @@ import { socialLinks } from "@/data/navigation";
     color: var(--c-fg);
     text-decoration: none;
     border-bottom: 2px solid transparent;
-    transition: border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
     word-break: break-word;
   }
   @media (hover: hover) and (pointer: fine) {

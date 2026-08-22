@@ -71,7 +71,12 @@
   --dur-slow: 0.6s;
 
   /* extended motion — animation layer helpers */
-  --ease-slam: cubic-bezier(0.16, 1.2, 0.3, 1); /* fast-in, slight overshoot, settle */
+  --ease-slam: cubic-bezier(
+    0.16,
+    1.2,
+    0.3,
+    1
+  ); /* fast-in, slight overshoot, settle */
   --ease-snap: cubic-bezier(0.2, 0, 0, 1); /* mechanical hard-stop */
   --dur-stamp: 0.34s;
 }

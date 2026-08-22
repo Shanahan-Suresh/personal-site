@@ -30,7 +30,8 @@ const numberedCategories = categories.map((cat) => {
               {cat.items.map((p, j) => {
                 const idx = cat.start + j;
                 const num = String(idx + 1).padStart(2, "0");
-                const accent = p.accent ?? accentCycle[idx % accentCycle.length];
+                const accent =
+                  p.accent ?? accentCycle[idx % accentCycle.length];
                 return (
                   <ProjectCard
                     project={p}

@@ -87,7 +87,9 @@ export function initHero(): void {
   // when the coral marker finishes filling, give "AI tooling." one snappy
   // clockwise pop. Triggered off the marker's own transitionend so timing
   // stays synced to the CSS; reduced-motion already returned above.
-  const marker = hero.querySelector(".hero-headline .marker") as HTMLElement | null;
+  const marker = hero.querySelector(
+    ".hero-headline .marker",
+  ) as HTMLElement | null;
   if (marker) {
     const onFilled = (e: TransitionEvent) => {
       if (e.propertyName !== "background-size") return;
@@ -209,7 +211,9 @@ export function initIdlePause(): void {
 /* Mobile nav: hamburger toggle + sheet open/close */
 export function initMobileNav(): void {
   const header = document.querySelector(".nav-header") as HTMLElement | null;
-  const burger = document.querySelector(".nav-burger") as HTMLButtonElement | null;
+  const burger = document.querySelector(
+    ".nav-burger",
+  ) as HTMLButtonElement | null;
   if (!header || !burger) return;
 
   function openMenu() {
@@ -268,24 +272,33 @@ export function initMobileNav(): void {
 export function initStickers(): void {
   if (reduce || !fine) return;
 
-  const RADIUS = 160, STRENGTH = 0.28, MAXLEAN = 4, LIFT = 8, CARRY = 0.12;
-  const ROT: Record<string, number> = { 'rot-l': -2.5, 'rot-r': 2.5, 'rot-l2': -4, 'rot-r2': 3.5 };
+  const RADIUS = 160,
+    STRENGTH = 0.28,
+    MAXLEAN = 4,
+    LIFT = 8,
+    CARRY = 0.12;
+  const ROT: Record<string, number> = {
+    "rot-l": -2.5,
+    "rot-r": 2.5,
+    "rot-l2": -4,
+    "rot-r2": 3.5,
+  };
   function baseRot(el: HTMLElement): number {
     for (const k in ROT) if (el.classList.contains(k)) return ROT[k];
     return 0;
   }
 
   const clusters = Array.prototype.slice.call(
-    document.querySelectorAll('.sticker-cluster, .beyond-stickers')
+    document.querySelectorAll(".sticker-cluster, .beyond-stickers"),
   ) as HTMLElement[];
 
   function resetSticker(s: HTMLElement): void {
     const br = baseRot(s);
     s.style.transform = `rotate(${br}deg)`;
-    s.classList.remove('is-peeled', 'is-pulled');
+    s.classList.remove("is-peeled", "is-pulled");
     // release the animation + opacity back to CSS control (stamp/sway holds opacity:1)
-    s.style.animation = '';
-    s.style.opacity = '';
+    s.style.animation = "";
+    s.style.opacity = "";
   }
 
   const handlers: Array<{
@@ -298,14 +311,14 @@ export function initStickers(): void {
 
   clusters.forEach((cluster) => {
     const stickers = Array.prototype.slice.call(
-      cluster.querySelectorAll('.sticker')
+      cluster.querySelectorAll(".sticker"),
     ) as HTMLElement[];
     if (!stickers.length) return;
 
     // Hero stamps (.sticker-cluster) sit too close together for the magnetic
     // lean to feel good, so they peel-only on direct hover. The Beyond row
     // keeps the full lean→peel blend.
-    const allowLean = !cluster.classList.contains('sticker-cluster');
+    const allowLean = !cluster.classList.contains("sticker-cluster");
 
     // Rest-state hit geometry. Captured while NO sticker is transformed, then
     // reused for every hit-test in the session. This is what kills the jitter:
@@ -332,25 +345,28 @@ export function initStickers(): void {
         const dx = e.clientX - cx;
         const dy = e.clientY - cy;
         const dist = Math.hypot(dx, dy);
-        const over = e.clientX >= rect.left && e.clientX <= rect.right &&
-                     e.clientY >= rect.top && e.clientY <= rect.bottom;
+        const over =
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom;
         if (over) {
           const carry = allowLean ? dx * CARRY : 0;
           s.style.transform = `translate(${carry}px, ${-LIFT}px) rotate(0deg) scale(1.06)`;
-          s.classList.add('is-peeled');
-          s.classList.remove('is-pulled');
+          s.classList.add("is-peeled");
+          s.classList.remove("is-pulled");
           // override the idle/stamp animation, but keep the sticker visible
           // (base .sticker is opacity:0; only the animation's final frame shows it)
-          s.style.animation = 'none';
-          s.style.opacity = '1';
+          s.style.animation = "none";
+          s.style.opacity = "1";
         } else if (allowLean && dist < RADIUS) {
           const br = baseRot(s);
           const f = (1 - dist / RADIUS) * STRENGTH;
           s.style.transform = `translate(${dx * f}px, ${dy * f}px) rotate(${br + (dx / RADIUS) * MAXLEAN}deg) scale(1.03)`;
-          s.classList.add('is-pulled');
-          s.classList.remove('is-peeled');
-          s.style.animation = 'none';
-          s.style.opacity = '1';
+          s.classList.add("is-pulled");
+          s.classList.remove("is-peeled");
+          s.style.animation = "none";
+          s.style.opacity = "1";
         } else {
           resetSticker(s);
         }
@@ -366,21 +382,27 @@ export function initStickers(): void {
       rects = [];
     }
 
-    cluster.addEventListener('pointerenter', onEnter);
-    cluster.addEventListener('pointermove', onMove);
-    cluster.addEventListener('pointerleave', onLeave);
-    window.addEventListener('scroll', invalidate, { passive: true });
-    window.addEventListener('resize', invalidate);
-    handlers.push({ el: cluster, enter: onEnter, move: onMove, leave: onLeave, invalidate });
+    cluster.addEventListener("pointerenter", onEnter);
+    cluster.addEventListener("pointermove", onMove);
+    cluster.addEventListener("pointerleave", onLeave);
+    window.addEventListener("scroll", invalidate, { passive: true });
+    window.addEventListener("resize", invalidate);
+    handlers.push({
+      el: cluster,
+      enter: onEnter,
+      move: onMove,
+      leave: onLeave,
+      invalidate,
+    });
   });
 
   teardowns.push(() => {
     handlers.forEach(({ el, enter, move, leave, invalidate }) => {
-      el.removeEventListener('pointerenter', enter);
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerleave', leave);
-      window.removeEventListener('scroll', invalidate);
-      window.removeEventListener('resize', invalidate);
+      el.removeEventListener("pointerenter", enter);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
+      window.removeEventListener("scroll", invalidate);
+      window.removeEventListener("resize", invalidate);
     });
   });
 }
@@ -392,11 +414,15 @@ export function initMagnetic(): void {
   const MAX_PX = 6;
 
   const els = Array.prototype.slice.call(
-    document.querySelectorAll('[data-magnetic]')
+    document.querySelectorAll("[data-magnetic]"),
   ) as HTMLElement[];
   if (!els.length) return;
 
-  const handlers: Array<{ el: HTMLElement; move: (e: PointerEvent) => void; leave: () => void }> = [];
+  const handlers: Array<{
+    el: HTMLElement;
+    move: (e: PointerEvent) => void;
+    leave: () => void;
+  }> = [];
 
   els.forEach((el) => {
     function onMove(e: PointerEvent): void {
@@ -408,17 +434,17 @@ export function initMagnetic(): void {
       el.style.transform = `translate(${tx}px, ${ty}px)`;
     }
     function onLeave(): void {
-      el.style.transform = '';
+      el.style.transform = "";
     }
-    el.addEventListener('pointermove', onMove);
-    el.addEventListener('pointerleave', onLeave);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerleave", onLeave);
     handlers.push({ el, move: onMove, leave: onLeave });
   });
 
   teardowns.push(() => {
     handlers.forEach(({ el, move, leave }) => {
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerleave', leave);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
     });
   });
 }
@@ -429,11 +455,15 @@ export function initTilt(): void {
   const MAX_DEG = 3;
 
   const els = Array.prototype.slice.call(
-    document.querySelectorAll('[data-tilt]')
+    document.querySelectorAll("[data-tilt]"),
   ) as HTMLElement[];
   if (!els.length) return;
 
-  const handlers: Array<{ el: HTMLElement; move: (e: PointerEvent) => void; leave: () => void }> = [];
+  const handlers: Array<{
+    el: HTMLElement;
+    move: (e: PointerEvent) => void;
+    leave: () => void;
+  }> = [];
 
   els.forEach((el) => {
     function onMove(e: PointerEvent): void {
@@ -445,17 +475,17 @@ export function initTilt(): void {
       el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
     }
     function onLeave(): void {
-      el.style.transform = '';
+      el.style.transform = "";
     }
-    el.addEventListener('pointermove', onMove);
-    el.addEventListener('pointerleave', onLeave);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerleave", onLeave);
     handlers.push({ el, move: onMove, leave: onLeave });
   });
 
   teardowns.push(() => {
     handlers.forEach(({ el, move, leave }) => {
-      el.removeEventListener('pointermove', move);
-      el.removeEventListener('pointerleave', leave);
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerleave", leave);
     });
   });
 }
@@ -463,7 +493,7 @@ export function initTilt(): void {
 export function initScrollVelocity(): void {
   if (reduce) return; // fine-pointer NOT required — touch scroll also applies
 
-  const track = document.querySelector('.marquee') as HTMLElement | null;
+  const track = document.querySelector(".marquee") as HTMLElement | null;
   if (!track) return;
 
   const MAX_SKEW = 4;
@@ -475,7 +505,7 @@ export function initScrollVelocity(): void {
   function loop(): void {
     velocity *= DECAY;
     const skew = Math.max(-MAX_SKEW, Math.min(MAX_SKEW, velocity));
-    track!.style.setProperty('--mq-skew', `${skew}deg`);
+    track!.style.setProperty("--mq-skew", `${skew}deg`);
     rafId = requestAnimationFrame(loop);
   }
 
@@ -486,12 +516,12 @@ export function initScrollVelocity(): void {
   }
 
   rafId = requestAnimationFrame(loop);
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener("scroll", onScroll, { passive: true });
 
   teardowns.push(() => {
     cancelAnimationFrame(rafId);
-    window.removeEventListener('scroll', onScroll);
-    if (track) track.style.removeProperty('--mq-skew');
+    window.removeEventListener("scroll", onScroll);
+    if (track) track.style.removeProperty("--mq-skew");
   });
 }
 

@@ -35,9 +35,10 @@
 }
 @media (hover: hover) and (pointer: fine) {
   .prose a {
-    transition: text-decoration-color var(--dur-fast) var(--ease-out),
-                text-underline-offset var(--dur-fast) var(--ease-out),
-                color var(--dur-fast) var(--ease-out);
+    transition:
+      text-decoration-color var(--dur-fast) var(--ease-out),
+      text-underline-offset var(--dur-fast) var(--ease-out),
+      color var(--dur-fast) var(--ease-out);
   }
   .prose a:hover {
     color: var(--accent-2);
