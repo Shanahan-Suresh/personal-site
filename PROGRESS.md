@@ -1,52 +1,42 @@
-# Plan: personal-site interactivity pass ("Masterclass")
+# personal-site — Refinement pass: Progress
 
-## Goal
-Add a JS signature layer (stickers lean→peel, magnetic CTAs, tilt cards, custom cursor,
-scroll-velocity marquee) plus CSS hover polish across tags, prose links, principles
-ghost nums, marquee items, and nav monogram to the Astro 5 + Tailwind 4 neobrutalist site.
+Source plan: `C:\Users\User\.claude\plans\have-a-look-at-binary-treasure.md` (read for context; this file is the live state).
 
-## Steps
-- [x] A — initStickers (merged lean→peel) + CSS state/fallback in components.css + motion.css line-200 change
-- [x] C — CSS breadth polish (C1 tags lift, C2 prose link, C3 principles ghost-num, C4 marquee+nav, C5 cursor styles)
-- [x] B1 + B4 — initMagnetic (Hero + Contact data-magnetic) + initScrollVelocity (--mq-skew on .marquee)
-- [x] B2 + B3 — initTilt (data-tilt on ProjectCard/BentoTile) + initCustomCursor
-- [x] Build — npm run build passes 0 errors 0 warnings
+**Update protocol (for Claude):** tick items the moment they land. Checkpoint before stopping/compacting/usage running out. On resume: read this file first.
 
-## Key files
-- src/scripts/home-interactions.ts — all new JS modules go here; wire into init() at line 254
-- src/styles/components.css — sticker states, tag lift, [data-tilt] guard, marquee-item, cursor styles
-- src/styles/motion.css — line 200: remove cluster hover pause, keep is-paused
-- src/styles/prose.css — prose link hover (line 30 area)
-- src/components/Hero.astro — add data-magnetic to "See what I build" btn
-- src/components/Contact.astro — add data-magnetic to "Email me" btn
-- src/components/ProjectCard.astro — add data-tilt to Card
-- src/components/BentoTile.astro — add data-tilt to Card
-- src/components/Nav.astro — monogram hover in scoped styles
-- src/components/Principles.astro — ghost-num inside .card via BentoTile
+Legend: `[x]` done · `[~]` partial · `[ ]` not started · `[-]` deferred
+
+Last updated: 2026-08-22
+
+---
+
+## M1 — Fix-ups
+- [x] 1a Commit WIP (About em-pop), reset this file
+- [ ] 1b CSP allows Cloudflare Web Analytics beacon (`public/_headers`)
+- [ ] 1c Skip-to-content link (`BaseLayout.astro`, `components.css`)
+- [ ] 1d `/writing` pages get `noindex` (`BaseHead.astro`, `BaseLayout.astro`, writing pages)
+- [ ] 1e Footer: Source / Colophon / build hash (`Footer.astro`, `site-config.ts`)
+- [ ] 1f Tests for 1c–1e in `tests/home.spec.ts`
+
+## M2 — Open-source + colophon
+- [ ] 3a Delete stale `docs/*`, add `LICENSE` (MIT code, content reserved), README polish
+- [ ] 3b CI workflow `.github/workflows/ci.yml`
+- [ ] 3c Colophon page `src/pages/colophon.astro` + `src/data/colophon.ts` + perf-budget test
+- [ ] Push, confirm Cloudflare deploy green and live
+- [ ] 3d Flip repo public (confirm with user first)
+
+## M3 — Featured cards + placeholder guard (pushed LAST)
+- [ ] 2a `featured` on `Project` type; digest + RSVP featured in `projects.ts`; dev.to link on OpenAPI→MCP card
+- [ ] 2b `src/assets/work/_placeholder-digest.svg`, `_placeholder-rsvp.svg`
+- [ ] 2c Featured variant in `ProjectCard.astro` (wide card, framed `<Image>`)
+- [ ] 2d `scripts/guard-placeholders.mjs` wired into `npm run build`; Playwright placeholder test
+- [ ] 2e Swap procedure documented in CLAUDE.md + README
+- [ ] Push; confirm Cloudflare build FAILS on guard, prod still serves previous deploy
 
 ## Decisions made
-- Principles ghost-num: BentoTile renders .card via Card.astro; use .card:hover .ghost-num in components.css
-- Nav monogram: Nav.astro already has (hover:hover) block; add rotate + color shift to nav-wordmark:hover
-- Beyond stickers: .beyond-stickers row covered by initStickers()
-- Marquee skew: set skewX(var(--mq-skew, 0deg)) via transform on .marquee-track CSS var alongside keyframe
+- Placeholder guard fails the build outright (no silent downgrade); M3 is last so M1/M2 go live first.
+- SiteMedic not added (still in testing). `/writing` stays hidden; dev.to article linked from colophon + project card.
+- Author email stays in git history unless user asks for a mailmap rewrite before 3d.
 
 ## Open questions / blockers
-- (none)
-
-## Backlog — work-section imagery (deferred 2026-06-27)
-Decision: whether to introduce visuals into the (currently text-only) work section.
-The section's strength is its uniform `grid-2` of text cards, so a lone image on one
-card reads as unfinished. Treat as "imagery as a pattern or not", not "one image".
-
-- [ ] Preferred direction: **hybrid featured-card** — promote 1–2 projects to a wider
-      card with a framed visual; rest stay compact text cards. Unified neobrutalist
-      framing (hard border + offset shadow, fixed aspect ratio, `object-fit: cover`).
-- [ ] **Lead visual: AI-curated digest** — the generated "Tech Scout Digest" email.
-      Best artifact (shows real output, zero confidentiality risk, paper palette matches).
-      Must crop tight to the email column and remove Gmail chrome before use.
-- [ ] **RSVP "Seamless Enrolment" landing** — strongest-looking UI, but shows Sunway
-      branding/event names/live counts. Only after anonymizing (blur logo, generic event
-      names, scrub numbers) or getting sign-off. Lower risk than the dashboard.
-- [ ] Skip OHSE (not impressive + sensitive). Censorit only if sample art is safe/censored
-      in-frame (NSFW risk). Pixiv queue optional/low-stakes.
-- [ ] On green-light: build the featured-card layout + image framing to match the system.
+- While placeholders exist on `main`, CI is red and Cloudflare cannot deploy. By design. Swap images to unblock.
