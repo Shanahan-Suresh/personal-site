@@ -102,6 +102,13 @@ so Cloudflare can never deploy a placeholder. For a local build while images are
 `ALLOW_PLACEHOLDERS=1 npm run build` (PowerShell: `$env:ALLOW_PLACEHOLDERS=1; npm run build`).
 See `CLAUDE.md` for the swap procedure.
 
+## Security
+
+Static output, no secrets, no forms. `public/_headers` ships a CSP whose `script-src` allows inline
+scripts by sha256 hash only (`scripts/csp-hashes.mjs` writes the hashes at the end of every build),
+plus HSTS, COOP, `frame-ancestors 'none'` and a Permissions-Policy. CI has a read-only token and
+SHA-pinned actions; Dependabot watches npm and actions weekly. See `SECURITY.md` to report an issue.
+
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request to `main`: `npm ci`, `format:check`,

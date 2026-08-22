@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      astro:
+        patterns:
+          - "astro"
+          - "@astrojs/*"
+      tooling:
+        patterns:
+          - "prettier*"
+          - "typescript"
+          - "@playwright/test"
+          - "tailwindcss"
+          - "@tailwindcss/*"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday

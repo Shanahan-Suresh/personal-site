@@ -23,7 +23,7 @@ personal site, not a resume.
 ```bash
 npm install
 npm run dev          # dev server → http://localhost:4321
-npm run build        # astro check + placeholder guard + static build → ./dist
+npm run build        # astro check + placeholder guard + static build + CSP hashes → ./dist
 npm run guard        # placeholder guard on its own (see "Placeholder images")
 npm run preview      # preview the production build
 npm run check        # type-check only (astro check)
@@ -123,6 +123,22 @@ whose filename starts with `_placeholder-`. That prefix is the single source of 
 **Swap procedure:** drop the real image (PNG/JPG/WebP, 16:10, at least 1040px wide) into
 `src/assets/work/` with a normal name (`digest.png`), change the import line in `projects.ts`, delete the
 `_placeholder-*.svg` file, run `npm run build` with no override. Green build = safe to push.
+
+## Security posture (keep it this way)
+
+- Static site, no secrets in the repo or its history, no forms, no user content. `SECURITY.md` is the
+  public statement; keep it true.
+- `public/_headers` is a template: `scripts/csp-hashes.mjs` runs at the end of `npm run build` and
+  replaces `__CSP_SCRIPT_HASHES__` with sha256 hashes of every inline `<script>` in `dist/*.html`.
+  `script-src` has **no `'unsafe-inline'`**; the build fails if it ever does. Adding a new inline
+  script needs nothing from you (it gets hashed); adding a new third-party script origin means
+  editing the CSP in `public/_headers` deliberately.
+- CI runs with `permissions: contents: read` and SHA-pinned actions. Dependabot (`.github/dependabot.yml`)
+  opens weekly PRs for npm and actions. Repo settings: secret scanning + push protection, Dependabot
+  alerts and security updates, private vulnerability reporting, branch `main` protected from
+  force-push and deletion.
+- Cloudflare dashboard settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP),
+  Pages preview builds only from this repo's branches (never from forks).
 
 ## Git / deployment
 
