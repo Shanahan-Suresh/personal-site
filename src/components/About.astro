@@ -20,7 +20,7 @@ import BentoTile from "./BentoTile.astro";
             </p>
             <p>
               These days, I think of myself as a product engineer more than just a programmer. 
-              I enjoy building systems, but I care just as much about the experience around them. The best products don't just work, they should feel <em>right</em>.
+              I enjoy building systems, but I care just as much about the experience around them. The best products don't just work, they should feel <em class="em-pop">right</em>.
             </p>
             <p>
               I'm also a tad obsessive over polish. If I spot a rough edge or bug, it's hard to ignore. Once noticed, it becomes my problem.
@@ -53,6 +53,16 @@ import BentoTile from "./BentoTile.astro";
 </section>
 
 <style>
+  /* "right" emphasis — no italic is loaded for Archivo, so <em>'s default
+     renders as a faux (skewed) slant. Drop the italic and emphasise with a
+     real heavier weight off the variable axis + the coral accent instead. */
+  .em-pop {
+    font-style: normal;
+    color: var(--accent-2);
+    font-weight: 700;
+    letter-spacing: 0.005em;
+  }
+
   /* "Hello World" styled as a tiny terminal chip — green-on-black with a shell
      prompt and a blinking block cursor. Always dark regardless of theme, since a
      terminal reads as a terminal precisely because it's dark on the warm paper. */
