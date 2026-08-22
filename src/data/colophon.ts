@@ -47,7 +47,7 @@ export interface StackItem {
 
 export const stack: StackItem[] = [
   {
-    name: "Astro 5",
+    name: "Astro 7",
     detail: "Fully static output. Every page is HTML at build time.",
     path: "astro.config.mjs",
   },

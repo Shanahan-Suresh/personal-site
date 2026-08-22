@@ -20,8 +20,9 @@ a few days. Fixes ship as normal commits; there is no bounty.
 
 - Secrets: the repo contains none and never has (history scanned). Cloudflare Web Analytics is
   injected at the edge; its token is not in this repo.
-- Dependencies: Dependabot watches npm and GitHub Actions weekly. `npm audit` findings that only
-  apply to features this site does not use (server islands, `define:vars`, the dev server, image
-  decoding of untrusted files) are tracked but not treated as live risk.
+- Dependencies: Dependabot watches npm and GitHub Actions weekly. `npm audit` is clean as of the
+  Astro 7 upgrade (Aug 2026). Future findings that only apply to features this site does not use
+  (server islands, `define:vars`, the dev server, image decoding of untrusted files) are tracked
+  but not treated as live risk.
 - CI: the workflow runs with read-only token permissions, uses SHA-pinned actions, and has no
   secrets to leak.

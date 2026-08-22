@@ -20,7 +20,7 @@ from. The code is MIT; the copy, project descriptions and images are not license
 
 ## Tech stack
 
-- **[Astro 5](https://astro.build/)** — static site generator (`output: 'static'`)
+- **[Astro 7](https://astro.build/)** — static site generator (`output: 'static'`)
 - **[Tailwind CSS 4](https://tailwindcss.com/)** — CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/`, split across `tokens.css`/`components.css`/`motion.css`/`prose.css` and aggregated by `global.css`)
 - **MDX** (`@astrojs/mdx`) — blog/writing content
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)

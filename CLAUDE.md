@@ -11,7 +11,7 @@ personal site, not a resume.
 
 ## Stack
 
-- **Astro 5**, `output: 'static'` (see `astro.config.mjs`). Builds to `./dist`.
+- **Astro 7**, `output: 'static'` (see `astro.config.mjs`). Builds to `./dist`.
 - **Tailwind CSS 4**, config-less, wired via `@tailwindcss/vite`. There is **no `tailwind.config.js`** —
   the entire theme (design tokens + component classes) lives in `src/styles/`, split into `tokens.css`,
   `components.css`, `motion.css`, and `prose.css`, all imported by `global.css`.
