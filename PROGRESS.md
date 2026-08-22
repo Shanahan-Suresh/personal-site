@@ -6,7 +6,7 @@ Source plan: `C:\Users\User\.claude\plans\have-a-look-at-binary-treasure.md` (re
 
 Legend: `[x]` done · `[~]` partial · `[ ]` not started · `[-]` deferred
 
-Last updated: 2026-08-23
+Last updated: 2026-08-23 (security pass)
 
 ---
 
@@ -36,6 +36,15 @@ Last updated: 2026-08-23
 - [x] 2d `scripts/guard-placeholders.mjs` wired into `npm run build`; Playwright placeholder test
 - [x] 2e Swap procedure documented in CLAUDE.md + README
 - [x] Pushed c56b5d8; CI fails on guard as designed, prod still serves build 17a20fc, zero placeholders live
+
+## M4 — Security pass (2026-08-23)
+
+- [x] Secret scan of full history (none), `npm audit` clean after Astro 7 upgrade
+- [x] CSP: script-src by sha256 hash via `scripts/csp-hashes.mjs` (post-build), no unsafe-inline; COOP added
+- [x] CI: `permissions: contents: read`, SHA-pinned actions; `.github/dependabot.yml`; `SECURITY.md`
+- [x] Repo settings via API: secret scanning + push protection, Dependabot alerts/updates, private vuln reporting, verified actions only + SHA pinning required, main protected from force-push/deletion, projects off
+- [ ] Cloudflare dashboard (manual, no API token here): Rocket Loader OFF; Pages preview builds from own branches only; consider HSTS preload later
+- Note: every deploy (incl. Dependabot PRs) stays red on the placeholder guard until real images land. CSP hardening reaches production with that same push.
 
 ## Decisions made
 
