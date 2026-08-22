@@ -8,9 +8,17 @@ interface Props {
   pubDate?: Date;
   tags?: string[];
   canonicalUrl?: string;
+  noindex?: boolean;
 }
 
-const { title, description, pubDate, tags, canonicalUrl } = Astro.props;
+const {
+  title,
+  description,
+  pubDate,
+  tags,
+  canonicalUrl,
+  noindex = false,
+} = Astro.props;
 const formattedDate = pubDate ? formatPostDateLong(pubDate) : null;
 ---
 
@@ -18,6 +26,7 @@ const formattedDate = pubDate ? formatPostDateLong(pubDate) : null;
   title={`${title} — Shanahan Suresh`}
   description={description}
   canonical={canonicalUrl}
+  noindex={noindex}
 >
   <div class="container section">
     <div class="narrow">
