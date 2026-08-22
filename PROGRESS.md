@@ -26,7 +26,7 @@ Last updated: 2026-08-23
 - [x] 3c Colophon page `src/pages/colophon.astro` + `src/data/colophon.ts` + perf-budget test
 - [x] Push, confirm Cloudflare deploy green and live (colophon 200, footer build 9f32ac6)
 - [x] Prettier pass so CI format:check is green
-- [ ] 3d Flip repo public (confirm with user first)
+- [x] 3d Repo public since 2026-08-23, description + homepage set
 
 ## M3 — Featured cards + placeholder guard (pushed LAST)
 
@@ -35,7 +35,7 @@ Last updated: 2026-08-23
 - [x] 2c Featured variant in `ProjectCard.astro` (wide card, framed `<Image>`)
 - [x] 2d `scripts/guard-placeholders.mjs` wired into `npm run build`; Playwright placeholder test
 - [x] 2e Swap procedure documented in CLAUDE.md + README
-- [ ] Push; confirm Cloudflare build FAILS on guard, prod still serves previous deploy
+- [x] Pushed c56b5d8; CI fails on guard as designed, prod still serves build 17a20fc, zero placeholders live
 
 ## Decisions made
 
