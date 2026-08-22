@@ -132,7 +132,9 @@ test("corporate-work cards render multiple .project-desc paragraphs; personal ca
   await page.goto("/");
 
   // Assert "TODO SPLIT IN PARAGRAPHS" does not appear anywhere on the page
-  await expect(page.locator("body")).not.toContainText("TODO SPLIT IN PARAGRAPHS");
+  await expect(page.locator("body")).not.toContainText(
+    "TODO SPLIT IN PARAGRAPHS",
+  );
 
   // Locate the Corporate work section label, then find its sibling project cards.
   // The section-label text is "Corporate work"; project cards follow in the same grid.
@@ -151,7 +153,10 @@ test("corporate-work cards render multiple .project-desc paragraphs; personal ca
     // Must have more than one .project-desc paragraph
     const descs = card.locator(".project-desc");
     const count = await descs.count();
-    expect(count, `Expected multiple .project-desc in card "${title}"`).toBeGreaterThan(1);
+    expect(
+      count,
+      `Expected multiple .project-desc in card "${title}"`,
+    ).toBeGreaterThan(1);
   }
 
   // A personal-section card should still have exactly one .project-desc
@@ -186,7 +191,9 @@ test.describe("reduced motion", () => {
 });
 
 // ── 8. Scrolled-nav ───────────────────────────────────────────────────────────
-test("scrolled-nav: scrolling down adds is-scrolled to .nav-header; scrolling to top removes it", async ({ page }) => {
+test("scrolled-nav: scrolling down adds is-scrolled to .nav-header; scrolling to top removes it", async ({
+  page,
+}) => {
   await page.goto("/");
   const header = page.locator(".nav-header");
   await expect(header).not.toHaveClass(/is-scrolled/);
@@ -199,7 +206,9 @@ test("scrolled-nav: scrolling down adds is-scrolled to .nav-header; scrolling to
 });
 
 // ── 9. Scroll-spy ─────────────────────────────────────────────────────────────
-test("scroll-spy: scrolling to #work section activates the Work nav link", async ({ page }) => {
+test("scroll-spy: scrolling to #work section activates the Work nav link", async ({
+  page,
+}) => {
   await page.goto("/");
   await page.locator("#work").scrollIntoViewIfNeeded();
   await page.waitForTimeout(300);
@@ -209,7 +218,70 @@ test("scroll-spy: scrolling to #work section activates the Work nav link", async
 });
 
 // ── 10. Hero entrance ─────────────────────────────────────────────────────────
-test("hero entrance: .hero-section gets hero-loaded class after page load", async ({ page }) => {
+test("hero entrance: .hero-section gets hero-loaded class after page load", async ({
+  page,
+}) => {
   await page.goto("/");
-  await expect(page.locator(".hero-section")).toHaveClass(/hero-loaded/, { timeout: 3000 });
+  await expect(page.locator(".hero-section")).toHaveClass(/hero-loaded/, {
+    timeout: 3000,
+  });
+});
+
+// ── Skip link ────────────────────────────────────────────────────────────────
+test("skip link is the first tab stop and jumps focus to <main>", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const skip = page.locator("a.skip-link");
+  await expect(skip).toHaveAttribute("href", "#main");
+
+  await page.keyboard.press("Tab");
+  await expect(skip).toBeFocused();
+  // Focused: the link slides into view (it is parked above the viewport
+  // otherwise). Poll, because the slide is a short CSS transition.
+  await expect
+    .poll(async () => (await skip.boundingBox())?.y ?? -1)
+    .toBeGreaterThanOrEqual(0);
+
+  await page.keyboard.press("Enter");
+  await expect(page.locator("main#main")).toBeFocused();
+});
+
+// ── Footer links ─────────────────────────────────────────────────────────────
+test("footer links to the colophon, the source repo, and the build commit", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const footer = page.locator(".site-footer");
+  await expect(footer.locator('a[href="/colophon"]')).toBeVisible();
+  await expect(
+    footer.locator(
+      'a[href="https://github.com/Shanahan-Suresh/personal-site"]',
+    ),
+  ).toBeVisible();
+  const build = footer.locator("a.footer-build");
+  await expect(build).toHaveText(/build [0-9a-f]{7}/);
+  await expect(build).toHaveAttribute(
+    "href",
+    /github\.com\/Shanahan-Suresh\/personal-site\/commit\/[0-9a-f]{40}/,
+  );
+});
+
+// ── /writing is parked: noindex, not in nav ─────────────────────────────────
+test("writing pages carry noindex while the section is parked", async ({
+  page,
+}) => {
+  await page.goto("/writing/");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+  await page.goto("/writing/hello/");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+  await page.goto("/");
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+  await expect(page.locator('a.nav-link[href^="/writing"]')).toHaveCount(0);
 });

@@ -1,11 +1,58 @@
 ---
 import { site } from "@/lib/site-config";
+import { execSync } from "node:child_process";
+
 const year = new Date().getFullYear();
+
+/* Build identity, resolved once at build time (static output, never at runtime).
+   Cloudflare Pages exposes the deployed commit; local builds fall back to git.
+   Either way the footer links to the exact commit that produced this page. */
+function resolveCommit(): string | null {
+  const fromEnv = process.env.CF_PAGES_COMMIT_SHA;
+  if (fromEnv) return fromEnv;
+  try {
+    return execSync("git rev-parse HEAD", {
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+      .toString()
+      .trim();
+  } catch {
+    return null;
+  }
+}
+const commit = resolveCommit();
+const shortSha = commit ? commit.slice(0, 7) : null;
 ---
 
 <footer class="site-footer">
-  <div class="container">
+  <div class="container footer-inner">
     <p class="mono footer-text">&copy; {year} {site.name}</p>
+    <ul class="footer-links" role="list">
+      <li><a href="/colophon" class="mono footer-link">Colophon</a></li>
+      <li>
+        <a
+          href={site.repo}
+          class="mono footer-link"
+          target="_blank"
+          rel="noopener noreferrer">Source ↗</a
+        >
+      </li>
+      {
+        shortSha && (
+          <li>
+            <a
+              href={`${site.repo}/commit/${commit}`}
+              class="mono footer-link footer-build"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Commit this page was built from"
+            >
+              build {shortSha}
+            </a>
+          </li>
+        )
+      }
+    </ul>
   </div>
 </footer>
 
@@ -18,11 +65,46 @@ const year = new Date().getFullYear();
     padding-bottom: calc(var(--space-7) + env(safe-area-inset-bottom));
   }
 
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+  }
+
   .footer-text {
     font-size: var(--fs-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--paper);
     opacity: 0.75;
+  }
+
+  .footer-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+  }
+
+  .footer-link {
+    color: var(--paper);
+    opacity: 0.75;
+    border-bottom: 2px solid transparent;
+    transition:
+      opacity var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+  .footer-build {
+    opacity: 0.5;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .footer-link:hover {
+      opacity: 1;
+      border-bottom-color: var(--accent-pop);
+    }
   }
 </style>
