@@ -2,23 +2,30 @@
 # static assets). Security headers for the whole site, plus long-cache for the
 # content-hashed build assets.
 #
-# CSP note: script-src/style-src allow 'unsafe-inline' because the site ships an
-# inline theme pre-paint script (BaseLayout) and inline style attributes (reveal
-# --d delays, font-face block). There is no third-party script, form POST, or
-# user-reflected content, so the practical XSS surface is ~nil. Tightening to
-# nonces/hashes is a future iteration, not a v1 blocker.
-#
-# The only third-party origin is Cloudflare Web Analytics: its beacon script is
-# injected by Cloudflare at the edge (static.cloudflareinsights.com) and posts
-# to cloudflareinsights.com, so both are allow-listed explicitly.
+# CSP notes:
+# - script-src has NO 'unsafe-inline'. The two inline scripts the site ships
+#   (pre-paint theme snippet, inlined theme-toggle module) are allowed by
+#   sha256 hash. `scripts/csp-hashes.mjs` runs at the end of `npm run build`,
+#   hashes the inline bodies found in dist/*.html and replaces the hashes
+#   token in the script-src below, in dist/_headers only. Any other inline
+#   script is blocked by the browser. Do not hand-edit the hashes.
+# - style-src keeps 'unsafe-inline' because the reveal stagger uses inline
+#   style attributes (--d delays) and Astro inlines small stylesheets. There
+#   is no user-reflected content anywhere, so CSS injection has no vector.
+# - The only third-party origin is Cloudflare Web Analytics: its beacon script
+#   is injected by Cloudflare at the edge (static.cloudflareinsights.com) and
+#   posts to cloudflareinsights.com, so both are allow-listed explicitly.
+# - If Cloudflare "Rocket Loader" is ever switched on for the zone it will
+#   rewrite scripts and break this CSP. Leave it off.
 
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
+  Cross-Origin-Opener-Policy: same-origin
   Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; script-src 'self' __CSP_SCRIPT_HASHES__ https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; frame-ancestors 'none'; form-action 'self'; upgrade-insecure-requests
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

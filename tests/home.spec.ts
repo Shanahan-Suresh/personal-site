@@ -334,3 +334,23 @@ test("no placeholder image is rendered", async ({ page }) => {
   const placeholders = page.locator('img[src*="placeholder"]');
   await expect(placeholders).toHaveCount(0);
 });
+
+// ── CSP: hashed inline scripts, no unsafe-inline ────────────────────────────
+// Cloudflare applies dist/_headers; astro preview does not, so assert on the
+// file the build produced rather than on a response header.
+test("built _headers carries a hash for every inline script and no unsafe-inline in script-src", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { createHash } = await import("node:crypto");
+  const headers = readFileSync("dist/_headers", "utf8");
+  const csp = /Content-Security-Policy:\s*(.+)/.exec(headers)?.[1] ?? "";
+  const scriptSrc = /script-src\s+([^;]+)/.exec(csp)?.[1] ?? "";
+  expect(scriptSrc).not.toContain("unsafe-inline");
+  expect(scriptSrc).not.toContain("__CSP_SCRIPT_HASHES__");
+
+  const html = readFileSync("dist/index.html", "utf8");
+  const inline = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
+    .filter(([, attrs]) => !/\bsrc=/.test(attrs) && !/ld\+json/.test(attrs))
+    .map(([, , body]) => createHash("sha256").update(body).digest("base64"));
+  expect(inline.length).toBeGreaterThan(0);
+  for (const h of inline) expect(scriptSrc).toContain(`'sha256-${h}'`);
+});

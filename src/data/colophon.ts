@@ -78,7 +78,7 @@ export const stack: StackItem[] = [
   {
     name: "Cloudflare Pages",
     detail:
-      "Static deploy with CSP, HSTS and Permissions-Policy headers set in a _headers file.",
+      "Static deploy behind CSP (inline scripts allowed by hash only), HSTS, COOP and Permissions-Policy headers set in a _headers file.",
     path: "public/_headers",
   },
 ];
