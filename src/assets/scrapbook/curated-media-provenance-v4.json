@@ -1,0 +1,473 @@
+{
+  "description": "Retained museum images, portrait preparation and source-based app capture records.",
+  "reuse": {
+    "museum_assets": "Reuse under the linked public-domain or CC0 Open Access policies. Artist and museum credits are recorded with each source.",
+    "portrait_and_project_screenshots": "Museum-image reuse permission does not license the owner portrait or project screenshots for general reuse."
+  },
+  "museum_originals": [
+    {
+      "filename": "met-astrolabe-1291-v4.jpg",
+      "title": "Astrolabe of ‘Umar ibn Yusuf ibn ‘Umar ibn ‘Ali ibn Rasul al-Muzaffari",
+      "artist": "‘Umar ibn Yusuf ibn ‘Umar ibn ‘Ali ibn Rasul al-Muzaffari",
+      "date": "dated 690 AH/1291 CE",
+      "museum": "The Metropolitan Museum of Art",
+      "object_id": "444408",
+      "object_number": "91.1.535a–h",
+      "page_url": "https://www.metmuseum.org/art/collection/search/444408",
+      "image_url": "https://images.metmuseum.org/CRDImages/is/original/DP170386.jpg",
+      "license": "Public domain; The Met Open Access (CC0)",
+      "license_url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "credit_line": "Edward C. Moore Collection, Bequest of Edward C. Moore, 1891",
+      "sha256": "ebb29384c49cfd5882179b4f56cbb581de8e7c370effee245288241ad15026b3",
+      "bytes": 1604887,
+      "dimensions": [2995, 4000],
+      "download_final_url": "https://images.metmuseum.org/CRDImages/is/original/DP170386.jpg",
+      "content_type": "image/jpeg",
+      "asset": "scrapbook/curated-sources/met-astrolabe-1291-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "filename": "kuniyoshi-takiyasha-triptych-v4.jpg",
+      "title": "Princess Takiyasha Calling up a Monstrous Skeleton Specter at the Old Palace in Soma",
+      "artist": "Utagawa Kuniyoshi",
+      "date": "c. 1845–46",
+      "museum": "Tokyo Fuji Art Museum",
+      "object_id": "09164",
+      "page_url": "https://www.fujibi.or.jp/en/collection/artwork/09164/",
+      "image_url": "https://www.fujibi.or.jp/assets/images/artwork/source/09164.jpg",
+      "license": "CC0 public domain digital image; public-domain original work",
+      "license_url": "https://www.fujibi.or.jp/en/collection/artwork/09164/#modalLicense",
+      "credit_line": "Tokyo Fuji Art Museum Collection",
+      "sha256": "9dbcd11fd6f28ebf8868e758b9d860858397ef071ae1884277a0972e7afb1846",
+      "bytes": 197566,
+      "dimensions": [950, 464],
+      "download_final_url": "https://www.fujibi.or.jp/assets/images/artwork/source/09164.jpg",
+      "content_type": "image/jpeg",
+      "asset": "scrapbook/curated-sources/kuniyoshi-takiyasha-triptych-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "filename": "rodin-age-of-bronze-v4.jpg",
+      "title": "The Age of Bronze (L'Age d'airain)",
+      "artist": "Auguste Rodin; cast by Alexis Rudier",
+      "date": "modeled 1876, cast ca. 1906",
+      "museum": "The Metropolitan Museum of Art",
+      "object_id": "189265",
+      "object_number": "07.127",
+      "page_url": "https://www.metmuseum.org/art/collection/search/189265",
+      "image_url": "https://images.metmuseum.org/CRDImages/es/original/DP-13618-001.jpg",
+      "license": "Public domain; The Met Open Access (CC0)",
+      "license_url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "credit_line": "Gift of Mrs. John W. Simpson, 1907",
+      "sha256": "30bc268041ef17dda18cc5ab53a30478aa9822043401ab2b3ae906e5ca2040a9",
+      "bytes": 1493993,
+      "dimensions": [2668, 4000],
+      "download_final_url": "https://images.metmuseum.org/CRDImages/es/original/DP-13618-001.jpg",
+      "content_type": "image/jpeg",
+      "asset": "scrapbook/curated-sources/rodin-age-of-bronze-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "filename": "hiroshige-shono-v4.jpg",
+      "title": "Fifty-three Stations on the Tokaido: Evening Squall at Shono",
+      "artist": "Utagawa Hiroshige",
+      "date": "1833–34",
+      "museum": "Tokyo Fuji Art Museum",
+      "object_id": "04366",
+      "page_url": "https://www.fujibi.or.jp/en/collection/artwork/04366/",
+      "image_url": "https://www.fujibi.or.jp/assets/images/artwork/source/04366.jpg",
+      "license": "CC0 public domain digital image; public-domain original work",
+      "license_url": "https://www.fujibi.or.jp/en/collection/artwork/04366/#modalLicense",
+      "credit_line": "Tokyo Fuji Art Museum Collection",
+      "sha256": "0cb180b31e9c1ef4489a4ae0b10fcfb1d409d1d6633ce686b496b6eb387c89c6",
+      "bytes": 324561,
+      "dimensions": [950, 620],
+      "download_final_url": "https://www.fujibi.or.jp/assets/images/artwork/source/04366.jpg",
+      "content_type": "image/jpeg",
+      "asset": "scrapbook/curated-sources/hiroshige-shono-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "filename": "vermeer-woman-holding-balance-v4.jpg",
+      "title": "Woman Holding a Balance",
+      "artist": "Johannes Vermeer",
+      "date": "c. 1664",
+      "museum": "National Gallery of Art",
+      "object_id": "1236",
+      "object_number": "1942.9.97",
+      "page_url": "https://www.nga.gov/artworks/1236-woman-holding-balance",
+      "image_url": "https://api.nga.gov/iiif/c948cf32-e6c7-41a0-a053-0ad0562960c4/full/full/0/default.jpg?attachment_filename=woman_holding_a_balance_1942.9.97.jpg",
+      "license": "Public domain; National Gallery of Art Open Access (CC0)",
+      "license_url": "https://www.nga.gov/terms-and-notices",
+      "credit_line": "Widener Collection; Courtesy National Gallery of Art, Washington",
+      "sha256": "d5b54e4b041c2c9945170cf39007618ce5dc8bd8161860ec595fb98d6e133d4e",
+      "bytes": 3261830,
+      "dimensions": [3620, 4096],
+      "download_final_url": "https://api.nga.gov/iiif/c948cf32-e6c7-41a0-a053-0ad0562960c4/full/full/0/default.jpg?attachment_filename=woman_holding_a_balance_1942.9.97.jpg",
+      "content_type": "image/jpeg",
+      "asset": "scrapbook/curated-sources/vermeer-woman-holding-balance-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "filename": "cabanel-birth-of-venus-1875-v4.jpg",
+      "title": "The Birth of Venus",
+      "artist": "Alexandre Cabanel",
+      "date": "1875",
+      "museum": "The Metropolitan Museum of Art",
+      "object_id": "435831",
+      "object_number": "94.24.1",
+      "page_url": "https://www.metmuseum.org/art/collection/search/435831",
+      "image_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-22432-001.jpg",
+      "license": "Public domain; The Met Open Access (CC0)",
+      "license_url": "https://www.metmuseum.org/about-the-met/policies-and-documents/open-access",
+      "credit_line": "Gift of John Wolfe, 1893",
+      "sha256": "cbbdd6cda1c4fc15eb2d2ebcc0757ae1aa81a6a31153f5f7cc7d9ce28d156122",
+      "bytes": 3079040,
+      "dimensions": [4000, 2371],
+      "download_final_url": "https://images.metmuseum.org/CRDImages/ep/original/DP-22432-001.jpg",
+      "content_type": "image/jpeg",
+      "asset": "samples/cabanel-birth-of-venus-1875-v4.jpg",
+      "original_preserved_byte_for_byte": true,
+      "generative_edits": false,
+      "recolouring": false
+    }
+  ],
+  "deterministic_derivatives": [
+    {
+      "asset": "scrapbook/astrolabe-detail-v4.jpg",
+      "dimensions": [2150, 1720],
+      "bytes": 2625801,
+      "sha256": "7974d529978331b57bf05e83293d69ce3689b0e414df27fbce7bf0e423a072ef",
+      "source_asset": "scrapbook/curated-sources/met-astrolabe-1291-v4.jpg",
+      "crop_in_original_pixels": {
+        "left": 500,
+        "top": 1460,
+        "width": 2150,
+        "height": 1720
+      },
+      "encoding": {
+        "format": "JPEG",
+        "quality": 98,
+        "chroma_subsampling": "4:4:4"
+      },
+      "generative_edits": false,
+      "recolouring": false
+    },
+    {
+      "asset": "scrapbook/rodin-upper-torso-v4.jpg",
+      "dimensions": [1320, 1650],
+      "bytes": 974163,
+      "sha256": "6165174956538ea13d59f0901e3958f6a9b58ffc815bc9a5e074699c023f54e0",
+      "source_asset": "scrapbook/curated-sources/rodin-age-of-bronze-v4.jpg",
+      "crop_in_original_pixels": {
+        "left": 875,
+        "top": 280,
+        "width": 1320,
+        "height": 1650
+      },
+      "encoding": {
+        "format": "JPEG",
+        "quality": 98,
+        "chroma_subsampling": "4:4:4"
+      },
+      "generative_edits": false,
+      "recolouring": false
+    }
+  ],
+  "display_treatments": [
+    {
+      "placement": "hero",
+      "asset": "scrapbook/astrolabe-detail-v4.jpg",
+      "fit": "cover",
+      "aspect_ratio_desktop": "5:4",
+      "aspect_ratio_mobile": "16:9",
+      "caption": "A soft spot for ingenious things."
+    },
+    {
+      "placement": "anime_games_light_novels",
+      "asset": "scrapbook/curated-sources/kuniyoshi-takiyasha-triptych-v4.jpg",
+      "fit": "contain",
+      "aspect_ratio": "2:1",
+      "whole_triptych_visible": true
+    },
+    {
+      "placement": "gym",
+      "asset": "scrapbook/rodin-upper-torso-v4.jpg",
+      "fit": "cover",
+      "aspect_ratio": "4:5"
+    },
+    {
+      "placement": "travel_planning",
+      "asset": "scrapbook/curated-sources/hiroshige-shono-v4.jpg",
+      "fit": "cover",
+      "aspect_ratio": "4:3",
+      "object_position": "56% center"
+    },
+    {
+      "placement": "personal_finance",
+      "asset": "scrapbook/curated-sources/vermeer-woman-holding-balance-v4.jpg",
+      "fit": "cover",
+      "aspect_ratio": "4:3",
+      "object_position": "center 58%"
+    }
+  ],
+  "portrait": {
+    "source": {
+      "asset": "scrapbook/portrait-studio-v2.png",
+      "dimensions": [1122, 1402],
+      "bytes": 1879786,
+      "sha256": "ac6cd92767a2d06dc883cf15383a18aba5d139bfe94336c499879d0d2231250e"
+    },
+    "raw_generated_extraction": {
+      "asset": "scrapbook/portrait-extraction-source-v4.png",
+      "dimensions": [1122, 1402],
+      "bytes": 1562270,
+      "sha256": "7b24e22427be79ce719cd53027813d90da089c9049ffe685339684f7a0b48f14"
+    },
+    "active_cutout": {
+      "asset": "scrapbook/portrait-cutout-v4.png",
+      "dimensions": [1122, 1402],
+      "bytes": 2763955,
+      "sha256": "be3b894ed93c53ddcb071fcf5bd7a78664751a446943ce29aca94d6237e21d77"
+    },
+    "generated_channel_used": "alpha",
+    "generated_rgb_used": false,
+    "source_rgb_preserved_byte_for_byte": true,
+    "preparation_receipt": "design-previews/media/curated-v4/asset-preparation.json",
+    "graphic_effects": "Static CSS warm-grey background, cream silhouette outline and soft neutral shadow; no additional facial edits."
+  },
+  "project_previews": {
+    "rsvp": {
+      "asset": "work/rsvp-redesign-v4.png",
+      "dimensions": [1040, 820],
+      "bytes": 322152,
+      "sha256": "a490afa51a3a2c52821eab73c79687115dd12ed91039a5ca7c9c665ef7795a07",
+      "source_root": "D:\\Projects\\archive\\gbmc\\gbmc-enroll",
+      "caption": "From signing up to a scan at the door.",
+      "appearance": "Invitation-style redesign in isolated wrapper and capture CSS; production appearance is not represented.",
+      "source_files_preserved_byte_for_byte": 27,
+      "source_hash_manifest": "design-previews/media/rsvp/source-hashes.json",
+      "fonts": "Locally served Fraunces and Geist",
+      "company_branding_rendered": false,
+      "branding_options": {
+        "hideBrandLogo": true,
+        "qrLogoMode": "NONE"
+      },
+      "fixtures_and_assertions": {
+        "formCapture": "form-redesign-v4.jpg",
+        "confirmedCapture": "confirmed-redesign-v4-large-qr.jpg",
+        "formOriginalBounds": {
+          "width": 560,
+          "height": 759
+        },
+        "confirmedOriginalBounds": {
+          "width": 560,
+          "height": 815
+        },
+        "validation": {
+          "requiredFields": true,
+          "invalidEmail": true
+        },
+        "submission": {
+          "guest": "Alex Morgan",
+          "email": "alex@example.com",
+          "dietary": "Vegetarian",
+          "consent": true
+        },
+        "qr": "PORTFOLIO-DEMO-TICKET",
+        "statesCapturedSeparately": true,
+        "qrCssWidth": 440,
+        "compositionDimensions": {
+          "width": 1040,
+          "height": 820
+        }
+      },
+      "capture_tool": "Codex CUA in-app browser screenshot",
+      "state_captures": [
+        {
+          "path": "design-previews/media/rsvp/public/form-redesign-v4.jpg",
+          "dimensions": [560, 759],
+          "sha256": "ddca8f221c7ac69cc4def61c10fbad92e5b9c25efb3aee3a0cb844fd4cd2b63a"
+        },
+        {
+          "path": "design-previews/media/rsvp/public/confirmed-redesign-v4-large-qr.jpg",
+          "dimensions": [560, 815],
+          "sha256": "f3ad7e6c40b5b4d2dca4f9bbc050db71310ce78075dd813996d779614016102b"
+        }
+      ],
+      "external_services_called": false,
+      "raw_composition": {
+        "path": "design-previews/media/curated-v4/rsvp-composition-v4-final.jpg",
+        "dimensions": [1040, 820],
+        "sha256": "6ee8c1350542e7023ff7fbc30b9617b81462e2871ae04eeb5ea9d5d0af810600"
+      },
+      "confirmation_presentation": {
+        "qr_svg_css_width_px": 440,
+        "qr_svg_original_viewbox_size_px": 240,
+        "encoded_qr_source_unchanged": true,
+        "success_icon": "Beside the confirmation heading",
+        "spacing": "Compact gaps; download, calendar and another-RSVP controls remain visible."
+      },
+      "qr_decode_checks": [
+        {
+          "tool": "OpenCV QRCodeDetector",
+          "image_dimensions": [1040, 820],
+          "decoded_value": "PORTFOLIO-DEMO-TICKET"
+        },
+        {
+          "tool": "OpenCV QRCodeDetector",
+          "image_dimensions": [520, 410],
+          "decoded_value": "PORTFOLIO-DEMO-TICKET"
+        },
+        {
+          "tool": "OpenCV QRCodeDetector",
+          "image_dimensions": [310, 244],
+          "decoded_value": "PORTFOLIO-DEMO-TICKET"
+        }
+      ]
+    },
+    "hr": {
+      "asset": "work/hr-redesign-v4.png",
+      "dimensions": [960, 740],
+      "bytes": 286467,
+      "sha256": "d5c7aafea67128ba4272281e3e0d2b1fc65bd0aacf7edcd5dffdcf8daf3d46d9",
+      "source_root": "D:/Projects/archive/reimagine/reimagine-front",
+      "caption": "A clearer view of the team, with less waiting around.",
+      "appearance": "Illustrative manager workspace built from the real Svelte 4 UserCategoryView and UserTiles workflow, derivative UserCard and UserPerformanceFooter presentation, and original SearchBar, DataFilter and pagination logic.",
+      "fixture": "Six synthetic team members, invented roles and organisation labels, example.com addresses, three acknowledged and three awaiting, with five KPIs created. Initials replace the source silhouette presentation.",
+      "interaction": "First two actual checkbox controls selected before capture. Search, selection, filter application/reset, pagination and Details popover verified by verify-harness.mjs.",
+      "intentional_presentation_derivatives": [
+        {
+          "path": "src/routes/manager_dashboard/(manager)/my_team/UserCategoryView.svelte",
+          "sha256": "a43d3b2047d84cc95f147e4a33aa65a3f5dc1e47d8322e5989c617be8c3269fb",
+          "deviation": "Toolbar receives a presentation CSS class. Source filtering, pagination and dispatch logic are retained."
+        },
+        {
+          "path": "src/routes/manager_dashboard/(manager)/my_team/UserCard.svelte",
+          "sha256": "2984fb8b5aafb924ba03e584c53f8b6649de118a005f8b00aaa4bf62eb2fdd1a",
+          "deviation": "Derivative presentation uses initials, compact identity, explicit KPI state and an accessible selection label. Source checkbox handler and account-link constants are retained."
+        },
+        {
+          "path": "src/routes/manager_dashboard/(manager)/my_team/UserPerformanceFooter.svelte",
+          "sha256": "1095eefed21446bbfaf06d732f1922e7bd440c98029f41d523d470f004c9ff31",
+          "deviation": "Derivative presentation uses local meaningful icons and compact inline acknowledgement wording. The acknowledged boolean controls the same two states."
+        },
+        {
+          "path": "src/scss/custom.scss",
+          "sha256": "6d84d329bfce941118317a1e2402044b700908799a1a7636a1e7b103fa1b0057",
+          "deviation": "Geist is served locally; the primary colour is navy. Other copied source SCSS is retained."
+        }
+      ],
+      "deviations": [
+        "Appearance is an illustrative redesign. Original production appearance is not represented.",
+        "Local wrapper adds an unbranded narrow navigation rail and a fixture-derived summary. Navigation labels are presentational only.",
+        "UserCard and UserPerformanceFooter retain underlying selection and status data while changing layout, initials presentation, hierarchy, labels and local icons.",
+        "UserCategoryView receives one toolbar CSS class; its source state and event logic are unchanged.",
+        "KPI slot actions are presentational controls. No API or production callbacks are mounted.",
+        "Corporate app shell, logo, authentication, analytics, services and private data are excluded.",
+        "List view is compiled but not activated; its DataTable runtime is outside this fixture.",
+        "Geist fonts and Font Awesome icons are served locally. Custom SCSS uses a navy primary colour.",
+        "Original account-link constants point only to inert fixture destinations. Navigation service throws.",
+        "CUA pixels are decoded to PNG without resizing, retouching or synthesis."
+      ],
+      "receipt": "design-previews/media/corporate-v3/hr/receipt-v4.json",
+      "source_repository_unchanged": true,
+      "all_harness_files_byte_identical": false,
+      "company_branding_rendered": false,
+      "external_services_called": false
+    },
+    "censorit": {
+      "asset": "work/censorit-venus-v4.png",
+      "dimensions": [1120, 700],
+      "bytes": 706599,
+      "sha256": "a6dc6daa9405e2ea152251f71429285c85f0f9b466b059a4459abfc30041361a",
+      "source_root": "D:\\Projects\\personal\\censorit",
+      "caption": "Cabanel's The Birth of Venus (1875), with a little discretion.",
+      "source_asset": "samples/cabanel-birth-of-venus-1875-v4.jpg",
+      "artwork_page_url": "https://www.metmuseum.org/art/collection/search/435831",
+      "style_id": "solid",
+      "style_display_name": "Solid Fill",
+      "style_params": {
+        "color": "#172238",
+        "region_padding_px": 0
+      },
+      "manual_regions_in_original_pixels": [
+        [2630, 1290, 2870, 1450],
+        [1860, 1490, 2190, 1710]
+      ],
+      "manual_targets": ["adult Venus's chest", "adult Venus's pelvic region"],
+      "manual_mask_shape": "source EllipseSegmenter capsule mask",
+      "capture_only_presentation": "translucent region-overlay brushes suppressed; source bounds and selection outlines retained; processed image unchanged",
+      "config_load": "fresh in-memory Config",
+      "config_save": "no-op",
+      "capture_widget": "MainWindow.centralWidget()",
+      "automatic_detection": false,
+      "telemetry_initialised": false,
+      "assertions": {
+        "manual_region_count": 2,
+        "censored_preview_active": true,
+        "automatic_raw_detection_count": 0,
+        "solid_fill_parameters_visible": true,
+        "processed_image_differs_from_original": true,
+        "mask_centres_match_fill": true,
+        "unmasked_background_unchanged": true,
+        "source_files_unchanged": true,
+        "original_artwork_unchanged": true
+      },
+      "source_hashes": {
+        "censorit/config.py": "24439e56174158174fd35142d53ef183894083706362734e7bdf7e9e3313e7da",
+        "censorit/gui/main_window.py": "2c6da5924cff6bd549a1779e44f5705e466a99c14ee54d73dc887f2c1609d982",
+        "censorit/gui/app.py": "96ac3b275175d8be58e60755657ba89e1219255866bd86b16bc2c57ccfb1b9be",
+        "censorit/gui/canvas_widget.py": "d60eb8fae6cf5b28eac7f88fd8ddf6990b65cfa8ebeecc73e23c1a10f69bf997",
+        "censorit/gui/widgets/inspector_panel.py": "6b68a93a1151c182123055faf202c5fdb78688bcb04bcd243ad63a720c4be44c",
+        "censorit/core/manager.py": "6b76b0ea4c49ea57754c514ec8c2326831c85bcad699bcdb06e8078a23133866",
+        "censorit/core/segmenter.py": "260311192b0082adec90a18e85a9729203a1d47e7fe661cd7d52fa0c92f56082",
+        "censorit/core/styles/solid.py": "04e04548e8f6ea77d823dfb8971d358952baf7df871fde2706b70a5735be50c2"
+      },
+      "receipt": "design-previews/media/curated-v4/censorit-venus-provenance.json"
+    }
+  },
+  "other_project_assets": [
+    {
+      "asset": "work/digest.png",
+      "dimensions": [1120, 700],
+      "bytes": 294164,
+      "sha256": "234172b4be88140e068bb73b4cda40779a88305ec18a43d162c3f4ecdc0a7d13"
+    },
+    {
+      "asset": "work/ohse-unbranded-v3.png",
+      "dimensions": [1280, 720],
+      "bytes": 396101,
+      "sha256": "a748e1cc517b1f1183f8c55837e6a2e95f159a9ded7ac43ded88d9e34f6ca697"
+    },
+    {
+      "asset": "work/mcp.png",
+      "dimensions": [1120, 700],
+      "bytes": 300585,
+      "sha256": "7c83eca32d4983c4c1f7412e4b9607c0ef90179d008b0075b1aae1c5224e8538"
+    },
+    {
+      "asset": "work/heatgen.png",
+      "dimensions": [1120, 700],
+      "bytes": 364098,
+      "sha256": "c941b66d84e74ad7f7c61d6f18d55ab7b4f60cc2932723ba14f204fd539c8313"
+    }
+  ],
+  "mascot_rendered": false,
+  "prompt_files": {
+    "active": "scrapbook/generation-prompts.json",
+    "retained_collages": "scrapbook/collage-generation-prompts-v3.json",
+    "retained_photos": "scrapbook/photo-generation-prompts.json",
+    "retained_illustrations_and_mascots": "scrapbook/source-generation-prompts.json"
+  }
+}

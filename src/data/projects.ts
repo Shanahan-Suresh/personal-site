@@ -1,29 +1,50 @@
 import type { Project, ProjectCategory, Accent } from "@/lib/types";
-import digestVisual from "@/assets/work/_placeholder-digest.svg";
-import rsvpVisual from "@/assets/work/_placeholder-rsvp.svg";
+import digestVisual from "@/assets/work/digest.png";
+import rsvpVisual from "@/assets/work/rsvp-redesign-v4.png";
+import censoritVisual from "@/assets/work/censorit-venus-v4.png";
+import hrVisual from "@/assets/work/hr-redesign-v4.png";
+import ohseVisual from "@/assets/work/ohse-unbranded-v3.png";
+import mcpVisual from "@/assets/work/mcp.png";
+import heatgenVisual from "@/assets/work/heatgen.png";
 
 const personal: Project[] = [
   {
-    title: "AI-curated tech-news digest",
+    title: "Tech Scout Digest",
     description:
-      "A daily tech-intelligence digest that reads the firehose so you don't have to. It curates the news to a team's exact stack with an LLM, runs entirely from config, and scales to zero on GCP when nobody's looking.",
+      "A daily newsletter that helps teams keep up with the technology they use. An LLM picks relevant stories around the team's stack and brings them together in one easy read. The setup is driven by configuration and runs on GCP, scaling to zero between editions.",
     tags: ["Python", "GCP", "Terraform", "LLMs"],
-    featured: {
+    featured: true,
+    media: {
       image: digestVisual,
-      alt: "A generated Tech Scout Digest email, cropped to the newsletter column.",
+      alt: "Tech Scout Digest newsletter showing its masthead and a curated sample story.",
+      caption: "A few good stories to start the day.",
     },
   },
   {
     title: "Automated artwork censoring app",
     description:
-      "A desktop app that detects and censors regions of artwork automatically, using an anime-tuned pipeline (YOLO + FastSAM). It handles batch jobs, speaks English and Japanese, and is packaged so non-developers can run it without touching a terminal.",
+      "A desktop artwork editor with automatic region detection through YOLO and FastSAM. It handles batch jobs, speaks English and Japanese, and ships as an app people can run without touching a terminal.",
     tags: ["Python", "YOLO", "FastSAM"],
+    media: {
+      image: censoritVisual,
+      alt: "Censorit editor showing Cabanel's The Birth of Venus with two navy manual censor regions and visible Solid Fill settings.",
+      caption: "Cabanel's The Birth of Venus (1875), with a little discretion.",
+    },
+    link: {
+      label: "Artwork source (The Met)",
+      href: "https://www.metmuseum.org/art/collection/search/435831",
+    },
   },
   {
     title: "OpenAPI → MCP server + chat UI",
     description:
       "Point it at any API's schema and it generates a set of LLM-callable tools on its own, falling back across models if one stalls, all wired into a Next.js chat interface. It lets an AI assistant pick up a brand-new tool in seconds.",
     tags: ["Python", "MCP", "FastAPI", "Next.js"],
+    media: {
+      image: mcpVisual,
+      alt: "MCP Inspector listing four generated tools and a successful toy-shop product lookup.",
+      caption: "Give an AI assistant a new set of tools.",
+    },
     link: {
       label: "Read the write-up",
       href: "https://dev.to/shanahansuresh/wiring-django-to-claude-generating-an-mcp-server-from-openapi-1e8a",
@@ -35,32 +56,44 @@ const product: Project[] = [
   {
     title: "Automated RSVP & check-in web app",
     description: [
-      "Built to welcome 75,000 guests without breaking a sweat.",
-      "It's a serverless Next.js app that runs RSVPs and check-in behind a glassmorphism UI, sends confirmations over email and WhatsApp, and hands everyone a scannable QR ticket, with SendGrid and Respond.io doing the talking.",
-      "The whole stack is defined in Terraform and ships through GitHub Actions, so scaling up for a crowd that size comes down to a config value rather than a late night.",
+      "Built to welcome 75,000 guests. This serverless Next.js app handles RSVPs and check-in, sends email and WhatsApp confirmations through SendGrid and Respond.io, and gives each guest a scannable QR ticket.",
+      "I defined the stack in Terraform and shipped it through GitHub Actions, so scaling for a crowd that size comes down to config rather than a late night.",
     ],
     tags: ["Next.js", "Terraform", "Respond.io", "SendGrid"],
-    featured: {
+    featured: true,
+    media: {
       image: rsvpVisual,
-      alt: "The RSVP landing page with the enrolment form and live QR ticket preview.",
+      aspectRatio: "1040 / 820",
+      alt: "An invitation-style registration form alongside a confirmed ticket with a scannable QR code for a Developer Meetup.",
+      caption: "From signing up to a scan at the door.",
     },
   },
   {
     title: "OHSE incident-reporting module",
     description: [
-      "When something goes wrong on a worksite, this is where it gets reported, investigated, and put right. It's now live across 10 business units.",
-      "The tricky part was never the forms, it was the people: managers, safety officers, and investigators each need what's effectively a different app, so I built the role-based workflows to match.",
-      "I owned it from the first round of SDLC planning through to the GCP rollout, set up the team's first Playwright test suite along the way, and added an MCP server that turns the module's OpenAPI schema into tools an AI assistant can actually call.",
+      "This is where worksite incidents get reported, investigated, and put right across 10 business units. I built role-based workflows around the different needs of managers, safety officers, and investigators.",
+      "I owned planning through GCP rollout, introduced the team's first Playwright suite, and added an MCP server that turns its OpenAPI schema into tools an AI assistant can call.",
     ],
     tags: ["Next.js", "Django", "GCP", "MCP"],
+    media: {
+      image: ohseVisual,
+      alt: "An incident-reporting workspace with reports, status filters, search and pagination.",
+      caption: "Turning incident reports into action.",
+    },
   },
   {
     title: "Enterprise HR platform",
     description: [
-      "This is the flagship HR platform 20,000 employees sign into, so every slow page is a delay felt 20,000 times over. I went after the heaviest modules, reworked how queries were serialized, and added bulk processing to bring page-load times down by 63%.",
-      "While there, I wrapped PII in AES-256 transparent encryption and built custom PostgreSQL workflows for the analytics team to lean on.",
+      "For a platform used by 20,000 employees, I reworked heavy modules, query serialization and bulk processing to cut page-load times by 63%.",
+      "I also protected PII with AES-256 transparent encryption and built custom PostgreSQL workflows for the analytics team.",
     ],
     tags: ["Svelte", "Django", "PostgreSQL"],
+    media: {
+      image: hrVisual,
+      aspectRatio: "960 / 740",
+      alt: "A My Team workspace with six people, initials avatars, two selected cards and performance acknowledgement states.",
+      caption: "A clearer view of the team, with less waiting around.",
+    },
   },
 ];
 
@@ -68,9 +101,14 @@ const academic: Project[] = [
   {
     title: "HeatGen",
     description:
-      "A deep-learning project I built with a team during my uni days, later published in a peer-reviewed journal (JESTEC, 2023).",
+      "A university team project that predicts thermal images of pavement bricks from material and weather variables. Our work was published in the peer-reviewed JESTEC journal in 2023.",
     tags: ["Python", "Deep Learning"],
     accent: "3",
+    media: {
+      image: heatgenVisual,
+      alt: "Observed thermal image of pavement bricks alongside the model's predicted image for sample 1.",
+      caption: "From weather and materials to a thermal forecast.",
+    },
     link: {
       label: "Read the paper",
       href: "https://jestec.taylors.edu.my/Vol%2018%20Issue%202%20April%202023/18_2_16.pdf",

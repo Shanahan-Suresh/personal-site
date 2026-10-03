@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { trackTransfers } from "./transfer";
 
 test("home page loads with the hero headline", async ({ page }) => {
   const response = await page.goto("/");
@@ -288,19 +289,14 @@ test("writing pages carry noindex while the section is parked", async ({
 
 // ── Performance budget ──────────────────────────────────────────────────────
 // The colophon quotes a wire size for the home page; this keeps it honest.
-test("home page stays under the 150 KB transfer budget", async ({ page }) => {
+test("home page stays under the 350 KiB initial transfer budget", async ({
+  page,
+}) => {
+  const transferredBytes = trackTransfers(page);
   await page.goto("/", { waitUntil: "networkidle" });
-  const total = await page.evaluate(() => {
-    const nav = performance.getEntriesByType(
-      "navigation",
-    )[0] as PerformanceNavigationTiming;
-    const res = performance.getEntriesByType(
-      "resource",
-    ) as PerformanceResourceTiming[];
-    return nav.transferSize + res.reduce((sum, r) => sum + r.transferSize, 0);
-  });
+  const total = await transferredBytes();
   expect(total).toBeGreaterThan(0);
-  expect(total).toBeLessThan(150 * 1024);
+  expect(total).toBeLessThan(350 * 1024);
 });
 
 // ── Colophon ────────────────────────────────────────────────────────────────

@@ -1,0 +1,43 @@
+[
+  {
+    "key": "workbench",
+    "prompt": "Use case: stylized-concept\nAsset type: personal-site hero illustration, landscape 5:4.\nPrimary request: An inventor's workbench that makes coding feel like making things by hand. Show an open laptop with an abstract block-shaped interface, an open notebook containing simple nonverbal product sketches, loose sketch sheets and a pencil. Slightly elevated three-quarter view, warm cream backdrop, vivid electric-blue laptop casing, coral notebook and strong ink shadows. Objects form one deliberate composition with tactile overlaps, not a row of icons. No people or mascot; an existing explorer sticker will be layered later outside the art. Main objects comfortably inside the central 80% so a shallow 16:9 mobile crop remains meaningful.\nStyle/medium: original editorial illustration, flat screenprint colour, confident heavy near-black outlines, angular cut-paper shapes, subtle sparse paper grain. Warm cream #f5f2e9, electric blue #2b4cf0 and coral #ef4322 lead the palette, small acid-yellow #e8ff2a accents. Bold, playful and tactile, with no gradients, glossy 3D or photorealism. No lettering, numbers, logos, watermark or drawn outer frame. Object shapes remain clear at small website display sizes.",
+    "transparent_background": false
+  },
+  {
+    "key": "off-clock",
+    "prompt": "Use case: stylized-concept\nAsset type: landscape 16:10 interest illustration for a personal scrapbook.\nPrimary request: A cosy off-the-clock corner for anime, games and light novels. Compose a chunky blue game controller in the foreground, a small stack of bright blank-spined novels, and a coral handheld screen resting against an open illustrated adventure book. On the book, a tiny purely original fantasy landscape with a winding trail, no named characters. The whole scene feels like a personal reading-and-gaming shelf rather than generic technology clipart. Cream background with a bold blue/coral graphic shape behind the objects. No people, words, brand marks or franchise references.\nStyle/medium: original editorial illustration, flat screenprint colour, confident heavy near-black outlines, angular cut-paper shapes, subtle sparse paper grain. Warm cream #f5f2e9, electric blue #2b4cf0 and coral #ef4322 lead the palette, small acid-yellow #e8ff2a accents. Bold, playful and tactile, with no gradients, glossy 3D or photorealism. No lettering, numbers, logos, watermark or drawn outer frame. Object shapes remain clear at small website display sizes.",
+    "transparent_background": false
+  },
+  {
+    "key": "gym",
+    "prompt": "Use case: stylized-concept\nAsset type: portrait 4:5 interest illustration for a personal scrapbook.\nPrimary request: Gym kit set down after a good workout: a pair of sturdy dumbbells, blue trainers with coral detailing, a folded towel and a simple water bottle. Slightly elevated close viewpoint, objects overlapping naturally with strong hard shadows; energetic diagonal composition, cream background and one broad coral floor shape. Make it personal and tactile, not a commercial fitness advertisement. No people, body parts, lettering or logos. Keep the entire subject safely inside the frame.\nStyle/medium: original editorial illustration, flat screenprint colour, confident heavy near-black outlines, angular cut-paper shapes, subtle sparse paper grain. Warm cream #f5f2e9, electric blue #2b4cf0 and coral #ef4322 lead the palette, small acid-yellow #e8ff2a accents. Bold, playful and tactile, with no gradients, glossy 3D or photorealism. No lettering, numbers, logos, watermark or drawn outer frame. Object shapes remain clear at small website display sizes.",
+    "transparent_background": false
+  },
+  {
+    "key": "travel",
+    "prompt": "Use case: stylized-concept\nAsset type: landscape 4:3 interest illustration for a personal scrapbook.\nPrimary request: Half-planning the next trip, an illustrated travel kit with a blue backpack, a folded map with purely abstract paths and a coral notebook tucked into it, alongside a small compass. Close still-life, playful overlap, ink shadows and warm paper space. The map has no country outlines, named destinations or labels. No passport data, ticket data, text, real places or people. The composition should suggest curiosity and planning without claiming a trip actually happened.\nStyle/medium: original editorial illustration, flat screenprint colour, confident heavy near-black outlines, angular cut-paper shapes, subtle sparse paper grain. Warm cream #f5f2e9, electric blue #2b4cf0 and coral #ef4322 lead the palette, small acid-yellow #e8ff2a accents. Bold, playful and tactile, with no gradients, glossy 3D or photorealism. No lettering, numbers, logos, watermark or drawn outer frame. Object shapes remain clear at small website display sizes.",
+    "transparent_background": false
+  },
+  {
+    "key": "finance",
+    "prompt": "Use case: stylized-concept\nAsset type: landscape 4:3 interest illustration for a personal scrapbook.\nPrimary request: Investing and personal-finance notebook, an open cream notebook with a simple abstract rising-and-falling line sketch, a chunky blue calculator with blank nonverbal keys, a coral pencil and a few plain coin circles. Close still-life with playful tactile layering, calm cream backdrop and one graphic electric-blue shape. No money values, real holdings, readable text, symbols of specific currencies, brand logos, people or invented performance numbers.\nStyle/medium: original editorial illustration, flat screenprint colour, confident heavy near-black outlines, angular cut-paper shapes, subtle sparse paper grain. Warm cream #f5f2e9, electric blue #2b4cf0 and coral #ef4322 lead the palette, small acid-yellow #e8ff2a accents. Bold, playful and tactile, with no gradients, glossy 3D or photorealism. No lettering, numbers, logos, watermark or drawn outer frame. Object shapes remain clear at small website display sizes.",
+    "transparent_background": false
+  },
+  {
+    "key": "mascot-sit",
+    "prompt": "Use case: background-extraction\nAsset type: transparent website mascot sticker.\nPrimary request: Remove ONLY the uniform grey background from the provided sitting explorer mascot. Preserve the existing character, sitting pose, proportions, face, skin tone, goggle details, cloak, satchel, rope, boots, heavy ink lines and thick white die-cut keyline exactly. Do not redraw or restyle any part of the mascot. Preserve the full character; no crop or extra environment. Return a genuinely transparent alpha background, including small background gaps between legs and arms.",
+    "referenced_image_paths": [
+      "D:/Projects/personal/personal-site/design-previews/mascot/pose-sit.png"
+    ],
+    "transparent_background": true
+  },
+  {
+    "key": "mascot-wave",
+    "prompt": "Use case: background-extraction\nAsset type: transparent website mascot sticker.\nPrimary request: Remove ONLY the uniform grey background from the provided waving explorer mascot gripping a rope. Preserve the existing character, pose, face, skin tone, goggles, cloak, satchel, boots, rope, heavy ink lines and thick white die-cut keyline exactly. Do not redraw or restyle. Preserve the entire character and rope as supplied; no additional environment. Return a genuinely transparent alpha background, including background gaps around the arms and rope.",
+    "referenced_image_paths": [
+      "D:/Projects/personal/personal-site/design-previews/mascot/pose-wave.png"
+    ],
+    "transparent_background": true
+  }
+]

@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
 import Card from "./Card.astro";
+import MediaFrame from "./MediaFrame.astro";
 import type { Project, Accent } from "@/lib/types";
 
 interface Props {
@@ -18,7 +18,16 @@ const {
   class: className = "",
   style: styleProp = "",
 } = Astro.props;
-const { title, description, tags = [], link, meta, featured } = project;
+const {
+  title,
+  description,
+  tags = [],
+  link,
+  meta,
+  featured,
+  media,
+  evidence,
+} = project;
 ---
 
 <Card
@@ -42,6 +51,49 @@ const { title, description, tags = [], link, meta, featured } = project;
       <h3 class="h3 project-title">{title}</h3>
       {meta && <span class="tag tag-ink meta-tag">{meta}</span>}
     </div>
+
+    {
+      evidence?.kind === "workflow" && (
+        <figure class="project-evidence workflow-evidence">
+          <ol aria-label="Incident workflow">
+            {evidence.steps.map((step) => (
+              <li>{step}</li>
+            ))}
+          </ol>
+          <figcaption>{evidence.caption}</figcaption>
+        </figure>
+      )
+    }
+
+    {
+      evidence?.kind === "performance" && (
+        <figure class="project-evidence performance-evidence">
+          <figcaption>{evidence.caption}</figcaption>
+          <div class="comparison-row">
+            <>
+              <span>Before</span>
+              <span class="comparison-track">
+                <span class="comparison-bar comparison-before" />
+              </span>
+              <span>100%</span>
+            </>
+          </div>
+          <div class="comparison-row">
+            <>
+              <span>After</span>
+              <span class="comparison-track">
+                <span
+                  class="comparison-bar comparison-after"
+                  style={`width:${100 - evidence.reduction}%`}
+                />
+              </span>
+              <span>{100 - evidence.reduction}%</span>
+            </>
+          </div>
+          <p class="comparison-note">Relative page-load time</p>
+        </figure>
+      )
+    }
 
     {
       Array.isArray(description) ? (
@@ -82,17 +134,22 @@ const { title, description, tags = [], link, meta, featured } = project;
   </div>
 
   {
-    featured && (
-      <figure class="project-visual">
-        <Image
-          src={featured.image}
-          alt={featured.alt}
-          widths={[480, 720, 960]}
-          sizes="(max-width: 900px) 92vw, 520px"
-          loading="lazy"
-          decoding="async"
+    media && (
+      <div class="project-visual">
+        <MediaFrame
+          image={media.image}
+          alt={media.alt}
+          caption={media.caption}
+          fit={media.fit}
+          aspectRatio={media.aspectRatio}
+          widths={[480, 720, 1040]}
+          sizes={
+            featured
+              ? "(max-width: 900px) 88vw, 520px"
+              : "(max-width: 700px) 88vw, 480px"
+          }
         />
-      </figure>
+      </div>
     )
   }
 </Card>
@@ -102,6 +159,9 @@ const { title, description, tags = [], link, meta, featured } = project;
     height: 100%;
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
   }
 
   .ghost-num {
@@ -114,7 +174,7 @@ const { title, description, tags = [], link, meta, featured } = project;
   }
 
   .project-body {
-    height: 100%;
+    flex: 1;
     gap: var(--space-4);
   }
 
@@ -174,17 +234,76 @@ const { title, description, tags = [], link, meta, featured } = project;
   .project-visual {
     margin: 0;
     position: relative;
-    border: var(--border-thick);
-    box-shadow: var(--shadow-hard-sm);
-    background: var(--surface-2);
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
+    order: -1;
   }
-  .project-visual img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .project-card--featured .project-visual {
+    order: 0;
+  }
+  .project-evidence {
+    margin: 0;
+    padding: var(--space-4);
+    border: var(--border);
+    background: var(--surface-2);
+  }
+  .project-evidence figcaption {
+    font-size: var(--fs-sm);
+    font-weight: 650;
+  }
+  .workflow-evidence ol {
+    display: flex;
+    align-items: center;
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    list-style: none;
+    gap: var(--space-2);
+  }
+  .workflow-evidence li {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: clamp(0.78rem, 1.1vw, 1rem);
+  }
+  .workflow-evidence li + li::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-top: var(--border);
+    border-right: var(--border);
+    transform: rotate(45deg);
+    margin-right: var(--space-3);
+  }
+  .performance-evidence figcaption {
+    margin-bottom: var(--space-3);
+  }
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 3.2rem 1fr 2.7rem;
+    gap: var(--space-2);
+    align-items: center;
+    font-size: 0.78rem;
+    margin-top: var(--space-2);
+  }
+  .comparison-track {
     display: block;
+    height: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--ink);
+  }
+  .comparison-bar {
+    display: block;
+    height: 100%;
+  }
+  .comparison-before {
+    width: 100%;
+    background: var(--ink-soft);
+  }
+  .comparison-after {
+    background: var(--accent-1);
+  }
+  .comparison-note {
+    color: var(--ink-soft);
+    font-size: 0.75rem;
+    margin-top: var(--space-3);
   }
   @media (max-width: 900px) {
     .project-card--featured {
@@ -194,7 +313,7 @@ const { title, description, tags = [], link, meta, featured } = project;
       left: auto;
       right: 0.3rem;
     }
-    .project-visual {
+    .project-card--featured .project-visual {
       order: -1;
     }
   }

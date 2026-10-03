@@ -1,0 +1,129 @@
+{
+  "purpose": "Licensed third-party photography illustrating established interests. The photographs do not document the owner's possessions, holdings, trips or gym.",
+  "verifiedOn": "2026-10-04",
+  "sources": [
+    {
+      "placement": "off-clock",
+      "stem": "gaming-joy-con-v5",
+      "title": "Joy-Con Nintendo Switch",
+      "creator": "Enrique Vidal Flores",
+      "sourceURL": "https://unsplash.com/photos/nintendo-switch-zsXvRKtsf6Q",
+      "originalURL": "https://images.unsplash.com/photo-1550921464-9f7a27f99edc",
+      "published": "2019-02-23",
+      "camera": "Canon EOS 1100D",
+      "aspectRatio": "2 / 1",
+      "objectPosition": "65% 48%",
+      "license": "Unsplash License",
+      "licenseURL": "https://unsplash.com/license",
+      "licenseEvidence": "The linked official photo page identifies this image as free to use under the Unsplash License. The official license allows free commercial and non-commercial use, copying, modification and distribution.",
+      "original": {
+        "file": "originals/gaming-joy-con-v5-original.jpg",
+        "bytes": 1631584,
+        "sha256": "8f4520e79817b04c4a4a0764f8edb939e67eb5e3f4ba284329054d5e5b0f1d8c",
+        "width": 4073,
+        "height": 2715
+      },
+      "output": {
+        "file": "gaming-joy-con-v5.jpg",
+        "bytes": 140429,
+        "sha256": "f151184c9b1700e32b3b318534391fc61b17552f223f974f0a68480563e46e07",
+        "width": 1400,
+        "height": 933
+      },
+      "processing": "Original source retained separately. Auto-orientation, proportional reduction to at most 1400 pixels on the longest edge and JPEG encoding only. Colours and photographed subjects are unchanged. Responsive WebP encoding and the specified cover crop occur in Astro/CSS.",
+      "fit": "cover"
+    },
+    {
+      "placement": "gym",
+      "stem": "sunlit-gym-v5",
+      "title": "Old school gym lighted by a little sun stroke",
+      "creator": "Jelmer Assink",
+      "sourceURL": "https://unsplash.com/photos/barbell-on-rack-gzeTjGu3b_k",
+      "originalURL": "https://images.unsplash.com/photo-1558611848-73f7eb4001a1",
+      "published": "2019-05-23",
+      "camera": "Canon EOS 80D",
+      "aspectRatio": "4 / 5",
+      "objectPosition": "68% center",
+      "license": "Unsplash License",
+      "licenseURL": "https://unsplash.com/license",
+      "licenseEvidence": "The linked official photo page identifies this image as free to use under the Unsplash License. The official license allows free commercial and non-commercial use, copying, modification and distribution.",
+      "original": {
+        "file": "originals/sunlit-gym-v5-original.jpg",
+        "bytes": 1075634,
+        "sha256": "59cee745b17a8456e75b2372efa4ed585e49735a183a48d612b24731b46244c4",
+        "width": 3500,
+        "height": 2333
+      },
+      "output": {
+        "file": "sunlit-gym-v5.jpg",
+        "bytes": 213271,
+        "sha256": "e488a9283707c3f6acf38c211807db784f13a1345f113b6e9eae82daea11b18a",
+        "width": 1400,
+        "height": 933
+      },
+      "processing": "Original source retained separately. Auto-orientation, proportional reduction to at most 1400 pixels on the longest edge and JPEG encoding only. Colours and photographed subjects are unchanged. Responsive WebP encoding and the specified cover crop occur in Astro/CSS.",
+      "fit": "cover"
+    },
+    {
+      "placement": "travel",
+      "stem": "alpine-lake-v5",
+      "title": "Boathouse on a mountain lake, Lago di Braies",
+      "creator": "Luca Bravo",
+      "sourceURL": "https://unsplash.com/photos/brown-house-near-body-of-water-zAjdgNXsMeg",
+      "originalURL": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+      "published": "2016-08-09",
+      "aspectRatio": "4 / 3",
+      "objectPosition": "62% center",
+      "license": "Unsplash License",
+      "licenseURL": "https://unsplash.com/license",
+      "licenseEvidence": "The linked official photo page identifies this image as free to use under the Unsplash License. The official license allows free commercial and non-commercial use, copying, modification and distribution.",
+      "original": {
+        "file": "originals/alpine-lake-v5-original.jpg",
+        "bytes": 2503561,
+        "sha256": "2c8f8122cfee812f53f885da33987d5dda0d418750b2a2bd3793094241e892ee",
+        "width": 4513,
+        "height": 3009
+      },
+      "output": {
+        "file": "alpine-lake-v5.jpg",
+        "bytes": 317491,
+        "sha256": "e2711c3c979ddb94927b6da2a270fb02aa830e383a1c5117f58beba779357362",
+        "width": 1400,
+        "height": 933
+      },
+      "processing": "Original source retained separately. Auto-orientation, proportional reduction to at most 1400 pixels on the longest edge and JPEG encoding only. Colours and photographed subjects are unchanged. Responsive WebP encoding and the specified cover crop occur in Astro/CSS.",
+      "fit": "cover"
+    },
+    {
+      "placement": "finance",
+      "stem": "market-chart-v5",
+      "title": "Stock and Crypto Market Values",
+      "creator": "Maxim Hopman",
+      "sourceURL": "https://unsplash.com/photos/stock-market-candlestick-chart-on-dark-screen-fiXLQXAhCfk",
+      "originalURL": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3",
+      "published": "2021-01-30",
+      "camera": "Canon EOS 6D Mark II",
+      "aspectRatio": "4 / 3",
+      "objectPosition": "center",
+      "license": "Unsplash License",
+      "licenseURL": "https://unsplash.com/license",
+      "licenseEvidence": "The linked official photo page identifies this image as free to use under the Unsplash License. The official license allows free commercial and non-commercial use, copying, modification and distribution.",
+      "original": {
+        "file": "originals/market-chart-v5-original.jpg",
+        "bytes": 1516983,
+        "sha256": "5fdb1ec47c49ef6c864228882cc53b8eab354bbbc869dd11c26fdbae253f1920",
+        "width": 6240,
+        "height": 4160
+      },
+      "output": {
+        "file": "market-chart-v5.jpg",
+        "bytes": 99556,
+        "sha256": "039f78dfdf8d9164d4438ca867e3633f734e53980e8aadf1fad45dcb4a3f652d",
+        "width": 1400,
+        "height": 933
+      },
+      "processing": "Original source retained separately. Auto-orientation, proportional reduction to at most 1400 pixels on the longest edge and JPEG encoding only. Colours and photographed subjects are unchanged. Responsive WebP encoding and the specified cover crop occur in Astro/CSS.",
+      "fit": "cover"
+    }
+  ]
+}

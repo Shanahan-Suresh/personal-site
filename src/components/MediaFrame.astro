@@ -1,0 +1,106 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  caption?: string;
+  fit?: "cover" | "contain";
+  objectPosition?: string;
+  credit?: { label: string; href: string };
+  widths?: number[];
+  sizes?: string;
+  loading?: "eager" | "lazy";
+  aspectRatio?: string;
+  class?: string;
+  style?: string;
+}
+
+const {
+  image,
+  alt,
+  caption,
+  fit = "contain",
+  objectPosition = "center",
+  credit,
+  widths = [480, 720, 1040],
+  sizes = "(max-width: 900px) 90vw, 520px",
+  loading = "lazy",
+  aspectRatio = "16 / 10",
+  class: className = "",
+  style = "",
+} = Astro.props;
+---
+
+<figure
+  class={`media-frame ${className}`}
+  style={`--media-ratio:${aspectRatio};--media-fit:${fit};--media-position:${objectPosition};${style}`}
+>
+  <div class="media-canvas">
+    <Image
+      src={image}
+      alt={alt}
+      format="webp"
+      quality={80}
+      widths={widths}
+      sizes={sizes}
+      loading={loading}
+      decoding="async"
+    />
+  </div>
+  {
+    (caption || credit || Astro.slots.has("caption")) && (
+      <figcaption>
+        <slot name="caption">{caption}</slot>
+        {credit && (
+          <p class="media-credit">
+            <a href={credit.href}>{credit.label}</a>
+          </p>
+        )}
+      </figcaption>
+    )
+  }
+</figure>
+
+<style>
+  .media-frame {
+    margin: 0;
+    min-width: 0;
+    border: var(--border-thick);
+    box-shadow: var(--shadow-hard-sm);
+    background: var(--surface);
+  }
+  .media-canvas {
+    aspect-ratio: var(--media-ratio);
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+  .media-canvas img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: var(--media-fit);
+    object-position: var(--media-position);
+  }
+  figcaption {
+    border-top: var(--border);
+    padding: 0.7rem 0.9rem;
+    color: var(--ink-soft);
+    font-size: var(--fs-sm);
+    line-height: 1.4;
+  }
+  .media-credit {
+    margin-top: 0.65rem;
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+  .media-credit a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  .media-credit a:hover {
+    color: var(--ink);
+  }
+</style>

@@ -1,0 +1,32 @@
+[
+  {
+    "key": "portrait-studio-v2",
+    "tool": "built-in imagegen",
+    "prompt": "Use case: identity-preserve.\nAsset type: professional personal portfolio portrait, vertical 4:5 photograph.\nInput image: the supplied original photograph is the edit target and sole identity reference.\nPrimary request: Make a restrained professional studio retouch of this exact person's existing photograph. Keep the same person, head position, friendly smile, navy suit jacket and open-collar white shirt. Replace the outdoor glass-and-greenery background with a quiet warm-grey studio backdrop, softly lit without a visible horizon.\nLighting: soft large-window key light with gentle fill, clear natural eye catchlights, flattering but realistic facial modelling. Neutral accurate colour, neither orange nor desaturated.\nFraming: head and shoulders, enough room above the hair, full hairline visible, upper chest and both shoulders. Compose for a 4:5 portrait.\nPreserve identity exactly: same face proportions, eye shape and spacing, nose, lips, ears, jawline, skin tone, age, haircut and hairline, smile and tooth shapes. Do not reshape face or change expression.\nChange only lighting and colour balance, background, very minor temporary blemishes and stray flyaway hairs, subtle fabric cleanup. Keep natural pores, subtle under-eye texture and facial hair. Eyes remain natural dark brown, teeth natural, no beauty-filter smoothing, no waxy skin, no exaggerated sharpening, no glamour makeover. The result should look like a carefully retouched real photograph of the supplied man, not a newly invented lookalike.\nNo text or watermark.",
+    "transparent_background": false,
+    "source_output": "C:/Users/User/.codex/generated_images/01a0fd81-009d-7ca1-88b2-31879d9882aa/exec-41d541a9-b1c3-4663-b6ca-98c20b966e17.png",
+    "referenced_image_paths": [
+      "D:/Projects/personal/personal-site/design-previews/mascot/me.png"
+    ],
+    "asset": "scrapbook/portrait-studio-v2.png",
+    "use": "Source photograph for active portrait-cutout-v4.png"
+  },
+  {
+    "key": "portrait-background-extraction-v4",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: background-extraction. Edit target: the supplied existing 4:5 head-and-shoulders portrait. Remove ONLY the warm-grey background and return a genuine transparent-background PNG cutout at the same framing. Preserve the person exactly: original facial proportions, skin tone, smile, expression, eyes, hairline and realistic skin texture, navy jacket and white shirt. No face retouch, no reshaping, no relighting, no filters, no outfit alteration, no colour changes, no added outlines, no graphic effects, no new scenery. Preserve natural fine hair edges without grey halo. The subject remains the identical photograph; only the background becomes transparent. Keep all existing shoulders/clothing and the original crop.",
+    "referenced_image_paths": [
+      "D:\\Projects\\personal\\personal-site\\src\\assets\\scrapbook\\portrait-studio-v2.png"
+    ],
+    "transparent_background": true,
+    "source_output": "C:\\Users\\User\\.codex\\generated_images\\01a0fd81-009d-7ca1-88b2-31879d9882aa\\exec-527449b6-f213-4fc4-80f1-0a1e2bbcd596.png",
+    "raw_asset": "scrapbook/portrait-extraction-source-v4.png",
+    "active_asset": "scrapbook/portrait-cutout-v4.png",
+    "dimensions": [1122, 1402],
+    "selected_channels": ["alpha"],
+    "unused_generated_channels": ["red", "green", "blue"],
+    "rgb_source": "scrapbook/portrait-studio-v2.png",
+    "rgb_preserved_byte_for_byte": true,
+    "preparation": "Generated alpha is paired with exact source RGB by prepare-assets.mjs. Generated facial RGB is unused. Static CSS supplies a warm-grey background, cream silhouette outline and soft neutral shadow."
+  }
+]

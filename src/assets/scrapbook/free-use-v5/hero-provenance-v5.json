@@ -1,0 +1,34 @@
+{
+  "placement": "Homepage hero",
+  "title": "A close up of a circuit board with many electronic components",
+  "creator": "Ludovico Ceroseis",
+  "creatorUrl": "https://unsplash.com/@ludovico_06",
+  "sourceUrl": "https://unsplash.com/photos/a-close-up-of-a-circuit-board-with-many-electronic-components-8hcIIZ8SoyU",
+  "originalUrl": "https://images.unsplash.com/photo-1684430598409-750ae3284704",
+  "published": "2023-05-18",
+  "camera": "Sony DSC-HX90",
+  "licence": "Unsplash License",
+  "licenceUrl": "https://unsplash.com/license",
+  "rights": "Free commercial and non-commercial use, including modification. Attribution is appreciated. The image cannot be sold without significant modification or compiled into a competing image service.",
+  "sourceVerified": "2026-10-04",
+  "mediaKind": "Human-created camera photograph",
+  "caption": "Built one detail at a time.",
+  "ownership": "A visual reference to building and detail; it does not document the site owner's hardware or possessions.",
+  "original": {
+    "file": "copper-coil-source-v5.jpg",
+    "width": 4896,
+    "height": 3672,
+    "bytes": 2425503,
+    "sha256": "23f37f11ea7af9f78ec26561eec8d9ab1a950ec3b564601cf644c0e31b818a8c"
+  },
+  "displayAsset": {
+    "file": "copper-coil-hero-v5.jpg",
+    "width": 1800,
+    "height": 1350,
+    "bytes": 634422,
+    "sha256": "8a880fe93e0411c40fce8c4c5d6b1d00adff2cc916a74b5c6cbd00cbf225369b",
+    "preparation": "Resize to 1800 pixels wide and JPEG encode at quality 93. No colour adjustments or retouching. The uncropped original is retained.",
+    "crop": "CSS cover: 5:4 at desktop with object-position centre; 16:9 on mobile with object-position 50% 25%. The copper coil remains the focal subject.",
+    "delivery": "Responsive Astro WebP at widths 360, 560 and 800, quality 80, eager loading and high fetch priority."
+  }
+}
