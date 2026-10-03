@@ -81,9 +81,8 @@ hard offset shadows, oversized display type. Colors come from CSS custom-propert
   `--ink` (text/borders/shadows) flips from near-black in light to cream in dark, and `--paper`
   flips the other way. When styling, prefer tokens (`--ink`, `--paper`, `--surface`, `--accent-1/2/pop`,
   `--on-*`) so both themes stay correct.
-- Gotcha (already fixed, but illustrative): any element whose `background` is `var(--ink)` becomes
-  _light_ in dark mode. The marquee relied on that and broke, so it has a `.dark .marquee` override
-  to stay dark. Watch for the same trap when adding ink-backed bands.
+- Gotcha: any element whose `background` is `var(--ink)` becomes _light_ in dark mode. The marquee
+  has a `.dark .marquee` override to stay dark for this reason; an ink-backed band needs the same.
 - Accent `--accent-pop` is an acid yellow; it's only legible as **text on dark/ink fills** (e.g.
   `.tx-pop`). Don't put it as text on light surfaces.
 
@@ -100,8 +99,8 @@ hard offset shadows, oversized display type. Colors come from CSS custom-propert
 
 ## String quotes in data files
 
-Project descriptions and other copy now live in `src/data/*.ts`. Prettier normalizes strings to
-**double quotes**, so apostrophes no longer need escaping (`"don't"`, `"team's"` are fine). If you
+Project descriptions and other copy live in `src/data/*.ts`. Prettier normalizes strings to
+**double quotes**, so apostrophes need no escaping (`"don't"`, `"team's"` are fine). If you
 hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) or just let
 `npm run format` convert it — an unescaped apostrophe in a single-quoted literal breaks the build.
 
