@@ -1,6 +1,6 @@
 ---
 import SectionHeading from "./SectionHeading.astro";
-import Card from "./Card.astro";
+import MediaFrame from "./MediaFrame.astro";
 import { interests } from "@/data/interests";
 ---
 
@@ -8,26 +8,151 @@ import { interests } from "@/data/interests";
   <div class="container">
     <SectionHeading eyebrow="BEYOND CODE" title="When I'm not building" />
 
-    <Card accent="2" stripe pad class="reveal" style="--d:0ms">
-      <p class="lead" style="max-width:72ch;">
-        Outside of work I'm deep into anime, games, and light novels, usually
-        half-planning a trip somewhere, and in the gym four evenings a week. Ask
-        me about any of it and I can go a while.
-      </p>
+    <div class="beyond-intro">
+      <p class="lead">There's plenty going on away from the keyboard.</p>
+    </div>
 
-      <div class="row row-wrap gap-3 beyond-stickers">
-        {
-          interests.map(({ label, accent, rot }) => (
-            <span class={`sticker ${accent} ${rot}`}>{label}</span>
-          ))
-        }
-      </div>
-    </Card>
+    <div class="scrapbook reveal">
+      {
+        interests.map(
+          ({
+            id,
+            title,
+            caption,
+            image,
+            alt,
+            aspectRatio,
+            fit,
+            objectPosition,
+            credit,
+          }) => (
+            <article class={`interest-scene interest--${id}`}>
+              <MediaFrame
+                image={image}
+                alt={alt}
+                fit={fit}
+                objectPosition={objectPosition}
+                credit={credit}
+                aspectRatio={aspectRatio}
+                widths={[320, 560, 800]}
+                sizes={
+                  id === "off-clock"
+                    ? "(max-width: 600px) 88vw, 54vw"
+                    : "(max-width: 600px) 88vw, (max-width: 900px) 40vw, 34vw"
+                }
+                class="interest-frame"
+              >
+                <div slot="caption">
+                  <h3 class="interest-title">{title}</h3>
+                  <p class="interest-copy">{caption}</p>
+                </div>
+              </MediaFrame>
+            </article>
+          ),
+        )
+      }
+    </div>
   </div>
 </section>
 
 <style>
-  .beyond-stickers {
-    margin-top: var(--space-6);
+  .beyond-intro {
+    margin-bottom: var(--space-7);
+  }
+
+  .scrapbook {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: clamp(1.5rem, 4vw, 3rem);
+    row-gap: var(--space-6);
+    align-items: start;
+    padding: var(--space-2);
+  }
+
+  .interest-scene {
+    min-width: 0;
+  }
+
+  .interest--off-clock {
+    grid-column: span 7;
+    transform: rotate(-1.4deg);
+  }
+
+  .interest--gym {
+    grid-column: span 5;
+    grid-row: span 2;
+    margin-top: var(--space-7);
+    transform: rotate(2deg);
+  }
+
+  .interest--travel {
+    grid-column: span 3;
+    transform: rotate(2deg);
+  }
+
+  .interest--finance {
+    grid-column: span 4;
+    margin-top: var(--space-4);
+    transform: rotate(-1.5deg);
+  }
+
+  .interest-title {
+    font-family: var(--font-head);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .interest-copy {
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-top: var(--space-2);
+    max-width: 46ch;
+  }
+
+  @media (601px <= width <= 900px) {
+    .scrapbook {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+
+    .interest-scene {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .interest--off-clock {
+      grid-column: 1 / -1;
+      max-width: 85%;
+    }
+
+    .interest--gym {
+      grid-row: span 2;
+      margin-top: var(--space-4);
+    }
+
+    .interest--finance {
+      grid-column: 2;
+    }
+  }
+
+  @media (width < 601px) {
+    .beyond-intro {
+      margin-bottom: var(--space-6);
+    }
+
+    .scrapbook {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: var(--space-6);
+      padding-inline: 0;
+    }
+
+    .interest-scene {
+      grid-column: auto;
+      grid-row: auto;
+      transform: none;
+      margin-top: 0;
+    }
   }
 </style>

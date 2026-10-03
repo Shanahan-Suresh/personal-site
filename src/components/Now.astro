@@ -2,7 +2,7 @@
 import SectionHeading from "./SectionHeading.astro";
 import BentoTile from "./BentoTile.astro";
 import Tag from "./Tag.astro";
-import { mainTools, learning } from "@/data/skills";
+import { learning } from "@/data/skills";
 ---
 
 <section id="skills" class="section">
@@ -13,29 +13,22 @@ import { mainTools, learning } from "@/data/skills";
       <BentoTile span={4}>
         <div class="stack stack-4">
           <p>
-            Right now I'm diving into deployment infrastructure and DevOps.
-            Picked up on Terraform and use it on real projects, plus I'm
-            teaching myself AWS in my own time. Kubernetes is next on the list.
+            I'm getting deeper into deployment infrastructure and DevOps, using
+            Terraform on real projects and teaching myself AWS. Kubernetes is
+            next.
           </p>
           <p>
-            I also spend most of my days in the agentic-coding world, trying to
-            keep pace with how fast LLMs are changing the way software gets
-            built. It has reshaped how I work, in the office and out of it.
+            Agentic coding takes up a lot of my day. I'm exploring how to build
+            useful systems with LLMs, and how they change the way I work.
           </p>
         </div>
       </BentoTile>
 
       <BentoTile span={2} accent="1" stripe>
         <div class="stack stack-5">
-          <h3 class="h3">Tools I reach for</h3>
+          <h3 class="h3">On the learning list</h3>
           <div class="row-wrap gap-2">
-            {mainTools.map((t) => <Tag variant="plain">{t}</Tag>)}
-          </div>
-          <div class="stack stack-3">
-            <p class="mono muted">Currently learning</p>
-            <div class="row-wrap gap-2">
-              {learning.map((t) => <Tag>{t}</Tag>)}
-            </div>
+            {learning.map((t) => <Tag>{t}</Tag>)}
           </div>
         </div>
       </BentoTile>

@@ -10,17 +10,22 @@ export interface Stat {
 }
 
 /**
- * Measured against the production build. Re-measure when the numbers move:
- * gzip the files `dist/index.html` references and sum them. The Playwright
- * performance-budget test keeps the total honest (see tests/home.spec.ts).
+ * Cold production-preview responses at 390px and 1440px across all three
+ * browser engines. tests/media.spec.ts records encoded bodies plus headers
+ * on arrival and after scrolling. The interaction bundle is measured with gzip.
  */
-export const measuredOn = "22 Aug 2026";
+export const measuredOn = "4 Oct 2026";
 
 export const stats: Stat[] = [
   {
-    label: "Home page, over the wire",
-    value: "~100 KB",
-    note: "HTML + CSS + JS + four font files, gzipped",
+    label: "Home page on arrival",
+    value: "~107–189 KiB",
+    note: "Fresh mobile/desktop contexts across all three engines",
+  },
+  {
+    label: "Home page after scrolling",
+    value: "~288–572 KiB",
+    note: "Includes every responsive image, fonts, CSS and JavaScript",
   },
   {
     label: "Framework JavaScript",
@@ -29,7 +34,7 @@ export const stats: Stat[] = [
   },
   {
     label: "Interaction bundle",
-    value: "2.7 KB",
+    value: "2.4 KiB",
     note: "One TypeScript module, gzipped",
   },
   {
@@ -66,7 +71,7 @@ export const stack: StackItem[] = [
   {
     name: "One interaction module",
     detail:
-      "Reveal, scroll-spy, tilt, magnetic buttons and the sticker physics live in a single file with a cleanup path.",
+      "Reveal, scroll-spy, tilt, magnetic buttons and sticker interactions live in a single file with a cleanup path.",
     path: "src/scripts/home-interactions.ts",
   },
   {

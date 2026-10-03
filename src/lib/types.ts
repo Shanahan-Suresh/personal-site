@@ -8,6 +8,19 @@ export interface ProjectLink {
   href: string;
 }
 
+export interface ProjectMedia {
+  image: ImageMetadata;
+  alt: string;
+  caption?: string;
+  fit?: "cover" | "contain";
+  /** Preserve the legibility of taller interface captures. */
+  aspectRatio?: string;
+}
+
+export type ProjectEvidence =
+  | { kind: "workflow"; steps: string[]; caption: string }
+  | { kind: "performance"; reduction: number; caption: string };
+
 export interface Project {
   title: string;
   description: string | string[];
@@ -16,12 +29,10 @@ export interface Project {
   meta?: string;
   /** overrides the auto-cycled card accent */
   accent?: Accent;
-  /**
-   * Promotes the project to a full-width card with a framed visual.
-   * Images live in src/assets/work/. A stand-in image carries the placeholder
-   * filename prefix and fails the production build (scripts/guard-placeholders.mjs).
-   */
-  featured?: { image: ImageMetadata; alt: string };
+  /** Full-width showcase layout, independent of media presence. */
+  featured?: boolean;
+  media?: ProjectMedia;
+  evidence?: ProjectEvidence;
 }
 
 export interface ProjectCategory {
