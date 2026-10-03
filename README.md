@@ -13,10 +13,12 @@ The site is meant to be its own code sample. Rather than describe how it is buil
 here to read: the design-token system in `src/styles/`, the single interaction module in
 `src/scripts/`, the Playwright suite that runs against the production build, and the deploy
 hardening in `public/_headers`. The footer of every page links to the exact commit it was built
-from. The code is MIT; the copy, project descriptions and images are not licensed for reuse
-(see `LICENSE`).
+from. The code is MIT. The owner's copy, project descriptions, portrait and project captures are
+not licensed for reuse. Third-party photographs retain the Unsplash License; museum images retain
+their public-domain or CC0 terms. Sources and licences are recorded in
+[`src/assets/README.md`](src/assets/README.md) and `LICENSE`.
 
-> **Design:** Refined neobrutalism — bold borders, hard offset shadows, oversized type, light/dark themes. The previous glassmorphism design is preserved in the commit history.
+> **Design:** Refined neobrutalism: bold borders, hard offset shadows, oversized type, light/dark themes.
 
 ## Tech stack
 
@@ -26,12 +28,12 @@ from. The code is MIT; the copy, project descriptions and images are not license
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)
 - Self-hosted fonts via `@fontsource`
 - **Prettier** (`prettier-plugin-astro`) and `astro check` for formatting and type-checking
-- **[Playwright](https://playwright.dev/)** — end-to-end / visual-regression tests (Chromium, Firefox, WebKit)
+- **[Playwright](https://playwright.dev/)** — end-to-end tests and visual review captures (Chromium, Firefox, WebKit)
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+ (LTS recommended)
-- npm
+- [Node.js](https://nodejs.org/) 22.12 or newer (`.nvmrc` pins the 22 release line)
+- npm 9.6.5 or newer
 
 ## Getting started
 
@@ -47,7 +49,7 @@ npm test            # run the Playwright test suite (see Testing)
 
 ## Testing
 
-End-to-end and visual-regression tests live in `tests/` and run with [Playwright](https://playwright.dev/).
+End-to-end tests and visual review captures live in `tests/` and run with [Playwright](https://playwright.dev/).
 
 By default the suite builds the site and serves it with `astro preview` (so tests
 exercise the production artifact). If a dev server is already running on port `4321`,
@@ -69,6 +71,14 @@ sections, nav + theme toggle presence, contact mailto), theme-toggle dark-class
 persistence to localStorage, the 600px mobile layout (nav hidden, hero
 single-column), the project-card paragraph split, reduced-motion static render,
 and the extracted BaseLayout interactions (scrolled-nav, scroll-spy, hero entrance).
+`tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
+overflow at 390, 600 and 1440px. Fresh desktop/mobile contexts enforce 350 KiB initial transfer
+and 1.5 MiB after scrolling through the homepage.
+
+The homepage has 13 images. Chromium captures full-page screenshots at each review width in both
+themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
+Cold transfers measured 4 Oct 2026 across all three browsers are 107–189 KiB initially and 288–572 KiB
+after scrolling. The colophon reads the test count from Playwright at build time.
 
 ## Project structure
 
@@ -77,6 +87,7 @@ personal-site/
 ├── public/              # static assets (favicon, OG image, robots.txt)
 ├── src/
 │   ├── components/      # Astro UI components (Hero, Work, Nav, cards, etc.)
+│   ├── assets/          # project captures, portrait, licensed photography and provenance
 │   ├── content/         # MDX content (blog posts)
 │   ├── data/            # structured content (projects, skills, interests, navigation)
 │   ├── layouts/         # BaseLayout + PostLayout
@@ -84,7 +95,7 @@ personal-site/
 │   ├── pages/           # routes — index.astro, writing/, rss.xml.ts
 │   ├── scripts/         # home-interactions.ts (bundled client JS for BaseLayout)
 │   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
-├── tests/               # Playwright e2e / visual-regression specs
+├── tests/               # Playwright e2e checks and visual review captures
 ├── astro.config.mjs     # Astro + integrations + Tailwind (Vite) config
 ├── playwright.config.ts # Playwright runner + dev-server config
 └── package.json
@@ -92,15 +103,27 @@ personal-site/
 
 ## Design system
 
-All visual styling is centralized in `src/styles/` (the `global.css` entry point imports `tokens.css`, `components.css`, `motion.css`, and `prose.css`) using CSS custom properties (design tokens) plus a small set of component classes. Theming (light/dark and color palettes) is driven by tokens, so the look can be retuned from one place.
+Shared design tokens and reusable styles live in `src/styles/` (the `global.css` entry point imports `tokens.css`, `components.css`, `motion.css`, and `prose.css`). Components define their layout and media rules locally. Light/dark themes and colour palettes use the shared tokens.
 
-## Placeholder images
+## Homepage media
 
-Featured project cards can point at a stand-in image whose filename starts with `_placeholder-`.
-`npm run build` runs `scripts/guard-placeholders.mjs` first and fails if one exists or is referenced,
-so Cloudflare can never deploy a placeholder. For a local build while images are being sourced:
-`ALLOW_PLACEHOLDERS=1 npm run build` (PowerShell: `$env:ALLOW_PLACEHOLDERS=1; npm run build`).
-See `CLAUDE.md` for the swap procedure.
+Project captures, the retouched real headshot and licensed real photography live in `src/assets/`.
+[`src/assets/README.md`](src/assets/README.md) records sources, sample-data boundaries and generation
+prompts. Astro produces responsive WebP with explicit dimensions. The hero photograph loads eagerly;
+other media loads lazily. Project width (`featured`) and media are independent. Photographer
+credits remain accessible HTML links. Project captions describe the product and workflow; capture
+fixtures and presentation choices are documented with the assets. The portrait keeps its cream
+outline and soft neutral shadow against a warm-grey background. Both mascot poses remain unreferenced
+assets.
+
+Capture harnesses live under gitignored `design-previews/media` and leave source projects unchanged.
+`npm run build` rejects `_placeholder-` files or references through `scripts/guard-placeholders.mjs`.
+Normal builds require no override.
+
+Local screenshots and the 72-case browser-suite report are saved in
+`design-previews/media/profile-copy-v6`, alongside transfer measurements. Photography preparation
+scripts and crop reviews live in `design-previews/media/free-use-v5`. These ignored files support
+local review; asset sources, licences and generation notes are versioned under `src/assets/`.
 
 ## Security
 

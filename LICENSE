@@ -23,4 +23,17 @@ SOFTWARE.
 ---
 
 The licence above covers the code. The written copy, project descriptions,
-images, and the Shanahan Suresh name and likeness are not licensed for reuse.
+original images, project captures, and the Shanahan Suresh name and likeness are not licensed for reuse.
+Third-party photographs in src/assets/scrapbook/free-use-v5 retain the Unsplash
+License (https://unsplash.com/license), which permits commercial and non-commercial
+use, copying, modification and distribution. It does not permit selling a
+photograph without significant modification or compiling photographs to replicate
+a competing service.
+The selected museum artwork and museum photographs retain their public-domain
+or CC0 status. These third-party licences do not grant reuse rights for the
+owner's portrait, likeness or project captures.
+
+Sources and applicable terms are recorded in src/assets/README.md,
+src/assets/scrapbook/free-use-v5/provenance-v5.json,
+src/assets/scrapbook/free-use-v5/hero-provenance-v5.json and
+src/assets/scrapbook/curated-media-provenance-v4.json.
