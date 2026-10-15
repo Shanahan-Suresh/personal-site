@@ -127,6 +127,17 @@ exists under `src/` or is referenced from it. Normal builds and tests require no
 `tests/media.spec.ts` checks image loading, dimensions and overflow at 390, 600 and 1440px, with
 cold-load budgets of 350 KiB initially and 1.5 MiB after scrolling through the homepage.
 
+## Placeholder images
+
+The featured cards for the AI digest and RSVP projects use `src/assets/work/_placeholder-*.svg`. `scripts/guard-placeholders.mjs` runs inside `npm run build` and fails while any `_placeholder-` file exists or is referenced under `src/`, so Cloudflare cannot deploy them and CI is red by design. The owner's rule: placeholders must never deploy by accident.
+
+- Local builds and tests need `ALLOW_PLACEHOLDERS=1`.
+- The guard is a substring match that also hits comments, so never write the literal marker under `src/` except in the import.
+- SiteMedic is not on the site yet (still in testing). `/writing` is parked (noindex, no nav); the dev.to MCP article is linked from /colophon and the OpenAPI card instead.
+- `PROGRESS.md` is the live state of the refinement pass.
+
+Swap procedure when real screenshots arrive: drop the image into `src/assets/work/`, change the import in `src/data/projects.ts`, delete the `_placeholder-` file, run `npm run build` with no override, push.
+
 ## Security posture (keep it this way)
 
 - Static site, no secrets in the repo or its history, no forms, no user content. `SECURITY.md` is the
