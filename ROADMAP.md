@@ -72,8 +72,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 4 are done, plus the
-interaction rewrite from phase 5. The rest of phase 5 is next.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 5 are done. Phase 6 is next.
 
 ### 1. Foundation: tokens, type and base styles
 
@@ -132,8 +131,9 @@ interaction rewrite from phase 5. The rest of phase 5 is next.
 - `writing/index.astro`, `PostCard.astro` and `PostLayout.astro`: a title slab and ruled post rows.
   Restyle `prose.css` for long reading: Archivo at 18px, display face for headings only, mono for
   code. `/writing` stays parked (noindex, out of the nav).
-- `Card.astro`, `Tag.astro` and `SectionHeading.astro`: restyle to the poster system or delete
-  them if no page still uses them.
+- `Card.astro`, `Tag.astro`, `SectionHeading.astro` and `BentoTile.astro` serve only these pages:
+  restyle them to the poster system or delete them if no page still uses them. The `Accent` and
+  `StickerAccent` types in `src/lib/types.ts` go with the last of them.
 
 ### 7. Assets, metadata and docs
 
@@ -142,8 +142,7 @@ interaction rewrite from phase 5. The rest of phase 5 is next.
 - A new `favicon.svg`: a condensed "S" in butter on night.
 - Remove the copper-coil file and its entry in `hero-provenance-v5.json`. Record the new hero
   composition in `src/assets/README.md`.
-- Update `CLAUDE.md` (the design system section, the ink gotcha, the font list, and the
-  placeholder section, which names files that no longer exist) and `README.md`.
+- Read `CLAUDE.md` and `README.md` once more against the finished site.
 - Rewrite the "Current state" section of `docs/design-direction.md`.
 
 ### 8. Tests, release check and launch

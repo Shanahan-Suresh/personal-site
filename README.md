@@ -110,7 +110,7 @@ Shared design tokens and reusable styles live in `src/styles/` (the `global.css`
 Project captures, the retouched real headshot and licensed real photography live in `src/assets/`.
 [`src/assets/README.md`](src/assets/README.md) records sources, sample-data boundaries and generation
 prompts. Astro produces responsive WebP with explicit dimensions. The hero photograph loads eagerly;
-other media loads lazily. Project width (`featured`) and media are independent. Photographer
+other media loads lazily. Story images load only when their dialog opens. Photographer
 credits remain accessible HTML links. Project captions describe the product and workflow; capture
 fixtures and presentation choices are documented with the assets. The portrait keeps its cream
 outline and soft neutral shadow against a warm-grey background. Both mascot poses remain unreferenced

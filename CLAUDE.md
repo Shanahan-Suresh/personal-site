@@ -25,7 +25,7 @@ personal site, not a resume.
 npm install
 npm run dev          # dev server → http://localhost:4321
 npm run build        # astro check + placeholder guard + static build + CSP hashes → ./dist
-npm run guard        # placeholder guard on its own (see "Placeholder images")
+npm run guard        # placeholder guard on its own (see "Placeholder guard")
 npm run preview      # preview the production build (detaches in an agent shell; `npx astro preview stop`)
 npm run check        # type-check only (astro check)
 npm run format       # format everything with Prettier
@@ -63,7 +63,7 @@ The split is deliberate:
   change the data, not the components that render them:
   - `data/projects.ts` — `categories` (personal / corporate / academic, each project's group label) and
     `projects`, the ordered list that `Work.astro`, `Hero.astro` and `Numbers.astro` render.
-  - `data/skills.ts` — `learning` (used by `Now.astro`) and `marqueeTools` (used by `Marquee.astro`).
+  - `data/skills.ts` — `learning`, the boxed list in `Now.astro`.
   - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
   - `data/navigation.ts` — `navLinks` (nav) and `socialLinks` (re-exported from site-config; used by `Contact.astro`).
   - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
@@ -77,22 +77,31 @@ Use `@/*` import aliases (`@/data/...`, `@/lib/...`) — the alias maps to `src/
 
 ## Design system / theming
 
-`src/styles/` is the single source of truth (`global.css` imports the tokens/components/motion/prose partials). It's a neobrutalist look: thick borders,
-hard offset shadows, oversized display type. Colors come from CSS custom-property tokens.
+`src/styles/` holds the shared layer (`global.css` imports the tokens, components, motion and prose
+partials); each section's own layout lives in its component's scoped `<style>`. Every colour is a
+CSS custom-property token.
 
 The poster redesign is in progress: `ROADMAP.md` holds its settled decisions, phases and status.
 Before any redesign or restyle, read `docs/design-direction.md`: the owner's taste and verdicts on
 ten tried directions, what polished neobrutalism means, why the live design reads as generic, and
 the mockup tools and capture traps.
 
-- Light/dark themes are token swaps under `:root` and `.dark`. The brutalist structure **inverts**:
-  `--ink` (text/borders/shadows) flips from near-black in light to cream in dark, and `--paper`
-  flips the other way. When styling, prefer tokens (`--ink`, `--paper`, `--surface`, `--accent-1/2/pop`,
-  `--on-*`) so both themes stay correct.
-- Gotcha: any element whose `background` is `var(--ink)` becomes _light_ in dark mode. The marquee
-  has a `.dark .marquee` override to stay dark for this reason; an ink-backed band needs the same.
-- Accent `--accent-pop` is an acid yellow; it's only legible as **text on dark/ink fills** (e.g.
-  `.tx-pop`). Don't put it as text on light surfaces.
+- **The look:** full-width colour slabs (tomato, butter, cobalt, green, night, paper) joined by
+  3px ink seams, condensed uppercase display type, and hard offset shadows on frames, cards and
+  buttons only. The spec is `design-previews/neo-2026/10-poster-v3.html`.
+- **Themes:** the `.dark` class on `<html>` swaps tokens in `tokens.css`. Slab colours deepen a
+  little, but text on a slab is fixed per slab class (`.s-tomato`, `.s-cobalt` and the rest) and
+  never inverts. Only `--paper`, `--card`, `--text`, `--muted` and `--edge` invert.
+- **Two stroke tokens:** `--ink` stays near-black in both themes, for seams, borders and shadows on
+  slabs. `--edge` inverts with the page, for borders and shadows on paper and card surfaces.
+- **Butter as text** reads only on night or ink fills (the contact headline, the active mobile
+  link). On light surfaces butter is a fill under ink text.
+- **Focus:** one `:focus-visible` ring in `var(--focus)`. Each slab class sets `--focus` to a colour
+  that shows on it.
+- **Motion:** four moves only: headline lines rising (`.reveal` with `.ln` lines), the hero frames
+  fading up (`.rise`), the pointer preview on project rows, and the story dialog opening. All wait
+  for `prefers-reduced-motion: no-preference`. The boot script in `BaseLayout.astro` sets `.js`
+  before paint, so a page without script shows everything in place.
 
 ## Writing conventions (the copy has a deliberate voice — keep it)
 
@@ -114,13 +123,13 @@ hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) 
 
 ## Homepage media
 
-`Project.featured` is a boolean controlling card width. Independent optional `Project.media`
-contains the image, alt text, caption, fit and optional aspect ratio. `MediaFrame.astro` emits
-responsive WebP with reserved dimensions and lazy loading, optional crop position and linked
-credit metadata. The hero photograph loads eagerly. Project captures default to `contain`; taller
-RSVP/HR previews reserve their native proportions. Hero and interest photographs use deliberate
-`cover` crops. Portrait RGB matches the existing retouch, with a generated background mask, cream
-outline, soft neutral shadow and static warm-grey CSS background. Both mascots stay off pages.
+`Project.media` holds the image, alt text, caption, fit and optional aspect ratio.
+`MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
+with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
+portrait (the cutout on a butter ground) loads first with `priority`. Each project row carries a
+480px WebP in `data-peek` that the pointer preview loads on first hover, and an inline thumbnail
+that shows below 960px. Story dialog images load only when their dialog opens. Interest photographs
+are square `cover` crops placed by each one's `objectPosition`. Both mascots stay off pages.
 
 Final assets and their provenance live in `src/assets/`. Capture harnesses live under gitignored
 `design-previews/media`, excluded from Astro type-checking. Preserve source-project repositories.
@@ -134,15 +143,16 @@ exists under `src/` or is referenced from it. Normal builds and tests require no
 `tests/media.spec.ts` checks image loading, dimensions and overflow at 390, 600 and 1440px, with
 cold-load budgets of 350 KiB initially and 1.5 MiB after scrolling through the homepage.
 
-## Placeholder images
+## Placeholder guard
 
-The featured cards for the AI digest and RSVP projects use `src/assets/work/_placeholder-*.svg`. `scripts/guard-placeholders.mjs` runs inside `npm run build` and fails while any `_placeholder-` file exists or is referenced under `src/`, so Cloudflare cannot deploy them and CI is red by design. The owner's rule: placeholders must never deploy by accident.
+`scripts/guard-placeholders.mjs` runs inside `npm run build` and fails while any `_placeholder-`
+file exists under `src/` or is referenced from it, so placeholder art can never deploy by accident.
+No placeholder is in use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 
-- Local builds and tests need `ALLOW_PLACEHOLDERS=1`.
-- The guard is a substring match that also hits comments, so never write the literal marker under `src/` except in the import.
-- SiteMedic is not on the site yet (still in testing). `/writing` is parked (noindex, no nav); the dev.to MCP article is linked from /colophon and the OpenAPI card instead.
-
-Swap procedure when real screenshots arrive: drop the image into `src/assets/work/`, change the import in `src/data/projects.ts`, delete the `_placeholder-` file, run `npm run build` with no override, push.
+- The guard is a substring match that also hits comments, so never write the literal marker under
+  `src/` except in the import that uses the file.
+- SiteMedic is not on the site yet (still in testing). `/writing` is parked (noindex, no nav); the
+  dev.to MCP article is linked from /colophon and the OpenAPI to MCP story instead.
 
 ## Security posture (keep it this way)
 

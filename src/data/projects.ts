@@ -17,7 +17,6 @@ const personal: Project[] = [
     description:
       "A daily newsletter that helps teams keep up with the technology they use. An LLM picks relevant stories around the team's stack and brings them together in one easy read. The setup is driven by configuration and runs on GCP, scaling to zero between editions.",
     tags: ["Python", "GCP", "Terraform", "LLMs"],
-    featured: true,
     media: {
       image: digestVisual,
       alt: "Tech Scout Digest newsletter showing its masthead and a curated sample story.",
@@ -75,7 +74,6 @@ const product: Project[] = [
       "I defined the stack in Terraform and shipped it through GitHub Actions, so scaling for a crowd that size comes down to config rather than a late night.",
     ],
     tags: ["Next.js", "Terraform", "Respond.io", "SendGrid"],
-    featured: true,
     media: {
       image: rsvpVisual,
       aspectRatio: "1040 / 820",
