@@ -30,7 +30,7 @@ npm run preview      # preview the production build (detaches in an agent shell;
 npm run check        # type-check only (astro check)
 npm run format       # format everything with Prettier
 npm run format:check # verify formatting (CI-style, no writes)
-npm test             # Playwright e2e/visual suite (tests/); starts and stops its own preview server
+npm test             # Playwright e2e/visual suite (tests/); starts and stops its own preview server; CI runs Chromium only
 ```
 
 **Verification = `npm run build` then `npm test`.** `npm run build` runs `astro check` first (so type
@@ -107,8 +107,9 @@ tools and capture traps.
   for `prefers-reduced-motion: no-preference`. The boot script in `BaseLayout.astro` sets `.js`
   before paint, so a page without script shows everything in place.
 - **Favicon and share image:** `python scripts/brand-images.py` writes `public/favicon.svg`,
-  `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. Edit the script,
-  then rerun it, rather than editing the files by hand.
+  `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. It needs Python
+  with `fonttools`, `brotli`, `Pillow` and `playwright` (with Chrome). Edit the script, then rerun
+  it, rather than editing the files by hand.
 
 ## Writing conventions (the copy has a deliberate voice — keep it)
 

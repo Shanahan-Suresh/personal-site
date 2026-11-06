@@ -20,7 +20,7 @@ const tags = showTags ? (post.data.tags ?? []) : [];
       <span class="desc">{post.data.description}</span>
       {
         tags.length > 0 && (
-          <span class="tags">
+          <span class="tags chips">
             {tags.map((tag) => (
               <span>{tag}</span>
             ))}
@@ -64,17 +64,7 @@ const tags = showTags ? (post.data.tags ?? []) : [];
     font-size: 17px;
   }
   .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
     margin-top: 14px;
-  }
-  .tags span {
-    padding: 4px 9px;
-    border: 2px solid currentColor;
-    font: 500 12px/1.3 var(--font-mono);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
   }
   .go {
     padding-top: 6px;

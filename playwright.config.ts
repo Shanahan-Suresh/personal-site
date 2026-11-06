@@ -27,7 +27,10 @@ export default defineConfig({
     { name: "webkit", use: { ...devices["Desktop Safari"] } },
   ],
   webServer: {
-    command: `npm run build && npm run preview -- --port ${PORT}`,
+    // CI builds in its own step first (.github/workflows/ci.yml), so it only previews.
+    command: process.env.CI
+      ? `npm run preview -- --port ${PORT}`
+      : `npm run build && npm run preview -- --port ${PORT}`,
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

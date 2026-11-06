@@ -67,12 +67,16 @@ Useful filters: `npm test -- --project=chromium` (one browser),
 `npm test -- tests/home.spec.ts` (one file).
 
 Current coverage (`tests/home.spec.ts`): home-page smoke (hero headline, major
-sections, nav + theme toggle presence, contact mailto), theme-toggle dark-class
-persistence to localStorage, the 600px mobile layout (nav hidden, hero
-single-column), the project stories (paragraph split, the modal with Next and
-Escape returning focus to its row, a shared `#story` link, the story view without
-JavaScript), reduced-motion static render, the interactions (scrolled nav, scroll
-spy, hero entrance), skip link, footer, colophon, writing noindex, placeholders and CSP hashes.
+sections, nav + theme toggle presence, contact mailto), the theme button (dark class,
+localStorage, keyboard, `aria-pressed`), the 600px layout and the mobile menu (open,
+Escape returning focus to the burger, outside tap, link), the project stories (paragraph
+split, the modal with Next, Escape, the close button and a backdrop click returning focus
+to its row, a shared `#story` link, the story view without JavaScript), the pointer
+preview (mouse shows it, touch never does), the row focus outline, reduced-motion static
+render, the interactions (scrolled nav, scroll spy, hero entrance), skip link, footer,
+colophon, writing noindex, placeholders and CSP hashes. `tests/guard.spec.ts` runs the
+placeholder guard against throwaway folders to prove it blocks a placeholder file or
+reference.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
 overflow at 390, 600 and 1440px. Fresh desktop/mobile contexts enforce 350 KiB initial transfer
 and 1.5 MiB after scrolling through the homepage.

@@ -83,7 +83,7 @@ if (allowed) {
 
 log("");
 log(
-  "Swap the placeholders for real images (see CLAUDE.md, 'Placeholder images'),",
+  "Swap the placeholders for real images (see CLAUDE.md, 'Placeholder guard'),",
 );
 log("or for a local build only: ALLOW_PLACEHOLDERS=1 npm run build");
 process.exit(1);
