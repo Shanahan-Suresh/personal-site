@@ -71,7 +71,7 @@ export const stack: StackItem[] = [
   {
     name: "One interaction module",
     detail:
-      "Reveal, scroll-spy, tilt, magnetic buttons and sticker interactions live in a single file with a cleanup path.",
+      "The headline reveal, scroll spy, mobile menu, pointer preview and story dialogs live in a single file with a cleanup path.",
     path: "src/scripts/home-interactions.ts",
   },
   {

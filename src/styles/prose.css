@@ -86,7 +86,9 @@
 }
 
 /* ================================================================== *
- * 14. REDUCED MOTION
+ * REDUCED MOTION
+ * Every move already waits for (prefers-reduced-motion: no-preference).
+ * This is the safety net for anything that does not.
  * ================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -98,46 +100,5 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-  }
-  .reveal {
-    opacity: 1;
-    transform: none;
-  }
-  .marquee-track {
-    animation: none;
-    flex-wrap: wrap;
-    white-space: normal;
-  }
-  .press:hover,
-  .btn:hover {
-    transform: none;
-  }
-
-  /* extended animation layer — pin every new effect to its final state */
-  .reveal,
-  .reveal[data-reveal] {
-    opacity: 1;
-    transform: none;
-    clip-path: none;
-  }
-  .reveal[data-reveal="stagger-children"] > .reveal-child {
-    opacity: 1;
-    transform: none;
-  }
-  .hero-headline .slam-line > span {
-    transform: none;
-    opacity: 1;
-  }
-  .hero-headline .marker {
-    background-size: 100% 0.28em;
-  }
-  .hero-rise {
-    opacity: 1;
-    transform: none;
-  }
-  .sticker-cluster .sticker {
-    opacity: 1;
-    animation: none;
-    transform: rotate(var(--rot, 0deg));
   }
 }

@@ -17,10 +17,6 @@ export interface ProjectMedia {
   aspectRatio?: string;
 }
 
-export type ProjectEvidence =
-  | { kind: "workflow"; steps: string[]; caption: string }
-  | { kind: "performance"; reduction: number; caption: string };
-
 export interface ProjectFact {
   /** The number or short figure shown large, such as "75,000". */
   value: string;
@@ -39,10 +35,7 @@ export interface Project {
   tags?: string[];
   link?: ProjectLink;
   meta?: string;
-  /** Full-width showcase layout, independent of media presence. */
-  featured?: boolean;
   media?: ProjectMedia;
-  evidence?: ProjectEvidence;
 }
 
 export interface ProjectCategory {
