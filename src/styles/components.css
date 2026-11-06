@@ -25,6 +25,16 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+p {
+  text-wrap: pretty;
+}
+::selection {
+  background: var(--butter);
+  color: var(--ink);
+}
+html {
+  scrollbar-color: var(--muted) var(--paper);
+}
 @media (max-width: 560px) {
   body {
     font-size: 16.5px;
@@ -51,6 +61,16 @@ button {
 }
 main:focus {
   outline: none;
+}
+
+/* The shell fills the window, so a short page keeps its footer at the bottom. */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+main {
+  flex: 1;
 }
 
 .wrap {
@@ -129,7 +149,8 @@ h3 {
 }
 
 /* A ruled row that is one link (project rows, post rows): it fills butter
-   on hover and on keyboard focus, with an inset ink ring for focus. */
+   on hover, on keyboard focus and under a finger, with an inset ink ring
+   for focus. */
 .row-link {
   text-decoration: none;
   transition:
@@ -137,7 +158,8 @@ h3 {
     color var(--dur-fast);
 }
 .row-link:hover,
-.row-link:focus-visible {
+.row-link:focus-visible,
+.row-link:active {
   background: var(--butter);
   color: var(--ink);
 }
@@ -220,7 +242,8 @@ h3 {
   background: var(--btn2-bg);
   color: var(--btn2-fg);
 }
-.btn:hover {
+.btn:hover,
+.btn:focus-visible {
   transform: translate(-2px, -2px);
   box-shadow: var(--hard-6) var(--ink);
 }
@@ -242,6 +265,20 @@ h3 {
 .frame img {
   width: 100%;
 }
+/* In the dark theme, white screenshots are dimmed a step so they do not
+   glare; hover lifts them back. The portrait is a photograph and keeps its
+   light. */
+.dark .frame img,
+.dark .thumb {
+  filter: brightness(0.9);
+  transition: filter 0.2s;
+}
+.dark .frame:hover img,
+.dark a:hover .thumb,
+.dark .face img {
+  filter: none;
+}
+
 .frame figcaption {
   padding: 9px 12px;
   border-top: var(--seam) solid var(--ink);
@@ -252,8 +289,28 @@ h3 {
   letter-spacing: 0.06em;
 }
 
+/* An arrow inside a link nudges the way it points on hover and focus:
+   `.arrow` for →, `.arrow.out` for ↗ (a link that leaves the site). */
+.arrow {
+  display: inline-block;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+a:hover .arrow,
+a:focus-visible .arrow {
+  transform: translateX(3px);
+}
+a:hover .arrow.out,
+a:focus-visible .arrow.out {
+  transform: translate(2px, -2px);
+}
+a:hover .arrow.back,
+a:focus-visible .arrow.back {
+  transform: translateX(-3px);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .btn {
+  .btn,
+  .arrow {
     transition: none;
   }
 }

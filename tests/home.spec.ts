@@ -204,7 +204,8 @@ test("a project row opens its story as a modal; Next moves on; Escape returns fo
   const rsvp = page.locator("#story-rsvp");
   await expect(rsvp).toBeVisible();
   expect(await rsvp.evaluate((d) => d.matches(":modal"))).toBe(true);
-  expect(new URL(page.url()).hash).toBe("");
+  // The address names the open story, so it can be shared.
+  expect(new URL(page.url()).hash).toBe("#story-rsvp");
 
   await rsvp.locator("[data-next]").click();
   await expect(rsvp).toBeHidden();
@@ -236,6 +237,49 @@ test("the close button and a backdrop click close a story and return focus to it
   await expect(row).toBeFocused();
 });
 
+test("the arrow keys and Previous move between stories; Back closes the story and stays on the page", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("#row-ohse").click();
+  await expect(page.locator("#story-ohse")).toBeVisible();
+
+  await page.keyboard.press("ArrowRight");
+  await expect(page.locator("#story-digest")).toBeVisible();
+  await expect(page.locator("#story-ohse")).toBeHidden();
+  expect(new URL(page.url()).hash).toBe("#story-digest");
+
+  await page.keyboard.press("ArrowLeft");
+  await expect(page.locator("#story-ohse")).toBeVisible();
+  await page.locator("#story-ohse [data-dir='prev']").click();
+  await expect(page.locator("#story-hr")).toBeVisible();
+
+  // Moving between stories replaces the entry, so one Back closes them all.
+  await page.goBack();
+  await expect(page.locator("dialog.story[open]")).toHaveCount(0);
+  expect(new URL(page.url()).pathname).toBe("/");
+  expect(new URL(page.url()).hash).toBe("");
+});
+
+test("a number in the results strip opens the story behind it and gets focus back", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const number = page.locator(".nums a[data-story='heatgen']");
+  await number.click();
+  await expect(page.locator("#story-heatgen")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("dialog.story[open]")).toHaveCount(0);
+  await expect(number).toBeFocused();
+  await expect.poll(() => new URL(page.url()).hash).toBe("");
+});
+
+test("the hero's RSVP frame opens the RSVP story", async ({ page }) => {
+  await page.goto("/");
+  await page.locator(".hero a[data-story='rsvp']").click();
+  await expect(page.locator("#story-rsvp")).toBeVisible();
+});
+
 test("a focused row keeps an outline for forced-colors mode", async ({
   page,
 }) => {
@@ -263,6 +307,28 @@ test.describe("pointer preview", () => {
     await page.locator("#row-ohse").hover();
     await expect(page.locator("#peek")).toHaveClass(/\bon\b/);
     await expect(page.locator("#peek img")).toHaveAttribute("src", /\.webp/);
+  });
+
+  test("the preview never covers the row under the pointer", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    for (const id of ["rsvp", "ohse", "heatgen"]) {
+      const row = page.locator(`#row-${id}`);
+      await row.scrollIntoViewIfNeeded();
+      await row.hover();
+      await expect(page.locator("#peek")).toHaveClass(/\bon\b/);
+      // The panel eases into place; wait for it to settle, then compare boxes.
+      await expect
+        .poll(async () => {
+          const r = await row.boundingBox();
+          const p = await page.locator("#peek").boundingBox();
+          if (!r || !p) return "missing";
+          const apart = p.y >= r.y + r.height || p.y + p.height <= r.y;
+          return apart ? "apart" : "overlap";
+        })
+        .toBe("apart");
+    }
   });
 
   test.describe("on a touch screen", () => {
@@ -293,6 +359,63 @@ test.describe("without JavaScript", () => {
     await expect(page.locator("#story-mcp")).toBeVisible();
     await expect(page.locator(".hero-headline")).toBeVisible();
   });
+
+  test("Previous and Next still move between stories", async ({ page }) => {
+    await page.goto("/#story-mcp");
+    await expect(page.locator("#story-mcp")).toBeVisible();
+    await page.locator("#story-mcp [data-dir='prev']").click();
+    await expect(page.locator("#story-digest")).toBeVisible();
+    await expect(page.locator("#story-mcp")).toBeHidden();
+    await page.locator("#story-digest [data-dir='next']").click();
+    await expect(page.locator("#story-mcp")).toBeVisible();
+  });
+
+  test("the copy button stays hidden; the mailto link is the control", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await expect(page.locator("#contact .copy")).toBeHidden();
+    await expect(page.locator("#contact a.mail")).toBeVisible();
+  });
+});
+
+// ── Copy email ──────────────────────────────────────────────────────────────
+test("the copy button puts the email on the clipboard and says so", async ({
+  page,
+  context,
+  browserName,
+}) => {
+  test.skip(
+    browserName !== "chromium",
+    "Only Chromium grants clipboard permissions to a test",
+  );
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("/");
+  const copy = page.locator("#contact .copy");
+  await expect(copy).toBeVisible();
+  await copy.click();
+  await expect(copy).toHaveText("Copied");
+  await expect(page.locator("[data-copy-status]")).toHaveText(
+    "Email address copied",
+  );
+  const href = await page.locator("#contact a.mail").getAttribute("href");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    href?.replace("mailto:", ""),
+  );
+});
+
+// ── 404 ─────────────────────────────────────────────────────────────────────
+test("an unknown address shows the 404 page with a way home", async ({
+  page,
+}) => {
+  const response = await page.goto("/no-such-page");
+  expect(response?.status()).toBe(404);
+  await expect(page.locator("h1")).toHaveText("404");
+  await expect(page.locator("main a[href='/']")).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
 });
 
 // ── 7. Reduced motion ─────────────────────────────────────────────────────────

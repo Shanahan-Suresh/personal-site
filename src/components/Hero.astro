@@ -47,18 +47,31 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
       />
       {
         rsvp.media && (
-          <MediaFrame
-            image={rsvp.media.image}
-            alt={rsvp.media.alt}
-            caption={`RSVP app · ${rsvp.fact.value} guests`}
-            fit="cover"
-            objectPosition="top"
-            aspectRatio="16 / 11"
-            widths={[280, 420, 560]}
-            sizes="(max-width: 560px) 54vw, (max-width: 960px) 30vw, 280px"
-            loading="eager"
-            class="f2 rise rise-late"
-          />
+          <a
+            class="f2"
+            href={`#story-${rsvp.id}`}
+            data-story={rsvp.id}
+            aria-haspopup="dialog"
+          >
+            <MediaFrame
+              image={rsvp.media.image}
+              alt={rsvp.media.alt}
+              fit="cover"
+              objectPosition="top"
+              aspectRatio="16 / 11"
+              widths={[280, 420, 560]}
+              sizes="(max-width: 560px) 54vw, (max-width: 960px) 30vw, 280px"
+              loading="eager"
+              class="rise rise-late"
+            >
+              <Fragment slot="caption">
+                RSVP app · {rsvp.fact.value} guests{" "}
+                <span class="arrow" aria-hidden="true">
+                  →
+                </span>
+              </Fragment>
+            </MediaFrame>
+          </a>
         )
       }
     </div>
@@ -129,12 +142,33 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
   .shots :global(.face .media-canvas) {
     background: var(--butter);
   }
-  .shots :global(.f2) {
+  /* The RSVP frame is a link to its story: it lifts into a deeper shadow. */
+  .f2 {
     position: absolute;
     right: -14px;
     bottom: 0;
     width: 54%;
+    text-decoration: none;
+    transition: transform 0.12s var(--ease-out);
+  }
+  .f2 :global(.frame) {
     box-shadow: var(--hard-5) var(--ink);
+  }
+  .f2:hover,
+  .f2:focus-visible {
+    transform: translate(-3px, -3px);
+  }
+  .f2:hover :global(.frame),
+  .f2:focus-visible :global(.frame) {
+    box-shadow: var(--hard-8) var(--ink);
+  }
+  .f2:hover :global(figcaption),
+  .f2:focus-visible :global(figcaption) {
+    background: var(--butter);
+    color: var(--ink);
+  }
+  .f2:focus-visible {
+    outline-offset: 6px;
   }
 
   @media (max-width: 960px) {
@@ -175,8 +209,13 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
       margin-left: 0;
       padding-bottom: 44px;
     }
-    .shots :global(.f2) {
+    .f2 {
       right: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .f2 {
+      transition: none;
     }
   }
 </style>

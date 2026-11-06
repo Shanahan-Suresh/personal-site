@@ -11,19 +11,21 @@ import { interests } from "@/data/interests";
         ({ title, caption, image, alt, objectPosition, credit }) => (
           <li>
             <figure>
-              <Image
-                src={image}
-                alt={alt}
-                format="webp"
-                quality={78}
-                widths={[240, 360, 520]}
-                sizes="(max-width: 960px) 50vw, 25vw"
-                loading="lazy"
-                decoding="async"
-                style={
-                  objectPosition ? `object-position:${objectPosition}` : ""
-                }
-              />
+              <div class="pic">
+                <Image
+                  src={image}
+                  alt={alt}
+                  format="webp"
+                  quality={78}
+                  widths={[240, 360, 520]}
+                  sizes="(max-width: 960px) 50vw, 25vw"
+                  loading="lazy"
+                  decoding="async"
+                  style={
+                    objectPosition ? `object-position:${objectPosition}` : ""
+                  }
+                />
+              </div>
               <figcaption>
                 <b>{title}</b>
                 {caption}
@@ -56,11 +58,24 @@ import { interests } from "@/data/interests";
   figure {
     margin: 0;
   }
+  /* The photo leans in a little under the pointer, inside its square crop.
+     The tile is not a link, so it takes no fill. */
+  .pic {
+    overflow: hidden;
+    border-bottom: var(--seam) solid var(--ink);
+  }
   img {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-bottom: var(--seam) solid var(--ink);
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    img {
+      transition: transform 0.45s var(--ease-out);
+    }
+    li:hover img {
+      transform: scale(1.04);
+    }
   }
   figcaption {
     padding: 16px 20px 22px;
@@ -83,6 +98,12 @@ import { interests } from "@/data/interests";
   .media-credit a {
     text-decoration: underline;
     text-underline-offset: 0.18em;
+    transition: background var(--dur-fast);
+  }
+  .media-credit a:hover,
+  .media-credit a:focus-visible {
+    background: var(--ink);
+    color: var(--white);
   }
   @media (max-width: 960px) {
     .off {

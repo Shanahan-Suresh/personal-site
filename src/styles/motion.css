@@ -49,3 +49,32 @@
     transform: none;
   }
 }
+
+/* Lazy pictures fade in once loaded (script adds .fading, then .loaded). */
+@media (prefers-reduced-motion: no-preference) {
+  .fading {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  .fading.loaded {
+    opacity: 1;
+  }
+}
+
+/* The theme switch: the new theme wipes down over the old one, hard-edged. */
+.theme-wipe::view-transition-old(root),
+.theme-wipe::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+.theme-wipe::view-transition-new(root) {
+  animation: theme-wipe 0.38s var(--ease-out);
+}
+@keyframes theme-wipe {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}

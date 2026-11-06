@@ -26,12 +26,15 @@ import { projects } from "@/data/projects";
         project={p}
         index={i}
         total={projects.length}
+        prev={projects[(i - 1 + projects.length) % projects.length]}
         next={projects[(i + 1) % projects.length]}
       />
     ))
   }
 </section>
-<div id="peek" aria-hidden="true"><img alt="" decoding="async" /></div>
+<div id="peek" aria-hidden="true">
+  <img alt="" decoding="async" /><span class="peek-cap"></span>
+</div>
 
 <style>
   .work {
@@ -84,6 +87,40 @@ import { projects } from "@/data/projects";
   }
   #peek:not(.on) img:not([src]) {
     visibility: hidden;
+  }
+  /* The capture's caption rides on the frame's top edge as a butter tab. */
+  .peek-cap {
+    position: absolute;
+    left: -3px;
+    bottom: calc(100% + 3px);
+    max-width: calc(100% + 6px);
+    padding: 6px 9px 5px;
+    border: var(--seam) solid var(--ink);
+    background: var(--butter);
+    color: var(--ink);
+    font: 500 11.5px/1.2 var(--font-mono);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .peek-cap:empty {
+    display: none;
+  }
+  /* A new picture wipes down from the top, so a change of row reads as one move. */
+  @media (prefers-reduced-motion: no-preference) {
+    #peek.wipe img {
+      animation: peek-wipe 0.32s var(--ease-out);
+    }
+    @keyframes peek-wipe {
+      from {
+        clip-path: inset(0 0 100% 0);
+      }
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
   }
   @media not all and (hover: hover) and (pointer: fine), (max-width: 960px) {
     #peek {

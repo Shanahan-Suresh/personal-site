@@ -17,16 +17,26 @@ const social = site.social;
         fun. If anything here caught your eye, my inbox is open.
       </p>
       <div>
-        <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
+        <div class="mail-row">
+          <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
+          <button
+            class="copy"
+            type="button"
+            data-copy={social.email}
+            aria-label="Copy email address"
+            hidden>Copy</button
+          >
+          <span class="sr-only" aria-live="polite" data-copy-status></span>
+        </div>
         <ul class="links" role="list">
           <li>
             <a href={social.linkedin} target="_blank" rel="noopener noreferrer"
-              >LinkedIn ↗</a
+              >LinkedIn <span class="arrow out" aria-hidden="true">↗</span></a
             >
           </li>
           <li>
             <a href={social.github} target="_blank" rel="noopener noreferrer"
-              >GitHub ↗</a
+              >GitHub <span class="arrow out" aria-hidden="true">↗</span></a
             >
           </li>
         </ul>
@@ -65,8 +75,41 @@ const social = site.social;
     overflow-wrap: anywhere;
     transition: color var(--dur-fast);
   }
-  .mail:hover {
+  .mail:hover,
+  .mail:focus-visible {
     color: var(--butter);
+  }
+  .mail-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+  }
+  /* Script shows this only where the clipboard can be written. */
+  .copy {
+    padding: 9px 12px 8px;
+    border: 2px solid var(--white);
+    background: none;
+    color: var(--white);
+    font: 500 13px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background var(--dur-fast),
+      color var(--dur-fast),
+      border-color var(--dur-fast),
+      transform 0.1s;
+  }
+  .copy:hover,
+  .copy:focus-visible,
+  .copy.done {
+    border-color: var(--butter);
+    background: var(--butter);
+    color: var(--ink);
+  }
+  .copy:active {
+    transform: translate(2px, 2px);
   }
   .links {
     display: flex;
@@ -97,6 +140,7 @@ const social = site.social;
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .copy,
     .mail,
     .links a {
       transition: none;

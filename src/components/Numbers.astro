@@ -16,11 +16,16 @@ if (![hr.description].flat().some((d) => d.includes(employees))) {
   throw new Error(`Numbers strip: the HR story no longer says ${employees}`);
 }
 
+/* Each number opens the story that backs it. */
 const items = [
-  { value: rsvp.fact.value, label: "guests through one RSVP app" },
-  { value: employees, label: "employees on a platform I sped up" },
-  { value: hr.fact.value, label: "faster page loads" },
-  { value: heatgen.fact.value, label: "paper published in JESTEC" },
+  { value: rsvp.fact.value, label: "guests through one RSVP app", story: rsvp },
+  { value: employees, label: "employees on a platform I sped up", story: hr },
+  { value: hr.fact.value, label: "faster page loads", story: hr },
+  {
+    value: heatgen.fact.value,
+    label: "paper published in JESTEC",
+    story: heatgen,
+  },
 ];
 ---
 
@@ -29,8 +34,18 @@ const items = [
     {
       items.map((n) => (
         <li>
-          <b>{n.value}</b>
-          <span>{n.label}</span>
+          <a
+            class="num"
+            href={`#story-${n.story.id}`}
+            data-story={n.story.id}
+            aria-haspopup="dialog"
+          >
+            <b>{n.value}</b>
+            <span class="what">{n.label}</span>
+            <span class="cue label" aria-hidden="true">
+              Story <span class="arrow">→</span>
+            </span>
+          </a>
         </li>
       ))
     }
@@ -47,12 +62,49 @@ const items = [
     list-style: none;
   }
   .nums-grid li {
-    padding: 30px var(--gut) 30px 28px;
+    display: flex;
     border-left: var(--seam) solid var(--ink);
   }
   .nums-grid li:first-child {
     border-left: 0;
+  }
+  /* The whole cell is the link: it fills night, the number turns butter. */
+  .num {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 30px var(--gut) 26px 28px;
+    text-decoration: none;
+    transition:
+      background var(--dur-fast),
+      color var(--dur-fast);
+  }
+  li:first-child .num {
     padding-left: var(--gut);
+  }
+  .num:hover,
+  .num:focus-visible {
+    background: var(--night);
+    color: var(--white);
+  }
+  .num:hover b,
+  .num:focus-visible b {
+    color: var(--butter);
+  }
+  .num:focus-visible {
+    outline: 4px solid var(--butter);
+    outline-offset: -7px;
+  }
+  .cue {
+    margin-top: auto;
+    padding-top: 14px;
+    font-size: 12px;
+    opacity: 0.72;
+    transition: opacity var(--dur-fast);
+  }
+  .num:hover .cue,
+  .num:focus-visible .cue {
+    opacity: 1;
   }
   b {
     display: block;
@@ -60,13 +112,14 @@ const items = [
     letter-spacing: 0.008em;
     font-variant-numeric: lining-nums;
   }
-  span {
+  .what {
     display: block;
     max-width: 22ch;
     margin-top: 8px;
     font-weight: 600;
     font-size: 16px;
     line-height: 1.35;
+    text-wrap: balance;
   }
   @media (max-width: 960px) {
     .nums-grid {
@@ -74,6 +127,8 @@ const items = [
     }
     .nums-grid li:nth-child(3) {
       border-left: 0;
+    }
+    .nums-grid li:nth-child(3) .num {
       padding-left: var(--gut);
     }
     .nums-grid li:nth-child(n + 3) {
@@ -81,14 +136,20 @@ const items = [
     }
   }
   @media (max-width: 560px) {
-    .nums-grid li {
-      padding: 22px 16px 22px 20px;
+    .num {
+      padding: 22px 16px 20px 20px;
     }
-    .nums-grid li:nth-child(2n + 1) {
+    .nums-grid li:nth-child(2n + 1) .num {
       padding-left: var(--gut);
     }
-    span {
+    .what {
       font-size: 15px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .num,
+    .cue {
+      transition: none;
     }
   }
 </style>

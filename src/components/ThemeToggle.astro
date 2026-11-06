@@ -89,14 +89,28 @@
     const show = (dark: boolean) =>
       btn.setAttribute("aria-pressed", String(dark));
     show(document.documentElement.classList.contains("dark"));
-    btn.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.toggle("dark");
+    const root = document.documentElement;
+    const apply = () => {
+      const isDark = root.classList.toggle("dark");
       show(isDark);
       try {
         localStorage.setItem("theme", isDark ? "dark" : "light");
       } catch {
         // Storage can be blocked; the theme still applies for this visit.
       }
+    };
+    btn.addEventListener("click", () => {
+      /* The new theme wipes down from the top, where browsers support view
+         transitions and the visitor allows motion. Elsewhere it switches at once. */
+      const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (!document.startViewTransition || still.matches) {
+        apply();
+        return;
+      }
+      root.classList.add("theme-wipe");
+      document
+        .startViewTransition(apply)
+        .finished.finally(() => root.classList.remove("theme-wipe"));
     });
   }
   initThemeToggle();
