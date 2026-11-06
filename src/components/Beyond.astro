@@ -1,158 +1,101 @@
 ---
-import SectionHeading from "./SectionHeading.astro";
-import MediaFrame from "./MediaFrame.astro";
+import { Image } from "astro:assets";
 import { interests } from "@/data/interests";
 ---
 
-<section class="section" id="beyond">
-  <div class="container">
-    <SectionHeading eyebrow="BEYOND CODE" title="When I'm not building" />
-
-    <div class="beyond-intro">
-      <p class="lead">There's plenty going on away from the keyboard.</p>
-    </div>
-
-    <div class="scrapbook reveal">
-      {
-        interests.map(
-          ({
-            id,
-            title,
-            caption,
-            image,
-            alt,
-            aspectRatio,
-            fit,
-            objectPosition,
-            credit,
-          }) => (
-            <article class={`interest-scene interest--${id}`}>
-              <MediaFrame
-                image={image}
+<section class="slab s-tomato" id="beyond" aria-labelledby="beyond-title">
+  <h2 id="beyond-title" class="sr-only">When I'm not building</h2>
+  <ul class="off" role="list">
+    {
+      interests.map(
+        ({ title, caption, image, alt, objectPosition, credit }) => (
+          <li>
+            <figure>
+              <Image
+                src={image}
                 alt={alt}
-                fit={fit}
-                objectPosition={objectPosition}
-                credit={credit}
-                aspectRatio={aspectRatio}
-                widths={[320, 560, 800]}
-                sizes={
-                  id === "off-clock"
-                    ? "(max-width: 600px) 88vw, 54vw"
-                    : "(max-width: 600px) 88vw, (max-width: 900px) 40vw, 34vw"
+                format="webp"
+                quality={78}
+                widths={[240, 360, 520]}
+                sizes="(max-width: 960px) 50vw, 25vw"
+                loading="lazy"
+                decoding="async"
+                style={
+                  objectPosition ? `object-position:${objectPosition}` : ""
                 }
-                class="interest-frame"
-              >
-                <div slot="caption">
-                  <h3 class="interest-title">{title}</h3>
-                  <p class="interest-copy">{caption}</p>
-                </div>
-              </MediaFrame>
-            </article>
-          ),
-        )
-      }
-    </div>
-  </div>
+              />
+              <figcaption>
+                <b>{title}</b>
+                {caption}
+                <span class="media-credit">
+                  <a href={credit.href}>{credit.label}</a>
+                </span>
+              </figcaption>
+            </figure>
+          </li>
+        ),
+      )
+    }
+  </ul>
 </section>
 
 <style>
-  .beyond-intro {
-    margin-bottom: var(--space-7);
-  }
-
-  .scrapbook {
+  /* Ink shows through the gaps as the seams, so every tile is the same size. */
+  .off {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: clamp(1.5rem, 4vw, 3rem);
-    row-gap: var(--space-6);
-    align-items: start;
-    padding: var(--space-2);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--seam);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--ink);
   }
-
-  .interest-scene {
-    min-width: 0;
+  li {
+    background: var(--tomato);
   }
-
-  .interest--off-clock {
-    grid-column: span 7;
-    transform: rotate(-1.4deg);
+  figure {
+    margin: 0;
   }
-
-  .interest--gym {
-    grid-column: span 5;
-    grid-row: span 2;
-    margin-top: var(--space-7);
-    transform: rotate(2deg);
+  img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-bottom: var(--seam) solid var(--ink);
   }
-
-  .interest--travel {
-    grid-column: span 3;
-    transform: rotate(2deg);
+  figcaption {
+    padding: 16px 20px 22px;
+    font-size: 16px;
+    line-height: 1.4;
   }
-
-  .interest--finance {
-    grid-column: span 4;
-    margin-top: var(--space-4);
-    transform: rotate(-1.5deg);
+  b {
+    display: block;
+    margin-bottom: 6px;
+    font: 800 22px/1 var(--font-display);
+    letter-spacing: 0.008em;
+    text-transform: uppercase;
   }
-
-  .interest-title {
-    font-family: var(--font-head);
-    font-size: clamp(1rem, 1.5vw, 1.2rem);
-    font-weight: 800;
-    line-height: 1.25;
+  .media-credit {
+    display: block;
+    margin-top: 10px;
+    font: 400 11.5px/1.35 var(--font-mono);
+    letter-spacing: 0.02em;
   }
-
-  .interest-copy {
-    font-size: var(--fs-sm);
-    color: var(--ink-soft);
-    line-height: 1.5;
-    margin-top: var(--space-2);
-    max-width: 46ch;
+  .media-credit a {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
   }
-
-  @media (601px <= width <= 900px) {
-    .scrapbook {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: var(--space-6);
-    }
-
-    .interest-scene {
-      grid-column: auto;
-      grid-row: auto;
-    }
-
-    .interest--off-clock {
-      grid-column: 1 / -1;
-      max-width: 85%;
-    }
-
-    .interest--gym {
-      grid-row: span 2;
-      margin-top: var(--space-4);
-    }
-
-    .interest--finance {
-      grid-column: 2;
+  @media (max-width: 960px) {
+    .off {
+      grid-template-columns: 1fr 1fr;
     }
   }
-
-  @media (width < 601px) {
-    .beyond-intro {
-      margin-bottom: var(--space-6);
+  @media (max-width: 560px) {
+    figcaption {
+      padding: 12px 14px 18px;
+      font-size: 15px;
     }
-
-    .scrapbook {
-      grid-template-columns: minmax(0, 1fr);
-      row-gap: var(--space-6);
-      padding-inline: 0;
-    }
-
-    .interest-scene {
-      grid-column: auto;
-      grid-row: auto;
-      transform: none;
-      margin-top: 0;
+    b {
+      font-size: 19px;
     }
   }
 </style>

@@ -1,37 +1,82 @@
 ---
-import SectionHeading from "./SectionHeading.astro";
-import BentoTile from "./BentoTile.astro";
-import Tag from "./Tag.astro";
 import { learning } from "@/data/skills";
 ---
 
-<section id="skills" class="section">
-  <div class="container">
-    <SectionHeading eyebrow="CURRENTLY" title="What I'm into lately" />
-
-    <div class="bento">
-      <BentoTile span={4}>
-        <div class="stack stack-4">
-          <p>
-            I'm getting deeper into deployment infrastructure and DevOps, using
-            Terraform on real projects and teaching myself AWS. Kubernetes is
-            next.
-          </p>
-          <p>
-            Agentic coding takes up a lot of my day. I'm exploring how to build
-            useful systems with LLMs, and how they change the way I work.
-          </p>
-        </div>
-      </BentoTile>
-
-      <BentoTile span={2} accent="1" stripe>
-        <div class="stack stack-5">
-          <h3 class="h3">On the learning list</h3>
-          <div class="row-wrap gap-2">
-            {learning.map((t) => <Tag>{t}</Tag>)}
-          </div>
-        </div>
-      </BentoTile>
+<section id="lately" class="slab s-butter">
+  <div class="wrap lately">
+    <h2 class="reveal">
+      <span class="ln"><span>What I'm into</span></span>
+      <span class="ln"><span>lately</span></span>
+    </h2>
+    <div>
+      <p>
+        I'm getting deeper into deployment infrastructure and DevOps, using
+        Terraform on real projects and teaching myself AWS. Kubernetes is next.
+      </p>
+      <p>
+        Agentic coding takes up a lot of my day. I'm exploring how to build
+        useful systems with LLMs, and how they change the way I work.
+      </p>
+      <div class="learn">
+        <span class="label" id="learning-next">Learning next</span>
+        <ul role="list" aria-labelledby="learning-next">
+          {learning.map((t) => <li>{t}</li>)}
+        </ul>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .lately {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 56px;
+    padding-block: 64px 72px;
+  }
+  h2 {
+    font-size: clamp(54px, 8vw, 120px);
+  }
+  p {
+    max-width: 52ch;
+    margin: 0 0 16px;
+    font-size: 18.5px;
+  }
+  .learn {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    margin-top: 22px;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    padding: 8px 12px;
+    border: var(--seam) solid var(--ink);
+    background: var(--card);
+    color: var(--text);
+    font: 800 17px/1 var(--font-display);
+    text-transform: uppercase;
+  }
+  @media (max-width: 960px) {
+    .lately {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+  @media (max-width: 560px) {
+    .lately {
+      padding-block: 56px 64px;
+    }
+    p {
+      font-size: 17.5px;
+    }
+  }
+</style>
