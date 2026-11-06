@@ -1,0 +1,388 @@
+<title>Portfolio Redesign Mockups</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: a quiet viewing room. Designs on the left, the live design on the right, the verdict right above it. The mockups carry the colour; this page stays neutral. */
+:root {
+  --bg: #f1f1ee; --panel: #ffffff; --ink: #161616; --muted: #5f5f5a; --line: #d7d7d0; --strong: #161616;
+  --love: #1f7a3d; --maybe: #9a6a00; --no: #b3261e; --sel: #e7e7e1; --quote: #f6f5ef;
+  --sans: "Instrument Sans", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #111211; --panel: #1a1b1a; --ink: #ecece7; --muted: #a2a29b; --line: #2f302d; --strong: #ecece7; --love: #5cc483; --maybe: #e0b145; --no: #ff7a70; --sel: #262724; --quote: #20211f; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #111211; --panel: #1a1b1a; --ink: #ecece7; --muted: #a2a29b; --line: #2f302d; --strong: #ecece7; --love: #5cc483; --maybe: #e0b145; --no: #ff7a70; --sel: #262724; --quote: #20211f; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font: 400 15.5px/1.5 var(--sans); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--strong); outline-offset: 2px; }
+.page { max-width: 1680px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px 48px; }
+
+.intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 32px; align-items: start; margin-bottom: 24px; }
+.intro h1 { font-size: clamp(26px, 3vw, 36px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -.02em; text-wrap: balance; }
+.intro p { margin: 0 0 8px; max-width: 62ch; color: var(--muted); }
+.intro p b { color: var(--ink); font-weight: 600; }
+.steps { margin: 0; padding: 14px 18px 14px 36px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+.steps li { margin: 4px 0; }
+
+.room { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 20px; align-items: start; }
+.list { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; position: sticky; top: 12px; }
+.item { all: unset; box-sizing: border-box; display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; width: 100%; padding: 11px 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
+.item:hover { background: var(--sel); }
+.item[aria-current="true"] { background: var(--sel); box-shadow: inset 3px 0 0 var(--strong); }
+.item:focus-visible { outline: 2px solid var(--strong); outline-offset: -2px; }
+.item b { font-weight: 600; }
+.item small { grid-column: 1; color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+.mark { grid-row: 1 / span 2; grid-column: 2; align-self: center; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; }
+.mark svg { width: 15px; height: 15px; }
+.mark.love { color: var(--love); } .mark.maybe { color: var(--maybe); } .mark.no { color: var(--no); }
+.tally { padding: 12px 14px; background: var(--bg); font-size: 13.5px; color: var(--muted); }
+
+.stage { min-width: 0; }
+.head { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px 24px; margin-bottom: 14px; }
+.head h2 { margin: 0 0 4px; font-size: 21px; letter-spacing: -.01em; }
+.head p { margin: 0; color: var(--muted); max-width: 70ch; }
+.said { margin: 10px 0 0; padding: 8px 12px; background: var(--quote); border-left: 3px solid var(--line); font-size: 14.5px; max-width: 70ch; }
+.said span { color: var(--muted); }
+.changed { margin: 10px 0 0; padding-left: 20px; max-width: 72ch; }
+.changed li { margin: 3px 0; }
+.tip { margin-top: 10px; font-size: 14px; font-weight: 600; }
+.verdict { display: flex; flex-direction: column; gap: 8px; min-width: 260px; }
+.vbtns { display: flex; gap: 6px; }
+.vbtn { flex: 1; display: inline-flex; justify-content: center; align-items: center; gap: 6px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); cursor: pointer; font-weight: 600; }
+.vbtn svg { width: 16px; height: 16px; }
+.vbtn:hover { border-color: var(--strong); }
+.vbtn[aria-pressed="true"].love { background: var(--love); border-color: var(--love); color: #fff; }
+.vbtn[aria-pressed="true"].maybe { background: var(--maybe); border-color: var(--maybe); color: #fff; }
+.vbtn[aria-pressed="true"].no { background: var(--no); border-color: var(--no); color: #fff; }
+.note { width: 100%; min-height: 58px; resize: vertical; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); font: 400 14.5px/1.4 var(--sans); }
+.saved { font-size: 13px; color: var(--muted); min-height: 1.2em; }
+.lbl { font-size: 13px; font-weight: 600; }
+
+.bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--panel); }
+.seg button { border: 0; background: none; padding: 7px 14px; cursor: pointer; font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--strong); color: var(--bg); }
+.bar .hint { color: var(--muted); font-size: 13.5px; margin-left: auto; }
+
+.view { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; position: relative; }
+.view.desktop { height: min(78vh, 860px); }
+.scaler { width: 1440px; transform-origin: 0 0; }
+.scaler iframe { width: 1440px; border: 0; display: block; background: #fff; }
+.view.phone { display: flex; justify-content: center; padding: 24px 12px; background: var(--bg); height: min(84vh, 900px); }
+.view.phone .scaler { width: auto; height: 100%; transform: none !important; }
+.view.phone iframe { width: 390px; max-width: 100%; height: 100%; border: 1px solid var(--line); border-radius: 18px; }
+.now-img { display: block; width: 100%; }
+.now-scroll { height: 100%; overflow: auto; }
+.view.phone .now-scroll { width: 390px; max-width: 100%; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
+
+.pick { margin-top: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; }
+.pick h2 { margin: 0 0 4px; font-size: 21px; letter-spacing: -.01em; }
+.pick > p { margin: 0 0 12px; color: var(--muted); }
+.opts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.opt { padding: 9px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); cursor: pointer; font-weight: 600; }
+.opt:hover { border-color: var(--strong); }
+.opt[aria-pressed="true"] { background: var(--strong); border-color: var(--strong); color: var(--bg); }
+.pick .note { max-width: 720px; }
+.pick .lbl { display: block; margin-bottom: 6px; }
+.sendrow { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.sendrow p { margin: 0; color: var(--muted); flex: 1 1 320px; }
+.sendrow button { padding: 11px 18px; border-radius: 6px; border: 1px solid var(--strong); background: var(--strong); color: var(--bg); font-weight: 600; cursor: pointer; }
+.sendrow button:disabled { opacity: .45; cursor: not-allowed; }
+.sendrow .msg { flex-basis: 100%; font-size: 14px; color: var(--muted); }
+
+details.how { margin-top: 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 18px; }
+details.how summary { cursor: pointer; font-weight: 600; }
+details.how li { color: var(--muted); max-width: 80ch; }
+details.how ul { padding-left: 20px; }
+
+@media (max-width: 1000px) {
+  .intro, .room { grid-template-columns: 1fr; }
+  .list { position: static; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .item { border-right: 1px solid var(--line); }
+  .tally { grid-column: 1 / -1; }
+  .head { grid-template-columns: 1fr; }
+  .verdict { min-width: 0; }
+  .view.desktop { height: 70vh; }
+}
+@media (max-width: 560px) { .bar .hint { display: none; } .list { grid-template-columns: 1fr 1fr; } .item small { display: none; } }
+</style>
+
+<div class="page">
+  <div class="intro">
+    <div>
+      <h1>Your four favourites, improved</h1>
+      <p>You loved four designs in the first round: 2 Product, 3 Editorial, 5 Desktop and 10 Poster. <b>Each one is rebuilt here around your note on it.</b> They also all aim for the same target: a site that looks built by a senior web developer.</p>
+      <p>Each design has a switch to show its first version, so you can see what changed.</p>
+    </div>
+    <ol class="steps">
+      <li>Pick a design from the list.</li>
+      <li>Scroll through it. Try computer and phone, and light and dark.</li>
+      <li>Use "First version" to compare it with round 1.</li>
+      <li>Mark it Love, Maybe or No, with a note if you like.</li>
+      <li>At the bottom, choose the one to build, then press "Send my picks to Claude".</li>
+    </ol>
+  </div>
+
+  <div class="room">
+    <nav class="list" id="list" aria-label="Designs"></nav>
+    <div class="stage">
+      <div class="head">
+        <div>
+          <h2 id="dName"></h2>
+          <p id="dWhat"></p>
+          <p class="said" id="dSaid"></p>
+          <ul class="changed" id="dChanged"></ul>
+          <p class="tip" id="dTip"></p>
+        </div>
+        <div class="verdict" id="verdict">
+          <div class="vbtns" role="group" aria-label="Your verdict">
+            <button class="vbtn love" type="button" data-v="love" aria-pressed="false"></button>
+            <button class="vbtn maybe" type="button" data-v="maybe" aria-pressed="false"></button>
+            <button class="vbtn no" type="button" data-v="no" aria-pressed="false"></button>
+          </div>
+          <label for="note" class="lbl">Note (optional)</label>
+          <textarea id="note" class="note" placeholder="What you like or would change"></textarea>
+          <span class="saved" id="saved" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="bar">
+        <div class="seg" role="group" aria-label="Version" id="verSeg"><button type="button" data-ver="v2" aria-pressed="true">New version</button><button type="button" data-ver="v1" aria-pressed="false">First version</button></div>
+        <div class="seg" role="group" aria-label="Screen size"><button type="button" data-w="desktop" aria-pressed="true">Computer</button><button type="button" data-w="phone" aria-pressed="false">Phone</button></div>
+        <div class="seg" role="group" aria-label="Colour mode"><button type="button" data-t="light" aria-pressed="true">Light</button><button type="button" data-t="dark" aria-pressed="false">Dark</button></div>
+        <span class="hint">Scroll inside the frame to see the whole page.</span>
+      </div>
+      <div class="view desktop" id="view"><div class="scaler" id="scaler"></div></div>
+    </div>
+  </div>
+
+  <section class="pick" aria-labelledby="pickH">
+    <h2 id="pickH">Which one should I build?</h2>
+    <p>Choose one. If you want parts of two, choose "A mix" and say which parts in the note.</p>
+    <div class="opts" role="group" aria-label="Design to build" id="opts"></div>
+    <label for="pickNote" class="lbl">Note on your choice (optional)</label>
+    <textarea id="pickNote" class="note" placeholder="For example: the layout of 10 with the colours of 2"></textarea>
+    <span class="saved" id="pickSaved" aria-live="polite"></span>
+    <div class="sendrow">
+      <p id="sendText">Your marks save as you click. When you are done, send them to Claude. Claude then plans how to move the chosen design into your site.</p>
+      <button type="button" id="send">Send my picks to Claude</button>
+      <span class="msg" id="sendMsg" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <details class="how">
+    <summary>How these were made</summary>
+    <ul>
+      <li>Each new version started from its first version and your note on it. Your notes on the six designs you turned down set the target: not too safe, not beginner-looking, not a tracker, no terminal.</li>
+      <li>Every version was checked on a computer screen and a phone screen, in light and dark mode, with no sideways scrolling. Text colours were checked for contrast.</li>
+      <li>All the text is your current text, with one typo fixed ("focus crafting" now reads "focus on crafting").</li>
+      <li>Nothing on your live site has changed. The first-round marks for all ten designs are kept.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+const DESIGNS = [
+  { id: "now", name: "Your site today", short: "For comparison", what: "Your homepage as it looks now, so you can compare.", said: "", changed: [], tip: "" },
+  { id: "02-product", name: "2 · Product", short: "New colours, same shop feel",
+    what: "The polished product-shop layout, with colours of its own.",
+    said: "I like it, but probably we need to change the colour theme as anyone familiar with Gumroad can instantly tell we based it off it",
+    changed: [
+      "The Gumroad pink and yellow are gone. There are three new colour sets to choose from: Apricot and Cobalt, Moss and Vermilion, Plum and Sky.",
+      "One spacing grid and one type scale, so edges and sizes line up across the page.",
+      "Project screenshots sit inside a frame instead of touching the card edge.",
+      "The project filter now animates: cards glide to their new places.",
+    ],
+    tip: "Try the three colour sets with the Colours switch at the bottom left of the design." },
+  { id: "03-editorial", name: "3 · Editorial", short: "One steady typeface, easy to read",
+    what: "The magazine, with type that stays the same from cover to back page.",
+    said: "Very awesome, but the font that keeps changing seems a bit off, and some of the fonts seem hard to read",
+    changed: [
+      "One serif (Source Serif) for every headline, always upright. Italic is used only for your signature.",
+      "The thin, fragile letters of the old typeface are gone. Small labels are bigger, and the body text is larger.",
+      "Two typefaces in total instead of three.",
+      "The top bar stays in view and shows which page of the issue you are reading.",
+    ],
+    tip: "" },
+  { id: "05-desktop", name: "5 · Desktop", short: "A real little operating system",
+    what: "The desktop, rebuilt so the windows work like a real computer.",
+    said: "Very fun, can consider it",
+    changed: [
+      "Windows open, close, minimise and come to the front. A taskbar at the bottom lists what is open.",
+      "Each project opens in its own window with its screenshot and story.",
+      "The pixel font is only for window titles and headings. Everything you read is in a clear typeface.",
+      "On a phone it becomes a phone home screen: tap an app icon to open that section.",
+      "A new wallpaper with a sun by day and a moon in dark mode.",
+    ],
+    tip: "Double-click a project in the Projects window. On the phone view, tap an app icon." },
+  { id: "10-poster", name: "10 · Poster", short: "Your current site, at its best",
+    what: "The colour-block poster wall, pushed further as the next step of your current site.",
+    said: "This seems like the next evolution of the current site actually. Simply a better version of it",
+    changed: [
+      "The five colours are tuned as one set, so they belong together.",
+      "A narrower bold headline face that breaks lines cleanly at every screen size.",
+      "Your portrait now leads the top, with the RSVP app screenshot over its corner. Your photo left the \"short version\" section, so it shows once.",
+      "Point at a project and its screenshot follows the pointer. Press Story to read the full project.",
+      "Headlines slide up into view as you scroll.",
+    ],
+    tip: "Point at the project rows, then press a Story button." },
+];
+const PICKS = [
+  { id: "02-product", label: "2 · Product" }, { id: "03-editorial", label: "3 · Editorial" },
+  { id: "05-desktop", label: "5 · Desktop" }, { id: "10-poster", label: "10 · Poster" }, { id: "mix", label: "A mix" },
+];
+const ICON = {
+  love: '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 14.2S1.5 10.3 1.5 5.8A3.3 3.3 0 0 1 8 4.4a3.3 3.3 0 0 1 6.5 1.4C14.5 10.3 8 14.2 8 14.2z"/></svg>',
+  maybe: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M5 8h6"/></svg>',
+  no: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>',
+};
+const LABEL = { love: "Love", maybe: "Maybe", no: "No" };
+const COLL = "round2";
+document.querySelectorAll(".vbtn").forEach((b) => (b.innerHTML = ICON[b.dataset.v] + LABEL[b.dataset.v]));
+
+const verdicts = {};
+let pick = { choice: "", note: "" };
+let current = DESIGNS[1].id, width = "desktop", theme = "light", ver = "v2", db = null, comments = null;
+try { const h = location.hash.slice(1); if (DESIGNS.some((d) => d.id === h)) current = h; } catch (e) {}
+try { theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) {}
+try { if (matchMedia("(max-width: 700px)").matches) width = "phone"; } catch (e) {}
+const $ = (id) => document.getElementById(id);
+const setPressed = (sel, attr, val) => document.querySelectorAll(sel).forEach((x) => x.setAttribute("aria-pressed", x.dataset[attr] === val));
+setPressed("[data-w]", "w", width); setPressed("[data-t]", "t", theme);
+
+function renderList() {
+  $("list").innerHTML = DESIGNS.map((d) => {
+    const v = verdicts[d.id]?.verdict;
+    const mark = v ? `<span class="mark ${v}">${ICON[v]}${LABEL[v]}</span>` : "";
+    return `<button class="item" type="button" data-id="${d.id}" aria-current="${d.id === current}"><b>${d.name}</b>${mark}<small>${d.short}</small></button>`;
+  }).join("") + `<div class="tally" id="tally"></div>`;
+  const marked = DESIGNS.filter((d) => d.id !== "now" && verdicts[d.id]?.verdict).length;
+  $("tally").textContent = `${marked} of 4 marked` + (pick.choice ? ` · to build: ${PICKS.find((p) => p.id === pick.choice)?.label}` : "");
+}
+function renderHead() {
+  const d = DESIGNS.find((x) => x.id === current);
+  $("dName").textContent = d.name; $("dWhat").textContent = d.what;
+  $("dSaid").hidden = !d.said;
+  $("dSaid").innerHTML = d.said ? `<span>Your note on the first version:</span> "${d.said}"` : "";
+  $("dChanged").hidden = !d.changed.length;
+  $("dChanged").innerHTML = d.changed.map((c) => `<li>${c}</li>`).join("");
+  $("dTip").hidden = !d.tip; $("dTip").textContent = d.tip;
+  $("verdict").hidden = d.id === "now";
+  $("verSeg").hidden = d.id === "now";
+  const v = verdicts[d.id] || {};
+  document.querySelectorAll(".vbtn").forEach((b) => b.setAttribute("aria-pressed", b.dataset.v === v.verdict));
+  if (document.activeElement !== $("note")) $("note").value = v.note || "";
+  $("saved").textContent = "";
+}
+function renderPick() {
+  $("opts").innerHTML = PICKS.map((p) => `<button class="opt" type="button" data-pick="${p.id}" aria-pressed="${pick.choice === p.id}">${p.label}</button>`).join("");
+  if (document.activeElement !== $("pickNote")) $("pickNote").value = pick.note || "";
+}
+function applyThemeToFrame() {
+  const f = $("scaler").querySelector("iframe");
+  try { f && f.contentDocument && (f.contentDocument.documentElement.dataset.theme = theme); } catch (e) {}
+}
+function renderView() {
+  const view = $("view"), sc = $("scaler");
+  view.className = "view " + width;
+  if (current === "now") {
+    sc.innerHTML = `<div class="now-scroll"><img class="now-img" alt="Your current homepage, full length, ${theme} mode." src="img/now-${width === "phone" ? "phone" : "desktop"}-${theme}.webp"></div>`;
+    sc.style.transform = "none"; sc.style.width = width === "phone" ? "auto" : "100%"; sc.style.height = "100%";
+    return;
+  }
+  sc.style.width = ""; sc.style.height = "";
+  const file = ver === "v1" ? `${current}.html` : current === "10-poster" ? "10-poster-v3.html" : `${current}-v2.html`;
+  sc.innerHTML = `<iframe title="${DESIGNS.find((d) => d.id === current).name}, ${ver === "v2" ? "new" : "first"} version" src="${file}"></iframe>`;
+  sc.querySelector("iframe").addEventListener("load", applyThemeToFrame);
+  fit();
+}
+function fit() {
+  const view = $("view"), sc = $("scaler"), f = sc.querySelector("iframe");
+  if (!f || width === "phone") { if (f) f.style.height = ""; return; }
+  const s = view.clientWidth / 1440;
+  sc.style.transform = `scale(${s})`;
+  f.style.height = view.clientHeight / s + "px";
+}
+new ResizeObserver(fit).observe($("view"));
+
+$("list").addEventListener("click", (e) => {
+  const b = e.target.closest(".item"); if (!b) return;
+  current = b.dataset.id; ver = "v2"; setPressed("[data-ver]", "ver", ver);
+  try { history.replaceState(null, "", "#" + current); } catch (err) {}
+  renderList(); renderHead(); renderView();
+});
+document.querySelectorAll("[data-ver]").forEach((b) => b.addEventListener("click", () => { ver = b.dataset.ver; setPressed("[data-ver]", "ver", ver); renderView(); }));
+document.querySelectorAll("[data-w]").forEach((b) => b.addEventListener("click", () => { width = b.dataset.w; setPressed("[data-w]", "w", width); renderView(); }));
+document.querySelectorAll("[data-t]").forEach((b) => b.addEventListener("click", () => {
+  theme = b.dataset.t; setPressed("[data-t]", "t", theme);
+  if (current === "now") renderView(); else applyThemeToFrame();
+}));
+
+async function write(id, data, out) {
+  if (!db) { $(out).textContent = "Not saved: this view cannot store picks. Open the page signed in to claude.ai."; return; }
+  $(out).textContent = "Saving…";
+  try { await db.doc(`${COLL}/${id}`).set({ ...data, at: new Date().toISOString() }); $(out).textContent = "Saved."; }
+  catch (e) { $(out).textContent = "Not saved (" + (e.code || "error") + "). Try again."; }
+}
+const save = (id) => write(id, { verdict: verdicts[id].verdict || "", note: verdicts[id].note || "" }, "saved");
+document.querySelectorAll(".vbtn").forEach((b) => b.addEventListener("click", () => {
+  const v = (verdicts[current] ||= {});
+  v.verdict = v.verdict === b.dataset.v ? "" : b.dataset.v;
+  renderHead(); renderList(); save(current);
+}));
+let noteTimer, pickTimer;
+$("note").addEventListener("input", () => {
+  (verdicts[current] ||= {}).note = $("note").value;
+  clearTimeout(noteTimer); const id = current; noteTimer = setTimeout(() => save(id), 700);
+});
+$("opts").addEventListener("click", (e) => {
+  const b = e.target.closest(".opt"); if (!b) return;
+  pick.choice = pick.choice === b.dataset.pick ? "" : b.dataset.pick;
+  renderPick(); renderList(); write("pick", pick, "pickSaved");
+});
+$("pickNote").addEventListener("input", () => {
+  pick.note = $("pickNote").value;
+  clearTimeout(pickTimer); pickTimer = setTimeout(() => write("pick", pick, "pickSaved"), 700);
+});
+
+$("send").addEventListener("click", async () => {
+  const marked = DESIGNS.filter((d) => d.id !== "now" && verdicts[d.id]?.verdict);
+  const lines = marked.map((d) => `${d.name}: ${LABEL[verdicts[d.id].verdict]}${verdicts[d.id].note ? " (" + verdicts[d.id].note + ")" : ""}`);
+  const choice = PICKS.find((p) => p.id === pick.choice)?.label || "not chosen yet";
+  const text = `My round 2 picks are in. Build: ${choice}${pick.note ? " (" + pick.note + ")" : ""}.\n` + lines.join("\n");
+  if (!comments) { $("sendMsg").textContent = "Your picks are saved. Tell Claude in the terminal that you are done."; return; }
+  $("send").disabled = true; $("sendMsg").textContent = "Sending…";
+  try {
+    await comments.sendToClaude({ anchor: await comments.anchorFor($("send")), text });
+    $("sendMsg").textContent = "Sent. Claude has your picks.";
+  } catch (e) {
+    $("sendMsg").textContent = "Could not send (" + (e.code || "error") + "). Your picks are saved, so tell Claude in the terminal that you are done.";
+  } finally { $("send").disabled = false; }
+});
+
+renderList(); renderHead(); renderPick(); renderView();
+
+(async () => {
+  try {
+    db = await claude.use("db");
+    if (db) {
+      db.collection(COLL).onSnapshot((snap) => {
+        snap.docs.forEach((d) => {
+          const x = d.data() || {};
+          if (d.id === "pick") { if (document.activeElement !== $("pickNote")) pick = { choice: x.choice || "", note: x.note || "" }; }
+          else if (d.id !== current || document.activeElement !== $("note")) verdicts[d.id] = { verdict: x.verdict || "", note: x.note || "" };
+        });
+        renderList(); renderHead(); renderPick();
+      }, () => {});
+    }
+  } catch (e) {}
+  const noSend = () => { comments = null; $("send").hidden = true; $("sendText").textContent = "Your marks save as you click. When you are done, tell Claude in the terminal."; };
+  try {
+    comments = await claude.use("comments");
+    if (!comments) noSend();
+    else if ((await comments.canSendToClaude().catch(() => "off")) !== "available") noSend();
+  } catch (e) { noSend(); }
+})();
+</script>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 Riso Zine · Shanahan Suresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Karla:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap">
+<style>
+/* Layout: a two-ink risograph zine. Blue does the strokes and type, fluoro pink is the second drum. The hard shadow becomes the pink layer printed slightly out of register. Photos print as duotones until you hover. */
+:root {
+  --paper: #efede6; --blue: #0067a8; --pink: #ff48b0; --text: #132033; --muted: #3c4b60; --blend: multiply; --halftone: rgba(0, 103, 168, .55);
+  --display: "Dela Gothic One", "Arial Black", sans-serif;
+  --body: "Karla", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #15141b; --blue: #5fb4ff; --pink: #ff5cbb; --text: #ecebf3; --muted: #b4b3c4; --blend: screen; --halftone: rgba(95, 180, 255, .45); color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #15141b; --blue: #5fb4ff; --pink: #ff5cbb; --text: #ecebf3; --muted: #b4b3c4; --blend: screen; --halftone: rgba(95, 180, 255, .45); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--text); font: 400 17px/1.6 var(--body); position: relative; }
+/* paper grain */
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .18; mix-blend-mode: var(--blend); z-index: 50;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap: balance; color: var(--blue); }
+
+/* two-ink type: pink copy printed under the blue, off register */
+.ink2 { position: relative; display: inline-block; }
+.ink2::before { content: attr(data-t); position: absolute; inset: 0; color: var(--pink); transform: translate(.045em, .035em); mix-blend-mode: var(--blend); z-index: -1; white-space: inherit; }
+.ink2 { z-index: 0; isolation: isolate; }
+.mis { box-shadow: 7px 6px 0 var(--pink); }
+.stroke { border: 3px solid var(--blue); }
+
+.nav .wrap { display: flex; align-items: center; gap: 24px; padding-block: 20px; border-bottom: 3px solid var(--blue); }
+.issue { font: 400 18px var(--display); color: var(--blue); margin-right: auto; }
+.issue small { font: 700 13px var(--body); color: var(--pink); letter-spacing: .1em; text-transform: uppercase; margin-left: 8px; }
+.nav a { text-decoration: none; font-weight: 800; color: var(--blue); font-size: 15px; text-transform: uppercase; letter-spacing: .06em; }
+.nav a:hover { color: var(--pink); }
+.tbtn { font: 800 13px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--blue); background: none; border: 3px solid var(--blue); padding: 6px 10px; cursor: pointer; }
+
+/* duotone photo */
+.duo { position: relative; background: var(--pink); overflow: hidden; }
+.duo img { filter: grayscale(1) contrast(1.25) brightness(1.05); mix-blend-mode: var(--blend); width: 100%; height: 100%; object-fit: cover; transition: filter .3s, mix-blend-mode .3s; }
+.duo::after { content: ""; position: absolute; inset: 0; background: radial-gradient(var(--halftone) 32%, transparent 34%) 0 0 / 6px 6px; mix-blend-mode: var(--blend); pointer-events: none; transition: opacity .3s; }
+.duo:hover img, .duo.live img { filter: none; mix-blend-mode: normal; }
+.duo:hover::after, .duo.live::after { opacity: 0; }
+
+.cover { display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; padding-block: 56px 72px; }
+.cover h1 { font-size: clamp(42px, 6.4vw, 98px); line-height: .96; letter-spacing: -.01em; }
+.cover h1 .row { display: block; width: max-content; max-width: 100%; white-space: nowrap; }
+.cover .lead { font-size: 19.5px; max-width: 46ch; margin: 30px 0 30px; color: var(--text); }
+.cover .pic { aspect-ratio: 4/5; transform: rotate(2.2deg); }
+.cover .tag { position: absolute; right: -14px; bottom: 28px; background: var(--paper); color: var(--blue); border: 3px solid var(--blue); font: 400 18px var(--display); padding: 8px 14px; transform: rotate(-5deg); }
+.btn { display: inline-block; font: 800 16px var(--body); text-transform: uppercase; letter-spacing: .06em; padding: 14px 22px; color: var(--blue); background: var(--paper); border: 3px solid var(--blue); text-decoration: none; box-shadow: 6px 5px 0 var(--pink); transition: transform .1s, box-shadow .1s; }
+.btn.fill { background: var(--blue); color: var(--paper); }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 8px 7px 0 var(--pink); }
+.btn:active { transform: translate(5px, 4px); box-shadow: 0 0 0 var(--pink); }
+.ctas { display: flex; gap: 18px; flex-wrap: wrap; }
+
+.strip { border-block: 3px solid var(--blue); display: grid; grid-template-columns: repeat(4, 1fr); }
+.strip div { padding: 18px 20px; border-left: 3px solid var(--blue); }
+.strip div:first-child { border-left: 0; }
+.strip b { display: block; font: 400 36px/1 var(--display); color: var(--pink); }
+.strip span { font-weight: 700; color: var(--blue); font-size: 14.5px; }
+
+section { padding-top: 104px; }
+.sh { display: flex; align-items: baseline; gap: 18px; margin-bottom: 40px; flex-wrap: wrap; }
+.sh h2 { font-size: clamp(40px, 5.6vw, 76px); line-height: 1; }
+.sh .no { font: 800 14px var(--body); color: var(--pink); letter-spacing: .12em; text-transform: uppercase; }
+
+.spread { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: center; margin-bottom: 80px; }
+.spread:nth-of-type(even) { grid-template-columns: 1fr 1.15fr; }
+.spread:nth-of-type(even) .duo { order: 2; }
+.spread .duo { aspect-ratio: 16/11; border: 3px solid var(--blue); box-shadow: 9px 8px 0 var(--pink); }
+.spread .duo img { object-position: top; }
+.spread .grp { font: 800 13px var(--body); color: var(--pink); letter-spacing: .12em; text-transform: uppercase; }
+.spread h3 { font-size: clamp(30px, 3.4vw, 46px); line-height: 1.02; margin: 10px 0 16px; }
+.spread p { margin: 0 0 16px; max-width: 54ch; }
+.spread .big { font: 400 clamp(44px, 5vw, 68px)/1 var(--display); color: var(--pink); }
+.spread .big small { font: 700 16px var(--body); color: var(--blue); display: block; margin-top: 4px; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.tags span { font: 700 13px var(--body); color: var(--blue); border: 2px solid var(--blue); padding: 2px 9px; }
+
+.list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.mini { border: 3px solid var(--blue); padding: 18px; display: grid; grid-template-columns: 140px 1fr; gap: 18px; background: var(--paper); transition: box-shadow .12s, transform .12s; }
+.mini:hover { box-shadow: 7px 6px 0 var(--pink); transform: translate(-2px, -2px); }
+.mini .duo { aspect-ratio: 1/1; border: 2px solid var(--blue); }
+.mini .duo img { object-position: top left; }
+.mini h3 { font-size: 21px; line-height: 1.1; margin-bottom: 6px; }
+.mini p { margin: 0; font-size: 15px; color: var(--muted); }
+.mini a { font-weight: 800; font-size: 14px; color: var(--pink); }
+
+.about { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; }
+.about h3 { font-size: 34px; line-height: 1.08; margin-bottom: 20px; }
+.about p { margin: 0 0 15px; max-width: 58ch; font-size: 18px; }
+.rules { display: grid; gap: 20px; align-content: start; }
+.rule { border: 3px solid var(--blue); padding: 18px 20px; position: relative; }
+.rule:nth-child(2) { transform: rotate(-1deg); }
+.rule:nth-child(3) { transform: rotate(.8deg); }
+.rule h4 { font: 400 21px/1.15 var(--display); color: var(--blue); margin: 0 0 6px; }
+.rule p { margin: 0; font-size: 15.5px; color: var(--muted); }
+.rule .stamp { position: absolute; top: -14px; right: 14px; background: var(--pink); color: #fff; font: 800 12px var(--body); letter-spacing: .12em; padding: 3px 8px; text-transform: uppercase; }
+.now { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 56px; border-top: 3px dashed var(--blue); padding-top: 32px; }
+.now h4 { font: 400 22px var(--display); color: var(--blue); margin: 0 0 10px; }
+.now p { margin: 0 0 12px; }
+.photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.photos figure { margin: 0; }
+.photos figure:nth-child(odd) { transform: rotate(-1.4deg); }
+.photos figure:nth-child(even) { transform: rotate(1.2deg) translateY(10px); }
+.photos .duo { aspect-ratio: 4/5; border: 3px solid var(--blue); }
+.photos figcaption { padding-top: 10px; font-size: 14.5px; color: var(--muted); }
+.photos b { display: block; font: 400 16px var(--display); color: var(--blue); }
+
+.contact { margin-top: 120px; background: var(--pink); color: #14141c; border-block: 3px solid var(--blue); }
+.contact .wrap { padding-block: 88px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
+.contact h2 { font-size: clamp(64px, 10vw, 150px); line-height: .9; color: var(--blue); mix-blend-mode: multiply; }
+:root[data-theme="dark"] .contact h2 { mix-blend-mode: normal; color: #14141c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .contact h2 { mix-blend-mode: normal; color: #14141c; } }
+.contact p { font-size: 18.5px; margin: 0 0 22px; font-weight: 500; }
+.contact .mail { font: 400 clamp(18px, 2.4vw, 28px) var(--display); color: #14141c; text-decoration: none; border-bottom: 4px solid #14141c; overflow-wrap: anywhere; }
+.contact .links { display: flex; gap: 22px; margin-top: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: 14px; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-block: 22px; font: 800 12.5px var(--body); text-transform: uppercase; letter-spacing: .1em; color: var(--blue); }
+
+@media (max-width: 920px) {
+  .cover, .spread, .spread:nth-of-type(even), .about, .now, .contact .wrap { grid-template-columns: 1fr; }
+  .spread:nth-of-type(even) .duo { order: 0; }
+  .cover .pic { max-width: 420px; }
+  .strip { grid-template-columns: 1fr 1fr; }
+  .strip div:nth-child(3) { border-left: 0; }
+  .strip div:nth-child(n+3) { border-top: 3px solid var(--blue); }
+  .list { grid-template-columns: 1fr; }
+  .photos { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .nav a { display: none; }
+  .issue small { display: none; }
+  .cover { padding-block: 36px 56px; }
+  .cover .tag { right: 8px; }
+  .mini { grid-template-columns: 96px 1fr; gap: 14px; padding: 14px; }
+  .strip b { font-size: 28px; }
+  section { padding-top: 80px; }
+  .spread { margin-bottom: 64px; }
+}
+@media (prefers-reduced-motion: reduce) { .duo img, .duo::after, .btn, .mini { transition: none; } }
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <span class="issue">SHANAHAN <small>Zine no. 7 · Autumn 2026</small></span>
+  <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a>
+  <button class="tbtn" id="theme" type="button">Paper / Night</button>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="cover">
+    <div>
+      <h1><span class="row ink2" data-t="I build">I build</span><span class="row ink2" data-t="full-stack" style="white-space:nowrap">full-stack</span><span class="row ink2" data-t="products &amp;">products &amp;</span><span class="row ink2" data-t="AI tooling.">AI tooling.</span></h1>
+      <p class="lead" id="lead"></p>
+      <div class="ctas"><a class="btn fill" href="#work">See the work</a><a class="btn" href="#contact">Say hi</a></div>
+    </div>
+    <div style="position:relative">
+      <div class="duo pic stroke"><img src="img/portrait.webp" alt="Shanahan Suresh smiling in a navy jacket and white shirt."></div>
+      <span class="tag">Hello, I'm Shanahan</span>
+    </div>
+  </div>
+  <div class="strip">
+    <div><b>75,000</b><span>guests checked in</span></div>
+    <div><b>20,000</b><span>employees served</span></div>
+    <div><b>63%</b><span>faster page loads</span></div>
+    <div><b>2023</b><span>paper in JESTEC</span></div>
+  </div>
+
+  <section id="work">
+    <div class="sh"><h2 class="ink2" data-t="Things I've built">Things I've built</h2><span class="no">Seven projects · hover a print to see it in colour</span></div>
+    <div id="spreads"></div>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section id="about">
+    <div class="sh"><h2 class="ink2" data-t="The short version">The short version</h2></div>
+    <div class="about">
+      <div><h3 id="aboutTitle"></h3><div id="aboutBody"></div></div>
+      <div class="rules" id="rules"></div>
+    </div>
+    <div class="now"><div><h4>What I'm into lately</h4><div id="now"></div></div><div><h4>On the learning list</h4><div class="tags" id="learn"></div></div></div>
+  </section>
+
+  <section>
+    <div class="sh"><h2 class="ink2" data-t="Off the clock">Off the clock</h2></div>
+    <div class="photos" id="photos"></div>
+  </section>
+</main>
+
+<section class="contact" id="contact"><div class="wrap">
+  <h2>Let's build.</h2>
+  <div><p id="clead"></p><a class="mail" href="mailto:hello@shanahansuresh.com">hello@shanahansuresh.com</a>
+  <div class="links"><a id="li">LinkedIn ↗</a><a id="gh">GitHub ↗</a></div></div>
+</div></section>
+<footer><div class="wrap"><span>© 2026 Shanahan Suresh · printed in blue and fluoro pink</span><span>Colophon · Source ↗</span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = SITE, $ = (id) => document.getElementById(id);
+$("lead").textContent = S.lead;
+const tags = (t) => `<div class="tags">${t.map((x) => `<span>${esc(x)}</span>`).join("")}</div>`;
+$("spreads").innerHTML = ["rsvp", "hr", "digest"].map((id) => S.projects.find((p) => p.id === id)).map((p) => `<article class="spread">
+  <div class="duo"><img src="${p.img}" alt="${esc(p.caption)}"></div>
+  <div><span class="grp">${esc(p.group)}</span><h3>${esc(p.title)}</h3><p>${esc(lede(p.body))}</p>
+  <div class="big">${esc(p.fact[0])}<small>${esc(p.fact[1])}</small></div>${tags(p.tags)}</div></article>`).join("");
+$("list").innerHTML = ["ohse", "mcp", "censorit", "heatgen"].map((id) => S.projects.find((p) => p.id === id)).map((p) => `<article class="mini">
+  <div class="duo"><img src="${p.img}" alt=""></div><div><h3>${esc(p.title)}</h3><p>${esc(p.short)}</p>${p.link ? `<a href="${p.link.href}">${esc(p.link.label)} ↗</a>` : ""}</div></article>`).join("");
+$("aboutTitle").textContent = S.aboutTitle;
+$("aboutBody").innerHTML = S.about.map((p) => `<p>${esc(p)}</p>`).join("");
+$("rules").innerHTML = S.principles.map((p) => `<div class="rule"><span class="stamp">House rule</span><h4>${esc(p.title)}</h4><p>${esc(p.body)}</p></div>`).join("");
+$("now").innerHTML = S.now.map((p) => `<p>${esc(p)}</p>`).join("");
+$("learn").innerHTML = S.learning.map((x) => `<span>${x}</span>`).join("");
+$("photos").innerHTML = S.interests.map((i) => `<figure><div class="duo"><img src="${i.img}" alt="${esc(i.alt)}"></div><figcaption><b>${esc(i.title)}</b>${esc(i.caption)}</figcaption></figure>`).join("");
+$("clead").textContent = S.contactLead;
+$("li").href = S.linkedin.href; $("gh").href = S.github.href;
+// On touch screens there is no hover, so a tap toggles a print to colour.
+document.querySelectorAll(".duo").forEach((d) => d.addEventListener("click", () => d.classList.toggle("live")));
+wireTheme($("theme"));
+</script>
+</body>
+</html>

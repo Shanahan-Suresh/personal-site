@@ -29,5 +29,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# scratch design-direction mockups (not part of the site)
-design-previews/
+# design mockups (not part of the site); only the redesign mockups and their tools are kept
+design-previews/*
+!design-previews/neo-2026/
+design-previews/neo-2026/shots/

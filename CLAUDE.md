@@ -51,7 +51,7 @@ src/
 ├── scripts/      # home-interactions.ts — bundled client JS extracted from BaseLayout
 └── styles/       # global.css aggregator + tokens/components/motion/prose partials
 public/           # favicon, og-image, robots.txt
-design-previews/  # throwaway design mockups — NOT part of the site (gitignored)
+design-previews/  # design mockups, NOT part of the site; only neo-2026/ (the redesign spec) is tracked
 ```
 
 ### Where content lives: structured data vs prose copy
@@ -77,6 +77,11 @@ Use `@/*` import aliases (`@/data/...`, `@/lib/...`) — the alias maps to `src/
 
 `src/styles/` is the single source of truth (`global.css` imports the tokens/components/motion/prose partials). It's a neobrutalist look: thick borders,
 hard offset shadows, oversized display type. Colors come from CSS custom-property tokens.
+
+The poster redesign is in progress: `ROADMAP.md` holds its settled decisions, phases and status.
+Before any redesign or restyle, read `docs/design-direction.md`: the owner's taste and verdicts on
+ten tried directions, what polished neobrutalism means, why the live design reads as generic, and
+the mockup tools and capture traps.
 
 - Light/dark themes are token swaps under `:root` and `.dark`. The brutalist structure **inverts**:
   `--ink` (text/borders/shadows) flips from near-black in light to cream in dark, and `--paper`
@@ -134,7 +139,6 @@ The featured cards for the AI digest and RSVP projects use `src/assets/work/_pla
 - Local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 - The guard is a substring match that also hits comments, so never write the literal marker under `src/` except in the import.
 - SiteMedic is not on the site yet (still in testing). `/writing` is parked (noindex, no nav); the dev.to MCP article is linked from /colophon and the OpenAPI card instead.
-- `PROGRESS.md` is the live state of the refinement pass.
 
 Swap procedure when real screenshots arrive: drop the image into `src/assets/work/`, change the import in `src/data/projects.ts`, delete the `_placeholder-` file, run `npm run build` with no override, push.
 

@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Editorial v2 · Shanahan Suresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400..900;1,400..600&family=Schibsted+Grotesk:wght@400..900&display=swap">
+<style>
+/* TYPE SYSTEM (one face per role, no optical-size axis so shapes never shift)
+   masthead, headlines, story titles, numerals: Source Serif 4, roman, 900 / 800 / 700
+   body, nav, labels: Schibsted Grotesk 400 / 700 / 800
+   italic: Source Serif 4 italic 500, the signature only
+   scale (px): 12.5 label, 14 small, 18 body, 21 standfirst, 28 story title, 44 section, 72 feature, 96 cover
+   RULES: 5px closes a section, 3px frames an object (portrait, sidebar), 1.5px divides rows inside a section
+*/
+/* Layout: a magazine issue. The portfolio is the issue, each project is a story with a page number, and the brutal part is heavy 5px rules and boxed sidebars with hard shadows. */
+:root {
+  --paper: #fbfbf9; --ink: #0c0c0c; --muted: #545450; --red: #e4002b; --box: #ffffff;
+  --serif: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --sans: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --rule: 5px; --thin: 1.5px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --paper: #0d0d0c; --ink: #f2f0ea; --muted: #a9a79f; --red: #ff4d5e; --box: #171715; color-scheme: dark; } }
+:root[data-theme="dark"] { --paper: #0d0d0c; --ink: #f2f0ea; --muted: #a9a79f; --red: #ff4d5e; --box: #171715; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: 64px; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 18px/1.65 var(--sans); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.wrap { max-width: 1280px; margin: 0 auto; padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.kicker { font: 800 12.5px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; }
+.kicker.red { color: var(--red); }
+h1, h2, h3 { font-family: var(--serif); font-optical-sizing: none; font-style: normal; margin: 0; text-wrap: balance; font-weight: 800; }
+
+/* masthead */
+.top { position: sticky; top: 0; z-index: 10; background: var(--paper); display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 14px; border-bottom: var(--thin) solid var(--ink); }
+.top nav { display: flex; gap: 22px; }
+.top nav a { text-decoration: none; font-weight: 700; font-size: 15px; }
+#now-reading { min-width: 17ch; text-align: center; font-variant-numeric: tabular-nums; }
+.top nav a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.tbtn { background: none; border: var(--thin) solid var(--ink); color: var(--ink); font: 700 12.5px var(--sans); letter-spacing: .08em; text-transform: uppercase; padding: 8px 12px; cursor: pointer; transition: background .12s, color .12s; }
+.tbtn:hover { background: var(--ink); color: var(--paper); }
+.tbtn { margin-left: auto; }
+.coverline { line-height: 1.4; }
+.tbtn:active { transform: translateY(1px); }
+.mast { font: 900 clamp(64px, 16.5vw, 238px)/.85 var(--serif); font-optical-sizing: none; letter-spacing: -.03em; text-align: center; padding-block: 18px 8px; margin: 0; }
+.dateline { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-block: var(--rule) solid var(--ink); padding-block: 10px; }
+
+/* cover */
+.cover { display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; padding-block: 44px 56px; border-bottom: var(--thin) solid var(--ink); }
+.cover h1 { font-size: clamp(48px, 6.6vw, 96px); line-height: .98; letter-spacing: -.03em; font-weight: 700; }
+.cover h1 .dot { color: var(--red); }
+.cover .stand { font: 500 21px/1.55 var(--sans); max-width: 38ch; margin: 28px 0; }
+.cover .by { font-size: 15px; color: var(--muted); }
+.cover .by b { color: var(--ink); }
+.coverpic { position: relative; margin: 0; }
+.coverpic img { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: 50% 20%; border: var(--rule) solid var(--ink); background: #d8d4ca; }
+.coverline { position: absolute; left: -28px; bottom: 36px; background: var(--red); color: #fff; padding: 14px 18px; max-width: 250px; box-shadow: 8px 8px 0 var(--ink); }
+.coverline b { display: block; font: 800 32px/1.05 var(--serif); }
+.coverline span { font: 700 14px/1.4 var(--sans); }
+
+/* contents */
+.contents { display: grid; grid-template-columns: 260px 1fr; gap: 48px; padding-block: 44px; border-bottom: var(--rule) solid var(--ink); }
+.contents h2 { font-size: 44px; font-weight: 800; line-height: 1.05; }
+.toc { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 48px; }
+.toc li { break-inside: avoid; border-top: var(--thin) solid var(--ink); padding: 14px 0 16px; }
+.toc a { display: grid; grid-template-columns: 48px 1fr; gap: 12px; text-decoration: none; }
+.toc .pg { font: 800 28px/1 var(--serif); color: var(--red); font-variant-numeric: lining-nums tabular-nums; }
+.toc b { font: 700 19px/1.25 var(--serif); display: block; }
+.toc span span { font-size: 15px; line-height: 1.5; color: var(--muted); }
+.toc a:hover b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+
+/* lead feature */
+.feature { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-block: 56px; border-bottom: var(--thin) solid var(--ink); }
+.feature h2 { font-size: clamp(40px, 4.6vw, 68px); line-height: 1.05; letter-spacing: -.015em; margin: 14px 0 20px; }
+.feature .body { max-width: 56ch; font-size: 18px; }
+.feature .body p { margin: 0 0 14px; }
+.feature .body p:first-child::first-letter { font: 800 76px/.8 var(--serif); float: left; padding: 8px 10px 0 0; color: var(--red); }
+.pull { border-block: var(--rule) solid var(--ink); margin: 28px 0 0; padding: 18px 0; display: flex; align-items: baseline; gap: 18px; }
+.pull b { font: 900 clamp(52px, 6.4vw, 88px)/.9 var(--serif); color: var(--red); letter-spacing: -.02em; }
+.pull span { font-weight: 700; font-size: 18px; max-width: 18ch; line-height: 1.3; }
+.fig { margin: 0; }
+.fig img { width: 100%; border: 3px solid var(--ink); }
+.fig figcaption { font-size: 14px; color: var(--muted); padding-top: 8px; border-bottom: var(--thin) solid var(--ink); padding-bottom: 8px; }
+.fig figcaption b { color: var(--ink); }
+
+/* other stories */
+.stories { display: grid; grid-template-columns: repeat(3, 1fr); padding-block: 0; border-bottom: var(--rule) solid var(--ink); }
+.story { padding: 32px 28px 36px; border-left: var(--thin) solid var(--ink); display: flex; flex-direction: column; gap: 12px; }
+.story:nth-child(3n+1) { border-left: 0; padding-left: 0; }
+.story:nth-child(3n) { padding-right: 0; }
+.story:nth-child(n+4) { border-top: var(--thin) solid var(--ink); }
+.story img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top; border: var(--thin) solid var(--ink); }
+.story h3 { font-size: 28px; font-weight: 800; line-height: 1.12; }
+.story h3 a { text-decoration: none; background: linear-gradient(var(--red), var(--red)) 0 100% / 0 3px no-repeat; transition: background-size .18s ease-out; }
+.story:hover h3 a, .story h3 a:focus-visible { background-size: 100% 3px; }
+.story p { margin: 0; font-size: 16.5px; line-height: 1.6; color: var(--muted); }
+.story .meta { display: flex; justify-content: space-between; gap: 8px; }
+.story .tags { font-size: 14px; font-weight: 700; margin-top: auto; }
+.story a.more { font-weight: 800; font-size: 15px; color: var(--red); text-decoration: none; }
+
+/* letter + sidebar */
+.letter { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; padding-block: 64px; border-bottom: var(--thin) solid var(--ink); }
+.letter h2 { font-size: clamp(36px, 4.2vw, 56px); font-weight: 800; line-height: 1.08; margin: 14px 0 24px; }
+.letter p { margin: 0 0 16px; max-width: 62ch; font-size: 18px; }
+.sig { font: 500 italic 34px/1.2 var(--serif); font-style: italic; margin-top: 18px; }
+.box { background: var(--box); border: 3px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); padding: 26px 26px 10px; align-self: start; }
+.box h3 { font-size: 30px; font-weight: 800; margin: 10px 0 14px; }
+.box ol { margin: 0; padding: 0; list-style: none; counter-reset: r; }
+.box li { counter-increment: r; border-top: var(--thin) solid var(--ink); padding: 14px 0 16px; display: grid; grid-template-columns: 36px 1fr; gap: 8px; }
+.box li::before { content: counter(r); font: 800 28px/1 var(--serif); color: var(--red); }
+.box li b { display: block; font-size: 18px; }
+.box li span { font-size: 16px; line-height: 1.55; color: var(--muted); }
+
+.lately { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; padding-block: 48px; border-bottom: var(--thin) solid var(--ink); }
+.lately h2 { font-size: 40px; line-height: 1.08; }
+.lately .cols { columns: 2; column-gap: 32px; }
+.lately p { margin: 0 0 14px; }
+.photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-block: 40px 56px; border-bottom: var(--rule) solid var(--ink); }
+.photos figure { margin: 0; }
+.photos img { aspect-ratio: 4/5; object-fit: cover; width: 100%; filter: grayscale(1) contrast(1.1); border: var(--thin) solid var(--ink); transition: filter .25s; }
+.photos figure:hover img { filter: none; }
+.photos figcaption { font-size: 15px; line-height: 1.5; padding-top: 8px; color: var(--muted); }
+.photos b { display: block; color: var(--ink); font: 700 20px/1.2 var(--serif); margin-bottom: 2px; }
+
+.contact { padding-block: 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: end; }
+.contact h2 { font-size: clamp(64px, 10.5vw, 160px); line-height: .9; font-weight: 900; letter-spacing: -.03em; }
+.contact h2 b { font-weight: 900; color: var(--red); }
+.contact p { font-size: 18px; margin: 0 0 20px; max-width: 46ch; }
+.mail { display: inline-block; font: 800 22px var(--sans); text-decoration: none; border-bottom: var(--rule) solid var(--red); padding-bottom: 2px; overflow-wrap: anywhere; }
+.mail:hover { color: var(--red); }
+.links { display: flex; gap: 24px; margin-top: 18px; font-weight: 700; font-size: 16px; }
+footer { border-top: var(--rule) solid var(--ink); }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-block: 16px; }
+
+@media (max-width: 960px) {
+  .cover, .feature, .letter, .contact, .contents, .lately { grid-template-columns: 1fr; }
+  .stories { grid-template-columns: 1fr 1fr; }
+  .story:nth-child(n) { border-left: 0; padding-inline: 0; border-top: var(--thin) solid var(--ink); }
+  .story:nth-child(2n) { border-left: var(--thin) solid var(--ink); padding-left: 24px; }
+  .story:nth-child(2n+1) { padding-right: 24px; }
+  .story:nth-child(-n+2) { border-top: 0; }
+  .coverline { left: 12px; }
+  .coverpic { max-width: 460px; }
+}
+@media (max-width: 600px) {
+  .top nav { display: none; }
+  .toc, .lately .cols { columns: 1; }
+  .stories { grid-template-columns: 1fr; }
+  .story:nth-child(n) { border-left: 0; padding-inline: 0; border-top: var(--thin) solid var(--ink); }
+  .story:first-child { border-top: 0; }
+  .photos { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dateline span:nth-child(2) { display: none; }
+  .coverline b { font-size: 26px; }
+  #now-reading { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .photos img, .story h3 a, .tbtn { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><nav><a href="#work">Stories</a><a href="#letter">Letter</a><a href="#contact">Contact</a></nav><span class="kicker" id="now-reading">Page 01</span><button class="tbtn" id="theme" type="button">Light / Dark</button></div>
+  <p class="mast">Suresh</p>
+  <div class="dateline kicker"><span>Shanahan Suresh</span><span>Product engineering, full-stack &amp; AI tooling</span><span>7 stories inside</span></div>
+
+  <header class="cover" id="top">
+    <div>
+      <p class="kicker red">The cover story</p>
+      <h1>I build <span style="white-space:nowrap">full-stack</span> products &amp; AI tooling<span class="dot">.</span></h1>
+      <p class="stand" id="lead"></p>
+      <p class="by">By <b>Shanahan Suresh</b>, Computer Science with AI, University of Nottingham</p>
+    </div>
+    <figure class="coverpic"><img src="img/portrait.webp" alt="Shanahan Suresh smiling in a navy jacket and white shirt.">
+      <div class="coverline"><b>75,000 guests,</b><span>one serverless app, and no late night. Page 04.</span></div></figure>
+  </header>
+
+  <div class="contents" id="work"><h2>In this issue</h2><ol class="toc" id="toc"></ol></div>
+
+  <article class="feature" id="p04">
+    <div><p class="kicker red">Page 04 · Corporate work</p><h2>Automated RSVP &amp; check-in, for a crowd of 75,000</h2>
+      <div class="body" id="featBody"></div>
+      <div class="pull"><b>75,000</b><span>guests, each with a scannable QR ticket</span></div></div>
+    <figure class="fig"><img src="img/rsvp.webp" alt="An invitation-style registration form beside a confirmed ticket with a QR code."><figcaption><b>From signing up to a scan at the door.</b> Next.js, Terraform, Respond.io, SendGrid.</figcaption></figure>
+  </article>
+
+  <div class="stories" id="stories"></div>
+
+  <section class="letter" id="letter">
+    <div><p class="kicker red">Letter from the engineer</p><h2 id="aboutTitle"></h2><div id="aboutBody"></div><p class="sig">Shanahan</p></div>
+    <aside class="box"><p class="kicker">Sidebar</p><h3>Three rules I build by</h3><ol id="princ"></ol></aside>
+  </section>
+
+  <section class="lately"><div><p class="kicker red">Currently</p><h2>What I'm into lately</h2></div><div class="cols" id="now"></div></section>
+  <section class="photos" id="photos"></section>
+
+  <section class="contact" id="contact">
+    <h2>Let's <b>build.</b></h2>
+    <div><p id="clead"></p><a class="mail" href="mailto:hello@shanahansuresh.com">hello@shanahansuresh.com</a>
+    <div class="links"><a id="li">LinkedIn ↗</a><a id="gh">GitHub ↗</a></div></div>
+  </section>
+</div>
+<footer><div class="wrap kicker"><span>© 2026 Shanahan Suresh</span><span>Colophon · Source ↗</span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = SITE, $ = (id) => document.getElementById(id);
+$("lead").textContent = S.lead;
+const order = ["rsvp", "hr", "ohse", "digest", "mcp", "censorit", "heatgen"];
+const list = order.map((id) => S.projects.find((p) => p.id === id));
+const pg = (i) => String(4 + i * 4).padStart(2, "0");
+$("toc").innerHTML = list.map((p, i) => `<li><a href="#p${pg(i)}"><span class="pg">${pg(i)}</span><span><b>${esc(p.title)}</b><span>${esc(p.short)}</span></span></a></li>`).join("");
+const rsvp = list[0];
+$("featBody").innerHTML = rsvp.body.split(/(?<=\.) (?=I defined)/).map((t) => `<p>${esc(t)}</p>`).join("");
+$("stories").innerHTML = list.slice(1).map((p, i) => `<article class="story" id="p${pg(i + 1)}">
+  <div class="meta"><span class="kicker red">Page ${pg(i + 1)}</span><span class="kicker">${esc(p.group)}</span></div>
+  <img src="${p.img}" alt=""><h3><a href="#p${pg(i + 1)}">${esc(p.title)}</a></h3><p>${esc(lede(p.body))}</p>
+  <span class="tags">${p.tags.map(esc).join(" · ")}</span>${p.link ? `<a class="more" href="${p.link.href}">${esc(p.link.label)} →</a>` : ""}</article>`).join("");
+$("aboutTitle").textContent = S.aboutTitle;
+$("aboutBody").innerHTML = S.about.map((p) => `<p>${esc(p)}</p>`).join("");
+$("princ").innerHTML = S.principles.map((p) => `<li><div><b>${esc(p.title)}</b><span>${esc(p.body)}</span></div></li>`).join("");
+$("now").innerHTML = S.now.map((p) => `<p>${esc(p)}</p>`).join("") + `<p><b>On the learning list:</b> ${S.learning.join(", ")}.</p>`;
+$("photos").innerHTML = S.interests.map((i) => `<figure><img src="${i.img}" alt="${esc(i.alt)}"><figcaption><b>${esc(i.title)}</b>${esc(i.caption)}</figcaption></figure>`).join("");
+$("clead").textContent = S.contactLead;
+$("li").href = S.linkedin.href; $("gh").href = S.github.href;
+wireTheme($("theme"));
+// signature: the masthead bar keeps a running page number as you read
+const nr = $("now-reading"), secs = [...document.querySelectorAll(".feature[id], .story[id]")];
+const show = (id) => { nr.textContent = id ? "Reading page " + id.slice(1) : "Page 01"; };
+if ("IntersectionObserver" in window) {
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) show(e.target.id); }), { rootMargin: "-35% 0px -60% 0px" });
+  secs.forEach((x) => io.observe(x));
+  new IntersectionObserver((es) => { if (es[0].isIntersecting) show(""); }, { rootMargin: "0px 0px -60% 0px" }).observe(document.getElementById("top"));
+}
+</script>
+</body>
+</html>
