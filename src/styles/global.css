@@ -2,3 +2,14 @@
 @import "./components.css";
 @import "./motion.css";
 @import "./prose.css";
+@import "tailwindcss";
+
+/* Dark mode driven by a `.dark` class on <html> (set pre-paint in BaseLayout). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tailwind utilities (font-display, font-mono) resolve to the poster faces. */
+@theme {
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Condensed", "Arial Narrow", Arial, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, "Cascadia Code", monospace;
+}

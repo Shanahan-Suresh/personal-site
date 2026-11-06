@@ -16,18 +16,18 @@ Ten full-homepage mockups (real content, both themes, phone layouts) were rated 
 The four loved directions were then rebuilt around the owner's notes (the `*-v2.html` files), and
 the owner loved all four rebuilds. **Poster (10) is the chosen direction**; `ROADMAP.md` ports it.
 
-| Direction | What it is | Verdict | Owner's reason |
-|---|---|---|---|
-| 01 Disciplined | The live site cleaned up: one blue, shadows only on controls | No | Clean but too safe |
-| 02 Product | Shop-like, pink and yellow, flat until hover, project filter | Love | The Gumroad palette gives the source away; change the colours |
-| 03 Editorial | Magazine cover, contents with page numbers, stories | Love | The headline font changes shape between sections, and some type is hard to read |
-| 04 Swiss Grid | One ruled 12-column grid, projects as an index table | No | Feels like a task tracker |
-| 05 Desktop | Retro OS windows that drag, projects as files | Love | Very fun, can consider it |
-| 06 Soft | Pastels, rounded corners, short shadows | No | Looks like a beginner's work |
-| 07 Terminal | Dark first, each section a command | No | Not impressive; the live site already uses a terminal element |
-| 08 Riso Zine | Two-ink overprint, halftone photos | No | Not the owner's style |
-| 09 Datasheet | Projects as spec sheets, grey and orange | No | Boring |
-| 10 Poster | Flat colour slabs, giant type | Love | The next evolution of the live site: a better version of it |
+| Direction      | What it is                                                   | Verdict | Owner's reason                                                                  |
+| -------------- | ------------------------------------------------------------ | ------- | ------------------------------------------------------------------------------- |
+| 01 Disciplined | The live site cleaned up: one blue, shadows only on controls | No      | Clean but too safe                                                              |
+| 02 Product     | Shop-like, pink and yellow, flat until hover, project filter | Love    | The Gumroad palette gives the source away; change the colours                   |
+| 03 Editorial   | Magazine cover, contents with page numbers, stories          | Love    | The headline font changes shape between sections, and some type is hard to read |
+| 04 Swiss Grid  | One ruled 12-column grid, projects as an index table         | No      | Feels like a task tracker                                                       |
+| 05 Desktop     | Retro OS windows that drag, projects as files                | Love    | Very fun, can consider it                                                       |
+| 06 Soft        | Pastels, rounded corners, short shadows                      | No      | Looks like a beginner's work                                                    |
+| 07 Terminal    | Dark first, each section a command                           | No      | Not impressive; the live site already uses a terminal element                   |
+| 08 Riso Zine   | Two-ink overprint, halftone photos                           | No      | Not the owner's style                                                           |
+| 09 Datasheet   | Projects as spec sheets, grey and orange                     | No      | Boring                                                                          |
+| 10 Poster      | Flat colour slabs, giant type                                | Love    | The next evolution of the live site: a better version of it                     |
 
 What the loved four share: a strong concept that holds the whole page together (a shop, a magazine,
 an operating system, a poster wall), big confident type, and interaction that rewards a visitor.

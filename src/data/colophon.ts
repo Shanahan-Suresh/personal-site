@@ -65,7 +65,7 @@ export const stack: StackItem[] = [
   {
     name: "Self-hosted fonts",
     detail:
-      "Anton, Archivo Variable and DM Mono via @fontsource, preloaded, no third-party font host.",
+      "Bricolage Grotesque as one condensed static cut, plus Archivo Variable and DM Mono via @fontsource. The display face is preloaded and no third-party font host is involved.",
     path: "src/layouts/BaseLayout.astro",
   },
   {
