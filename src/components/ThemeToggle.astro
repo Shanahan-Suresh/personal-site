@@ -1,4 +1,9 @@
-<button id="theme-toggle" aria-label="Toggle dark mode" class="theme-btn">
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle dark mode"
+  class="theme-btn"
+>
   <svg
     id="icon-sun"
     xmlns="http://www.w3.org/2000/svg"
@@ -7,7 +12,7 @@
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="2.2"
     stroke-linecap="round"
     stroke-linejoin="round"
     aria-hidden="true"
@@ -24,77 +29,55 @@
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
+    stroke-width="2.2"
     stroke-linecap="round"
     stroke-linejoin="round"
     aria-hidden="true"
   >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path>
   </svg>
 </button>
 
 <style>
   .theme-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    background: var(--surface);
-    color: var(--ink);
-    border: var(--border-thick);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-hard-sm);
-    cursor: pointer;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
     padding: 0;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    background: none;
+    color: var(--white);
+    cursor: pointer;
     transition:
-      transform var(--dur-fast) var(--ease-out),
-      box-shadow var(--dur-fast) var(--ease-out);
-    flex-shrink: 0;
+      background var(--dur-fast),
+      color var(--dur-fast);
   }
-  @media (hover: hover) and (pointer: fine) {
-    .theme-btn:hover {
-      transform: translate(var(--off-sm), var(--off-sm));
-      box-shadow: 0 0 0 var(--ink);
-    }
+  .theme-btn:hover {
+    background: var(--white);
+    color: var(--ink);
   }
-
   @media (max-width: 768px) {
     .theme-btn {
-      min-width: 44px;
-      min-height: 44px;
+      width: 44px;
+      height: 44px;
     }
-  }
-  .theme-btn:active {
-    transform: translate(var(--off), var(--off));
-    box-shadow: 0 0 0 var(--ink);
-  }
-  .theme-btn svg {
-    transition: transform var(--dur-fast) var(--ease-snap);
-  }
-  .theme-btn:active svg {
-    transform: rotate(90deg);
-  }
-  /* click feedback: light gray when switching to dark, black to light */
-  .theme-btn.flash-dark {
-    border-color: #cfcfcf;
-    box-shadow: var(--off-sm) var(--off-sm) 0 #cfcfcf;
-  }
-  .theme-btn.flash-light {
-    border-color: #000;
-    box-shadow: var(--off-sm) var(--off-sm) 0 #000;
   }
   #icon-sun {
     display: none;
-  }
-  #icon-moon {
-    display: block;
   }
   :global(html.dark) #icon-sun {
     display: block;
   }
   :global(html.dark) #icon-moon {
     display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-btn {
+      transition: none;
+    }
   }
 </style>
 
@@ -103,14 +86,9 @@
     const btn = document.getElementById("theme-toggle");
     btn?.addEventListener("click", () => {
       const isDark = document.documentElement.classList.toggle("dark");
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const flashClass = isDark ? "flash-dark" : "flash-light";
-        btn.classList.add(flashClass);
-        setTimeout(function () {
-          btn.classList.remove(flashClass);
-        }, 180);
-      }
+      try {
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      } catch (e) {}
     });
   }
   initThemeToggle();

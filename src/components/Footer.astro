@@ -25,14 +25,14 @@ const shortSha = commit ? commit.slice(0, 7) : null;
 ---
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p class="mono footer-text">&copy; {year} {site.name}</p>
+  <div class="wrap footer-inner">
+    <p class="footer-text">&copy; {year} {site.name}</p>
     <ul class="footer-links" role="list">
-      <li><a href="/colophon" class="mono footer-link">Colophon</a></li>
+      <li><a href="/colophon" class="footer-link">Colophon</a></li>
       <li>
         <a
           href={site.repo}
-          class="mono footer-link"
+          class="footer-link"
           target="_blank"
           rel="noopener noreferrer">Source ↗</a
         >
@@ -42,7 +42,7 @@ const shortSha = commit ? commit.slice(0, 7) : null;
           <li>
             <a
               href={`${site.repo}/commit/${commit}`}
-              class="mono footer-link footer-build"
+              class="footer-link footer-build"
               target="_blank"
               rel="noopener noreferrer"
               title="Commit this page was built from"
@@ -58,53 +58,45 @@ const shortSha = commit ? commit.slice(0, 7) : null;
 
 <style>
   .site-footer {
-    background: var(--ink);
-    color: var(--paper);
-    border-top: var(--bw-thick) solid var(--ink);
-    padding-top: var(--space-7);
-    padding-bottom: calc(var(--space-7) + env(safe-area-inset-bottom));
+    background: var(--night);
+    color: #c9c5bb;
+    --focus: var(--white);
   }
-
   .footer-inner {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-3) var(--space-6);
+    gap: 10px 24px;
+    padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid #3a362f;
+    font: 400 13px/1.4 var(--font-mono);
   }
-
   .footer-text {
-    font-size: var(--fs-mono);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--paper);
-    opacity: 0.75;
+    margin: 0;
   }
-
   .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
   }
-
   .footer-link {
-    color: var(--paper);
-    opacity: 0.75;
-    border-bottom: 2px solid transparent;
-    transition:
-      opacity var(--dur-fast) var(--ease-out),
-      border-color var(--dur-fast) var(--ease-out);
+    border-bottom: 1px solid transparent;
+    text-decoration: none;
+    transition: border-color var(--dur-fast);
+  }
+  .footer-link:hover {
+    border-color: var(--butter);
   }
   .footer-build {
-    opacity: 0.5;
+    color: #8f8a80;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .footer-link:hover {
-      opacity: 1;
-      border-bottom-color: var(--accent-pop);
+  @media (prefers-reduced-motion: reduce) {
+    .footer-link {
+      transition: none;
     }
   }
 </style>
