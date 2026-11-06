@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06 Soft · Shanahan Suresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap">
+<style>
+/* Layout: the same neobrutalist grammar, softened. Pastel fields, a 2px navy stroke, 16px corners and a short 4px shadow. Each project gets its own pastel and its screenshot sits half out of the card. */
+:root {
+  --bg: #f5f4fa; --ink: #1d1a2c; --muted: #55516a; --card: #ffffff; --line: #1d1a2c;
+  --lilac: #d9cfff; --mint: #c6efd9; --peach: #ffd9c4; --butter: #fff0a8; --sky: #cbe6ff; --on-pastel: #1d1a2c;
+  --display: "Rubik", "Arial Rounded MT Bold", sans-serif;
+  --body: "Nunito Sans", system-ui, sans-serif;
+  --r: 18px; --r-s: 10px; --bw: 2px; --sh: 4px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #14121d; --ink: #f0eef8; --muted: #aeaac2; --card: #1e1b2b; --line: #e6e2f5; --lilac: #b9a9f5; --mint: #a6dfc1; --peach: #f5bea1; --butter: #f1df86; --sky: #a9cff2; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #14121d; --ink: #f0eef8; --muted: #aeaac2; --card: #1e1b2b; --line: #e6e2f5; --lilac: #b9a9f5; --mint: #a6dfc1; --peach: #f5bea1; --butter: #f1df86; --sky: #a9cff2; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.6 var(--body); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3, h4 { font-family: var(--display); margin: 0; text-wrap: balance; letter-spacing: -.02em; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.panel { border: var(--bw) solid var(--line); border-radius: var(--r); box-shadow: var(--sh) var(--sh) 0 var(--line); }
+.p-lilac { background: var(--lilac); color: var(--on-pastel); }
+.p-mint { background: var(--mint); color: var(--on-pastel); }
+.p-peach { background: var(--peach); color: var(--on-pastel); }
+.p-butter { background: var(--butter); color: var(--on-pastel); }
+.p-sky { background: var(--sky); color: var(--on-pastel); }
+
+.nav .wrap { display: flex; align-items: center; gap: 10px; padding-block: 18px; }
+.brand { font: 800 21px var(--display); text-decoration: none; margin-right: auto; display: flex; align-items: center; gap: 10px; }
+.brand img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; object-position: top; border: var(--bw) solid var(--line); background: var(--peach); }
+.pillnav { display: flex; gap: 4px; border: var(--bw) solid var(--line); border-radius: 999px; padding: 4px; background: var(--card); }
+.pillnav a { text-decoration: none; font-weight: 700; font-size: 15px; padding: 6px 14px; border-radius: 999px; }
+.pillnav a:hover { background: var(--butter); color: var(--on-pastel); }
+.tbtn { width: 44px; height: 44px; border-radius: 50%; border: var(--bw) solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; display: grid; place-items: center; }
+.tbtn svg { width: 20px; }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px; border: var(--bw) solid #1d1a2c; font: 700 16px var(--display); text-decoration: none; background: #1d1a2c; color: #fff; box-shadow: var(--sh) var(--sh) 0 rgba(29,26,44,.35); transition: transform .14s, box-shadow .14s; }
+.btn.light { background: #fff; color: #1d1a2c; }
+.btn:hover { transform: translateY(-2px); box-shadow: var(--sh) calc(var(--sh) + 2px) 0 #1d1a2c; }
+.btn:active { transform: translateY(1px); box-shadow: 1px 1px 0 #1d1a2c; }
+
+.hero { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; margin-top: 12px; }
+.hero .main { padding: 56px 52px; }
+.hero h1 { font-size: clamp(44px, 6.2vw, 84px); line-height: 1.02; font-weight: 800; }
+.hero h1 em { font-style: normal; background: var(--butter); border: var(--bw) solid #1d1a2c; border-radius: 14px; padding: 0 .16em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero p { font-size: 19px; max-width: 50ch; margin: 26px 0 30px; }
+.ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+.hello { padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+.hello .face { border-radius: 14px; overflow: hidden; border: var(--bw) solid #1d1a2c; background: var(--sky); }
+.hello .face img { aspect-ratio: 1/1; object-fit: cover; object-position: top; width: 100%; }
+.bubble { position: relative; background: #fff; color: #1d1a2c; border: var(--bw) solid #1d1a2c; border-radius: 14px; padding: 12px 16px; font-weight: 700; }
+.bubble::before { content: ""; position: absolute; top: -10px; left: 28px; width: 16px; height: 16px; background: #fff; border-left: var(--bw) solid #1d1a2c; border-top: var(--bw) solid #1d1a2c; transform: rotate(45deg); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
+.facts div { padding: 20px 22px; }
+.facts b { display: block; font: 800 38px/1 var(--display); letter-spacing: -.03em; }
+.facts span { font-weight: 600; font-size: 15px; }
+
+section { padding-top: 104px; }
+.sh { display: flex; justify-content: space-between; align-items: end; gap: 12px 24px; margin-bottom: 32px; flex-wrap: wrap; }
+.sh h2 { font-size: clamp(36px, 4.6vw, 58px); line-height: 1; font-weight: 800; }
+.sh p { margin: 0; color: var(--muted); max-width: 36ch; }
+
+.feat { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; padding: 40px; margin-bottom: 40px; }
+.feat:nth-child(even) { grid-template-columns: 1.1fr 1fr; }
+.feat:nth-child(even) .shot { order: -1; }
+.feat .grp { font: 700 13px var(--display); text-transform: uppercase; letter-spacing: .08em; }
+.feat h3 { font-size: clamp(28px, 3vw, 40px); line-height: 1.05; margin: 8px 0 14px; font-weight: 800; }
+.feat p { margin: 0 0 18px; }
+.feat .shot { border: var(--bw) solid #1d1a2c; border-radius: var(--r-s); overflow: hidden; background: #fff; box-shadow: 8px 8px 0 #1d1a2c; transform: rotate(-1.2deg); transition: transform .2s; }
+.feat:nth-child(even) .shot { transform: rotate(1.2deg); }
+.feat:hover .shot { transform: rotate(0) translateY(-4px); }
+.feat .shot img { width: 100%; }
+.feat .fact { display: inline-flex; align-items: baseline; gap: 8px; background: #fff; color: #1d1a2c; border: var(--bw) solid #1d1a2c; border-radius: 12px; padding: 6px 12px; margin-bottom: 16px; }
+.feat .fact b { font: 800 22px var(--display); }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag { font: 700 13px var(--body); padding: 4px 11px; border-radius: 999px; border: 1.5px solid currentColor; }
+
+.others { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.mini { background: var(--card); padding: 20px; display: grid; grid-template-columns: 150px 1fr; gap: 18px; align-items: start; transition: transform .14s, box-shadow .14s; }
+.mini:hover { transform: translate(-2px, -2px); box-shadow: calc(var(--sh) + 2px) calc(var(--sh) + 2px) 0 var(--line); }
+.mini img { border-radius: var(--r-s); border: var(--bw) solid var(--line); aspect-ratio: 4/3; object-fit: cover; object-position: top; width: 150px; }
+.mini h3 { font-size: 20px; line-height: 1.15; margin-bottom: 6px; font-weight: 700; }
+.mini p { margin: 0 0 10px; font-size: 15px; color: var(--muted); }
+.mini .grp { font: 700 12px var(--display); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+.about { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; }
+.about .story { background: var(--card); padding: 40px; }
+.about h3 { font-size: 30px; line-height: 1.12; margin-bottom: 18px; font-weight: 800; }
+.about p { margin: 0 0 14px; max-width: 58ch; }
+.princ { display: grid; gap: 16px; }
+.princ .panel { padding: 20px 22px; display: grid; grid-template-columns: 44px 1fr; gap: 14px; }
+.princ svg { width: 44px; height: 44px; }
+.princ h4 { font-size: 18px; line-height: 1.2; margin-bottom: 4px; font-weight: 700; }
+.princ p { margin: 0; font-size: 15px; }
+.now { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin-top: 24px; }
+.now > div { padding: 28px 32px; }
+.now p { margin: 0 0 12px; }
+.now h4 { font-size: 20px; margin-bottom: 12px; font-weight: 700; }
+.photos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.photos figure { margin: 0; background: var(--card); padding: 10px 10px 14px; }
+.photos img { border-radius: var(--r-s); aspect-ratio: 1/1; object-fit: cover; width: 100%; border: var(--bw) solid var(--line); }
+.photos figcaption { padding: 10px 6px 0; font-size: 14.5px; color: var(--muted); }
+.photos b { display: block; color: var(--ink); font: 700 16px var(--display); }
+
+.contact { margin-block: 104px 40px; padding: 64px 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.contact h2 { font-size: clamp(60px, 9vw, 128px); line-height: .92; font-weight: 900; letter-spacing: -.04em; }
+.contact p { margin: 0 0 22px; font-size: 18px; }
+.contact .mail { font: 700 17px var(--body); user-select: all; display: block; margin: 18px 0 8px; overflow-wrap: anywhere; }
+.contact .links { display: flex; gap: 18px; font-weight: 700; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-block: 0 32px; color: var(--muted); font-size: 14.5px; font-weight: 600; }
+
+@media (max-width: 920px) {
+  .hero, .about, .now, .contact, .feat, .feat:nth-child(even) { grid-template-columns: 1fr; }
+  .feat:nth-child(even) .shot { order: 0; }
+  .hello { flex-direction: row; align-items: center; }
+  .hello .face { width: 140px; flex: none; }
+  .others { grid-template-columns: 1fr; }
+  .photos { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .pillnav { display: none; }
+  .hero .main { padding: 32px 24px; }
+  .hello .face { width: 96px; }
+  .facts { grid-template-columns: 1fr; gap: 14px; }
+  .feat { padding: 24px; gap: 28px; }
+  .mini { grid-template-columns: 1fr; }
+  .mini img { width: 100%; }
+  .about .story, .now > div { padding: 24px; }
+  .contact { padding: 36px 24px; }
+  section { padding-top: 72px; }
+}
+@media (prefers-reduced-motion: reduce) { .feat .shot, .mini, .btn { transition: none; } }
+</style>
+</head>
+<body>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="#top"><img src="img/portrait.webp" alt="">Shanahan</a>
+  <nav class="pillnav"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  <button class="tbtn" id="theme" aria-label="Switch light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="hero">
+    <div class="panel p-lilac main">
+      <h1>I build <span style="white-space:nowrap">full-stack</span> products &amp; <em>AI tooling.</em></h1>
+      <p id="lead"></p>
+      <div class="ctas"><a class="btn" href="#work">See what I build</a><a class="btn light" href="#contact">Say hi</a></div>
+    </div>
+    <div class="panel p-peach hello">
+      <div class="face"><img src="img/portrait.webp" alt="Shanahan Suresh smiling in a navy jacket and white shirt."></div>
+      <div class="bubble">Hello, I'm Shanahan. I care about how software feels as much as how it works.</div>
+    </div>
+  </div>
+  <div class="facts">
+    <div class="panel p-mint"><b>75,000</b><span>guests through one RSVP app</span></div>
+    <div class="panel p-sky"><b>63%</b><span>faster page loads for 20,000 people</span></div>
+    <div class="panel p-butter"><b>2023</b><span>published research in JESTEC</span></div>
+  </div>
+
+  <section id="work">
+    <div class="sh"><h2>Things I've built</h2><p>A mix of things I shipped at work, plus stuff I built outside it too.</p></div>
+    <div id="feats"></div>
+    <div class="others" id="others"></div>
+  </section>
+
+  <section id="about">
+    <div class="sh"><h2>The short version</h2></div>
+    <div class="about">
+      <div class="panel story"><h3 id="aboutTitle"></h3><div id="aboutBody"></div></div>
+      <div class="princ" id="princ"></div>
+    </div>
+    <div class="now"><div class="panel" style="background:var(--card)"><h4>What I'm into lately</h4><div id="now"></div></div>
+      <div class="panel p-butter"><h4>On the learning list</h4><div class="tags" id="learn"></div></div></div>
+  </section>
+
+  <section>
+    <div class="sh"><h2>Away from the keyboard</h2></div>
+    <div class="photos" id="photos"></div>
+  </section>
+
+  <div class="panel p-mint contact" id="contact">
+    <h2>Let's build.</h2>
+    <div><p id="clead"></p><a class="btn" href="mailto:hello@shanahansuresh.com">Email me</a>
+      <span class="mail">hello@shanahansuresh.com</span>
+      <div class="links"><a id="li">LinkedIn ↗</a><a id="gh">GitHub ↗</a></div></div>
+  </div>
+</main>
+<footer><div class="wrap"><span>© 2026 Shanahan Suresh</span><span>Colophon · Source ↗</span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = SITE, $ = (id) => document.getElementById(id);
+$("lead").textContent = S.lead;
+const pastel = { rsvp: "p-sky", digest: "p-butter", hr: "p-peach" };
+const tags = (t) => `<div class="tags">${t.map((x) => `<span class="tag">${esc(x)}</span>`).join("")}</div>`;
+const feats = ["rsvp", "digest", "hr"].map((id) => S.projects.find((p) => p.id === id));
+$("feats").innerHTML = feats.map((p) => `<article class="panel feat ${pastel[p.id]}">
+  <div><span class="grp">${esc(p.group)}</span><h3>${esc(p.title)}</h3><p>${esc(lede(p.body))}</p>
+  <div class="fact"><b>${esc(p.fact[0])}</b><span>${esc(p.fact[1])}</span></div>${tags(p.tags)}</div>
+  <div class="shot"><img src="${p.img}" alt="${esc(p.caption)}"></div></article>`).join("");
+$("others").innerHTML = ["ohse", "mcp", "censorit", "heatgen"].map((id) => S.projects.find((p) => p.id === id)).map((p) => `<article class="panel mini">
+  <img src="${p.img}" alt=""><div><span class="grp">${esc(p.group)}</span><h3>${esc(p.title)}</h3><p>${esc(p.short)}</p>
+  ${p.link ? `<a href="${p.link.href}" style="font-weight:700;font-size:15px">${esc(p.link.label)} ↗</a>` : ""}</div></article>`).join("");
+const icons = [
+  `<svg viewBox="0 0 44 44"><path d="M22 37S6 27.5 6 16.5A8 8 0 0 1 22 13a8 8 0 0 1 16 3.5C38 27.5 22 37 22 37z" fill="#fff" stroke="#1d1a2c" stroke-width="2.5" stroke-linejoin="round"/></svg>`,
+  `<svg viewBox="0 0 44 44"><circle cx="19" cy="19" r="11" fill="#fff" stroke="#1d1a2c" stroke-width="2.5"/><path d="M27 27l10 10" stroke="#1d1a2c" stroke-width="3.5" stroke-linecap="round"/></svg>`,
+  `<svg viewBox="0 0 44 44"><rect x="8" y="13" width="28" height="22" rx="7" fill="#fff" stroke="#1d1a2c" stroke-width="2.5"/><circle cx="17" cy="24" r="2.6" fill="#1d1a2c"/><circle cx="27" cy="24" r="2.6" fill="#1d1a2c"/><path d="M22 13V7" stroke="#1d1a2c" stroke-width="2.5"/><circle cx="22" cy="6" r="2.5" fill="#1d1a2c"/></svg>`,
+];
+const pcls = ["p-peach", "p-sky", "p-lilac"];
+$("princ").innerHTML = S.principles.map((p, i) => `<div class="panel ${pcls[i]}">${icons[i]}<div><h4>${esc(p.title)}</h4><p>${esc(p.body)}</p></div></div>`).join("");
+$("aboutTitle").textContent = S.aboutTitle;
+$("aboutBody").innerHTML = S.about.map((p) => `<p>${esc(p)}</p>`).join("");
+$("now").innerHTML = S.now.map((p) => `<p>${esc(p)}</p>`).join("");
+$("learn").innerHTML = S.learning.map((x) => `<span class="tag">${x}</span>`).join("");
+$("photos").innerHTML = S.interests.map((i) => `<figure class="panel"><img src="${i.img}" alt="${esc(i.alt)}"><figcaption><b>${esc(i.title)}</b>${esc(i.caption)}</figcaption></figure>`).join("");
+$("clead").textContent = S.contactLead;
+$("li").href = S.linkedin.href; $("gh").href = S.github.href;
+wireTheme($("theme"));
+</script>
+</body>
+</html>

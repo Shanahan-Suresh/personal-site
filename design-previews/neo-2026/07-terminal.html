@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 Terminal · Shanahan Suresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400..800;1,400&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: dark-first. Each section opens with the command that would print it. Cream strokes, one amber accent, mono for structure and a quiet sans for reading. */
+:root {
+  --bg: #0e0f0c; --panel: #161712; --ink: #ede6d3; --muted: #9c9685; --line: #ede6d3; --dim: #3a3a31;
+  --amber: #ffb000; --on-amber: #0e0f0c;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg: #e7e8e0; --panel: #f4f5ef; --ink: #15160f; --muted: #57584d; --line: #15160f; --dim: #c5c7ba; --amber: #a85f00; --on-amber: #ffffff; color-scheme: light; } }
+:root[data-theme="light"] { --bg: #e7e8e0; --panel: #f4f5ef; --ink: #15160f; --muted: #57584d; --line: #15160f; --dim: #c5c7ba; --amber: #a85f00; --on-amber: #ffffff; color-scheme: light; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16.5px/1.65 var(--sans); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+.m { font-family: var(--mono); }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: max(20px, env(safe-area-inset-left, 0px)); }
+.cmd { font: 500 15px var(--mono); color: var(--muted); margin: 0 0 18px; }
+.cmd b { color: var(--amber); font-weight: 600; }
+.cmd span { color: var(--ink); }
+
+.top { border-bottom: 2px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 5; }
+.top .wrap { display: flex; align-items: center; gap: 22px; height: 56px; font: 500 14px var(--mono); }
+.top .who { margin-right: auto; }
+.top .nav { display: contents; }
+.top .who b { color: var(--amber); }
+.top a { text-decoration: none; }
+.top a:hover { color: var(--amber); }
+.top button { all: unset; cursor: pointer; }
+.top button:hover { color: var(--amber); }
+
+.term { border: 2px solid var(--line); background: var(--panel); box-shadow: 8px 8px 0 var(--line); }
+.tbar { display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; border-bottom: 2px solid var(--line); font: 500 13px var(--mono); color: var(--muted); }
+.tbar i { font-style: normal; color: var(--ink); }
+
+.hero { margin-top: 48px; }
+.hero .in { padding: 40px 40px 36px; }
+.hero h1 { font: 800 clamp(38px, 6.4vw, 92px)/1.02 var(--mono); letter-spacing: -.045em; margin: 0; text-wrap: balance; }
+.hero h1 .a { color: var(--amber); }
+.caret { display: inline-block; width: .55em; height: .9em; background: var(--amber); vertical-align: -0.08em; margin-left: .08em; }
+@media (prefers-reduced-motion: no-preference) { .caret { animation: blink 1.1s steps(1) infinite; } @keyframes blink { 50% { opacity: 0; } } }
+.hero p.lead { font-size: 19px; max-width: 58ch; margin: 26px 0 30px; }
+.ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn { font: 600 15px var(--mono); padding: 12px 20px; border: 2px solid var(--line); text-decoration: none; background: var(--panel); color: var(--ink); box-shadow: 4px 4px 0 var(--line); transition: transform .1s, box-shadow .1s; }
+.btn.a { background: var(--amber); color: var(--on-amber); border-color: var(--amber); box-shadow: 4px 4px 0 var(--line); }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--line); }
+.btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--line); }
+.statusline { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--line); font: 500 13.5px var(--mono); }
+.statusline div { padding: 12px 16px; border-left: 2px solid var(--line); }
+.statusline div:first-child { border-left: 0; background: var(--amber); color: var(--on-amber); }
+.statusline b { font-size: 20px; display: block; letter-spacing: -.03em; }
+
+section { padding-top: 104px; }
+h2 { font: 800 clamp(30px, 4vw, 52px)/1.05 var(--mono); letter-spacing: -.04em; margin: 0 0 28px; }
+
+.ls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+.pj { border: 2px solid var(--line); background: var(--panel); display: flex; flex-direction: column; transition: transform .12s, box-shadow .12s; }
+.pj:hover { transform: translate(-3px, -3px); box-shadow: 7px 7px 0 var(--amber); border-color: var(--amber); }
+.pj .tbar { border-color: inherit; }
+.pj img { width: 100%; aspect-ratio: 16/9; object-fit: cover; object-position: top; border-bottom: 2px solid var(--line); }
+.pj:hover img { border-color: var(--amber); }
+.pj .in { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.pj h3 { font: 700 21px/1.2 var(--mono); letter-spacing: -.03em; margin: 0; }
+.pj p { margin: 0; color: var(--muted); }
+.pj .flags { font: 500 13px var(--mono); color: var(--amber); margin-top: auto; padding-top: 6px; }
+.pj .res { font: 500 13.5px var(--mono); border-top: 1px dashed var(--dim); padding-top: 10px; }
+.pj .res b { font-size: 17px; }
+.pj.big { grid-column: span 2; display: grid; grid-template-columns: 1.2fr 1fr; }
+.pj.big .tbar { grid-column: 1 / -1; }
+.pj.big img { height: 100%; aspect-ratio: auto; border-bottom: 0; border-right: 2px solid var(--line); }
+.pj.big h3 { font-size: 28px; }
+
+.md { display: grid; grid-template-columns: 1.3fr 1fr; gap: 28px; align-items: start; }
+.md .doc { padding: 28px 32px; }
+.md h3 { font: 700 24px/1.25 var(--mono); letter-spacing: -.03em; margin: 0 0 16px; }
+.md h3::before, .md h4::before { content: "# "; color: var(--amber); }
+.md h4 { font: 700 16px var(--mono); margin: 22px 0 8px; }
+.md h4::before { content: "## "; }
+.md p { margin: 0 0 14px; max-width: 62ch; }
+.md ul { margin: 0; padding: 0; list-style: none; }
+.md li { padding-left: 20px; position: relative; margin-bottom: 10px; }
+.md li::before { content: "-"; position: absolute; left: 0; color: var(--amber); font-family: var(--mono); }
+.md li b { font-weight: 600; }
+.md .pic img { aspect-ratio: 4/5; object-fit: cover; width: 100%; filter: grayscale(1) contrast(1.05); }
+.md .pic .tbar { border-top: 2px solid var(--line); border-bottom: 0; }
+
+.off { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.off figure { margin: 0; border: 2px solid var(--line); background: var(--panel); }
+.off .ph { position: relative; background: var(--amber); }
+.off img { aspect-ratio: 1/1; object-fit: cover; width: 100%; filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; transition: filter .2s, mix-blend-mode .2s; }
+.off figure:hover img { filter: none; mix-blend-mode: normal; }
+.off figcaption { padding: 10px 12px; font-size: 14.5px; color: var(--muted); border-top: 2px solid var(--line); }
+.off b { display: block; color: var(--ink); font: 600 14px var(--mono); }
+
+.mail { padding-block: 112px 40px; }
+.mail h2 { font-size: clamp(42px, 9vw, 136px); line-height: .95; margin-bottom: 26px; }
+.mail .addr { display: inline-block; font: 700 clamp(18px, 3vw, 36px) var(--mono); color: var(--amber); text-decoration: none; letter-spacing: -.03em; border-bottom: 3px solid var(--amber); overflow-wrap: anywhere; }
+.mail p { max-width: 60ch; font-size: 18px; margin: 26px 0 18px; }
+.mail .links { font: 500 15px var(--mono); display: flex; gap: 22px; flex-wrap: wrap; }
+footer { border-top: 2px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-block: 16px; font: 500 13px var(--mono); color: var(--muted); }
+
+@media (max-width: 900px) {
+  .ls, .md { grid-template-columns: 1fr; }
+  .pj.big { grid-column: auto; grid-template-columns: 1fr; }
+  .pj.big img { border-right: 0; border-bottom: 2px solid var(--line); aspect-ratio: 16/9; }
+  .statusline { grid-template-columns: 1fr 1fr; }
+  .statusline div:nth-child(3) { border-left: 0; }
+  .statusline div:nth-child(n+3) { border-top: 2px solid var(--line); }
+  .off { grid-template-columns: 1fr 1fr; }
+  .md .pic { max-width: 380px; }
+}
+@media (max-width: 560px) {
+  .top .nav { display: none; }
+  .hero { margin-top: 28px; }
+  .hero .in { padding: 24px 20px; }
+  .md .doc { padding: 22px 20px; }
+  section { padding-top: 76px; }
+  .term { box-shadow: 5px 5px 0 var(--line); }
+}
+@media (prefers-reduced-motion: reduce) { .pj, .btn, .off img { transition: none; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="who"><b>shanahan</b>@portfolio:~$</span>
+  <span class="nav"><a href="#work">ls work</a><a href="#about">cat about</a><a href="#mail">mail</a></span>
+  <button id="theme" type="button">theme</button>
+</div></header>
+
+<main class="wrap" id="top">
+  <div class="term hero">
+    <div class="tbar"><span><i>~</i> zsh</span><span>Shanahan Suresh · product engineer</span></div>
+    <div class="in">
+      <p class="cmd"><b>$</b> <span>whoami</span></p>
+      <h1>I build full&#8209;stack products &amp; <span class="a">AI tooling</span><span class="caret" aria-hidden="true"></span></h1>
+      <p class="lead" id="lead"></p>
+      <div class="ctas"><a class="btn a" href="#work">./see-the-work</a><a class="btn" href="#mail">./say-hi</a></div>
+    </div>
+    <div class="statusline"><div>main ✓</div><div><b>75,000</b>guests checked in</div><div><b>−63%</b>page-load time</div><div><b>JESTEC</b>paper, 2023</div></div>
+  </div>
+
+  <section id="work">
+    <p class="cmd"><b>$</b> <span>ls -l ~/projects</span> <span style="color:var(--muted)">· 7 items</span></p>
+    <h2>Things I've built</h2>
+    <div class="ls" id="ls"></div>
+  </section>
+
+  <section id="about">
+    <p class="cmd"><b>$</b> <span>cat about.md</span></p>
+    <h2>The short version</h2>
+    <div class="md">
+      <div class="term doc"><h3 id="aboutTitle"></h3><div id="aboutBody"></div>
+        <h4>Principles I build by</h4><ul id="princ"></ul>
+        <h4>Lately</h4><div id="now"></div><p class="m" style="font-size:14px;color:var(--muted)">learning: <span style="color:var(--amber)">aws</span>, <span style="color:var(--amber)">kubernetes</span></p></div>
+      <div class="term pic"><img src="img/portrait.webp" alt="Shanahan Suresh smiling in a navy jacket and white shirt."><div class="tbar"><span>portrait.webp</span><span>hello, I'm Shanahan</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="cmd"><b>$</b> <span>open ~/off-hours</span></p>
+    <h2>Away from the keyboard</h2>
+    <div class="off" id="off"></div>
+  </section>
+
+  <section class="mail" id="mail">
+    <p class="cmd"><b>$</b> <span>mail --to shanahan</span></p>
+    <h2>Let's build<span class="caret" aria-hidden="true"></span></h2>
+    <a class="addr" href="mailto:hello@shanahansuresh.com">hello@shanahansuresh.com</a>
+    <p id="clead"></p>
+    <div class="links"><a id="li">linkedin ↗</a><a id="gh">github ↗</a></div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© 2026 Shanahan Suresh</span><span>colophon · source ↗</span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = SITE, $ = (id) => document.getElementById(id);
+$("lead").textContent = S.lead;
+const order = ["rsvp", "hr", "ohse", "digest", "mcp", "censorit", "heatgen"];
+const list = order.map((id) => S.projects.find((p) => p.id === id));
+$("ls").innerHTML = list.map((p, i) => `<article class="pj${i === 0 ? " big" : ""}">
+  <div class="tbar"><span><i>~/projects/${p.id}</i></span><span>${esc(p.group.toLowerCase())}</span></div>
+  <img src="${p.img}" alt="${esc(p.caption)}">
+  <div class="in"><h3>${esc(p.title)}</h3><p>${esc(i === 0 ? p.body : p.short)}</p>
+  <span class="flags">${p.tags.map((t) => "--" + esc(t.toLowerCase().replace(/\s+/g, "-"))).join(" ")}</span>
+  <span class="res">→ <b>${esc(p.fact[0])}</b> ${esc(p.fact[1])}${p.link ? ` · <a href="${p.link.href}">${esc(p.link.label.toLowerCase())} ↗</a>` : ""}</span></div></article>`).join("");
+$("aboutTitle").textContent = S.aboutTitle;
+$("aboutBody").innerHTML = S.about.map((p) => `<p>${esc(p)}</p>`).join("");
+$("princ").innerHTML = S.principles.map((p) => `<li><b>${esc(p.title)}.</b> ${esc(p.body)}</li>`).join("");
+$("now").innerHTML = S.now.map((p) => `<p>${esc(p)}</p>`).join("");
+$("off").innerHTML = S.interests.map((i) => `<figure><div class="ph"><img src="${i.img}" alt="${esc(i.alt)}"></div><figcaption><b>${esc(i.title)}</b>${esc(i.caption)}</figcaption></figure>`).join("");
+$("clead").textContent = S.contactLead;
+$("li").href = S.linkedin.href; $("gh").href = S.github.href;
+// Dark-first: the toggle flips between dark and light the other way round.
+$("theme").addEventListener("click", () => {
+  const r = document.documentElement;
+  const light = r.dataset.theme ? r.dataset.theme === "light" : matchMedia("(prefers-color-scheme: light)").matches;
+  r.dataset.theme = light ? "dark" : "light";
+});
+</script>
+</body>
+</html>

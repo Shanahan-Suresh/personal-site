@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>09 Datasheet · Shanahan Suresh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Barlow:wght@400;500;600;700&family=Red+Hat+Mono:wght@400;500;700&display=swap">
+<style>
+/* Layout: a hardware datasheet. Each project is a numbered sheet with a part number, a figure and a spec table. Industrial grey, black strokes, one safety orange. */
+:root {
+  --bg: #e3e3de; --sheet: #f3f3ef; --ink: #121212; --muted: #565651; --orange: #ff5a00; --on-orange: #121212; --rule: #121212;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --body: "Barlow", system-ui, sans-serif;
+  --mono: "Red Hat Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #121311; --sheet: #1b1c19; --ink: #e9e9e3; --muted: #a3a39b; --orange: #ff6a1a; --rule: #e9e9e3; color-scheme: dark; } }
+:root[data-theme="dark"] { --bg: #121311; --sheet: #1b1c19; --ink: #e9e9e3; --muted: #a3a39b; --orange: #ff6a1a; --rule: #e9e9e3; color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16.5px/1.55 var(--body); }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+.mono { font: 500 12.5px/1.35 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-transform: uppercase; text-wrap: balance; }
+.hazard { height: 16px; background: repeating-linear-gradient(-45deg, var(--orange) 0 14px, var(--ink) 14px 28px); border-block: 2px solid var(--rule); }
+
+.top { border-bottom: 2px solid var(--rule); background: var(--sheet); }
+.top .wrap { display: grid; grid-template-columns: auto 1fr auto auto; gap: 28px; align-items: center; min-height: 60px; }
+.top .pn { font: 900 24px/1 var(--display); letter-spacing: .02em; }
+.top .pn span { color: var(--orange); }
+.top nav { display: flex; gap: 24px; justify-content: center; }
+.top nav a { text-decoration: none; font: 700 14px var(--body); text-transform: uppercase; letter-spacing: .08em; }
+.top nav a:hover { color: var(--orange); }
+.tbtn { font: 500 12.5px var(--mono); text-transform: uppercase; background: var(--bg); color: var(--ink); border: 2px solid var(--rule); padding: 7px 10px; cursor: pointer; }
+
+.sheet { background: var(--sheet); border: 2px solid var(--rule); box-shadow: 6px 6px 0 var(--rule); position: relative; }
+.sheet-head { display: grid; grid-template-columns: 1fr auto auto; border-bottom: 2px solid var(--rule); }
+.sheet-head > * { padding: 10px 14px; border-left: 2px solid var(--rule); }
+.sheet-head > :first-child { border-left: 0; }
+.sheet-foot { display: flex; justify-content: space-between; gap: 12px; border-top: 2px solid var(--rule); padding: 8px 14px; color: var(--muted); }
+
+.hero { margin-top: 40px; display: grid; grid-template-columns: 1.25fr 1fr; }
+.hero .main { padding: 36px 32px 32px; border-right: 2px solid var(--rule); }
+.hero h1 { font-size: clamp(58px, 9vw, 140px); line-height: .84; font-weight: 900; letter-spacing: -.005em; }
+.hero h1 span { color: var(--orange); }
+.hero .lead { font-size: 19px; max-width: 50ch; margin: 24px 0 28px; }
+.ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn { font: 700 15px var(--body); text-transform: uppercase; letter-spacing: .08em; padding: 13px 20px; text-decoration: none; border: 2px solid var(--rule); background: var(--sheet); color: var(--ink); box-shadow: 4px 4px 0 var(--rule); transition: transform .1s, box-shadow .1s; }
+.btn.o { background: var(--orange); color: var(--on-orange); }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--rule); }
+.btn:active { transform: translate(4px, 4px); box-shadow: none; }
+.plate { display: flex; flex-direction: column; }
+.plate img { aspect-ratio: 5/4; object-fit: cover; object-position: center 20%; width: 100%; border-bottom: 2px solid var(--rule); filter: grayscale(1) contrast(1.05); }
+.spec { width: 100%; border-collapse: collapse; font-size: 15px; }
+.spec th, .spec td { text-align: left; padding: 9px 14px; border-bottom: 1.5px solid var(--rule); vertical-align: top; }
+.spec th { font: 500 12px/1.5 var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--muted); width: 34%; border-right: 1.5px solid var(--rule); }
+.spec tr:last-child th, .spec tr:last-child td { border-bottom: 0; }
+.spec tr:hover td, .spec tr:hover th { background: var(--orange); color: var(--on-orange); }
+
+.perf { margin-top: 48px; }
+.perf table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.perf th, .perf td { padding: 12px 16px; border-bottom: 1.5px solid var(--rule); text-align: left; }
+.perf thead th { font: 500 12px var(--mono); text-transform: uppercase; color: var(--muted); border-bottom: 2px solid var(--rule); }
+.perf td.v { font: 800 34px/1 var(--display); text-align: right; }
+.perf td.u { font: 500 13px var(--mono); color: var(--muted); }
+.perf tbody tr:hover { background: var(--orange); color: var(--on-orange); }
+.perf tbody tr:hover td.u { color: var(--on-orange); }
+
+section { padding-top: 88px; }
+.sh { display: flex; justify-content: space-between; align-items: end; gap: 20px; border-bottom: 3px solid var(--rule); padding-bottom: 10px; margin-bottom: 32px; flex-wrap: wrap; }
+.sh h2 { font-size: clamp(40px, 5.4vw, 76px); line-height: .9; font-weight: 900; }
+
+.sheets { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.ds { display: flex; flex-direction: column; }
+.ds .pnum { font: 700 13px var(--mono); }
+.ds .pnum b { color: var(--orange); }
+.ds .body { padding: 20px; display: grid; gap: 16px; flex: 1; align-content: start; }
+.ds h3 { font-size: 34px; line-height: .95; font-weight: 800; }
+.ds .fig { margin: 0; border: 1.5px solid var(--rule); }
+.ds .fig img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top; }
+.ds .fig figcaption { border-top: 1.5px solid var(--rule); padding: 6px 10px; font-size: 13.5px; color: var(--muted); }
+.ds .fig figcaption b { font-family: var(--mono); color: var(--ink); font-weight: 700; margin-right: 6px; }
+.ds p { margin: 0; }
+.ds .spec { border: 1.5px solid var(--rule); }
+.ds.wide { grid-column: span 2; }
+.ds.wide .body { grid-template-columns: 1.2fr 1fr; gap: 24px; }
+.ds.wide .fig { grid-row: span 3; }
+.ds.wide h3 { font-size: 48px; }
+
+.about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 36px; align-items: start; }
+.about .txt { padding: 28px 30px; }
+.about h3 { font-size: 36px; line-height: .95; margin-bottom: 18px; font-weight: 800; }
+.about p { margin: 0 0 14px; max-width: 60ch; font-size: 17.5px; }
+.notes { display: grid; gap: 0; }
+.note { padding: 18px 20px; border-bottom: 2px solid var(--rule); display: grid; grid-template-columns: 76px 1fr; gap: 14px; }
+.note:last-child { border-bottom: 0; }
+.note .mono { color: var(--orange); font-weight: 700; padding-top: 4px; }
+.note b { display: block; font: 800 22px/1.05 var(--display); text-transform: uppercase; margin-bottom: 4px; }
+.note span { font-size: 15.5px; color: var(--muted); }
+.now { display: grid; grid-template-columns: 1.3fr 1fr; gap: 36px; margin-top: 36px; }
+.now .sheet { padding: 22px 24px; }
+.now p { margin: 0 0 12px; }
+.now h4 { font: 800 22px var(--display); text-transform: uppercase; margin: 0 0 10px; }
+.queue li { font: 500 15px var(--mono); padding: 8px 0; border-bottom: 1.5px solid var(--rule); display: flex; justify-content: space-between; }
+.queue { list-style: none; margin: 0; padding: 0; }
+.ph { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.ph figure { margin: 0; background: var(--sheet); border: 2px solid var(--rule); }
+.ph img { aspect-ratio: 4/3; object-fit: cover; width: 100%; border-bottom: 2px solid var(--rule); }
+.ph figcaption { padding: 10px 12px; font-size: 14.5px; color: var(--muted); }
+.ph b { display: block; font: 800 18px/1.1 var(--display); text-transform: uppercase; color: var(--ink); margin-bottom: 2px; }
+
+.order { margin-top: 104px; background: var(--orange); color: var(--on-orange); border-block: 2px solid var(--rule); }
+.order .wrap { padding-block: 72px; display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+.order h2 { font-size: clamp(72px, 11vw, 170px); line-height: .8; font-weight: 900; }
+.order p { margin: 0 0 18px; font-size: 18px; font-weight: 500; }
+.order .spec th, .order .spec td { border-color: var(--on-orange); color: var(--on-orange); }
+.order .spec { border: 2px solid var(--on-orange); background: rgba(255,255,255,.16); }
+.order .spec tr:hover td, .order .spec tr:hover th { background: var(--on-orange); color: var(--orange); }
+.order .spec th { color: var(--on-orange); opacity: 1; }
+.order a { font-weight: 700; }
+footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding-block: 18px; color: var(--muted); }
+
+@media (max-width: 960px) {
+  .hero, .about, .now, .order .wrap { grid-template-columns: 1fr; }
+  .hero .main { border-right: 0; border-bottom: 2px solid var(--rule); }
+  .sheets { grid-template-columns: 1fr; }
+  .ds.wide { grid-column: auto; }
+  .ds.wide .body { grid-template-columns: 1fr; }
+  .ds.wide .fig { grid-row: auto; }
+  .ph { grid-template-columns: 1fr 1fr; }
+  .top .wrap { grid-template-columns: 1fr auto; }
+  .top nav, .top .rev { display: none; }
+}
+@media (max-width: 560px) {
+  .hero .main { padding: 24px 18px; }
+  .sheet-head { grid-template-columns: 1fr auto; }
+  .sheet-head > :nth-child(2) { display: none; }
+  .perf td.v { font-size: 26px; }
+  .perf td, .perf th { padding: 10px 8px; }
+  .perf .c3 { display: none; }
+  .ds h3, .ds.wide h3 { font-size: 30px; }
+  .ph { gap: 14px; }
+  section { padding-top: 72px; }
+  .note { grid-template-columns: 1fr; gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="pn">SS<span>-</span>1</span>
+  <nav><a href="#sheets">Sheets</a><a href="#about">Notes</a><a href="#order">Contact</a></nav>
+  <span class="mono rev" style="color:var(--muted)">Rev. 2026.11</span>
+  <button class="tbtn" id="theme" type="button">Light / Dark</button>
+</div></header>
+<div class="hazard" aria-hidden="true"></div>
+
+<main class="wrap" id="top">
+  <div class="sheet hero">
+    <div class="main">
+      <p class="mono" style="margin:0 0 18px;color:var(--muted)">Product engineer · Datasheet</p>
+      <h1>I build full&#8209;stack products &amp; <span>AI tooling.</span></h1>
+      <p class="lead" id="lead"></p>
+      <div class="ctas"><a class="btn o" href="#sheets">Read the sheets</a><a class="btn" href="#order">Say hi</a></div>
+    </div>
+    <div class="plate">
+      <img src="img/portrait.webp" alt="Shanahan Suresh smiling in a navy jacket and white shirt.">
+      <table class="spec"><tbody>
+        <tr><th>Model</th><td>Shanahan Suresh</td></tr>
+        <tr><th>Function</th><td>Full-stack products, AI tooling</td></tr>
+        <tr><th>Training</th><td>BSc Computer Science with AI, University of Nottingham</td></tr>
+        <tr><th>Interfaces</th><td>Next.js, Svelte, Python, Django, GCP, Terraform</td></tr>
+        <tr><th>Tolerance</th><td>Low for rough edges</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <div class="sheet perf">
+    <div class="sheet-head mono"><span>Table 1 · Measured results</span><span>Field data</span><span>4 rows</span></div>
+    <table><thead><tr><th>Parameter</th><th class="c3">Conditions</th><th style="text-align:right">Value</th><th>Unit</th></tr></thead><tbody>
+      <tr><td>Guests checked in</td><td class="c3">Serverless RSVP app, one event series</td><td class="v">75,000</td><td class="u">guests</td></tr>
+      <tr><td>Platform users</td><td class="c3">Enterprise HR platform</td><td class="v">20,000</td><td class="u">employees</td></tr>
+      <tr><td>Page-load time</td><td class="c3">Same platform, after rework</td><td class="v">−63</td><td class="u">%</td></tr>
+      <tr><td>Business units</td><td class="c3">OHSE incident module</td><td class="v">10</td><td class="u">units</td></tr>
+    </tbody></table>
+  </div>
+
+  <section id="sheets">
+    <div class="sh"><h2>Project sheets</h2><span class="mono" style="color:var(--muted)">7 sheets · personal, corporate, academic</span></div>
+    <div class="sheets" id="list"></div>
+  </section>
+
+  <section id="about">
+    <div class="sh"><h2>Design notes</h2><span class="mono" style="color:var(--muted)">About the engineer</span></div>
+    <div class="about">
+      <div class="sheet txt"><h3 id="aboutTitle"></h3><div id="aboutBody"></div></div>
+      <div class="sheet notes" id="notes"></div>
+    </div>
+    <div class="now">
+      <div class="sheet"><h4>Current work in progress</h4><div id="now"></div></div>
+      <div class="sheet"><h4>Upgrade queue</h4><ul class="queue"><li><span>AWS</span><span style="color:var(--orange)">In progress</span></li><li><span>Kubernetes</span><span>Next</span></li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sh"><h2>Off-duty cycle</h2><span class="mono" style="color:var(--muted)">Away from the keyboard</span></div>
+    <div class="ph" id="ph"></div>
+  </section>
+</main>
+
+<section class="order" id="order"><div class="wrap">
+  <h2>Let's build.</h2>
+  <div><p id="clead"></p>
+    <table class="spec"><tbody>
+      <tr><th>Email</th><td style="user-select:all">hello@shanahansuresh.com</td></tr>
+      <tr><th>LinkedIn</th><td><a id="li"></a></td></tr>
+      <tr><th>GitHub</th><td><a id="gh"></a></td></tr>
+    </tbody></table></div>
+</div></section>
+<div class="hazard" aria-hidden="true"></div>
+<footer><div class="wrap mono"><span>© 2026 Shanahan Suresh · Sheet set SS-1</span><span>Colophon · Source ↗</span></div></footer>
+
+<script src="data.js"></script>
+<script>
+const S = SITE, $ = (id) => document.getElementById(id);
+$("lead").textContent = S.lead;
+const order = ["rsvp", "hr", "ohse", "digest", "mcp", "censorit", "heatgen"];
+const list = order.map((id) => S.projects.find((p) => p.id === id));
+const pn = (p) => "SS-" + p.id.toUpperCase().slice(0, 5);
+$("list").innerHTML = list.map((p, i) => `<article class="sheet ds${i === 0 ? " wide" : ""}">
+  <div class="sheet-head"><span class="pnum mono">Part <b>${pn(p)}</b></span><span class="mono">${esc(p.group)}</span><span class="mono">Sheet ${i + 1} of 7</span></div>
+  <div class="body">
+    <figure class="fig"><img src="${p.img}" alt="${esc(p.caption)}"><figcaption><b>Fig. ${i + 1}</b>${esc(p.caption)}</figcaption></figure>
+    <h3>${esc(p.title)}</h3><p>${esc(i === 0 ? p.body : lede(p.body))}</p>
+    <table class="spec"><tbody><tr><th>Result</th><td><b>${esc(p.fact[0])}</b> ${esc(p.fact[1])}</td></tr>
+    <tr><th>Stack</th><td>${p.tags.map(esc).join(", ")}</td></tr>${p.link ? `<tr><th>Reference</th><td><a href="${p.link.href}">${esc(p.link.label)} ↗</a></td></tr>` : ""}</tbody></table>
+  </div></article>`).join("");
+$("aboutTitle").textContent = S.aboutTitle;
+$("aboutBody").innerHTML = S.about.map((p) => `<p>${esc(p)}</p>`).join("");
+$("notes").innerHTML = S.principles.map((p, i) => `<div class="note"><span class="mono">Note ${i + 1}</span><div><b>${esc(p.title)}</b><span>${esc(p.body)}</span></div></div>`).join("");
+$("now").innerHTML = S.now.map((p) => `<p>${esc(p)}</p>`).join("");
+$("ph").innerHTML = S.interests.map((i) => `<figure><img src="${i.img}" alt="${esc(i.alt)}"><figcaption><b>${esc(i.title)}</b>${esc(i.caption)}</figcaption></figure>`).join("");
+$("clead").textContent = S.contactLead;
+$("li").textContent = S.linkedin.label + " ↗"; $("li").href = S.linkedin.href;
+$("gh").textContent = S.github.label + " ↗"; $("gh").href = S.github.href;
+wireTheme($("theme"));
+</script>
+</body>
+</html>
