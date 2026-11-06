@@ -318,9 +318,7 @@ test("colophon renders with a live test count and repo deep links", async ({
 }) => {
   const response = await page.goto("/colophon/");
   expect(response?.ok()).toBeTruthy();
-  await expect(page.locator("h2.section-title")).toContainText(
-    /how this site is built/i,
-  );
+  await expect(page.locator("h1")).toContainText(/how this site is built/i);
   const repoLinks = page.locator(
     'a[href^="https://github.com/Shanahan-Suresh/personal-site/blob/main/"]',
   );
