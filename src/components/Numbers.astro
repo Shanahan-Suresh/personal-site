@@ -1,0 +1,94 @@
+---
+import { projects } from "@/data/projects";
+
+const byId = (id: string) => {
+  const p = projects.find((x) => x.id === id);
+  if (!p) throw new Error(`Numbers strip: no project ${id}`);
+  return p;
+};
+const rsvp = byId("rsvp");
+const hr = byId("hr");
+const heatgen = byId("heatgen");
+
+/* The headcount is not a row fact, so the build checks the HR story still says it. */
+const employees = "20,000";
+if (![hr.description].flat().some((d) => d.includes(employees))) {
+  throw new Error(`Numbers strip: the HR story no longer says ${employees}`);
+}
+
+const items = [
+  { value: rsvp.fact.value, label: "guests through one RSVP app" },
+  { value: employees, label: "employees on a platform I sped up" },
+  { value: hr.fact.value, label: "faster page loads" },
+  { value: heatgen.fact.value, label: "paper published in JESTEC" },
+];
+---
+
+<section class="slab s-butter nums" aria-label="Results">
+  <ul class="nums-grid" role="list">
+    {
+      items.map((n) => (
+        <li>
+          <b>{n.value}</b>
+          <span>{n.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .nums-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    max-width: var(--wrap);
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+  .nums-grid li {
+    padding: 30px var(--gut) 30px 28px;
+    border-left: var(--seam) solid var(--ink);
+  }
+  .nums-grid li:first-child {
+    border-left: 0;
+    padding-left: var(--gut);
+  }
+  b {
+    display: block;
+    font: 800 clamp(44px, 6.2vw, 92px) / 0.95 var(--font-display);
+    letter-spacing: 0.008em;
+    font-variant-numeric: lining-nums;
+  }
+  span {
+    display: block;
+    max-width: 22ch;
+    margin-top: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  @media (max-width: 960px) {
+    .nums-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .nums-grid li:nth-child(3) {
+      border-left: 0;
+      padding-left: var(--gut);
+    }
+    .nums-grid li:nth-child(n + 3) {
+      border-top: var(--seam) solid var(--ink);
+    }
+  }
+  @media (max-width: 560px) {
+    .nums-grid li {
+      padding: 22px 16px 22px 20px;
+    }
+    .nums-grid li:nth-child(2n + 1) {
+      padding-left: var(--gut);
+    }
+    span {
+      font-size: 15px;
+    }
+  }
+</style>

@@ -1,207 +1,179 @@
 ---
-import { Image } from "astro:assets";
-import copperCoil from "@/assets/scrapbook/free-use-v5/copper-coil-hero-v5.jpg";
+import MediaFrame from "./MediaFrame.astro";
+import portrait from "@/assets/scrapbook/portrait-cutout-v4.png";
+import { projects } from "@/data/projects";
+
+const rsvp = projects.find((p) => p.id === "rsvp")!;
 ---
 
-<section class="hero-section" aria-label="Introduction">
-  <div class="container">
-    <div class="hero-inner">
-      <div class="hero-title">
-        <p
-          class="eyebrow hero-eyebrow hero-rise"
-          style="--d:60ms"
-          aria-label="Name: Shanahan Suresh"
+<section class="slab s-tomato hero" aria-label="Introduction">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1 class="hero-headline reveal">
+        <span class="ln"
+          ><span class="l"
+            >I build <br class="m" /><span class="keep">full-stack</span></span
+          ></span
         >
-          SHANAHAN SURESH
-        </p>
-
-        <h1 class="display hero-headline">
-          <span class="slam-line" style="--d:120ms"
-            ><span>I build <span class="keep-together">full-stack</span></span
-            ></span
-          >
-          <span class="slam-line" style="--d:200ms"
-            ><span
-              >products &amp;&nbsp;<span class="tx-2 underline-skew marker"
-                >AI tooling.</span
-              ></span
-            ></span
-          >
-        </h1>
-      </div>
-
-      <div class="hero-aside hero-rise" style="--d:320ms">
-        <figure class="workbench-frame">
-          <Image
-            src={copperCoil}
-            alt="A tightly wound copper coil surrounded by blue components on a yellow circuit board."
-            format="webp"
-            quality={80}
-            widths={[360, 560, 800]}
-            sizes="(max-width: 820px) 88vw, 40vw"
-            loading="eager"
-            fetchpriority="high"
-            class="workbench-image"
-          />
-          <figcaption>
-            Built one detail at a time.
-            <a
-              class="hero-credit"
-              href="https://unsplash.com/photos/a-close-up-of-a-circuit-board-with-many-electronic-components-8hcIIZ8SoyU"
-              >Photo by Ludovico Ceroseis / Unsplash.</a
-            >
-          </figcaption>
-        </figure>
-
-        <div class="sticker-cluster hero-stickers">
-          <span class="sticker sticker-1 rot-l" style="--i:0">Full-stack</span>
-          <span class="sticker sticker-ink rot-r" style="--i:1"
-            >UK graduate</span
-          >
-        </div>
-      </div>
-
-      <div class="hero-copy">
-        <p class="lead hero-rise" style="--d:280ms">
+        <span class="ln"><span class="l">products &amp;</span></span>
+        <span class="ln"
+          ><span class="l"><span class="mk">AI tooling.</span></span></span
+        >
+      </h1>
+      <div class="hero-card">
+        <p>
           I'm a software engineer and a Computer Science with AI graduate from
           the University of Nottingham. I turn ideas into products people enjoy
           using, with as much care for how they feel as how they're built.
         </p>
-
-        <div class="row row-wrap gap-4 hero-rise" style="--d:360ms">
-          <a href="#work" class="btn btn-primary" data-magnetic
-            >See what I build</a
-          >
-          <a href="#contact" class="btn btn-ghost">Say hi</a>
+        <div class="ctas">
+          <a href="#work" class="btn">See what I build</a>
+          <a href="#contact" class="btn btn-alt">Say hi</a>
         </div>
       </div>
+    </div>
+
+    <div class="shots reveal">
+      <MediaFrame
+        image={portrait}
+        alt="Shanahan Suresh smiling in a navy jacket and white shirt."
+        fit="cover"
+        objectPosition="50% 18%"
+        aspectRatio="4 / 5"
+        widths={[360, 520, 720]}
+        sizes="(max-width: 560px) 84vw, (max-width: 960px) 50vw, 440px"
+        priority
+        class="face rise"
+      />
+      {
+        rsvp.media && (
+          <MediaFrame
+            image={rsvp.media.image}
+            alt={rsvp.media.alt}
+            caption={`RSVP app · ${rsvp.fact.value} guests`}
+            fit="cover"
+            objectPosition="top"
+            aspectRatio="16 / 11"
+            widths={[280, 420, 560]}
+            sizes="(max-width: 560px) 54vw, (max-width: 960px) 30vw, 280px"
+            loading="eager"
+            class="f2 rise rise-late"
+          />
+        )
+      }
     </div>
   </div>
 </section>
 
 <style>
-  .hero-section {
-    display: flex;
-    align-items: center;
-    padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3.5rem, 8vw, 6rem);
-  }
-
   .hero-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    column-gap: clamp(2rem, 5vw, 4rem);
-    row-gap: var(--space-5);
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+    gap: clamp(28px, 4vw, 64px);
     align-items: start;
+    padding-block: 56px 72px;
   }
-
-  .hero-title {
-    grid-column: 1;
+  /* The headline scales with its column, so its three lines always fit. */
+  .hero-copy {
+    container-type: inline-size;
   }
-
-  .hero-eyebrow {
-    margin-bottom: var(--space-4);
-  }
-
   .hero-headline {
-    font-size: clamp(3.2rem, 6.7vw, 6.5rem);
-    max-width: 14ch;
+    font-size: calc(100cqi / 6.5);
+    line-height: 0.9;
   }
-
-  .keep-together {
+  .hero-headline .l {
     white-space: nowrap;
   }
-
-  .hero-copy {
-    grid-column: 1;
+  .hero-headline .m {
+    display: none;
   }
-
-  .hero-copy .lead {
-    margin-bottom: var(--space-5);
-    max-width: 44ch;
+  .mk {
+    margin-left: -0.04em;
+    padding: 0 0.12em 0.02em;
+    background: var(--butter);
+    border: var(--seam) solid var(--ink);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
-
-  .hero-aside {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    position: relative;
-    margin: clamp(4rem, 7vw, 6.5rem) var(--space-2) var(--space-6) 0;
+  .hero-card {
+    max-width: 760px;
+    margin-top: 40px;
+    padding: 26px 28px;
+    background: var(--card);
+    color: var(--text);
+    border: var(--seam) solid var(--ink);
+    box-shadow: 8px 8px 0 var(--ink);
+    --focus: var(--edge);
   }
-
-  .workbench-frame {
-    margin: 0;
-    border: var(--border-thick);
-    box-shadow: var(--shadow-hard-lg);
-    background: var(--surface);
-    transform: rotate(2deg);
+  .hero-card p {
+    max-width: 56ch;
+    margin: 0 0 22px;
+    font-size: 19px;
   }
-
-  .workbench-image {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 5 / 4;
-    object-fit: cover;
-  }
-
-  figcaption {
-    padding: var(--space-3) var(--space-4);
-    border-top: var(--border);
-    font-size: var(--fs-sm);
-    line-height: 1.4;
-  }
-  .hero-credit {
-    display: block;
-    margin-top: 0.4rem;
-    color: var(--ink-soft);
-    font-size: 0.75rem;
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-  }
-
-  .hero-stickers {
+  .ctas {
     display: flex;
-    justify-content: space-between;
-    gap: var(--space-3);
-    position: absolute;
-    left: calc(-1 * var(--space-3));
-    right: calc(-1 * var(--space-2));
-    bottom: calc(-1 * var(--space-5));
+    flex-wrap: wrap;
+    gap: 14px;
   }
 
-  @media (max-width: 820px) {
-    .hero-section {
-      padding-top: var(--space-6);
-    }
+  .shots {
+    position: relative;
+    justify-self: end;
+    width: 100%;
+    max-width: 520px;
+    padding-bottom: 56px;
+  }
+  .shots :global(.face) {
+    width: 84%;
+  }
+  .shots :global(.face .media-canvas) {
+    background: var(--butter);
+  }
+  .shots :global(.f2) {
+    position: absolute;
+    right: -14px;
+    bottom: 0;
+    width: 54%;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
 
+  @media (max-width: 960px) {
     .hero-inner {
-      grid-template-columns: minmax(0, 1fr);
-      row-gap: var(--space-5);
+      grid-template-columns: 1fr;
     }
-
+    .shots {
+      justify-self: start;
+      max-width: 560px;
+      margin-left: 14%;
+    }
+  }
+  @media (max-width: 560px) {
+    .hero-inner {
+      padding-block: 40px 56px;
+    }
     .hero-headline {
-      font-size: clamp(3rem, 10.8vw, 5.5rem);
-      max-width: 17ch;
+      font-size: calc(100cqi / 4.75);
     }
-
-    .hero-aside {
-      grid-column: 1;
-      grid-row: auto;
-      margin: var(--space-5) var(--space-2) var(--space-5);
+    .hero-headline .m {
+      display: block;
     }
-
-    .workbench-image {
-      height: clamp(160px, 40vw, 240px);
-      aspect-ratio: 16 / 9;
-      object-position: 50% 25%;
+    .hero-headline .l {
+      white-space: normal;
     }
-
-    .hero-stickers .sticker {
-      font-size: 0.68rem;
+    .hero-card {
+      margin-top: 32px;
+      padding: 20px;
+      box-shadow: 6px 6px 0 var(--ink);
     }
-
-    figcaption {
-      font-size: 0.8rem;
-      padding: var(--space-2) var(--space-3);
+    .hero-card p {
+      font-size: 17.5px;
+    }
+    .shots {
+      margin-left: 0;
+      padding-bottom: 44px;
+    }
+    .shots :global(.f2) {
+      right: 0;
     }
   }
 </style>

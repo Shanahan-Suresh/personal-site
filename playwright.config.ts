@@ -31,5 +31,9 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // Astro 7 detaches `astro preview` when it detects an AI agent shell, and
+    // Playwright then reports that the server exited early. Any value here
+    // keeps the server in the foreground (node_modules/astro/dist/cli/preview).
+    env: { ASTRO_PREVIEW_BACKGROUND: "0" },
   },
 });

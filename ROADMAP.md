@@ -72,8 +72,8 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 and 2 are done.
-Phase 3 is next.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 3 are done, plus the
+interaction rewrite from phase 5. Phase 4 is next.
 
 ### 1. Foundation: tokens, type and base styles
 
@@ -118,8 +118,8 @@ Phase 3 is next.
 
 ### 5. Interactions and clean-up
 
-- Rewrite `src/scripts/home-interactions.ts` around decision 11: reveal, scroll spy, scrolled nav,
-  mobile nav, preview and dialogs. Delete the other modules.
+- `src/scripts/home-interactions.ts` holds only the decision 11 moves (done in phase 3, because the
+  rows and dialogs need it): reveal, scroll spy, scrolled nav, mobile nav, preview and dialogs.
 - Delete the retired components and their CSS: `Marquee`, `BentoTile`, `StatusChip`, the sticker
   and tilt rules, and `marqueeTools` in `src/data/skills.ts`.
 - Grep `src/`, `tests/`, `README.md` and `CLAUDE.md` for every removed class, component and

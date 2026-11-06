@@ -43,7 +43,8 @@ with sync_playwright() as p:
                 "async()=>{for(let y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(r=>setTimeout(r,60))}scrollTo(0,0)}"
             )
             pg.evaluate(
-                "Promise.all([...document.images].map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r})))"
+                # only images on screen: hidden thumbnails and closed dialogs never load
+                "Promise.race([new Promise(r=>setTimeout(r,8000)),Promise.all([...document.images].filter(i=>i.getClientRects().length).map(i=>i.complete?0:new Promise(r=>{i.onload=i.onerror=r})))])"
             )
             pg.wait_for_timeout(600)
             ov = pg.evaluate("document.documentElement.scrollWidth - innerWidth")
