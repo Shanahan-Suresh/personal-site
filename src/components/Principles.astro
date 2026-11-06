@@ -1,51 +1,77 @@
 ---
-import SectionHeading from "./SectionHeading.astro";
-import BentoTile from "./BentoTile.astro";
-
 const principles = [
   {
-    index: "01",
     title: "Make it a joy to use",
     body: "People remember how software feels. Every engineering design decision should start there.",
-    accent: "1" as const,
   },
   {
-    index: "02",
     title: "Love is in the details",
     body: "Small imperfections add up. The little interactions and polish are worth the extra mile to me.",
-    accent: "2" as const,
   },
   {
-    index: "03",
     title: "Let robots handle the boring bits",
-    body: "Life's too short for repetitive work, that's what LLMs are for. So we can focus crafting the fun stuff.",
-    accent: "pop" as const,
+    body: "Life's too short for repetitive work, that's what LLMs are for. So we can focus on crafting the fun stuff.",
   },
 ];
 ---
 
-<section class="section">
-  <div class="container">
-    <SectionHeading eyebrow="HOW I THINK" title="Principles I build by" />
-
-    <div class="bento">
-      {
-        principles.map((p) => (
-          <BentoTile span={2} accent={p.accent} stripe>
-            <div class="stack stack-4">
-              <span
-                class="ghost-num"
-                style={`font-size:clamp(4rem,10vw,7rem);margin-bottom:calc(-1 * var(--space-4));`}
-                aria-hidden="true"
-              >
-                {p.index}
-              </span>
-              <h3 class="h3">{p.title}</h3>
-              <p>{p.body}</p>
-            </div>
-          </BentoTile>
-        ))
-      }
-    </div>
-  </div>
+<section class="slab s-paper" aria-labelledby="rules-title">
+  <h2 id="rules-title" class="sr-only">Principles I build by</h2>
+  <ul class="wrap rules" role="list">
+    {
+      principles.map((p) => (
+        <li>
+          <span class="label" aria-hidden="true">
+            I build by
+          </span>
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+        </li>
+      ))
+    }
+  </ul>
 </section>
+
+<style>
+  .rules {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-block: 0;
+    list-style: none;
+  }
+  li {
+    padding: 48px 32px 52px;
+    border-left: var(--seam) solid var(--edge);
+  }
+  li:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+  li:last-child {
+    padding-right: 0;
+  }
+  h3 {
+    margin: 16px 0;
+    font-size: clamp(34px, 3.4vw, 48px);
+    line-height: 0.92;
+  }
+  p {
+    max-width: 36ch;
+    margin: 0;
+    font-size: 17px;
+  }
+  @media (max-width: 960px) {
+    .rules {
+      grid-template-columns: 1fr;
+    }
+    li,
+    li:last-child {
+      padding: 32px 0;
+      border-left: 0;
+      border-top: var(--seam) solid var(--edge);
+    }
+    li:first-child {
+      border-top: 0;
+    }
+  }
+</style>

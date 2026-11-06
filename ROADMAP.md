@@ -72,8 +72,8 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 3 are done, plus the
-interaction rewrite from phase 5. Phase 4 is next.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 4 are done, plus the
+interaction rewrite from phase 5. The rest of phase 5 is next.
 
 ### 1. Foundation: tokens, type and base styles
 

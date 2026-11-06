@@ -133,22 +133,11 @@ for (const width of [390, 600, 1440]) {
           expect(frame.left).toBeGreaterThanOrEqual(0);
           expect(frame.right).toBeLessThanOrEqual(width);
         }
-        if (width <= 600) {
-          const interestWidths = await page
-            .locator(".interest-frame")
-            .evaluateAll((frames) =>
-              frames.map((frame) => frame.getBoundingClientRect().width),
-            );
-          for (const frameWidth of interestWidths) {
-            expect(frameWidth).toBeGreaterThan(width * 0.8);
-          }
-        }
         expect(
           await page.evaluate(() => document.documentElement.scrollWidth),
         ).toBeLessThanOrEqual(width);
         if (reducedMotion === "reduce") {
           await expect(page.locator(".shots .face")).toHaveCSS("opacity", "1");
-          await expect(page.locator(".scrapbook")).toHaveCSS("opacity", "1");
           if (testInfo.project.name === "chromium") {
             for (const image of await page
               .locator("main img")

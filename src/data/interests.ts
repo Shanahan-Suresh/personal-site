@@ -10,8 +10,6 @@ export interface Interest {
   caption: string;
   image: ImageMetadata;
   alt: string;
-  aspectRatio: string;
-  fit?: "cover" | "contain";
   objectPosition?: string;
   credit: { label: string; href: string };
 }
@@ -23,8 +21,6 @@ export const interests: Interest[] = [
     caption: "Ask me about any of them and I can go a while.",
     image: offClock,
     alt: "Close-up photograph of blue and red Nintendo Switch controllers in warm window light.",
-    aspectRatio: "2 / 1",
-    fit: "cover",
     objectPosition: "65% 48%",
     credit: {
       label: "Photo: Enrique Vidal Flores / Unsplash",
@@ -37,8 +33,6 @@ export const interests: Interest[] = [
     caption: "In the gym, with a good reason to close the laptop.",
     image: gym,
     alt: "Sunlight falls across a barbell, weight plates and bench in an empty gym.",
-    aspectRatio: "4 / 5",
-    fit: "cover",
     objectPosition: "68% center",
     credit: {
       label: "Photo: Jelmer Assink / Unsplash",
@@ -51,8 +45,6 @@ export const interests: Interest[] = [
     caption: "Usually half-planning a trip somewhere.",
     image: travel,
     alt: "A wooden boathouse and mountain peaks reflected in the still water of Lago di Braies.",
-    aspectRatio: "4 / 3",
-    fit: "cover",
     objectPosition: "62% center",
     credit: {
       label: "Photo: Luca Bravo / Unsplash",
@@ -65,8 +57,6 @@ export const interests: Interest[] = [
     caption: "Another interest that keeps me reading.",
     image: finance,
     alt: "Photograph of red and green candlesticks and moving-average lines on a financial market screen.",
-    aspectRatio: "4 / 3",
-    fit: "cover",
     objectPosition: "center",
     credit: {
       label: "Photo: Maxim Hopman / Unsplash",

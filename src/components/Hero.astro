@@ -141,8 +141,10 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
     .hero-inner {
       grid-template-columns: 1fr;
     }
+    /* The left offset comes out of the width, so the stack never overflows. */
     .shots {
       justify-self: start;
+      width: 86%;
       max-width: 560px;
       margin-left: 14%;
     }
@@ -169,6 +171,7 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
       font-size: 17.5px;
     }
     .shots {
+      width: 100%;
       margin-left: 0;
       padding-bottom: 44px;
     }
