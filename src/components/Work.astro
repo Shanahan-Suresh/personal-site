@@ -1,7 +1,7 @@
 ---
 import SectionHeading from "./SectionHeading.astro";
 import ProjectCard from "./ProjectCard.astro";
-import { categories, accentCycle } from "@/data/projects";
+import { categories } from "@/data/projects";
 
 const CARD_STAGGER_MS = 60; /* ms per card index — matches STAGGER_STEP_DEFAULT in BaseLayout only for this section */
 
@@ -30,13 +30,10 @@ const numberedCategories = categories.map((cat) => {
               {cat.items.map((p, j) => {
                 const idx = cat.start + j;
                 const num = String(idx + 1).padStart(2, "0");
-                const accent =
-                  p.accent ?? accentCycle[idx % accentCycle.length];
                 return (
                   <ProjectCard
                     project={p}
                     num={num}
-                    accent={accent}
                     class="reveal"
                     style={`--d:${idx * CARD_STAGGER_MS}ms`}
                   />
