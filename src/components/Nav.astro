@@ -52,10 +52,25 @@ import { navLinks } from "@/data/navigation";
   }
   .nav-name {
     margin-right: auto;
+    padding-block: 6px;
     font: 800 21px/1 var(--font-display);
     letter-spacing: 0.008em;
     text-transform: uppercase;
     text-decoration: none;
+  }
+  /* The butter underline wipes in from the left on hover; the active link keeps it. */
+  .nav-name,
+  .nav-link {
+    background: linear-gradient(var(--butter), var(--butter)) left bottom / 0%
+      2px no-repeat;
+    transition: background-size 0.22s var(--ease-out);
+  }
+  .nav-name:hover,
+  .nav-name:focus-visible,
+  .nav-link:hover,
+  .nav-link:focus-visible,
+  .nav-link.is-active {
+    background-size: 100% 2px;
   }
   .nav-links {
     display: flex;
@@ -67,15 +82,9 @@ import { navLinks } from "@/data/navigation";
   .nav-link {
     display: inline-block;
     padding-block: 6px;
-    border-bottom: 2px solid transparent;
     font-weight: 600;
     font-size: 15px;
     text-decoration: none;
-    transition: border-color var(--dur-fast);
-  }
-  .nav-link:hover,
-  .nav-link.is-active {
-    border-color: var(--butter);
   }
 
   .nav-burger {
@@ -142,7 +151,7 @@ import { navLinks } from "@/data/navigation";
       align-items: center;
       min-height: 56px;
       padding: 0 var(--gut);
-      border: 0;
+      background: none;
       font: 800 22px/1 var(--font-display);
       text-transform: uppercase;
     }
@@ -156,6 +165,7 @@ import { navLinks } from "@/data/navigation";
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .nav-name,
     .nav-link,
     .nav-burger span {
       transition: none;

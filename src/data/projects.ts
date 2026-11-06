@@ -93,6 +93,7 @@ const product: Project[] = [
     tags: ["Next.js", "Django", "GCP", "MCP"],
     media: {
       image: ohseVisual,
+      objectPosition: "left top",
       alt: "An incident-reporting workspace with reports, status filters, search and pagination.",
       caption: "Turning incident reports into action.",
     },

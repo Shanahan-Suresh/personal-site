@@ -11,6 +11,8 @@ export interface ProjectMedia {
   caption?: string;
   /** Preserve the legibility of taller interface captures. */
   aspectRatio?: string;
+  /** Where a cropped thumbnail or preview anchors; defaults to "top". */
+  objectPosition?: string;
 }
 
 export interface ProjectFact {

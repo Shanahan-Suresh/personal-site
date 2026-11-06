@@ -9,16 +9,15 @@ interface Props {
 
 const { project: p, index } = Astro.props;
 const num = String(index + 1).padStart(2, "0");
+const crop = p.media?.objectPosition ?? "top";
 
-/* The pointer preview loads this small file on first hover, never with the page. */
-const peek = p.media
-  ? await getImage({
-      src: p.media.image,
-      width: 480,
-      format: "webp",
-      quality: 75,
-    })
-  : null;
+/* The pointer preview loads one of these on first hover, never with the page:
+   the 960px file on a high-density screen, the 480px file otherwise. */
+const peekAt = (width: number) =>
+  p.media
+    ? getImage({ src: p.media.image, width, format: "webp", quality: 75 })
+    : null;
+const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
 ---
 
 <li>
@@ -28,10 +27,15 @@ const peek = p.media
     href={`#story-${p.id}`}
     data-story={p.id}
     data-peek={peek?.src}
+    data-peek-2x={peek2x?.src}
+    data-peek-pos={crop}
+    data-peek-cap={p.media?.caption}
     aria-haspopup="dialog"
   >
-    <span class="ix">{num}</span>
-    <span>
+    <span class="ix" aria-hidden="true"
+      ><span class="n">{num}</span><span class="a">→</span></span
+    >
+    <span class="hd">
       <span class="grp label">{p.group}</span>
       <span class="t">{p.title}</span>
     </span>
@@ -39,7 +43,8 @@ const peek = p.media
       <b>{p.fact.value} {p.fact.label}</b>
       <span>{p.summary}</span>
     </span>
-    <span class="go">Story <span aria-hidden="true">→</span></span>
+    <span class="go">Story <span class="arrow" aria-hidden="true">→</span></span
+    >
     {
       p.media && (
         <Image
@@ -49,10 +54,11 @@ const peek = p.media
           aria-hidden="true"
           format="webp"
           quality={75}
-          widths={[400, 600, 800]}
-          sizes="(max-width: 560px) 90vw, 520px"
+          widths={[400, 600, 800, 1040]}
+          sizes="(max-width: 560px) 92vw, 560px"
           loading="lazy"
           decoding="async"
+          style={`object-position:${crop}`}
         />
       )
     }
@@ -70,15 +76,29 @@ const peek = p.media
     align-items: center;
     padding: 28px 20px;
   }
+
+  /* The index turns into an arrow and the title steps forward on hover. */
   .ix {
+    position: relative;
     align-self: start;
     padding-top: 6px;
+    overflow: hidden;
     font: 500 14px/1 var(--font-mono);
     letter-spacing: 0.06em;
   }
-  .grp {
+  .ix > span {
     display: block;
-    margin-bottom: 10px;
+    transition:
+      transform 0.18s var(--ease-out),
+      opacity 0.18s;
+  }
+  .ix .a {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    font: 800 22px/0.6 var(--font-display);
+    opacity: 0;
+    transform: translateX(-100%);
   }
   .t {
     display: block;
@@ -86,6 +106,11 @@ const peek = p.media
     letter-spacing: 0.008em;
     text-transform: uppercase;
     text-wrap: balance;
+    transition: transform 0.2s var(--ease-out);
+  }
+  .grp {
+    display: block;
+    margin-bottom: 10px;
   }
   .fa b {
     display: block;
@@ -120,35 +145,97 @@ const peek = p.media
     border-color: var(--ink);
     transform: translate(-2px, -2px);
   }
+  .pr:hover .arrow,
+  .pr:focus-visible .arrow {
+    transform: translateX(3px);
+  }
   .thumb {
     display: none;
   }
 
+  @media (hover: hover) and (min-width: 961px) {
+    .pr:hover .t,
+    .pr:focus-visible .t {
+      transform: translateX(10px);
+    }
+    .pr:hover .ix .n,
+    .pr:focus-visible .ix .n {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    .pr:hover .ix .a,
+    .pr:focus-visible .ix .a {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Phones and tablets: the picture leads, the Story tab sits on its corner,
+     and the index shares a line with the group label. */
   @media (max-width: 960px) {
     .pr {
-      grid-template-columns: 1fr;
-      gap: 14px;
+      /* A fixed index column: the thumbnail spans both columns and would
+         otherwise inflate an auto one. */
+      grid-template-columns: 22px minmax(0, 560px);
+      grid-template-areas:
+        "pic pic"
+        "ix hd"
+        "fa fa";
+      gap: 14px 14px;
+      padding: 24px 20px 26px;
     }
     .ix {
+      grid-area: ix;
       padding: 0;
+      font-size: 13px;
+      line-height: 1.3;
     }
-    .go {
-      justify-self: start;
+    .ix .a {
+      display: none;
+    }
+    .hd {
+      grid-area: hd;
+    }
+    .fa {
+      grid-area: fa;
     }
     .thumb {
+      grid-area: pic;
       display: block;
       width: 100%;
-      max-width: 520px;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 16 / 9;
       object-fit: cover;
-      object-position: top;
       border: var(--seam) solid var(--ink);
       background: var(--white);
       box-shadow: var(--hard-5) var(--ink);
     }
+    .go {
+      grid-area: pic;
+      z-index: 1;
+      align-self: end;
+      justify-self: end;
+      margin: 0 -10px -14px 0;
+      padding: 9px 11px;
+      border-color: var(--ink);
+      background: var(--butter);
+      color: var(--ink);
+      box-shadow: var(--hard-3) var(--ink);
+    }
+    .pr:hover .go,
+    .pr:focus-visible .go,
+    .pr:active .go {
+      background: var(--ink);
+      color: var(--butter);
+      transform: none;
+    }
+    .fa b {
+      font-size: 22px;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .go {
+    .go,
+    .t,
+    .ix > span {
       transition: none;
     }
   }

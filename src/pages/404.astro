@@ -1,0 +1,78 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Not found — Shanahan Suresh"
+  description="This page is not here."
+  noindex
+>
+  <section class="slab s-tomato nf-slab" aria-labelledby="nf-title">
+    <div class="wrap nf">
+      <p class="label">Error 404</p>
+      <h1 id="nf-title" class="reveal">
+        <span class="ln"><span>404</span></span>
+      </h1>
+      <div class="nf-card">
+        <p>
+          This page is not here. The link may be old, or the address mistyped.
+        </p>
+        <div class="ctas">
+          <a href="/" class="btn">Home</a>
+          <a href="/#work" class="btn btn-alt"
+            >See what I build <span class="arrow" aria-hidden="true">→</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* The slab fills the window down to the footer. */
+  :global(main) {
+    display: flex;
+    flex-direction: column;
+  }
+  .nf-slab {
+    flex: 1;
+  }
+  .nf {
+    padding-block: 56px 80px;
+  }
+  .label {
+    margin: 0 0 12px;
+  }
+  h1 {
+    font-size: clamp(160px, 34vw, 480px);
+    line-height: 0.8;
+  }
+  .nf-card {
+    max-width: 640px;
+    margin-top: 40px;
+    padding: 26px 28px;
+    background: var(--card);
+    color: var(--text);
+    border: var(--seam) solid var(--ink);
+    box-shadow: var(--hard-8) var(--ink);
+    --focus: var(--edge);
+  }
+  .nf-card p {
+    margin: 0 0 22px;
+    font-size: 19px;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  @media (max-width: 560px) {
+    .nf {
+      padding-block: 40px 56px;
+    }
+    .nf-card {
+      padding: 20px;
+      box-shadow: var(--hard-6) var(--ink);
+    }
+  }
+</style>

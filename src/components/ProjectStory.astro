@@ -1,4 +1,5 @@
 ---
+import { getImage } from "astro:assets";
 import MediaFrame from "./MediaFrame.astro";
 import type { ListedProject } from "@/data/projects";
 
@@ -6,10 +7,15 @@ interface Props {
   project: ListedProject;
   index: number;
   total: number;
+  prev: ListedProject;
   next: ListedProject;
 }
 
-const { project: p, index, total, next } = Astro.props;
+const { project: p, index, total, prev, next } = Astro.props;
+/* The capture at its own size, opened from the caption so small UI text can be read. */
+const full = p.media
+  ? await getImage({ src: p.media.image, format: "webp", quality: 85 })
+  : null;
 const paragraphs = [p.description].flat();
 const nextTitle =
   next.title.length > 26 ? next.title.slice(0, 24).trim() + "…" : next.title;
@@ -20,6 +26,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
   class="story"
   id={`story-${p.id}`}
   aria-labelledby={`story-${p.id}-title`}
+  data-prev={prev.id}
+  data-next={next.id}
 >
   <div class="st-head">
     <div>
@@ -36,11 +44,19 @@ const pad = (n: number) => String(n).padStart(2, "0");
         <MediaFrame
           image={p.media.image}
           alt={p.media.alt}
-          caption={p.media.caption}
           aspectRatio={p.media.aspectRatio}
           widths={[480, 720, 1040]}
           sizes="(max-width: 960px) 90vw, 560px"
-        />
+        >
+          <Fragment slot="caption">
+            {p.media.caption}
+            {full && (
+              <a class="st-full" href={full.src} target="_blank" rel="noopener">
+                Open full size <span class="arrow out">↗</span>
+              </a>
+            )}
+          </Fragment>
+        </MediaFrame>
       )
     }
     <div>
@@ -55,23 +71,38 @@ const pad = (n: number) => String(n).padStart(2, "0");
           </ul>
         )
       }
-      <div class="st-actions">
-        {
-          p.link && (
+      {
+        p.link && (
+          <div class="st-actions">
             <a
               class="btn"
               href={p.link.href}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {p.link.label} ↗
+              {p.link.label} <span class="arrow out">↗</span>
             </a>
-          )
-        }
-        <a class="btn btn-alt" href={`#story-${next.id}`} data-next={next.id}
-          >Next: {nextTitle} <span aria-hidden="true">→</span></a
+          </div>
+        )
+      }
+      <nav class="st-nav" aria-label="More stories">
+        <a
+          class="btn btn-alt"
+          href={`#story-${prev.id}`}
+          data-go={prev.id}
+          data-dir="prev"
+          aria-label={`Previous story: ${prev.title}`}
+          ><span class="arrow back" aria-hidden="true">←</span> Previous</a
         >
-      </div>
+        <a
+          class="btn btn-alt"
+          href={`#story-${next.id}`}
+          data-go={next.id}
+          data-dir="next"
+          data-next={next.id}
+          >Next: {nextTitle} <span class="arrow" aria-hidden="true">→</span></a
+        >
+      </nav>
     </div>
   </div>
 </dialog>
@@ -175,25 +206,65 @@ const pad = (n: number) => String(n).padStart(2, "0");
     flex-wrap: wrap;
     gap: 12px;
   }
-  .st-actions .btn {
+  .st-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 2px solid var(--edge);
+  }
+  .st-full {
+    display: block;
+    width: fit-content;
+    margin-top: 6px;
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .st-actions .btn,
+  .st-nav .btn {
     border-color: var(--edge);
     box-shadow: var(--hard-4) var(--edge);
     font-size: 15px;
     white-space: normal;
   }
-  .st-actions .btn:hover {
+  .st-actions .btn:hover,
+  .st-actions .btn:focus-visible,
+  .st-nav .btn:hover,
+  .st-nav .btn:focus-visible {
     box-shadow: var(--hard-6) var(--edge);
   }
-  .st-actions .btn:active {
+  .st-actions .btn:active,
+  .st-nav .btn:active {
     box-shadow: none;
   }
   @media (prefers-reduced-motion: no-preference) {
     .story[open] {
       animation: story-pop 0.18s ease-out;
     }
+    /* Moving between stories slides the new one in from the side it comes from. */
+    .story[open][data-enter="next"] {
+      animation-name: story-from-right;
+    }
+    .story[open][data-enter="prev"] {
+      animation-name: story-from-left;
+    }
     @keyframes story-pop {
       from {
         transform: translateY(14px);
+        opacity: 0;
+      }
+    }
+    @keyframes story-from-right {
+      from {
+        transform: translateX(16px);
+        opacity: 0;
+      }
+    }
+    @keyframes story-from-left {
+      from {
+        transform: translateX(-16px);
         opacity: 0;
       }
     }
@@ -203,10 +274,22 @@ const pad = (n: number) => String(n).padStart(2, "0");
       grid-template-columns: 1fr;
     }
   }
+  /* On a phone the head stays small, so the picture shows on the first screen. */
   @media (max-width: 560px) {
-    .st-head,
+    .st-head {
+      padding: 12px 14px 12px 18px;
+    }
+    .st-head h2 {
+      margin-top: 4px;
+      font-size: 30px;
+    }
     .st-body {
+      gap: 24px;
       padding: 18px;
+    }
+    .st-nav .btn {
+      flex: 1 1 auto;
+      text-align: center;
     }
   }
   @media (prefers-reduced-motion: reduce) {
