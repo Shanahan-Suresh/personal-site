@@ -6,7 +6,7 @@ import { join, resolve } from "node:path";
 
 // scripts/guard-placeholders.mjs is the gate that keeps placeholder art off
 // the live site. These checks run it against throwaway folders to prove it
-// catches what it claims to. They need Node only, so one browser runs them.
+// catches what it claims to. They need Node only, so playwright.config.ts runs them in Chromium alone.
 
 const GUARD = resolve("scripts/guard-placeholders.mjs");
 const MARK = "_placeholder-"; // the guard scans src/ only, so tests/ may spell it out
@@ -29,8 +29,6 @@ function guard(cwd: string, allow = false) {
 }
 
 test.describe("placeholder guard", () => {
-  test.skip(({ browserName }) => browserName !== "chromium", "Node-only");
-
   const roots: string[] = [];
   test.afterAll(() =>
     roots.forEach((r) => rmSync(r, { recursive: true, force: true })),
