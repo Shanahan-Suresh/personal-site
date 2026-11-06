@@ -14,17 +14,17 @@ export interface Stat {
  * browser engines. tests/media.spec.ts records encoded bodies plus headers
  * on arrival and after scrolling. The interaction bundle is measured with gzip.
  */
-export const measuredOn = "4 Oct 2026";
+export const measuredOn = "6 Nov 2026";
 
 export const stats: Stat[] = [
   {
     label: "Home page on arrival",
-    value: "~107–189 KiB",
+    value: "~153–194 KiB",
     note: "Fresh mobile/desktop contexts across all three engines",
   },
   {
     label: "Home page after scrolling",
-    value: "~288–572 KiB",
+    value: "~208–405 KiB",
     note: "Includes every responsive image, fonts, CSS and JavaScript",
   },
   {
@@ -34,7 +34,7 @@ export const stats: Stat[] = [
   },
   {
     label: "Interaction bundle",
-    value: "2.4 KiB",
+    value: "1.8 KiB",
     note: "One TypeScript module, gzipped",
   },
   {

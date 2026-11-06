@@ -79,7 +79,7 @@ and 1.5 MiB after scrolling through the homepage.
 
 The homepage uses 12 images: the portrait, seven project captures and four photographs. Chromium captures full-page screenshots at each review width in both
 themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
-Cold transfers measured 4 Oct 2026 across all three browsers are 107–189 KiB initially and 288–572 KiB
+Cold transfers measured 6 Nov 2026 across all three browsers are 153–194 KiB initially and 208–405 KiB
 after scrolling. The colophon reads the test count from Playwright at build time.
 
 ## Project structure

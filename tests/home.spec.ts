@@ -171,6 +171,34 @@ test("a shared #story link opens that story", async ({ page }) => {
   await expect(page.locator("#story-heatgen")).toBeVisible();
 });
 
+test.describe("pointer preview", () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test("a mouse over a row shows its preview", async ({ page }) => {
+    await page.goto("/");
+    await page.locator("#row-ohse").hover();
+    await expect(page.locator("#peek")).toHaveClass(/\bon\b/);
+    await expect(page.locator("#peek img")).toHaveAttribute("src", /\.webp/);
+  });
+
+  test.describe("on a touch screen", () => {
+    test.use({ hasTouch: true });
+
+    test("tapping a row opens its story and never shows the preview", async ({
+      page,
+    }) => {
+      await page.goto("/");
+      await page.locator("#row-ohse").tap();
+      await expect(page.locator("#story-ohse")).toBeVisible();
+      await expect(page.locator("#peek")).not.toHaveClass(/\bon\b/);
+      expect(
+        await page.locator("#peek img").getAttribute("src"),
+        "The preview image should never load on touch",
+      ).toBeNull();
+    });
+  });
+});
+
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
