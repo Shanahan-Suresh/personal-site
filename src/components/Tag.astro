@@ -1,9 +1,0 @@
----
-interface Props {
-  variant?: "tag" | "plain";
-}
-
-const { variant = "tag" } = Astro.props;
----
-
-<span class={variant === "plain" ? "tag" : "tag tag-2"}><slot /></span>

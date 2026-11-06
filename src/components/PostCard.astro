@@ -1,5 +1,4 @@
 ---
-import Card from "./Card.astro";
 import { formatPostDate, type Post } from "../lib/posts";
 
 interface Props {
@@ -8,32 +7,107 @@ interface Props {
 }
 
 const { post, showTags = false } = Astro.props;
+const tags = showTags ? (post.data.tags ?? []) : [];
 ---
 
-<a href={`/writing/${post.id}`}>
-  <Card press class="reveal">
-    <div
-      class="row-wrap between"
-      style="align-items:flex-start;gap:var(--space-3);"
+<li>
+  <a class="post" href={`/writing/${post.id}`}>
+    <time class="label" datetime={post.data.pubDate.toISOString()}
+      >{formatPostDate(post.data.pubDate)}</time
     >
-      <h3 class="h3" style="margin:0;">{post.data.title}</h3>
-      <time
-        class="mono muted"
-        datetime={post.data.pubDate.toISOString()}
-        style="white-space:nowrap;">{formatPostDate(post.data.pubDate)}</time
-      >
-    </div>
-    <p class="muted" style="margin-top:var(--space-3);">
-      {post.data.description}
-    </p>
-    {
-      showTags && post.data.tags && post.data.tags.length > 0 && (
-        <div class="row-wrap gap-2" style="margin-top:var(--space-4);">
-          {post.data.tags.map((tag) => (
-            <span class="tag">{tag}</span>
-          ))}
-        </div>
-      )
+    <span class="text">
+      <span class="title">{post.data.title}</span>
+      <span class="desc">{post.data.description}</span>
+      {
+        tags.length > 0 && (
+          <span class="tags">
+            {tags.map((tag) => (
+              <span>{tag}</span>
+            ))}
+          </span>
+        )
+      }
+    </span>
+    <span class="go" aria-hidden="true">Read →</span>
+  </a>
+</li>
+
+<style>
+  li {
+    border-bottom: var(--seam) solid var(--edge);
+  }
+  li:first-child {
+    border-top: var(--seam) solid var(--edge);
+  }
+  .post {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: start;
+    padding: 26px 16px;
+    margin-inline: -16px;
+    text-decoration: none;
+    transition:
+      background var(--dur-fast),
+      color var(--dur-fast);
+  }
+  .post:hover,
+  .post:focus-visible {
+    background: var(--butter);
+    color: var(--ink);
+  }
+  .post:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 4px var(--ink);
+  }
+  .label {
+    padding-top: 6px;
+  }
+  .title {
+    display: block;
+    font: 800 clamp(28px, 3.2vw, 44px) / 0.95 var(--font-display);
+    letter-spacing: 0.008em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .desc {
+    display: block;
+    max-width: 62ch;
+    margin-top: 10px;
+    font-size: 17px;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .tags span {
+    padding: 4px 9px;
+    border: 2px solid currentColor;
+    font: 500 12px/1.3 var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .go {
+    padding-top: 6px;
+    font: 500 13px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 720px) {
+    .post {
+      grid-template-columns: 1fr;
+      gap: 10px;
     }
-  </Card>
-</a>
+    .label,
+    .go {
+      padding-top: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .post {
+      transition: none;
+    }
+  }
+</style>

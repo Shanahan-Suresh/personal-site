@@ -59,13 +59,13 @@ export const stack: StackItem[] = [
   {
     name: "Tailwind CSS 4",
     detail:
-      "Config-less. The whole theme is four CSS partials of custom properties and component classes.",
+      "Config-less. Four CSS partials hold the tokens and shared pieces, and each section styles its own layout.",
     path: "src/styles",
   },
   {
     name: "Self-hosted fonts",
     detail:
-      "Bricolage Grotesque as one condensed static cut, plus Archivo Variable and DM Mono via @fontsource. The display face is preloaded and no third-party font host is involved.",
+      "Bricolage Grotesque cut to one weight and width, plus Archivo Variable and DM Mono via @fontsource. The display face is preloaded and no third-party font host is involved.",
     path: "src/layouts/BaseLayout.astro",
   },
   {

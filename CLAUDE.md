@@ -67,7 +67,7 @@ The split is deliberate:
   - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
   - `data/navigation.ts` — `navLinks` (nav) and `socialLinks` (re-exported from site-config; used by `Contact.astro`).
   - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
-  - `lib/types.ts` — shared `Accent`, `Project` types. Import these instead of redeclaring unions.
+  - `lib/types.ts` — shared `Project` and media types. Import these instead of redeclaring unions.
 - **Prose copy still lives in its component.** Hero paragraphs, About, Principles, the `Now` narrative,
   the `Beyond` narrative, and `Contact` copy are hardcoded in `Hero.astro`, `About.astro`,
   `Principles.astro`, `Now.astro`, `Beyond.astro`, `Contact.astro`. Per-page meta descriptions live in
