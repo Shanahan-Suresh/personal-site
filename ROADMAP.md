@@ -72,7 +72,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 8 are done, except the owner's review of a preview build. Nothing is pushed or deployed.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 8 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
 
 ### 1. Foundation: tokens, type and base styles
 
