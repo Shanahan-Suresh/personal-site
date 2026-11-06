@@ -72,7 +72,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 7 are done. Phase 8 is next.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 8 are done, except the owner's review of a preview build. Nothing is pushed or deployed.
 
 ### 1. Foundation: tokens, type and base styles
 
