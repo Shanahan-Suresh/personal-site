@@ -1,6 +1,6 @@
 # Design direction
 
-The owner's taste for this site, what polished neobrutalism means, why the live design reads as
+The owner's taste for this site, what polished neobrutalism means, what makes a design read as
 generic, and how the mockups are built and checked. Read this before any redesign or restyle.
 
 ## The bar
@@ -64,14 +64,16 @@ these sites: Gumroad, Tony's Chocolonely, Panda CSS, Dodonut, lydiaamaruch.com.
 - Hover lifts into the shadow. Press sinks and drops it. Transitions near 0.1-0.15s.
 - The loud style belongs on hero and editorial blocks. Dense content stays quiet.
 
-## Why the live design reads as AI-made
+## What reads as AI-made
 
-- Six accent colours (blue, coral, acid, green, violet, pink) with no colour story.
-- The same 3px border and 6px shadow on every block, so nothing leads the eye.
+These marks of the default neobrutalism kit stay off the site:
+
+- Many accent colours (blue, coral, acid, green, violet, pink) with no colour story.
+- The same border and shadow on every block, so nothing leads the eye.
 - Template cliches: a tool marquee with ✦ separators, rotated stickers, bento tiles, ghost numbers,
   magnetic and tilt hover.
 - Anton, Archivo and DM Mono: the default "loud" pairing.
-- A stock photograph (a copper coil) leads the hero instead of the owner's own work.
+- A stock photograph leading the hero instead of the owner's face or work.
 
 ## Mockup workspace
 
@@ -96,13 +98,22 @@ Capture and build traps:
   shows UTF-8 punctuation as mojibake (`Â·`). Artifact publishing adds the charset.
 - Headline lines built from inline spans run together when a reduced-motion rule removes their
   animation; give each line `display: block`.
-- "full-stack" breaks at its hyphen in large display type; wrap it in a `white-space: nowrap` span
-  or use a non-breaking hyphen (`&#8209;`).
+- "full-stack" breaks at its hyphen in large display type; wrap it in a `white-space: nowrap` span.
+  A non-breaking hyphen (`&#8209;`) does not work on the site, because the display face has no
+  glyph for it.
 - Split sentences with a lookbehind on sentence punctuation followed by a capital
   (`/(?<=[.!?])\s+(?=[A-Z])/`). A plain `split(". ")` breaks names such as "Respond.io".
 
 ## Current state
 
-The Poster direction is chosen. Its spec is `design-previews/neo-2026/10-poster-v3.html`, and
-`ROADMAP.md` holds the port: settled decisions, phases and status. The other mockups stay as
-reference for later work.
+The site is built in the Poster direction. Its spec is `design-previews/neo-2026/10-poster-v3.html`,
+with the owner's face at the top of the hero in place of the HR platform. `ROADMAP.md` holds the
+settled decisions, the phases and what is still owed. The other mockups stay as reference for later
+work.
+
+Traps met while porting the spec into Astro and Tailwind:
+
+- Tailwind's preflight sets `margin: 0` on `dialog`, so a modal sits in the top-left corner until
+  it gets `margin: auto` back.
+- The display face needs its optical-size axis. An instance without it sets large type about 22%
+  wider than Google Fonts does, and the hero headline clips (`src/assets/fonts/README.md`).
