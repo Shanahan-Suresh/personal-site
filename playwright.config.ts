@@ -23,8 +23,17 @@ export default defineConfig({
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-    { name: "webkit", use: { ...devices["Desktop Safari"] } },
+    // guard.spec.ts checks a Node script, so one browser is enough.
+    {
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
+      testIgnore: /guard\.spec\.ts/,
+    },
+    {
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
+      testIgnore: /guard\.spec\.ts/,
+    },
   ],
   webServer: {
     // CI builds in its own step first (.github/workflows/ci.yml), so it only previews.
