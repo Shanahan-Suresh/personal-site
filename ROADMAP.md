@@ -72,10 +72,11 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: **not started** for every
-phase.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 and 2 are done.
+Phase 3 is next.
 
 ### 1. Foundation: tokens, type and base styles
+
 - Replace `src/styles/tokens.css` with the poster palette (decision 1) and the `.dark` block
   (decision 2). Keep token names short and by role: `--paper`, `--card`, `--text`, `--edge`,
   `--ink`, and one token per slab colour.
@@ -88,6 +89,7 @@ phase.
   broken until phase 3, which is expected.
 
 ### 2. Shell: nav, footer and skip link
+
 - `Nav.astro`: night bar, condensed name on the left, links with the butter underline on hover,
   the round theme button, the scroll-spy active state, and the mobile sheet (decision 9).
 - `Footer.astro`: the night footer with the colophon, source and build-commit links that the
@@ -95,6 +97,7 @@ phase.
 - Keep the skip link as the first tab stop.
 
 ### 3. Homepage, top half: hero, numbers and work
+
 - Data changes for decision 6.
 - `Hero.astro` (decision 4) with the line-reveal headline, `AI tooling.` on the butter marker, a
   non-breaking `full-stack`, and the headline sized to its column (`container-type: inline-size`
@@ -104,6 +107,7 @@ phase.
   `MediaFrame.astro` keeps responsive WebP for the inline and dialog images.
 
 ### 4. Homepage, bottom half: about, rules, lately, off hours and contact
+
 - `About.astro` as "The short version": the headline in the left column, the title and three
   paragraphs on the right, no portrait (it moved to the hero).
 - `Principles.astro` as the three ruled "I build by" columns on paper.
@@ -113,15 +117,16 @@ phase.
   butter rule, and the LinkedIn and GitHub links.
 
 ### 5. Interactions and clean-up
+
 - Rewrite `src/scripts/home-interactions.ts` around decision 11: reveal, scroll spy, scrolled nav,
   mobile nav, preview and dialogs. Delete the other modules.
-- Delete the retired components and their CSS: `Marquee`, `BentoTile`, `StatusChip`, `Monogram`
-  (unless the favicon in phase 7 reuses it), the sticker and tilt rules, and `marqueeTools` in
-  `src/data/skills.ts`.
+- Delete the retired components and their CSS: `Marquee`, `BentoTile`, `StatusChip`, the sticker
+  and tilt rules, and `marqueeTools` in `src/data/skills.ts`.
 - Grep `src/`, `tests/`, `README.md` and `CLAUDE.md` for every removed class, component and
   token name, and remove each reference.
 
 ### 6. The other pages: colophon, writing and posts
+
 - `colophon.astro`: a cobalt title slab, then the stack, stats and links as ruled rows instead
   of bento tiles and cards. The live test count stays.
 - `writing/index.astro`, `PostCard.astro` and `PostLayout.astro`: a title slab and ruled post rows.
@@ -131,6 +136,7 @@ phase.
   them if no page still uses them.
 
 ### 7. Assets, metadata and docs
+
 - A new `public/og-image.jpg` and `og-image.svg` in the poster style: the tomato slab with the
   headline and the name.
 - A new `favicon.svg`: a condensed "S" in butter on night.
@@ -141,6 +147,7 @@ phase.
 - Rewrite the "Current state" section of `docs/design-direction.md`.
 
 ### 8. Tests, release check and launch
+
 - Update `tests/home.spec.ts` and `tests/media.spec.ts` to the new structure. Keep what they
   guard: hero headline, nav and theme toggle, mailto link, theme persistence, mobile nav, reduced
   motion, scrolled nav, scroll spy, skip link, footer links, writing noindex, colophon count, no
