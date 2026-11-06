@@ -45,7 +45,7 @@ src/
 ├── assets/       # project captures, portrait, licensed photography and media provenance
 ├── components/   # UI + prose copy (see split below)
 ├── content/posts/# blog posts as .md/.mdx (collection defined in content.config.ts)
-├── data/         # structured, repeated content (projects, skills, interests, navigation)
+├── data/         # structured, repeated content (projects, learning, interests, navigation)
 ├── layouts/      # BaseLayout.astro (wraps pages), PostLayout.astro (wraps posts)
 ├── lib/          # posts.ts (post helpers), site-config.ts (identity/meta), types.ts (shared types)
 ├── pages/        # routes: index.astro (homepage), writing/, rss.xml.ts
@@ -64,9 +64,9 @@ The split is deliberate:
   change the data, not the components that render them:
   - `data/projects.ts` — `categories` (personal / corporate / academic, each project's group label) and
     `projects`, the ordered list that `Work.astro`, `Hero.astro` and `Numbers.astro` render.
-  - `data/skills.ts` — `learning`, the boxed list in `Now.astro`.
+  - `data/learning.ts` — `learning`, the boxed list in `Now.astro`.
   - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
-  - `data/navigation.ts` — `navLinks` (nav) and `socialLinks` (re-exported from site-config; used by `Contact.astro`).
+  - `data/navigation.ts` — `navLinks`, the nav links. `Contact.astro` reads the social links from `site.social`.
   - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
   - `lib/types.ts` — shared `Project` and media types. Import these instead of redeclaring unions.
 - **Prose copy still lives in its component.** Hero paragraphs, About, Principles, the `Now` narrative,
@@ -95,6 +95,9 @@ tools and capture traps.
   never inverts. Only `--paper`, `--card`, `--text`, `--muted` and `--edge` invert.
 - **Two stroke tokens:** `--ink` stays near-black in both themes, for seams, borders and shadows on
   slabs. `--edge` inverts with the page, for borders and shadows on paper and card surfaces.
+- **Shadows:** `tokens.css` names the offsets (`--hard-3` to `--hard-10`); each use adds its colour,
+  as in `box-shadow: var(--hard-4) var(--ink)`. `.row-link` in `components.css` is the shared butter
+  hover and focus for rows that are one link.
 - **Butter as text** reads only on night or ink fills (the contact headline, the active mobile
   link). On light surfaces butter is a fill under ink text.
 - **Focus:** one `:focus-visible` ring in `var(--focus)`. Each slab class sets `--focus` to a colour
@@ -127,7 +130,7 @@ hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) 
 
 ## Homepage media
 
-`Project.media` holds the image, alt text, caption, fit and optional aspect ratio.
+`Project.media` holds the image, alt text, caption and optional aspect ratio.
 `MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
 with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
 portrait (the cutout on a butter ground) loads first with `priority`. Each project row carries a

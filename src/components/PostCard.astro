@@ -11,7 +11,7 @@ const tags = showTags ? (post.data.tags ?? []) : [];
 ---
 
 <li>
-  <a class="post" href={`/writing/${post.id}`}>
+  <a class="post row-link" href={`/writing/${post.id}`}>
     <time class="label" datetime={post.data.pubDate.toISOString()}
       >{formatPostDate(post.data.pubDate)}</time
     >
@@ -46,19 +46,6 @@ const tags = showTags ? (post.data.tags ?? []) : [];
     align-items: start;
     padding: 26px 16px;
     margin-inline: -16px;
-    text-decoration: none;
-    transition:
-      background var(--dur-fast),
-      color var(--dur-fast);
-  }
-  .post:hover,
-  .post:focus-visible {
-    background: var(--butter);
-    color: var(--ink);
-  }
-  .post:focus-visible {
-    outline: 0;
-    box-shadow: inset 0 0 0 4px var(--ink);
   }
   .label {
     padding-top: 6px;
@@ -103,11 +90,6 @@ const tags = showTags ? (post.data.tags ?? []) : [];
     .label,
     .go {
       padding-top: 0;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .post {
-      transition: none;
     }
   }
 </style>

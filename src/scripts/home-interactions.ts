@@ -1,8 +1,8 @@
 /* Page behaviour for the poster design: headline reveal, scroll spy, scrolled
    nav, mobile menu, the pointer preview on project rows and the story
    dialogs. Every part works from server-rendered markup; script only adds
-   motion and the modal. `init` runs on each page load, `cleanup` before a
-   client-side swap. */
+   motion and the modal. `init` runs once per page and is safe to call again:
+   it first undoes every listener a previous run added. */
 
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -18,11 +18,13 @@ function listen<K extends keyof HTMLElementEventMap>(
   teardowns.push(() => el.removeEventListener(type, fn as EventListener));
 }
 
-export function cleanup(): void {
+function cleanup(): void {
   teardowns.forEach((fn) => {
     try {
       fn();
-    } catch (e) {}
+    } catch {
+      // A teardown for a node that is gone has nothing left to undo.
+    }
   });
   teardowns.length = 0;
 }
@@ -141,6 +143,13 @@ export function initMobileNav(): void {
 
 /* Pointer preview: a screenshot follows the mouse over the project rows.
    CSS hides it on touch screens and below 960px. */
+/* Preview placement, in CSS pixels. The panel is 400px wide (Work.astro). */
+const PEEK_GAP = 36; // from the pointer to the panel's left edge
+const PEEK_ROOM = 420; // panel width plus margin kept clear at the right edge
+const PEEK_MARGIN = 12; // kept clear above and below the panel
+const PEEK_FALLBACK_H = 260; // panel height before its image has loaded
+const PEEK_FOCUS_INSET = 460; // keyboard focus: the panel sits this far in from the row's right edge
+
 export function initPreview(): void {
   const peek = document.getElementById("peek");
   const img = peek?.querySelector("img");
@@ -156,10 +165,13 @@ export function initPreview(): void {
   const ease = reduce ? 1 : 0.16;
 
   const target = (): [number, number] => {
-    const h = peek.offsetHeight || 260;
+    const h = peek.offsetHeight || PEEK_FALLBACK_H;
     return [
-      Math.min(tx + 36, window.innerWidth - 420),
-      Math.max(12, Math.min(ty - h / 2, window.innerHeight - h - 12)),
+      Math.min(tx + PEEK_GAP, window.innerWidth - PEEK_ROOM),
+      Math.max(
+        PEEK_MARGIN,
+        Math.min(ty - h / 2, window.innerHeight - h - PEEK_MARGIN),
+      ),
     ];
   };
   const tick = () => {
@@ -199,7 +211,7 @@ export function initPreview(): void {
     listen(row, "focus", () => {
       if (!row.matches(":focus-visible")) return;
       const r = row.getBoundingClientRect();
-      tx = r.right - 460;
+      tx = r.right - PEEK_FOCUS_INSET;
       ty = r.top + r.height / 2;
       show(row);
     });

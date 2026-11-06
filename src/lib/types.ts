@@ -9,7 +9,6 @@ export interface ProjectMedia {
   image: ImageMetadata;
   alt: string;
   caption?: string;
-  fit?: "cover" | "contain";
   /** Preserve the legibility of taller interface captures. */
   aspectRatio?: string;
 }
@@ -31,7 +30,6 @@ export interface Project {
   description: string | string[];
   tags?: string[];
   link?: ProjectLink;
-  meta?: string;
   media?: ProjectMedia;
 }
 

@@ -23,7 +23,7 @@ const peek = p.media
 
 <li>
   <a
-    class="pr"
+    class="pr row-link"
     id={`row-${p.id}`}
     href={`#story-${p.id}`}
     data-story={p.id}
@@ -32,7 +32,7 @@ const peek = p.media
   >
     <span class="ix">{num}</span>
     <span>
-      <span class="grp">{p.group}</span>
+      <span class="grp label">{p.group}</span>
       <span class="t">{p.title}</span>
     </span>
     <span class="fa">
@@ -69,19 +69,6 @@ const peek = p.media
     gap: 28px;
     align-items: center;
     padding: 28px 20px;
-    text-decoration: none;
-    transition:
-      background var(--dur-fast),
-      color var(--dur-fast);
-  }
-  .pr:hover,
-  .pr:focus-visible {
-    background: var(--butter);
-    color: var(--ink);
-  }
-  .pr:focus-visible {
-    outline: 0;
-    box-shadow: inset 0 0 0 4px var(--ink);
   }
   .ix {
     align-self: start;
@@ -92,9 +79,6 @@ const peek = p.media
   .grp {
     display: block;
     margin-bottom: 10px;
-    font: 500 13px/1.3 var(--font-mono);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
   .t {
     display: block;
@@ -160,11 +144,10 @@ const peek = p.media
       object-position: top;
       border: var(--seam) solid var(--ink);
       background: var(--white);
-      box-shadow: 5px 5px 0 var(--ink);
+      box-shadow: var(--hard-5) var(--ink);
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .pr,
     .go {
       transition: none;
     }

@@ -86,7 +86,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
     border: var(--seam) solid var(--edge);
     background: var(--card);
     color: var(--text);
-    box-shadow: 10px 10px 0 var(--edge);
+    box-shadow: var(--hard-10) var(--edge);
     --focus: var(--edge);
   }
   .story::backdrop {
@@ -137,7 +137,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
   }
   .st-x:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 3px 3px 0 var(--edge);
+    box-shadow: var(--hard-3) var(--edge);
   }
   .st-body {
     display: grid;
@@ -148,7 +148,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
   .st-body :global(.frame) {
     align-self: start;
     border-color: var(--edge);
-    box-shadow: 6px 6px 0 var(--edge);
+    box-shadow: var(--hard-6) var(--edge);
   }
   .st-body p {
     margin: 20px 0;
@@ -189,12 +189,12 @@ const pad = (n: number) => String(n).padStart(2, "0");
   }
   .st-actions .btn {
     border-color: var(--edge);
-    box-shadow: 4px 4px 0 var(--edge);
+    box-shadow: var(--hard-4) var(--edge);
     font-size: 15px;
     white-space: normal;
   }
   .st-actions .btn:hover {
-    box-shadow: 6px 6px 0 var(--edge);
+    box-shadow: var(--hard-6) var(--edge);
   }
   .st-actions .btn:active {
     box-shadow: none;
