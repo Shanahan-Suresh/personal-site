@@ -85,10 +85,8 @@ const fontFaces = `
     </div>
 
     <script>
-      import { init, cleanup } from "../scripts/home-interactions";
+      import { init } from "../scripts/home-interactions";
       init();
-      document.addEventListener("astro:page-load", init);
-      document.addEventListener("astro:before-swap", cleanup);
     </script>
   </body>
 </html>

@@ -87,6 +87,9 @@ the owner's verdicts in its database.
   theme with Playwright and prints horizontal overflow per shot. A `file:///` URL works, so no
   server is needed.
 - `tools/sheet.py` folds a tall screenshot into a side-by-side sheet for one-look review.
+- `tools/baseline.py capture <url> <dir>` shoots every page and interaction state; `diff <a> <b>`
+  counts changed pixels per shot. A CSS refactor is safe when the diff is 0. Capture both sets from
+  the same commit, because the footer prints its hash.
 
 Capture and build traps:
 

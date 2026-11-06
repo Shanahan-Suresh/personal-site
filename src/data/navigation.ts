@@ -1,5 +1,3 @@
-import { site } from "@/lib/site-config";
-
 export interface NavLink {
   label: string;
   href: string;
@@ -10,5 +8,3 @@ export const navLinks: NavLink[] = [
   { label: "About", href: "/#about" },
   { label: "Contact", href: "/#contact" },
 ];
-
-export const socialLinks = site.social;

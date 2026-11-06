@@ -1,5 +1,7 @@
 ---
-import { socialLinks } from "@/data/navigation";
+import { site } from "@/lib/site-config";
+
+const social = site.social;
 ---
 
 <section class="s-night" id="contact">
@@ -15,22 +17,16 @@ import { socialLinks } from "@/data/navigation";
         fun. If anything here caught your eye, my inbox is open.
       </p>
       <div>
-        <a class="mail" href={`mailto:${socialLinks.email}`}
-          >{socialLinks.email}</a
-        >
+        <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
         <ul class="links" role="list">
           <li>
-            <a
-              href={socialLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer">LinkedIn ↗</a
+            <a href={social.linkedin} target="_blank" rel="noopener noreferrer"
+              >LinkedIn ↗</a
             >
           </li>
           <li>
-            <a
-              href={socialLinks.github}
-              target="_blank"
-              rel="noopener noreferrer">GitHub ↗</a
+            <a href={social.github} target="_blank" rel="noopener noreferrer"
+              >GitHub ↗</a
             >
           </li>
         </ul>

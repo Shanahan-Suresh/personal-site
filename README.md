@@ -91,7 +91,7 @@ personal-site/
 │   ├── components/      # Astro UI components (Hero, Work, Nav, project rows and stories)
 │   ├── assets/          # project captures, portrait, licensed photography and provenance
 │   ├── content/         # MDX content (blog posts)
-│   ├── data/            # structured content (projects, skills, interests, navigation)
+│   ├── data/            # structured content (projects, learning, interests, navigation)
 │   ├── layouts/         # BaseLayout + PostLayout
 │   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts
 │   ├── pages/           # routes — index.astro, writing/, rss.xml.ts

@@ -17,8 +17,15 @@
   --wrap: 1360px;
   --gut: clamp(20px, 4vw, 56px);
   --nav-h: 60px;
-  --shadow-sm: 4px 4px 0 var(--edge); /* controls */
-  --shadow: 8px 8px 0 var(--edge); /* frames and lead blocks */
+  /* hard shadow offsets; each use adds its colour: var(--ink) on slabs, var(--edge) on paper */
+  --hard-3: 3px 3px 0; /* small controls */
+  --hard-4: 4px 4px 0; /* controls at rest */
+  --hard-5: 5px 5px 0; /* small frames and thumbnails */
+  --hard-6: 6px 6px 0; /* controls on hover */
+  --hard-8: 8px 8px 0; /* frames and lead blocks */
+  --hard-10: 10px 10px 0; /* the story dialog */
+  --shadow-sm: var(--hard-4) var(--edge); /* controls on paper */
+  --shadow: var(--hard-8) var(--edge); /* frames on paper */
 
   /* motion */
   --ease-out: cubic-bezier(0.2, 0.85, 0.2, 1);
