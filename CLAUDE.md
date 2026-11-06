@@ -52,6 +52,7 @@ src/
 ├── scripts/      # home-interactions.ts — bundled client JS extracted from BaseLayout
 └── styles/       # global.css aggregator + tokens/components/motion/prose partials
 public/           # favicon, og-image, robots.txt
+scripts/          # build steps (placeholder guard, CSP hashes) and brand-images.py
 design-previews/  # design mockups, NOT part of the site; only neo-2026/ (the redesign spec) is tracked
 ```
 
@@ -83,8 +84,8 @@ CSS custom-property token.
 
 The poster redesign is in progress: `ROADMAP.md` holds its settled decisions, phases and status.
 Before any redesign or restyle, read `docs/design-direction.md`: the owner's taste and verdicts on
-ten tried directions, what polished neobrutalism means, why the live design reads as generic, and
-the mockup tools and capture traps.
+ten tried directions, what polished neobrutalism means, what reads as generic, and the mockup
+tools and capture traps.
 
 - **The look:** full-width colour slabs (tomato, butter, cobalt, green, night, paper) joined by
   3px ink seams, condensed uppercase display type, and hard offset shadows on frames, cards and
@@ -102,6 +103,9 @@ the mockup tools and capture traps.
   fading up (`.rise`), the pointer preview on project rows, and the story dialog opening. All wait
   for `prefers-reduced-motion: no-preference`. The boot script in `BaseLayout.astro` sets `.js`
   before paint, so a page without script shows everything in place.
+- **Favicon and share image:** `python scripts/brand-images.py` writes `public/favicon.svg`,
+  `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. Edit the script,
+  then rerun it, rather than editing the files by hand.
 
 ## Writing conventions (the copy has a deliberate voice — keep it)
 

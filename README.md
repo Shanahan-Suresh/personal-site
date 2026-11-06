@@ -5,7 +5,7 @@ Personal website and portfolio for **Shanahan Suresh** — product-minded softwa
 Live: [shanahansuresh.com](https://shanahansuresh.com) · [Colophon](https://shanahansuresh.com/colophon) (how it is built, with numbers)
 
 [![CI](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml/badge.svg)](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/code-MIT-2b4cf0.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/code-MIT-3d52ea.svg)](LICENSE)
 
 ## Why this repo is public
 
@@ -18,7 +18,7 @@ not licensed for reuse. Third-party photographs retain the Unsplash License; mus
 their public-domain or CC0 terms. Sources and licences are recorded in
 [`src/assets/README.md`](src/assets/README.md) and `LICENSE`.
 
-> **Design:** Refined neobrutalism: bold borders, hard offset shadows, oversized type, light/dark themes.
+> **Design:** Refined neobrutalism as a poster: full-width colour slabs joined by ink seams, condensed display type, hard offset shadows on things you can press or open, light and dark themes.
 
 ## Tech stack
 
@@ -69,13 +69,15 @@ Useful filters: `npm test -- --project=chromium` (one browser),
 Current coverage (`tests/home.spec.ts`): home-page smoke (hero headline, major
 sections, nav + theme toggle presence, contact mailto), theme-toggle dark-class
 persistence to localStorage, the 600px mobile layout (nav hidden, hero
-single-column), the project-card paragraph split, reduced-motion static render,
-and the extracted BaseLayout interactions (scrolled-nav, scroll-spy, hero entrance).
+single-column), the project stories (paragraph split, the modal with Next and
+Escape returning focus to its row, a shared `#story` link, the story view without
+JavaScript), reduced-motion static render, the interactions (scrolled nav, scroll
+spy, hero entrance), skip link, footer, colophon, writing noindex, placeholders and CSP hashes.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
 overflow at 390, 600 and 1440px. Fresh desktop/mobile contexts enforce 350 KiB initial transfer
 and 1.5 MiB after scrolling through the homepage.
 
-The homepage has 13 images. Chromium captures full-page screenshots at each review width in both
+The homepage uses 12 images: the portrait, seven project captures and four photographs. Chromium captures full-page screenshots at each review width in both
 themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
 Cold transfers measured 4 Oct 2026 across all three browsers are 107–189 KiB initially and 288–572 KiB
 after scrolling. The colophon reads the test count from Playwright at build time.
@@ -86,7 +88,7 @@ after scrolling. The colophon reads the test count from Playwright at build time
 personal-site/
 ├── public/              # static assets (favicon, OG image, robots.txt)
 ├── src/
-│   ├── components/      # Astro UI components (Hero, Work, Nav, cards, etc.)
+│   ├── components/      # Astro UI components (Hero, Work, Nav, project rows and stories)
 │   ├── assets/          # project captures, portrait, licensed photography and provenance
 │   ├── content/         # MDX content (blog posts)
 │   ├── data/            # structured content (projects, skills, interests, navigation)
@@ -95,6 +97,7 @@ personal-site/
 │   ├── pages/           # routes — index.astro, writing/, rss.xml.ts
 │   ├── scripts/         # home-interactions.ts (bundled client JS for BaseLayout)
 │   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
+├── scripts/             # build guards, CSP hashing, brand-images.py (favicon and OG image)
 ├── tests/               # Playwright e2e checks and visual review captures
 ├── astro.config.mjs     # Astro + integrations + Tailwind (Vite) config
 ├── playwright.config.ts # Playwright runner + dev-server config
@@ -109,18 +112,17 @@ Shared design tokens and reusable styles live in `src/styles/` (the `global.css`
 
 Project captures, the retouched real headshot and licensed real photography live in `src/assets/`.
 [`src/assets/README.md`](src/assets/README.md) records sources, sample-data boundaries and generation
-prompts. Astro produces responsive WebP with explicit dimensions. The hero photograph loads eagerly;
-other media loads lazily. Story images load only when their dialog opens. Photographer
+prompts. Astro produces responsive WebP with explicit dimensions. The hero portrait and RSVP capture load
+eagerly; other media loads lazily. Story images load only when their dialog opens. Photographer
 credits remain accessible HTML links. Project captions describe the product and workflow; capture
-fixtures and presentation choices are documented with the assets. The portrait keeps its cream
-outline and soft neutral shadow against a warm-grey background. Both mascot poses remain unreferenced
-assets.
+fixtures and presentation choices are documented with the assets. The portrait sits on a flat butter
+ground in an ink frame. Both mascot poses remain unreferenced assets.
 
 Capture harnesses live under gitignored `design-previews/media` and leave source projects unchanged.
 `npm run build` rejects `_placeholder-` files or references through `scripts/guard-placeholders.mjs`.
 Normal builds require no override.
 
-Local screenshots and the 72-case browser-suite report are saved in
+Local screenshots and a browser-suite report are saved in
 `design-previews/media/profile-copy-v6`, alongside transfer measurements. Photography preparation
 scripts and crop reviews live in `design-previews/media/free-use-v5`. These ignored files support
 local review; asset sources, licences and generation notes are versioned under `src/assets/`.

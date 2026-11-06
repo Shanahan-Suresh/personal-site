@@ -72,7 +72,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 6 are done. Phase 7 is next.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 7 are done. Phase 8 is next.
 
 ### 1. Foundation: tokens, type and base styles
 
@@ -154,6 +154,9 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 - Add tests for the new behaviour: each row opens its story and Escape returns focus to the row,
   the story is readable without script, and the preview never shows on touch.
 - Run the slow gate once: `npm run build` then `npm test` (three browsers).
+- Re-measure the colophon numbers from that run: `measuredOn` and the KiB values in
+  `src/data/colophon.ts`, and the transfer line in `README.md`, from the media spec's transfer
+  attachments.
 - Shoot every page at 1440 and 390 in both themes with `design-previews/neo-2026/tools/shot.py`
   against `npm run preview`, and compare the homepage with the spec.
 - The owner reviews a preview build. Push and deploy only on the owner's word.
