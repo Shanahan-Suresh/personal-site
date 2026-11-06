@@ -26,7 +26,7 @@ their public-domain or CC0 terms. Sources and licences are recorded in
 - **[Tailwind CSS 4](https://tailwindcss.com/)** — CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/`, split across `tokens.css`/`components.css`/`motion.css`/`prose.css` and aggregated by `global.css`)
 - **MDX** (`@astrojs/mdx`) — blog/writing content
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)
-- Self-hosted fonts via `@fontsource`
+- Self-hosted fonts: a condensed Bricolage Grotesque cut in `src/assets/fonts/`, plus Archivo and DM Mono via `@fontsource`
 - **Prettier** (`prettier-plugin-astro`) and `astro check` for formatting and type-checking
 - **[Playwright](https://playwright.dev/)** — end-to-end tests and visual review captures (Chromium, Firefox, WebKit)
 

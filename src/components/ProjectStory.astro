@@ -1,0 +1,229 @@
+---
+import MediaFrame from "./MediaFrame.astro";
+import type { ListedProject } from "@/data/projects";
+
+interface Props {
+  project: ListedProject;
+  index: number;
+  total: number;
+  next: ListedProject;
+}
+
+const { project: p, index, total, next } = Astro.props;
+const paragraphs = [p.description].flat();
+const nextTitle =
+  next.title.length > 26 ? next.title.slice(0, 24).trim() + "…" : next.title;
+const pad = (n: number) => String(n).padStart(2, "0");
+---
+
+<dialog
+  class="story"
+  id={`story-${p.id}`}
+  aria-labelledby={`story-${p.id}-title`}
+>
+  <div class="st-head">
+    <div>
+      <span class="label">{p.group} · {pad(index + 1)} of {pad(total)}</span>
+      <h2 id={`story-${p.id}-title`}>{p.title}</h2>
+    </div>
+    <a class="st-x" href={`#row-${p.id}`} data-close aria-label="Close story"
+      >×</a
+    >
+  </div>
+  <div class="st-body">
+    {
+      p.media && (
+        <MediaFrame
+          image={p.media.image}
+          alt={p.media.alt}
+          caption={p.media.caption}
+          aspectRatio={p.media.aspectRatio}
+          widths={[480, 720, 1040]}
+          sizes="(max-width: 960px) 90vw, 560px"
+        />
+      )
+    }
+    <div>
+      <p class="st-fact">{p.fact.value}<small>{p.fact.label}</small></p>
+      {paragraphs.map((d) => <p>{d}</p>)}
+      {
+        p.tags && (
+          <ul class="tags" role="list">
+            {p.tags.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        )
+      }
+      <div class="st-actions">
+        {
+          p.link && (
+            <a
+              class="btn"
+              href={p.link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {p.link.label} ↗
+            </a>
+          )
+        }
+        <a class="btn btn-alt" href={`#story-${next.id}`} data-next={next.id}
+          >Next: {nextTitle} <span aria-hidden="true">→</span></a
+        >
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .story {
+    margin: auto; /* Tailwind's reset zeroes the margin that centres a modal */
+    width: min(1080px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: 0;
+    overflow: auto;
+    border: var(--seam) solid var(--edge);
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 10px 10px 0 var(--edge);
+    --focus: var(--edge);
+  }
+  .story::backdrop {
+    background: rgb(10 9 7 / 0.72);
+  }
+  /* Without script, the link target shows the story as a fixed panel. */
+  :global(html:not(.js)) .story:target {
+    display: block;
+    position: fixed;
+    inset: 16px;
+    z-index: 60;
+    margin: auto;
+    height: fit-content;
+  }
+  :global(html:has(dialog[open])) {
+    overflow: hidden;
+  }
+  .st-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 16px;
+    padding: 22px 28px;
+    border-bottom: var(--seam) solid var(--edge);
+    background: var(--card);
+  }
+  .st-head h2 {
+    margin-top: 8px;
+    font-size: clamp(34px, 5vw, 64px);
+  }
+  .st-x {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: var(--seam) solid var(--edge);
+    background: var(--butter);
+    color: var(--ink);
+    font: 800 24px/1 var(--font-display);
+    text-decoration: none;
+    transition:
+      transform 0.1s,
+      box-shadow 0.1s;
+  }
+  .st-x:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 3px 3px 0 var(--edge);
+  }
+  .st-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 32px;
+    padding: 28px;
+  }
+  .st-body :global(.frame) {
+    align-self: start;
+    border-color: var(--edge);
+    box-shadow: 6px 6px 0 var(--edge);
+  }
+  .st-body p {
+    margin: 20px 0;
+    font-size: 17.5px;
+  }
+  .st-body .st-fact {
+    margin: 0;
+    font: 800 clamp(48px, 6vw, 84px) / 0.9 var(--font-display);
+    letter-spacing: 0.008em;
+    text-transform: uppercase;
+  }
+  .st-fact small {
+    display: block;
+    margin-top: 8px;
+    font: 600 16px/1.3 var(--font-body);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+  }
+  .tags li {
+    padding: 5px 10px;
+    border: 2px solid var(--edge);
+    font: 500 13px/1.3 var(--font-mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .st-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .st-actions .btn {
+    border-color: var(--edge);
+    box-shadow: 4px 4px 0 var(--edge);
+    font-size: 15px;
+    white-space: normal;
+  }
+  .st-actions .btn:hover {
+    box-shadow: 6px 6px 0 var(--edge);
+  }
+  .st-actions .btn:active {
+    box-shadow: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .story[open] {
+      animation: story-pop 0.18s ease-out;
+    }
+    @keyframes story-pop {
+      from {
+        transform: translateY(14px);
+        opacity: 0;
+      }
+    }
+  }
+  @media (max-width: 960px) {
+    .st-body {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .st-head,
+    .st-body {
+      padding: 18px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .st-x {
+      transition: none;
+    }
+  }
+</style>

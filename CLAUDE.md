@@ -16,7 +16,8 @@ personal site, not a resume.
   the entire theme (design tokens + component classes) lives in `src/styles/`, split into `tokens.css`,
   `components.css`, `motion.css`, and `prose.css`, all imported by `global.css`.
 - **MDX** for posts (`@astrojs/mdx`), plus `@astrojs/sitemap` and `@astrojs/rss`.
-- Self-hosted fonts via `@fontsource` (Anton, Archivo Variable, DM Mono).
+- Self-hosted fonts: a condensed cut of Bricolage Grotesque in `src/assets/fonts/` (its README records how it
+  was made), plus Archivo Variable and DM Mono via `@fontsource`.
 
 ## Commands
 
@@ -25,11 +26,11 @@ npm install
 npm run dev          # dev server → http://localhost:4321
 npm run build        # astro check + placeholder guard + static build + CSP hashes → ./dist
 npm run guard        # placeholder guard on its own (see "Placeholder images")
-npm run preview      # preview the production build
+npm run preview      # preview the production build (detaches in an agent shell; `npx astro preview stop`)
 npm run check        # type-check only (astro check)
 npm run format       # format everything with Prettier
 npm run format:check # verify formatting (CI-style, no writes)
-npm test             # Playwright e2e/visual suite (tests/)
+npm test             # Playwright e2e/visual suite (tests/); starts and stops its own preview server
 ```
 
 **Verification = `npm run build` then `npm test`.** `npm run build` runs `astro check` first (so type
@@ -60,7 +61,8 @@ The split is deliberate:
 
 - **Structured / repeated data lives in `src/data/` and `src/lib/site-config.ts`.** Edit these to
   change the data, not the components that render them:
-  - `data/projects.ts` — the `categories` array (personal / product / academic) consumed by `Work.astro`.
+  - `data/projects.ts` — `categories` (personal / corporate / academic, each project's group label) and
+    `projects`, the ordered list that `Work.astro`, `Hero.astro` and `Numbers.astro` render.
   - `data/skills.ts` — `learning` (used by `Now.astro`) and `marqueeTools` (used by `Marquee.astro`).
   - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
   - `data/navigation.ts` — `navLinks` (nav) and `socialLinks` (re-exported from site-config; used by `Contact.astro`).

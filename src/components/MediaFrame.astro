@@ -12,6 +12,9 @@ interface Props {
   widths?: number[];
   sizes?: string;
   loading?: "eager" | "lazy";
+  /** Fetch first: only for the one image that leads the page. */
+  priority?: boolean;
+  /** Defaults to the image's own proportions. */
   aspectRatio?: string;
   class?: string;
   style?: string;
@@ -25,16 +28,17 @@ const {
   objectPosition = "center",
   credit,
   widths = [480, 720, 1040],
-  sizes = "(max-width: 900px) 90vw, 520px",
+  sizes = "(max-width: 960px) 90vw, 520px",
   loading = "lazy",
-  aspectRatio = "16 / 10",
+  priority = false,
+  aspectRatio = `${image.width} / ${image.height}`,
   class: className = "",
   style = "",
 } = Astro.props;
 ---
 
 <figure
-  class={`media-frame ${className}`}
+  class={`frame media-frame ${className}`}
   style={`--media-ratio:${aspectRatio};--media-fit:${fit};--media-position:${objectPosition};${style}`}
 >
   <div class="media-canvas">
@@ -45,7 +49,8 @@ const {
       quality={80}
       widths={widths}
       sizes={sizes}
-      loading={loading}
+      loading={priority ? "eager" : loading}
+      fetchpriority={priority ? "high" : undefined}
       decoding="async"
     />
   </div>
@@ -54,9 +59,9 @@ const {
       <figcaption>
         <slot name="caption">{caption}</slot>
         {credit && (
-          <p class="media-credit">
+          <span class="media-credit">
             <a href={credit.href}>{credit.label}</a>
-          </p>
+          </span>
         )}
       </figcaption>
     )
@@ -65,42 +70,28 @@ const {
 
 <style>
   .media-frame {
-    margin: 0;
     min-width: 0;
-    border: var(--border-thick);
-    box-shadow: var(--shadow-hard-sm);
-    background: var(--surface);
   }
   .media-canvas {
     aspect-ratio: var(--media-ratio);
     overflow: hidden;
-    background: var(--surface-2);
+    background: var(--white);
   }
   .media-canvas img {
-    display: block;
     width: 100%;
     height: 100%;
     object-fit: var(--media-fit);
     object-position: var(--media-position);
   }
-  figcaption {
-    border-top: var(--border);
-    padding: 0.7rem 0.9rem;
-    color: var(--ink-soft);
-    font-size: var(--fs-sm);
-    line-height: 1.4;
-  }
   .media-credit {
-    margin-top: 0.65rem;
-    font-size: 0.75rem;
-    line-height: 1.45;
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: none;
   }
   .media-credit a {
-    color: inherit;
     text-decoration: underline;
     text-underline-offset: 0.18em;
-  }
-  .media-credit a:hover {
-    color: var(--ink);
   }
 </style>

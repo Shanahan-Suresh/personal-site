@@ -36,11 +36,11 @@ test("major sections are present on the page", async ({ page }) => {
   const aboutSection = page.locator("#about");
   await expect(aboutSection).toBeAttached();
 
-  // Work section — at least one project card rendered
+  // Work section — all seven project rows, each with its story dialog
   const workSection = page.locator("#work");
   await expect(workSection).toBeAttached();
-  const firstProjectCard = page.locator(".project-card").first();
-  await expect(firstProjectCard).toBeAttached();
+  await expect(workSection.locator(".projects .pr")).toHaveCount(7);
+  await expect(workSection.locator("dialog.story")).toHaveCount(7);
 
   // Contact — headline text and email link
   const contactSection = page.locator("#contact");
@@ -126,47 +126,61 @@ test("at 600px viewport nav links are hidden and hero is single-column", async (
   expect(trackCount).toBe(1);
 });
 
-// ── 6. Corporate-work descriptions split into multiple paragraphs ─────────────
-test("corporate-work cards render multiple .project-desc paragraphs; personal cards render one; TODO marker absent", async ({
+// ── 6. Project stories ────────────────────────────────────────────────────────
+test("corporate stories split into several paragraphs; personal stories have one; TODO marker absent", async ({
   page,
 }) => {
   await page.goto("/");
-
-  // Assert "TODO SPLIT IN PARAGRAPHS" does not appear anywhere on the page
   await expect(page.locator("body")).not.toContainText(
     "TODO SPLIT IN PARAGRAPHS",
   );
 
-  // Locate the Corporate work section label, then find its sibling project cards.
-  // The section-label text is "Corporate work"; project cards follow in the same grid.
-  // Strategy: find all project cards within the #work section that are in the
-  // "Corporate work" category by matching the title text of known corporate projects.
-  const corporateTitles = [
-    "OHSE incident-reporting module",
-    "Automated RSVP & check-in web app",
-    "Enterprise HR platform",
-  ];
-
-  for (const title of corporateTitles) {
-    // Find the project card containing this title
-    const card = page.locator(".project-card", { hasText: title });
-    await expect(card).toBeAttached();
-    // Must have more than one .project-desc paragraph
-    const descs = card.locator(".project-desc");
-    const count = await descs.count();
+  // Story text paragraphs sit after the large fact in each dialog.
+  const paragraphs = (id: string) =>
+    page.locator(`#story-${id} .st-body p:not(.st-fact)`);
+  for (const id of ["rsvp", "ohse", "hr"]) {
     expect(
-      count,
-      `Expected multiple .project-desc in card "${title}"`,
+      await paragraphs(id).count(),
+      `Expected several paragraphs in story "${id}"`,
     ).toBeGreaterThan(1);
   }
+  await expect(paragraphs("censorit")).toHaveCount(1);
+});
 
-  // A personal-section card should still have exactly one .project-desc
-  const personalCard = page.locator(".project-card", {
-    hasText: "Automated artwork censoring app",
+test("a project row opens its story as a modal; Next moves on; Escape returns focus to the row", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.locator("#row-rsvp").click();
+  const rsvp = page.locator("#story-rsvp");
+  await expect(rsvp).toBeVisible();
+  expect(await rsvp.evaluate((d) => d.matches(":modal"))).toBe(true);
+  expect(new URL(page.url()).hash).toBe("");
+
+  await rsvp.locator("[data-next]").click();
+  await expect(rsvp).toBeHidden();
+  await expect(page.locator("#story-hr")).toBeVisible();
+
+  await page.keyboard.press("Escape");
+  await expect(page.locator("dialog.story[open]")).toHaveCount(0);
+  await expect(page.locator("#row-hr")).toBeFocused();
+});
+
+test("a shared #story link opens that story", async ({ page }) => {
+  await page.goto("/#story-heatgen");
+  await expect(page.locator("#story-heatgen")).toBeVisible();
+});
+
+test.describe("without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("a story link still shows the story", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#story-mcp")).toBeHidden();
+    await page.locator("#row-mcp").click();
+    await expect(page.locator("#story-mcp")).toBeVisible();
+    await expect(page.locator(".hero-headline")).toBeVisible();
   });
-  await expect(personalCard).toBeAttached();
-  const personalDescs = personalCard.locator(".project-desc");
-  await expect(personalDescs).toHaveCount(1);
 });
 
 // ── 7. Reduced motion ─────────────────────────────────────────────────────────
@@ -176,18 +190,16 @@ test.describe("reduced motion", () => {
   test("revealed elements are immediately visible", async ({ page }) => {
     await page.goto("/");
 
-    // The reveal script checks prefers-reduced-motion and if true, adds .is-visible
-    // to all .reveal elements immediately without waiting for IntersectionObserver.
-    const contactBlock = page.locator(".contact-block");
-    await expect(contactBlock).toHaveClass(/is-visible/);
-
-    // Hero section gets hero-loaded class immediately when reduced motion is on
-    const heroSection = page.locator(".hero-section");
-    await expect(heroSection).toHaveClass(/hero-loaded/);
-
-    // The hero headline should be visible without waiting for animation
+    // With reduced motion the reveal script marks every .reveal block as in
+    // at once, without waiting for IntersectionObserver.
     const headline = page.locator(".hero-headline");
+    await expect(headline).toHaveClass(/\bin\b/);
     await expect(headline).toBeVisible();
+    await expect(page.locator("#work h2.reveal")).toHaveClass(/\bin\b/);
+
+    // The hero frames are not faded out.
+    const face = page.locator(".shots .face");
+    expect(await face.evaluate((el) => getComputedStyle(el).opacity)).toBe("1");
   });
 });
 
@@ -219,13 +231,14 @@ test("scroll-spy: scrolling to #work section activates the Work nav link", async
 });
 
 // ── 10. Hero entrance ─────────────────────────────────────────────────────────
-test("hero entrance: .hero-section gets hero-loaded class after page load", async ({
+test("hero entrance: the headline and its frames reveal after page load", async ({
   page,
 }) => {
   await page.goto("/");
-  await expect(page.locator(".hero-section")).toHaveClass(/hero-loaded/, {
+  await expect(page.locator(".hero-headline")).toHaveClass(/\bin\b/, {
     timeout: 3000,
   });
+  await expect(page.locator(".shots")).toHaveClass(/\bin\b/);
 });
 
 // ── Skip link ────────────────────────────────────────────────────────────────
