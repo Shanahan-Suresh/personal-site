@@ -111,8 +111,20 @@ Capture and build traps:
 
 The site is built in the Poster direction. Its spec is `design-previews/neo-2026/10-poster-v3.html`,
 with the owner's face at the top of the hero in place of the HR platform. `ROADMAP.md` holds the
-settled decisions, the phases and what is still owed. The other mockups stay as reference for later
-work.
+settled decisions, the phases and what is still owed. On top of the spec, the site adds a
+polish layer (ROADMAP phase 9): every number and the hero's RSVP frame open their story, stories
+browse with Previous, Next, arrow keys, swipe and the Back button, the pointer preview sits clear
+of the row it shows, and the theme switch wipes down. The spec file does not carry these; the code
+is their reference. The other mockups stay as reference for later work.
+
+Traps met in the polish layer:
+
+- A view transition captures the whole page, so the theme wipe needs `mix-blend-mode: normal` and
+  no default cross-fade on `::view-transition-old(root)`, or the old theme ghosts through.
+- An item that spans an `auto` grid column gives that column its spare width. The phone project
+  row spans its thumbnail over the index column, so that column has a fixed width.
+- The lower slabs do not use `content-visibility: auto`. Its estimated heights can move the
+  target of an anchor jump (`/#contact`), and the gain on a page this size is small.
 
 Traps met while porting the spec into Astro and Tailwind:
 
