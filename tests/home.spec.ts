@@ -103,6 +103,26 @@ test("theme toggle adds dark class to <html> and persists to localStorage", asyn
   expect(storedAfterLight).toBe("light");
 });
 
+test("the theme button works from the keyboard and reports its state", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  const html = page.locator("html");
+  const toggle = page.locator("#theme-toggle");
+  await expect(html).not.toHaveClass(/\bdark\b/);
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+
+  await toggle.focus();
+  await page.keyboard.press("Enter");
+  await expect(html).toHaveClass(/\bdark\b/);
+  await expect(toggle).toHaveAttribute("aria-pressed", "true");
+
+  await page.keyboard.press("Space");
+  await expect(html).not.toHaveClass(/\bdark\b/);
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+});
+
 // ── 5. Mobile ~600px layout ───────────────────────────────────────────────────
 test("at 600px viewport nav links are hidden and hero is single-column", async ({
   page,
@@ -124,6 +144,35 @@ test("at 600px viewport nav links are hidden and hero is single-column", async (
   // The exact pixel value varies, but there should be only one track (no spaces between two values)
   const trackCount = heroInnerCols.trim().split(/\s+(?=\d)/).length;
   expect(trackCount).toBe(1);
+});
+
+test("mobile menu: the burger opens it; Escape, an outside tap or a link closes it", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 600, height: 900 });
+  await page.goto("/");
+  const burger = page.locator(".nav-burger");
+  const links = page.locator(".nav-links");
+  await expect(burger).toHaveAttribute("aria-label", "Menu");
+
+  await burger.click();
+  await expect(burger).toHaveAttribute("aria-expanded", "true");
+  await expect(links).toBeVisible();
+  await links.locator("a.nav-link").first().focus();
+  await page.keyboard.press("Escape");
+  await expect(burger).toHaveAttribute("aria-expanded", "false");
+  await expect(links).toBeHidden();
+  await expect(burger).toBeFocused();
+
+  await burger.click();
+  await expect(links).toBeVisible();
+  await page.mouse.click(300, 800);
+  await expect(burger).toHaveAttribute("aria-expanded", "false");
+
+  await burger.click();
+  await links.locator('a[href="/#about"]').click();
+  await expect(burger).toHaveAttribute("aria-expanded", "false");
+  await expect(links).toBeHidden();
 });
 
 // ── 6. Project stories ────────────────────────────────────────────────────────
@@ -164,6 +213,41 @@ test("a project row opens its story as a modal; Next moves on; Escape returns fo
   await page.keyboard.press("Escape");
   await expect(page.locator("dialog.story[open]")).toHaveCount(0);
   await expect(page.locator("#row-hr")).toBeFocused();
+});
+
+test("the close button and a backdrop click close a story and return focus to its row", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const row = page.locator("#row-mcp");
+  const story = page.locator("#story-mcp");
+
+  await row.click();
+  await expect(story).toBeVisible();
+  await story.locator("[data-close]").click();
+  await expect(story).toBeHidden();
+  await expect(row).toBeFocused();
+
+  await row.click();
+  await expect(story).toBeVisible();
+  // The dialog is centred and narrower than the viewport, so the corner is backdrop.
+  await page.mouse.click(5, 5);
+  await expect(story).toBeHidden();
+  await expect(row).toBeFocused();
+});
+
+test("a focused row keeps an outline for forced-colors mode", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  const row = page.locator("#row-rsvp");
+  await row.focus();
+  const outline = await row.evaluate((el) => {
+    const s = getComputedStyle(el);
+    return `${s.outlineStyle} ${s.outlineWidth}`;
+  });
+  expect(outline).toBe("solid 4px");
 });
 
 test("a shared #story link opens that story", async ({ page }) => {
@@ -239,10 +323,8 @@ test("scrolled-nav: scrolling down adds is-scrolled to .nav-header; scrolling to
   const header = page.locator(".nav-header");
   await expect(header).not.toHaveClass(/is-scrolled/);
   await page.evaluate(() => window.scrollTo(0, 500));
-  await page.waitForTimeout(200);
   await expect(header).toHaveClass(/is-scrolled/);
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(200);
   await expect(header).not.toHaveClass(/is-scrolled/);
 });
 
@@ -252,7 +334,6 @@ test("scroll-spy: scrolling to #work section activates the Work nav link", async
 }) => {
   await page.goto("/");
   await page.locator("#work").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
   const workLink = page.locator('a.nav-link[href="/#work"]');
   await expect(workLink).toHaveClass(/is-active/);
   await expect(workLink).toHaveAttribute("aria-current", "true");
@@ -366,6 +447,11 @@ test("no placeholder image is rendered", async ({ page }) => {
     "ALLOW_PLACEHOLDERS=1: local build, placeholder images permitted",
   );
   await page.goto("/");
+  // Astro keeps the source file name in front of its hash, so a placeholder
+  // would show up here. The sentinel proves the names survive.
+  await expect(
+    page.locator('img[src*="rsvp-redesign"]').first(),
+  ).toBeAttached();
   const placeholders = page.locator('img[src*="placeholder"]');
   await expect(placeholders).toHaveCount(0);
 });

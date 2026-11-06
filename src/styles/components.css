@@ -110,6 +110,24 @@ h3 {
   letter-spacing: 0.08em;
 }
 
+/* A row of small boxed tags: project and post tags, the colophon's tool names.
+   The border takes the text colour, so it follows the surface and the row hover. */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chips > * {
+  padding: 5px 10px;
+  border: 2px solid currentColor;
+  font: 500 13px/1.3 var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 /* A ruled row that is one link (project rows, post rows): it fills butter
    on hover and on keyboard focus, with an inset ink ring for focus. */
 .row-link {
@@ -123,8 +141,11 @@ h3 {
   background: var(--butter);
   color: var(--ink);
 }
+/* The transparent outline is invisible in normal colours and becomes the ring
+   in forced-colors mode, which drops box shadows. */
 .row-link:focus-visible {
-  outline: 0;
+  outline: 4px solid transparent;
+  outline-offset: -4px;
   box-shadow: inset 0 0 0 4px var(--ink);
 }
 @media (prefers-reduced-motion: reduce) {

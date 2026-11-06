@@ -123,7 +123,6 @@ export function initMobileNav(): void {
   const setOpen = (open: boolean) => {
     header.classList.toggle("nav-open", open);
     burger.setAttribute("aria-expanded", String(open));
-    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
   };
 
   listen(burger, "click", () =>
@@ -133,7 +132,11 @@ export function initMobileNav(): void {
     .querySelectorAll<HTMLAnchorElement>(".nav-link")
     .forEach((a) => listen(a, "click", () => setOpen(false)));
   listen(document, "keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
+    if (e.key !== "Escape" || !header.classList.contains("nav-open")) return;
+    // The sheet hides, so focus inside it would fall to <body>.
+    const inside = header.contains(document.activeElement);
+    setOpen(false);
+    if (inside) burger.focus();
   });
   listen(document, "pointerdown", (e) => {
     if (!header.contains(e.target as Node)) setOpen(false);
