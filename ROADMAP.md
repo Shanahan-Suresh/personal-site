@@ -62,9 +62,10 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
    sheet (the tests cover it), restyled as a night slab.
 10. **Photo credits.** The off-hours strip keeps each photographer credit from
     `src/data/interests.ts` as a small mono line in its caption.
-11. **Motion.** Keep four moves only: headline lines rising on scroll, the hero frames fading up,
-    the pointer preview, and the dialog opening. Each respects reduced motion. Stickers, magnetic
-    buttons, tilt, scroll-velocity skew, idle loops and the marquee go, with their code and CSS.
+11. **Motion.** Six moves only: headline lines rising on scroll, the hero frames fading up, the
+    pointer preview, the dialog opening and sliding between stories, the theme wipe, and lazy
+    pictures fading in. Each respects reduced motion. Stickers, magnetic buttons, tilt,
+    scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site.
 12. **New copy.** Only short labels and headings are new: "Things I've built", "Seven projects from
     work, side projects and university. Open any row for the full story.", "The short version",
     "I build by", "What I'm into lately", "Learning next", "Story", "Let's build.". All other
@@ -72,7 +73,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 8 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 9 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
 
 ### 1. Foundation: tokens, type and base styles
 
@@ -160,6 +161,21 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 - Shoot every page at 1440 and 390 in both themes with `design-previews/neo-2026/tools/shot.py`
   against `npm run preview`, and compare the homepage with the spec.
 - The owner reviews a preview build. Push and deploy only on the owner's word.
+
+### 9. Polish pass: interaction, images and layout
+
+- Every number in the strip and the hero's RSVP frame open the story behind them
+  (`a[data-story]`). Focus returns to the link that opened a story.
+- Stories: Previous beside Next, the arrow keys and a sideways swipe. Opening pushes
+  `#story-<id>`; Back closes the story. A compact head on phones. Each dialog caption links the
+  capture at full size.
+- Hover grammar on every control: rows slide their title and turn the index into an arrow, the
+  nav underline wipes in, arrows nudge, buttons lift on focus too, photos lean in, a tap fills a
+  row. The pointer preview sits above or below its row, wipes between pictures, loads a 960px
+  file on dense screens and carries the capture's caption.
+- Phone rows lead with a 16:9 thumbnail with the Story tab on its corner; the OHSE crop anchors
+  left. Dark mode dims white captures a step. Lazy pictures fade in.
+- A Copy button beside the email, the theme wipe, and a 404 page.
 
 ## Checks
 

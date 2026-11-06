@@ -70,11 +70,13 @@ Current coverage (`tests/home.spec.ts`): home-page smoke (hero headline, major
 sections, nav + theme toggle presence, contact mailto), the theme button (dark class,
 localStorage, keyboard, `aria-pressed`), the 600px layout and the mobile menu (open,
 Escape returning focus to the burger, outside tap, link), the project stories (paragraph
-split, the modal with Next, Escape, the close button and a backdrop click returning focus
-to its row, a shared `#story` link, the story view without JavaScript), the pointer
-preview (mouse shows it, touch never does), the row focus outline, reduced-motion static
-render, the interactions (scrolled nav, scroll spy, hero entrance), skip link, footer,
-colophon, writing noindex, placeholders and CSP hashes. `tests/guard.spec.ts` runs the
+split, the modal with Next, Previous and the arrow keys, Back closing a story, Escape, the
+close button and a backdrop click returning focus to its opener, the numbers strip and the
+hero frame opening stories, a shared `#story` link, Previous and Next without JavaScript),
+the pointer preview (mouse shows it clear of its row, touch never does), the row focus
+outline, the email Copy button, reduced-motion static render, the interactions (scrolled
+nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
+placeholders and CSP hashes. `tests/guard.spec.ts` runs the
 placeholder guard against throwaway folders to prove it blocks a placeholder file or
 reference.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
@@ -83,7 +85,7 @@ and 1.5 MiB after scrolling through the homepage.
 
 The homepage uses 12 images: the portrait, seven project captures and four photographs. Chromium captures full-page screenshots at each review width in both
 themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
-Cold transfers measured 6 Nov 2026 across all three browsers are 153–194 KiB initially and 208–405 KiB
+Cold transfers measured 7 Nov 2026 across all three browsers are 156–197 KiB initially and 211–408 KiB
 after scrolling. The colophon reads the test count from Playwright at build time.
 
 ## Project structure

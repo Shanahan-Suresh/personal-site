@@ -48,7 +48,7 @@ src/
 ├── data/         # structured, repeated content (projects, learning, interests, navigation)
 ├── layouts/      # BaseLayout.astro (wraps pages), PostLayout.astro (wraps posts)
 ├── lib/          # posts.ts (post helpers), site-config.ts (identity/meta), types.ts (shared types)
-├── pages/        # routes: index.astro (homepage), writing/, rss.xml.ts
+├── pages/        # routes: index.astro (homepage), colophon.astro, 404.astro, writing/, rss.xml.ts
 ├── scripts/      # home-interactions.ts — bundled client JS extracted from BaseLayout
 └── styles/       # global.css aggregator + tokens/components/motion/prose partials
 public/           # favicon, og-image, robots.txt
@@ -102,10 +102,20 @@ tools and capture traps.
   link). On light surfaces butter is a fill under ink text.
 - **Focus:** one `:focus-visible` ring in `var(--focus)`. Each slab class sets `--focus` to a colour
   that shows on it.
-- **Motion:** four moves only: headline lines rising (`.reveal` with `.ln` lines), the hero frames
-  fading up (`.rise`), the pointer preview on project rows, and the story dialog opening. All wait
-  for `prefers-reduced-motion: no-preference`. The boot script in `BaseLayout.astro` sets `.js`
-  before paint, so a page without script shows everything in place.
+- **Motion:** six moves only: headline lines rising (`.reveal` with `.ln` lines), the hero frames
+  fading up (`.rise`), the pointer preview on project rows, the story dialog opening and sliding
+  between stories, the theme switch wiping down (a view transition, `.theme-wipe`), and lazy
+  pictures fading in (`.fading`). All wait for `prefers-reduced-motion: no-preference`. The boot
+  script in `BaseLayout.astro` sets `.js` before paint, so a page without script shows everything
+  in place. Tilt, magnetic buttons, stickers, idle loops and count-up numbers stay off the site.
+- **Hover grammar:** hover lifts into the hard shadow, press sinks and drops it, and a butter or
+  night fill means "this is one link". Every hover state also shows on `:focus-visible`. A tile
+  that is not a link takes no fill. An arrow in a link (`.arrow`, `.arrow.out` for ↗, `.arrow.back`
+  for ←) nudges the way it points.
+- **Stories:** any `a[data-story]` opens its dialog: the project rows, the numbers strip and the
+  hero's RSVP frame. Opening pushes `#story-<id>`, so Back closes it. Previous, Next, the arrow
+  keys and a sideways swipe move between stories and replace that entry. Focus returns to the
+  link that opened the story.
 - **Favicon and share image:** `python scripts/brand-images.py` writes `public/favicon.svg`,
   `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. It needs Python
   with `fonttools`, `brotli`, `Pillow` and `playwright` (with Chrome). Edit the script, then rerun
@@ -135,8 +145,10 @@ hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) 
 `MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
 with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
 portrait (the cutout on a butter ground) loads first with `priority`. Each project row carries a
-480px WebP in `data-peek` that the pointer preview loads on first hover, and an inline thumbnail
-that shows below 960px. Story dialog images load only when their dialog opens. Interest photographs
+480px WebP in `data-peek` and a 960px one in `data-peek-2x`; the pointer preview loads one of them
+on first hover, by screen density. Below 960px each row shows a 16:9 thumbnail instead, cropped by
+`media.objectPosition` (default `top`). Story dialog images load only when their dialog opens, and
+each caption links the capture at full size. Interest photographs
 are square `cover` crops placed by each one's `objectPosition`. Both mascots stay off pages.
 
 Final assets and their provenance live in `src/assets/`. Capture harnesses live under gitignored
