@@ -112,10 +112,30 @@ export function initScrolledNav(): void {
     obs.disconnect();
     sentinel.remove();
   });
+
+  /* On a phone the bar slides away while the page scrolls down and comes
+     back on any scroll up (CSS gives `.nav-away` effect only below 769px).
+     Small moves are summed until they pass NAV_STEP, so a shaky thumb does
+     not flicker the bar. */
+  const NAV_STEP = 10;
+  const SHOW_ABOVE = 160; // px from the top where the bar always shows
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    const dy = y - lastY;
+    if (Math.abs(dy) < NAV_STEP && y > SHOW_ABOVE) return;
+    lastY = y;
+    const away =
+      dy > 0 && y > SHOW_ABOVE && !header.classList.contains("nav-open");
+    header.classList.toggle("nav-away", away);
+  };
+  listen(window, "scroll", onScroll, { passive: true });
+  teardowns.push(() => header.classList.remove("nav-away"));
 }
 
 /* Mobile menu: the burger opens the night sheet; a link, Escape or an
-   outside tap closes it. */
+   outside tap closes it. The dim layer under the sheet is the header's own
+   ::after, so a tap on it targets the header itself. */
 export function initMobileNav(): void {
   const header = document.querySelector<HTMLElement>(".nav-header");
   const burger = document.querySelector<HTMLButtonElement>(".nav-burger");
@@ -140,7 +160,8 @@ export function initMobileNav(): void {
     if (inside) burger.focus();
   });
   listen(document, "pointerdown", (e) => {
-    if (!header.contains(e.target as Node)) setOpen(false);
+    const t = e.target as Node;
+    if (t === header || !header.contains(t)) setOpen(false);
   });
   teardowns.push(() => setOpen(false));
 }
@@ -358,6 +379,7 @@ export function initPreview(): void {
    - Opening from the page pushes `#story-<id>`, so the address can be shared
      and Back closes the story. Moving between stories replaces that entry. */
 const SWIPE_MIN = 60; // px of sideways travel that counts as a swipe
+const PULL_CLOSE = 90; // px a phone sheet is pulled down by its head to close
 const STORY_HASH = /^#story-([\w-]+)$/;
 
 export function initStories(): void {
@@ -434,12 +456,43 @@ export function initStories(): void {
       });
     });
 
+  /* On a phone a story is a sheet (ProjectStory.astro): it slides back down
+     before it closes, from wherever a pull has left it. */
+  const sheet = window.matchMedia("(max-width: 560px)");
+  const dismiss = (d: HTMLDialogElement) => {
+    if (reduce || !sheet.matches || typeof d.animate !== "function") {
+      d.style.transform = "";
+      d.close();
+      return;
+    }
+    if (d.dataset.closing !== undefined) return;
+    d.dataset.closing = "";
+    const from = d.style.transform || "none";
+    const timing = { duration: 220, easing: "cubic-bezier(0.4, 0, 1, 1)" };
+    try {
+      d.animate([{ opacity: 1 }, { opacity: 0 }], {
+        ...timing,
+        pseudoElement: "::backdrop",
+      });
+    } catch {
+      /* a browser without pseudo-element animation still slides the sheet */
+    }
+    d.animate(
+      [{ transform: from }, { transform: "translateY(100%)" }],
+      timing,
+    ).onfinish = () => {
+      delete d.dataset.closing;
+      d.style.transform = "";
+      d.close();
+    };
+  };
+
   dialogs.forEach((d) => {
     listen(d, "click", (e) => {
       const t = e.target as HTMLElement;
       if (t === d || t.closest("[data-close]")) {
         e.preventDefault();
-        d.close();
+        dismiss(d);
         return;
       }
       const link = t.closest<HTMLElement>("[data-go]");
@@ -471,6 +524,51 @@ export function initStories(): void {
       restoreFocus(id);
       opener = null;
     });
+
+    /* On a phone, pulling the sheet down by its head follows the finger;
+       past PULL_CLOSE it closes, short of it the sheet springs back. Only
+       from the top of the story, so a pull never fights the scroll. */
+    const head = d.querySelector<HTMLElement>(".st-head");
+    let pullFrom: number | null = null;
+    let pulled = 0;
+    const endPull = () => {
+      if (pullFrom === null) return;
+      pullFrom = null;
+      if (pulled > PULL_CLOSE) dismiss(d);
+      else if (pulled > 0) {
+        if (!reduce)
+          d.animate(
+            [{ transform: `translateY(${pulled}px)` }, { transform: "none" }],
+            { duration: 180, easing: "cubic-bezier(0.2, 0.85, 0.2, 1)" },
+          );
+        d.style.transform = "";
+      }
+      pulled = 0;
+    };
+    if (head) {
+      listen(
+        head,
+        "touchstart",
+        (e) => {
+          pullFrom =
+            sheet.matches && d.scrollTop <= 0 ? e.touches[0].clientY : null;
+          pulled = 0;
+        },
+        { passive: true },
+      );
+      listen(
+        head,
+        "touchmove",
+        (e) => {
+          if (pullFrom === null) return;
+          pulled = Math.max(0, e.touches[0].clientY - pullFrom);
+          d.style.transform = pulled ? `translateY(${pulled}px)` : "";
+        },
+        { passive: true },
+      );
+      listen(head, "touchend", endPull, { passive: true });
+      listen(head, "touchcancel", endPull, { passive: true });
+    }
 
     /* A sideways swipe on a touch screen moves between stories. */
     let sx = 0;

@@ -73,7 +73,9 @@ Escape returning focus to the burger, outside tap, link), the project stories (p
 split, the modal with Next, Previous and the arrow keys, Back closing a story, Escape, the
 close button and a backdrop click returning focus to its opener, the numbers strip and the
 hero frame opening stories, a shared `#story` link, Previous and Next without JavaScript),
-the pointer preview (mouse shows it clear of its row, touch never does), the row focus
+the pointer preview (mouse shows it clear of its row, touch never does), the phone layer (the bar
+hiding on a scroll down, the dimmed menu, the story sheet with its pinned Previous and Next,
+pulling the sheet down to close it), the row focus
 outline, the email Copy button, reduced-motion static render, the interactions (scrolled
 nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
 placeholders, CSP hashes, no border or hard shadow cut by a clipping box at 390 and
