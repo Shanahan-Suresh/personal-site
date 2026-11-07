@@ -76,8 +76,8 @@ hero frame opening stories, a shared `#story` link, Previous and Next without Ja
 the pointer preview (mouse shows it clear of its row, touch never does), the row focus
 outline, the email Copy button, reduced-motion static render, the interactions (scrolled
 nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
-placeholders, CSP hashes, and no border or hard shadow cut by a clipping box at 390 and
-1440px. `tests/guard.spec.ts` runs the
+placeholders, CSP hashes, no border or hard shadow cut by a clipping box at 390 and
+1440px, the keyboard shortcuts card, the build commit card and letters that hop once. `tests/guard.spec.ts` runs the
 placeholder guard against throwaway folders to prove it blocks a placeholder file or
 reference.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
@@ -86,7 +86,7 @@ and 1.5 MiB after scrolling through the homepage.
 
 The homepage uses 12 images: the portrait, seven project captures and four photographs. Chromium captures full-page screenshots at each review width in both
 themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
-Cold transfers measured 7 Nov 2026 across all three browsers are 156–197 KiB initially and 211–408 KiB
+Cold transfers measured 7 Nov 2026 across all three browsers are 161–234 KiB initially and 216–427 KiB
 after scrolling. The colophon reads the test count from Playwright at build time.
 
 ## Project structure
@@ -120,7 +120,7 @@ Shared design tokens and reusable styles live in `src/styles/` (the `global.css`
 Project captures, the retouched real headshot and licensed real photography live in `src/assets/`.
 [`src/assets/README.md`](src/assets/README.md) records sources, sample-data boundaries and generation
 prompts. Astro produces responsive WebP with explicit dimensions. The hero portrait and RSVP capture load
-eagerly; other media loads lazily. Story images load only when their dialog opens. Photographer
+eagerly; other media loads lazily. Story images load when a story link is pointed at or focused, or when the story beside them opens. Photographer
 credits remain accessible HTML links. Project captions describe the product and workflow; capture
 fixtures and presentation choices are documented with the assets. The portrait sits on a flat cream
 ground in an ink frame. Both mascot poses remain unreferenced assets.

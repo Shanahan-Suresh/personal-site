@@ -65,7 +65,7 @@ The split is deliberate:
   - `data/projects.ts` — `categories` (personal / corporate / academic, each project's group label) and
     `projects`, the ordered list that `Work.astro`, `Hero.astro` and `Numbers.astro` render.
   - `data/learning.ts` — `learning`, the boxed list in `Now.astro`.
-  - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
+  - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits (kept as a record, not shown).
   - `data/navigation.ts` — `navLinks`, the nav links. `Contact.astro` reads the social links from `site.social`.
   - `data/colophon.ts` — the `/colophon` `stats` and `stack` rows, and `measuredOn`, the date of the transfer numbers.
   - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
@@ -103,12 +103,22 @@ tools and capture traps.
   link). On light surfaces butter is a fill under ink text.
 - **Focus:** one `:focus-visible` ring in `var(--focus)`. Each slab class sets `--focus` to a colour
   that shows on it.
-- **Motion:** six moves only: headline lines rising (`.reveal` with `.ln` lines), the hero frames
+- **Motion:** headline lines rising (`.reveal` with `.ln` lines), the hero frames
   fading up (`.rise`), the pointer preview on project rows, the story dialog opening and sliding
-  between stories, the theme switch (a view transition: with a mouse, a circle grows from the button led by a butter wave between ink seams, `.theme-circle` and `#theme-ring`; a press during a switch finishes it and starts the next; a 0.28s cross-fade on touch screens, `.theme-fade`), and lazy
-  pictures fading in (`.fading`). All wait for `prefers-reduced-motion: no-preference`. The boot
+  between stories, the theme switch (a view transition: with a mouse, a pixel dissolve from the button: the dark page is cut in through a growing circle whose edge is an ordered dither of squares, and on the way to light the dark page shrinks back into it; the squares only clip the pages, never paint over them (`.theme-circle`, `.theme-shrink`, the `#theme-clip` style and the `#theme-ring` sparkle canvas); a press during a switch finishes it and starts the next; a 0.28s cross-fade on touch screens, `.theme-fade`), lazy
+  pictures fading in (`.fading`), and the hover finds below. All wait for `prefers-reduced-motion: no-preference`. The boot
   script in `BaseLayout.astro` sets `.js` before paint, so a page without script shows everything
   in place. Tilt, magnetic buttons, stickers, idle loops and count-up numbers stay off the site.
+- **Hover finds** (a mouse only, `(hover: hover)`): an ink name plate over the portrait, the hero
+  label's butter plate shrinking to a band under the pointer and widening wherever it moves
+  (`data-brush`), letters that hop once (`data-hop`; the letters join back only after the pointer
+  leaves, because removing the span under the pointer makes Chromium fire `pointerenter` again),
+  printer's crop marks on the slab under the pointer (`.slab::after`, `--mark`), underlines that
+  draw in under the footer and contact links, lemon pixels around the theme button, the learning
+  chips filling like an 8-bit loading bar, and the About code chip typing a line and typing back
+  (`data-type`). Selected text is butter. `?` opens a keyboard card (T theme; W, A, C jump; the card
+  turns the letter keys off), and the console greets developers. All of it lives in
+  `home-interactions.ts` and the components' styles.
 - **Hover grammar:** hover lifts into the hard shadow, press sinks and drops it, and a butter or
   night fill means "this is one link". Every hover state also shows on `:focus-visible`. A tile
   that is not a link takes no fill. An arrow in a link (`.arrow`, `.arrow.out` for ↗, `.arrow.back`
@@ -146,9 +156,10 @@ hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) 
 `MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
 with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
 portrait (the cutout on a cream ground) loads first with `priority`. Each project row carries a
-480px WebP in `data-peek` and a 960px one in `data-peek-2x`; the pointer preview loads one of them
-on first hover, by screen density. Below 960px each row shows a 16:9 thumbnail instead, cropped by
-`media.objectPosition` (default `top`). Story dialog images load only when their dialog opens, and
+480px WebP in `data-peek` and a 960px one in `data-peek-2x`; the pointer preview decodes every row's
+file, by screen density, when the mouse first reaches the list. Below 960px each row shows a 16:9 thumbnail instead, cropped by
+`media.objectPosition` (default `top`). Story dialog images load when a story link is pointed at or focused, or when the story beside
+them opens, and
 each caption links the capture at full size. Interest photographs
 are square `cover` crops placed by each one's `objectPosition`. Both mascots stay off pages.
 
