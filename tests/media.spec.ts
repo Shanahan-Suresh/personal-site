@@ -49,7 +49,7 @@ test("project rows and stories carry the right media, captions and links", async
     "https://jestec.taylors.edu.my/Vol%2018%20Issue%202%20April%202023/18_2_16.pdf",
   );
   await expect(story("heatgen")).toContainText("Read the paper");
-  await expect(story("hr")).toContainText("cut page-load times by 63%");
+  await expect(story("hr")).toContainText("page loads got 63% faster");
   await expect(page.locator("[class*='mascot']")).toHaveCount(0);
   await expect(page.locator(".media-credit a")).toHaveCount(4);
   for (const credit of await page.locator(".media-credit a").all()) {

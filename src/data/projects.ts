@@ -12,10 +12,10 @@ const personal: Project[] = [
     id: "digest",
     title: "Tech Scout Digest",
     summary:
-      "A daily newsletter where an LLM curates the news around each team's stack.",
-    fact: { value: "0", label: "servers between editions" },
+      "A daily newsletter where an LLM picks the news that matters to each team's stack.",
+    fact: { value: "Daily", label: "picks for each team's stack" },
     description:
-      "A daily newsletter that helps teams keep up with the technology they use. An LLM picks relevant stories around the team's stack and brings them together in one easy read. The setup is driven by configuration and runs on GCP, scaling to zero between editions.",
+      "A daily newsletter for teams who want to keep up with the tools they use. An LLM reads the news, picks the stories that matter to each team's stack and puts them into one short email. Each team is set up in config, and it runs on GCP, scaling to zero between editions.",
     tags: ["Python", "GCP", "Terraform", "LLMs"],
     media: {
       image: digestVisual,
@@ -28,9 +28,9 @@ const personal: Project[] = [
     title: "Automated artwork censoring app",
     summary:
       "A desktop editor that finds regions to censor with YOLO and FastSAM.",
-    fact: { value: "2", label: "languages, EN and JP" },
+    fact: { value: "0", label: "terminal commands needed" },
     description:
-      "A desktop artwork editor with automatic region detection through YOLO and FastSAM. It handles batch jobs, speaks English and Japanese, and ships as an app people can run without touching a terminal.",
+      "A desktop editor that finds the parts of an artwork to censor on its own, using YOLO and FastSAM. It can work through a whole folder in one batch and runs in English or Japanese. It installs like any other app, so nobody has to open a terminal.",
     tags: ["Python", "YOLO", "FastSAM"],
     media: {
       image: censoritVisual,
@@ -46,9 +46,9 @@ const personal: Project[] = [
     id: "mcp",
     title: "OpenAPI → MCP server + chat UI",
     summary: "Turns any API schema into tools an AI assistant can call.",
-    fact: { value: "1", label: "schema in, a full toolset out" },
+    fact: { value: "1", label: "schema is all it needs" },
     description:
-      "Point it at any API's schema and it generates a set of LLM-callable tools on its own, falling back across models if one stalls, all wired into a Next.js chat interface. It lets an AI assistant pick up a brand-new tool in seconds.",
+      "Point it at an API's OpenAPI schema and it writes the tools an AI assistant needs to use that API. A Next.js chat interface sits on top, and if one model stalls, it moves on to the next. Hooking up a new API takes seconds.",
     tags: ["Python", "MCP", "FastAPI", "Next.js"],
     media: {
       image: mcpVisual,
@@ -70,8 +70,8 @@ const product: Project[] = [
       "Serverless RSVPs, confirmations and QR check-in for 75,000 guests.",
     fact: { value: "75,000", label: "guests welcomed" },
     description: [
-      "Built to welcome 75,000 guests. This serverless Next.js app handles RSVPs and check-in, sends email and WhatsApp confirmations through SendGrid and Respond.io, and gives each guest a scannable QR ticket.",
-      "I defined the stack in Terraform and shipped it through GitHub Actions, so scaling for a crowd that size comes down to config rather than a late night.",
+      "A serverless Next.js app built for 75,000 guests. It takes RSVPs, sends confirmations by email and WhatsApp (through SendGrid and Respond.io), and gives every guest a QR ticket to scan at the door.",
+      "I defined the infrastructure in Terraform and deployed it with GitHub Actions, so scaling up for a crowd that size was a config change.",
     ],
     tags: ["Next.js", "Terraform", "Respond.io", "SendGrid"],
     media: {
@@ -87,15 +87,15 @@ const product: Project[] = [
     summary: "Role-based incident workflows across 10 business units.",
     fact: { value: "10", label: "business units" },
     description: [
-      "This is where worksite incidents get reported, investigated, and put right across 10 business units. I built role-based workflows around the different needs of managers, safety officers, and investigators.",
-      "I owned planning through GCP rollout, introduced the team's first Playwright suite, and added an MCP server that turns its OpenAPI schema into tools an AI assistant can call.",
+      "Ten business units use this module to report worksite incidents and see each one through to a fix. Managers, safety officers and investigators each need something different from it, so every role gets its own workflow.",
+      "I owned it from planning to the GCP rollout. Along the way I set up the team's first Playwright tests and added an MCP server, so an AI assistant can work with the module through its API.",
     ],
     tags: ["Next.js", "Django", "GCP", "MCP"],
     media: {
       image: ohseVisual,
       objectPosition: "left top",
       alt: "An incident-reporting workspace with reports, status filters, search and pagination.",
-      caption: "Turning incident reports into action.",
+      caption: "Every report and its status, in one place.",
     },
   },
   {
@@ -104,8 +104,8 @@ const product: Project[] = [
     summary: "Page loads cut by 63% for 20,000 employees.",
     fact: { value: "63%", label: "faster page loads" },
     description: [
-      "For a platform used by 20,000 employees, I reworked heavy modules, query serialization and bulk processing to cut page-load times by 63%.",
-      "I also protected PII with AES-256 transparent encryption and built custom PostgreSQL workflows for the analytics team.",
+      "The platform serves 20,000 employees, and some of its pages were slow. I reworked the heaviest modules, the query serialization and the bulk processing, and page loads got 63% faster.",
+      "I also added transparent AES-256 encryption for personal data and built PostgreSQL workflows for the analytics team.",
     ],
     tags: ["Svelte", "Django", "PostgreSQL"],
     media: {
@@ -130,7 +130,7 @@ const academic: Project[] = [
     media: {
       image: heatgenVisual,
       alt: "Observed thermal image of pavement bricks alongside the model's predicted image for sample 1.",
-      caption: "From weather and materials to a thermal forecast.",
+      caption: "A real thermal image beside the model's prediction.",
     },
     link: {
       label: "Read the paper",
