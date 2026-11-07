@@ -123,6 +123,31 @@ test("the theme button works from the keyboard and reports its state", async ({
   await expect(toggle).toHaveAttribute("aria-pressed", "false");
 });
 
+test("every mouse click on the theme button counts, even mid-switch", async ({
+  page,
+}) => {
+  await page.emulateMedia({
+    colorScheme: "light",
+    reducedMotion: "no-preference",
+  });
+  await page.goto("/");
+  const html = page.locator("html");
+  const box = await page.locator("#theme-toggle").boundingBox();
+  if (!box) throw new Error("theme button has no box");
+  // Four real clicks 200ms apart: each lands while the last switch still runs,
+  // so the page ends light again only if every click counted.
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await page.waitForTimeout(200);
+  }
+  await expect(html).not.toHaveClass(/\bdark\b/);
+  await expect(page.locator("#theme-toggle")).toHaveAttribute(
+    "aria-pressed",
+    "false",
+  );
+  await expect(page.locator("#theme-ring")).toHaveCount(0);
+});
+
 // ── 5. Mobile ~600px layout ───────────────────────────────────────────────────
 test("at 600px viewport nav links are hidden and hero is single-column", async ({
   page,
@@ -472,6 +497,58 @@ test("hero entrance: the headline and its frames reveal after page load", async 
   });
   await expect(page.locator(".shots")).toHaveClass(/\bin\b/);
 });
+
+// A border or hard shadow inside a clipping box (the headline's reveal mask,
+// say) loses the sides that fall outside it, leaving stray bars of ink.
+for (const width of [390, 1440]) {
+  test(`no border or hard shadow is cut off by a clipping box at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.locator(".hero-headline")).toHaveClass(/\bin\b/, {
+      timeout: 3000,
+    });
+    await page.waitForTimeout(1000); // let the headline lines finish rising
+    const cut = await page.evaluate(() => {
+      const found: string[] = [];
+      for (const el of document.querySelectorAll<HTMLElement>("body *")) {
+        const s = getComputedStyle(el);
+        const r = el.getBoundingClientRect();
+        if (s.display === "none" || r.width === 0 || el.closest("dialog"))
+          continue;
+        const framed =
+          s.boxShadow !== "none" ||
+          ["Top", "Right", "Bottom", "Left"].some(
+            (k) =>
+              parseFloat(
+                s.getPropertyValue(`border-${k.toLowerCase()}-width`),
+              ) > 0,
+          );
+        if (!framed) continue;
+        for (
+          let a = el.parentElement;
+          a && a !== document.body;
+          a = a.parentElement
+        ) {
+          const as = getComputedStyle(a);
+          if (!/hidden|clip/.test(as.overflowX + as.overflowY)) continue;
+          const ar = a.getBoundingClientRect();
+          if (
+            r.top < ar.top - 1 ||
+            r.left < ar.left - 1 ||
+            r.bottom > ar.bottom + 1 ||
+            r.right > ar.right + 1
+          )
+            found.push(`${el.tagName.toLowerCase()}.${el.className}`);
+          break;
+        }
+      }
+      return found;
+    });
+    expect(cut).toEqual([]);
+  });
+}
 
 // ── Skip link ────────────────────────────────────────────────────────────────
 test("skip link is the first tab stop and jumps focus to <main>", async ({
