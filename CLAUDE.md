@@ -106,7 +106,7 @@ tools and capture traps.
 - **Motion:** headline lines rising (`.reveal` with `.ln` lines), the hero frames
   fading up (`.rise`), the pointer preview on project rows, the story dialog opening and sliding
   between stories, the theme switch (a view transition: with a mouse, a pixel dissolve from the button: the dark page is cut in through a growing circle whose edge is an ordered dither of squares, and on the way to light the dark page shrinks back into it; the squares only clip the pages, never paint over them (`.theme-circle`, `.theme-shrink`, the `#theme-clip` style and the `#theme-ring` sparkle canvas); a press during a switch finishes it and starts the next; a 0.28s cross-fade on touch screens, `.theme-fade`), lazy
-  pictures fading in (`.fading`), and the hover finds below. All wait for `prefers-reduced-motion: no-preference`. The boot
+  pictures fading in (`.fading`), on a phone the story sheet rising, the nav bar sliding away and the menu sheet dropping, and the hover finds below. All wait for `prefers-reduced-motion: no-preference`. The boot
   script in `BaseLayout.astro` sets `.js` before paint, so a page without script shows everything
   in place. Tilt, magnetic buttons, stickers, idle loops and count-up numbers stay off the site.
 - **Hover finds** (a mouse only, `(hover: hover)`): an ink name plate over the portrait, the hero
