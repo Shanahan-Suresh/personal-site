@@ -187,6 +187,11 @@ h3 {
 .slab {
   border-bottom: var(--seam) solid var(--ink);
 }
+.s-sky {
+  background: var(--sky);
+  color: var(--ink);
+  --focus: var(--ink);
+}
 .s-tomato {
   background: var(--tomato);
   color: var(--ink);

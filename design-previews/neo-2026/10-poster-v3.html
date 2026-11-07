@@ -12,7 +12,7 @@
 /* A wall of flat colour slabs held by 3px ink seams. Five slab colours are one warm set (same chroma band, tuned value), so the page reads as one print run. */
 :root {
   --ink: #15120e; --paper: #f5f0e4; --card: #fffdf7; --text: #15120e; --edge: #15120e;
-  --tomato: #ff6a45; --butter: #ffd24a; --cobalt: #3d52ea; --green: #0c7a4d; --night: #15120e;
+  --sky: #8ec5ff; --tomato: #ff6a45; --butter: #ffd24a; --cobalt: #3d52ea; --green: #0c7a4d; --night: #15120e;
   --btn2-bg: #15120e; --btn2-fg: #fffdf7;
   --display: "Bricolage Grotesque", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
   --body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -22,11 +22,11 @@
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --paper: #14120f; --card: #1f1c17; --text: #f3eee3; --edge: #f3eee3;
-  --tomato: #e9583a; --butter: #eec23d; --cobalt: #3346dc; --green: #0a6c44; --night: #0a0907; --ink: #0d0b09;
+  --sky: #6aa6e8; --tomato: #e9583a; --butter: #eec23d; --cobalt: #3346dc; --green: #0a6c44; --night: #0a0907; --ink: #0d0b09;
   --btn2-bg: #f3eee3; --btn2-fg: #15120e; color-scheme: dark; } }
 :root[data-theme="dark"] {
   --paper: #14120f; --card: #1f1c17; --text: #f3eee3; --edge: #f3eee3;
-  --tomato: #e9583a; --butter: #eec23d; --cobalt: #3346dc; --green: #0a6c44; --night: #0a0907; --ink: #0d0b09;
+  --sky: #6aa6e8; --tomato: #e9583a; --butter: #eec23d; --cobalt: #3346dc; --green: #0a6c44; --night: #0a0907; --ink: #0d0b09;
   --btn2-bg: #f3eee3; --btn2-fg: #15120e; color-scheme: dark;
 }
 
@@ -41,6 +41,7 @@ button { font: inherit; color: inherit; }
 .wrap { max-width: 1360px; margin: 0 auto; padding-inline: var(--gut); }
 h1, h2, h3 { font-family: var(--display); font-stretch: 75%; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: .008em; line-height: .84; }
 .slab { border-bottom: 3px solid var(--ink); }
+.s-sky { background: var(--sky); color: #15120e; }
 .s-tomato { background: var(--tomato); color: #15120e; }
 .s-cobalt { background: var(--cobalt); color: #fff; }
 .s-butter { background: var(--butter); color: #15120e; }
@@ -244,7 +245,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding
   <button class="tbtn" id="theme" aria-label="Switch light or dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button>
 </div></header>
 
-<section class="slab s-tomato hero" id="top"><div class="wrap">
+<section class="slab s-sky hero" id="top"><div class="wrap">
   <div class="hero-copy">
     <h1 class="reveal"><span class="ln"><span class="l">I build <br class="m">full&#8209;stack</span></span><span class="ln"><span class="l">products &amp;</span></span><span class="ln"><span class="l"><span class="mk">AI tooling.</span></span></span></h1>
     <div class="card"><p id="lead"></p><div class="ctas"><a class="btn" href="#work">See the work</a><a class="btn k" href="#contact">Say hi</a></div></div>
@@ -255,14 +256,14 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding
   </div>
 </div></section>
 
-<section class="slab s-butter nums" aria-label="Results"><div class="wrap">
+<section class="slab s-cobalt nums" aria-label="Results"><div class="wrap">
   <div><b>75,000</b><span>guests through one RSVP app</span></div>
   <div><b>20,000</b><span>employees on a platform I sped up</span></div>
   <div><b>63%</b><span>faster page loads</span></div>
   <div><b>2023</b><span>paper published in JESTEC</span></div>
 </div></section>
 
-<section class="slab s-cobalt" id="work"><div class="wrap big">
+<section class="slab s-green" id="work"><div class="wrap big">
   <div class="work-top"><h2 class="huge reveal"><span class="ln"><span>Things I've</span></span><span class="ln"><span>built</span></span></h2><p>Seven projects from work, side projects and university. Open any row for the full story.</p></div>
   <ul class="projects" id="projects"></ul>
 </div></section>
@@ -270,7 +271,7 @@ footer .wrap { display: flex; justify-content: space-between; gap: 16px; padding
 
 <dialog id="story" aria-labelledby="stT"></dialog>
 
-<section class="slab s-green about" id="about"><div class="wrap">
+<section class="slab s-cobalt about" id="about"><div class="wrap">
   <h2 class="reveal"><span class="ln"><span>The short</span></span><span class="ln"><span>version</span></span></h2>
   <div><h3 id="aboutTitle"></h3><div id="aboutBody"></div></div>
 </div></section>
