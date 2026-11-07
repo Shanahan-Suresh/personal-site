@@ -99,18 +99,97 @@
         // Storage can be blocked; the theme still applies for this visit.
       }
     };
-    btn.addEventListener("click", () => {
-      /* The new theme wipes down from the top, where browsers support view
-         transitions and the visitor allows motion. Elsewhere it switches at once. */
+    /* With a mouse, the new theme spreads from this button as a wave: a
+       butter band between two ink seams rides the edge of a growing circle.
+       On a touch screen the page cross-fades. Without view transitions, or
+       when the visitor asks for less motion, it switches at once.
+       A click during a switch finishes that one and starts the next from
+       the current theme, so the button can be pressed again and again. */
+    const WAVE_MS = 720;
+    const BAND = 24; // ink 3px, butter 18px, ink 3px
+    let current: ViewTransition | null = null;
+    let lastClick = 0;
+    const press = (e: MouseEvent) => {
       const still = window.matchMedia("(prefers-reduced-motion: reduce)");
       if (!document.startViewTransition || still.matches) {
         apply();
         return;
       }
-      root.classList.add("theme-wipe");
-      document
-        .startViewTransition(apply)
-        .finished.finally(() => root.classList.remove("theme-wipe"));
+      /* A pointer double-tap inside 120ms counts once; a key press always
+         counts (a keyboard click has detail 0). */
+      const now = performance.now();
+      if (e.detail > 0 && now - lastClick < 120) return;
+      lastClick = now;
+      current?.skipTransition();
+      document.getElementById("theme-ring")?.remove();
+
+      const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
+      const mode = touch.matches ? "theme-fade" : "theme-circle";
+      root.classList.remove("theme-fade", "theme-circle");
+      root.classList.add(mode);
+
+      const r = btn.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      let ring: HTMLElement | null = null;
+      const t = document.startViewTransition(() => {
+        apply();
+        if (mode !== "theme-circle") return;
+        ring = document.createElement("div");
+        ring.id = "theme-ring";
+        ring.setAttribute("aria-hidden", "true");
+        ring.style.setProperty("--ring-x", `${x}px`);
+        ring.style.setProperty("--ring-y", `${y}px`);
+        document.body.append(ring);
+      });
+      current = t;
+      t.finished.finally(() => {
+        if (current !== t) return; // a newer switch owns the page now
+        current = null;
+        root.classList.remove(mode);
+        document.getElementById("theme-ring")?.remove();
+      });
+      if (mode !== "theme-circle") return;
+
+      const end =
+        Math.hypot(
+          Math.max(x, window.innerWidth - x),
+          Math.max(y, window.innerHeight - y),
+        ) + BAND;
+      const timing = {
+        duration: WAVE_MS,
+        easing: "cubic-bezier(0.45, 0, 0.2, 1)",
+        fill: "forwards" as const,
+      };
+      t.ready
+        .then(() => {
+          root.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${end}px at ${x}px ${y}px)`,
+              ],
+            },
+            { ...timing, pseudoElement: "::view-transition-new(root)" },
+          );
+          ring?.animate({ "--ring-r": ["0px", `${end}px`] }, timing);
+        })
+        .catch(() => {
+          // Skipped by a newer click before it started; nothing to animate.
+        });
+    };
+    btn.addEventListener("click", press);
+    /* While a switch runs, the browser sends every click to <html>, not to
+       the button. A click there that lands on the button still counts. */
+    document.addEventListener("click", (e) => {
+      if (!current || e.target !== root) return;
+      const b = btn.getBoundingClientRect();
+      const inside =
+        e.clientX >= b.left &&
+        e.clientX <= b.right &&
+        e.clientY >= b.top &&
+        e.clientY <= b.bottom;
+      if (inside) press(e);
     });
   }
   initThemeToggle();
