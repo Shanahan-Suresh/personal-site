@@ -61,17 +61,26 @@
   }
 }
 
-/* The theme switch. With a mouse, the new theme grows in a circle from the
-   button, led by a butter wave (ThemeToggle.astro animates both). On a touch
-   screen the page cross-fades. Most slabs only deepen a shade, so a moving hard edge
-   that is not anchored to the button reads as a tear. */
+/* The theme switch. With a mouse, a pixel dissolve spreads from the button:
+   the dark page is cut in through a growing circle, or on the way to light
+   the dark page shrinks back into the button (ThemeToggle.astro sets the
+   clip each frame in #theme-clip). Both pages stay as they are; only the
+   squares of the clip decide which one shows. On a touch screen the page
+   cross-fades. Most slabs only deepen a shade, so a moving hard edge that is
+   not anchored to the button reads as a tear. */
 .theme-circle::view-transition-old(root),
 .theme-circle::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
-/* The wave's edge: a butter band between two ink seams, just outside the
-   growing circle. It exists only during the switch, as its own layer. */
+/* On the way to light the old (dark) page sits on top and shrinks. */
+.theme-circle.theme-shrink::view-transition-old(root) {
+  z-index: 1;
+}
+/* The sparkle layer: a canvas of square pixels over the whole window, lemon
+   only where a square is flipping. It exists only during the switch, as its
+   own layer. --ring-r is the circle's radius; each frame reads it to build
+   the clip and the sparkle. */
 @property --ring-r {
   syntax: "<length>";
   inherits: false;
@@ -82,14 +91,12 @@
   inset: 0;
   pointer-events: none;
   view-transition-name: theme-ring;
-  background: radial-gradient(
-    circle at var(--ring-x) var(--ring-y),
-    transparent var(--ring-r),
-    var(--ink) var(--ring-r) calc(var(--ring-r) + 3px),
-    var(--butter) calc(var(--ring-r) + 3px) calc(var(--ring-r) + 21px),
-    var(--ink) calc(var(--ring-r) + 21px) calc(var(--ring-r) + 24px),
-    transparent calc(var(--ring-r) + 24px)
-  );
+}
+#theme-ring canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  image-rendering: pixelated;
 }
 ::view-transition-group(theme-ring),
 ::view-transition-new(theme-ring),

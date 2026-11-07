@@ -8,7 +8,7 @@ const byId = (id: string) => {
 };
 const rsvp = byId("rsvp");
 const hr = byId("hr");
-const heatgen = byId("heatgen");
+const ohse = byId("ohse");
 
 /* The headcount is not a row fact, so the build checks the HR story still says it. */
 const employees = "20,000";
@@ -22,9 +22,9 @@ const items = [
   { value: employees, label: "employees on a platform I sped up", story: hr },
   { value: hr.fact.value, label: "faster page loads", story: hr },
   {
-    value: heatgen.fact.value,
-    label: "paper published in JESTEC",
-    story: heatgen,
+    value: ohse.fact.value,
+    label: "business units on one incident module",
+    story: ohse,
   },
 ];
 ---
@@ -36,11 +36,12 @@ const items = [
         <li>
           <a
             class="num"
+            data-hop
             href={`#story-${n.story.id}`}
             data-story={n.story.id}
             aria-haspopup="dialog"
           >
-            <b>{n.value}</b>
+            <b data-hop-letters>{n.value}</b>
             <span class="what">{n.label}</span>
             <span class="cue label" aria-hidden="true">
               Story <span class="arrow">→</span>

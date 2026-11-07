@@ -5,7 +5,7 @@ repo root: python scripts/brand-images.py
 
 - favicon.svg: a condensed "S" in butter on night. The glyph is drawn as a path from the
   display font, so the icon needs no font at all.
-- og-image.svg: the tomato slab with the hero headline and the name, 1200 x 630. It embeds the
+- og-image.svg: the sky slab with the hero headline and the name, 1200 x 630. It embeds the
   display face and DM Mono as data URIs, so it renders the same anywhere.
 - og-image.jpg: Chromium's render of og-image.svg. Social sites read this one.
 """
@@ -27,7 +27,7 @@ MONO = ROOT / "node_modules/@fontsource/dm-mono/files/dm-mono-latin-500-normal.w
 PUBLIC = ROOT / "public"
 
 # Poster tokens, light theme (src/styles/tokens.css).
-TOMATO = "#ff6a45"
+SKY = "#8ec5ff"
 BUTTER = "#ffd24a"
 INK = "#15120e"
 WHITE = "#ffffff"
@@ -87,7 +87,7 @@ def og_svg(size: float, mark_w: float) -> str:
     .name {{ font: 800 40px "Bricolage Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.02em; fill: {WHITE}; }}
     .url {{ font: 500 20px "DM Mono", ui-monospace, monospace; letter-spacing: 0.08em; fill: {BUTTER}; }}
   </style>
-  <rect width="{W}" height="{H}" fill="{TOMATO}"/>
+  <rect width="{W}" height="{H}" fill="{SKY}"/>
   <rect width="{W}" height="{band}" fill="{INK}"/>
   <text class="name" x="{MARGIN}" y="{band / 2 + 14:.1f}">SHANAHAN SURESH</text>
   <text class="url" x="{W - MARGIN}" y="{band / 2 + 7:.1f}" text-anchor="end">SHANAHANSURESH.COM</text>

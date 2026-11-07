@@ -53,6 +53,7 @@ const {
       fetchpriority={priority ? "high" : undefined}
       decoding="async"
     />
+    <slot name="overlay" />
   </div>
   {
     (caption || credit || Astro.slots.has("caption")) && (

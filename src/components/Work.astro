@@ -6,26 +6,18 @@ import { projects } from "@/data/projects";
 
 <section id="work" class="slab s-green">
   <div class="wrap work">
-    <div class="work-top">
-      <h2 class="huge reveal">
-        <span class="ln"><span>Things I've</span></span>
-        <span class="ln"><span>built</span></span>
-      </h2>
-      <p>
-        Seven projects from work, side projects and university. Open any row for
-        the full story.
-      </p>
-    </div>
+    <h2 class="huge reveal">
+      <span class="ln"><span>Things I've</span></span>
+      <span class="ln"><span>built</span></span>
+    </h2>
     <ul class="projects" role="list">
-      {projects.map((p, i) => <ProjectRow project={p} index={i} />)}
+      {projects.map((p) => <ProjectRow project={p} />)}
     </ul>
   </div>
   {
     projects.map((p, i) => (
       <ProjectStory
         project={p}
-        index={i}
-        total={projects.length}
         prev={projects[(i - 1 + projects.length) % projects.length]}
         next={projects[(i + 1) % projects.length]}
       />
@@ -33,27 +25,16 @@ import { projects } from "@/data/projects";
   }
 </section>
 <div id="peek" aria-hidden="true">
-  <img alt="" decoding="async" /><span class="peek-cap"></span>
+  <span class="peek-pics"></span><span class="peek-cap"></span>
 </div>
 
 <style>
   .work {
     padding-block: 80px 88px;
   }
-  .work-top {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 32px;
-  }
   .huge {
     margin-bottom: 48px;
     font-size: clamp(76px, 16vw, 240px);
-  }
-  .work-top p {
-    max-width: 30ch;
-    margin: 0 0 48px;
-    font-size: 18px;
   }
   .projects {
     margin: 0 -20px;
@@ -79,14 +60,21 @@ import { projects } from "@/data/projects";
   #peek.on {
     opacity: 1;
   }
-  #peek img {
-    width: 100%;
+  /* Pictures stack: a new one wipes in over the last, which stays until it
+     is covered, so a change of row never shows an empty frame. */
+  .peek-pics {
+    display: block;
+    position: relative;
     aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .peek-pics :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: top;
-  }
-  #peek:not(.on) img:not([src]) {
-    visibility: hidden;
   }
   /* The capture's caption rides on the frame's top edge as a butter tab. */
   .peek-cap {
@@ -108,31 +96,12 @@ import { projects } from "@/data/projects";
   .peek-cap:empty {
     display: none;
   }
-  /* A new picture wipes down from the top, so a change of row reads as one move. */
-  @media (prefers-reduced-motion: no-preference) {
-    #peek.wipe img {
-      animation: peek-wipe 0.32s var(--ease-out);
-    }
-    @keyframes peek-wipe {
-      from {
-        clip-path: inset(0 0 100% 0);
-      }
-      to {
-        clip-path: inset(0 0 0 0);
-      }
-    }
-  }
   @media not all and (hover: hover) and (pointer: fine), (max-width: 960px) {
     #peek {
       display: none;
     }
   }
 
-  @media (max-width: 960px) {
-    .work-top {
-      display: block;
-    }
-  }
   @media (max-width: 560px) {
     .work {
       padding-block: 56px 64px;

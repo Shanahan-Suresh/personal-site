@@ -65,6 +65,33 @@ import { learning } from "@/data/learning";
     font: 800 17px/1 var(--font-display);
     text-transform: uppercase;
   }
+  /* Under a mouse each chip fills like an 8-bit loading bar, in eight
+     steps: these are still loading. */
+  @media (hover: hover) {
+    li {
+      background:
+        linear-gradient(var(--text), var(--text)) no-repeat 0 0 / 0% 100%,
+        var(--card);
+    }
+    li:hover {
+      background-size:
+        100% 100%,
+        auto;
+      color: var(--card);
+    }
+  }
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    li {
+      transition:
+        background-size 0.48s steps(8, end),
+        color 0s 0.24s;
+    }
+    li:hover {
+      transition:
+        background-size 0.48s steps(8, end),
+        color 0s 0.24s;
+    }
+  }
   @media (max-width: 960px) {
     .lately {
       grid-template-columns: 1fr;

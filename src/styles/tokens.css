@@ -44,6 +44,7 @@
   --green: #0c7a4d;
   --night: #15120e;
   --cream: #f5f0e4; /* the portrait ground: stays light in both themes */
+  --lemon: #ffe680; /* the theme-switch sparkle: the same in both themes */
 
   /* page surfaces: these invert with the theme */
   --paper: #f5f0e4;
