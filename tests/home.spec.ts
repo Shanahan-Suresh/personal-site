@@ -290,9 +290,9 @@ test("a number in the results strip opens the story behind it and gets focus bac
   page,
 }) => {
   await page.goto("/");
-  const number = page.locator(".nums a[data-story='heatgen']");
+  const number = page.locator(".nums a[data-story='ohse']");
   await number.click();
-  await expect(page.locator("#story-heatgen")).toBeVisible();
+  await expect(page.locator("#story-ohse")).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(page.locator("dialog.story[open]")).toHaveCount(0);
   await expect(number).toBeFocused();
@@ -331,7 +331,10 @@ test.describe("pointer preview", () => {
     await page.goto("/");
     await page.locator("#row-ohse").hover();
     await expect(page.locator("#peek")).toHaveClass(/\bon\b/);
-    await expect(page.locator("#peek img")).toHaveAttribute("src", /\.webp/);
+    await expect(page.locator("#peek img").last()).toHaveAttribute(
+      "src",
+      /\.webp/,
+    );
   });
 
   test("the preview never covers the row under the pointer", async ({
@@ -366,10 +369,10 @@ test.describe("pointer preview", () => {
       await page.locator("#row-ohse").tap();
       await expect(page.locator("#story-ohse")).toBeVisible();
       await expect(page.locator("#peek")).not.toHaveClass(/\bon\b/);
-      expect(
-        await page.locator("#peek img").getAttribute("src"),
+      await expect(
+        page.locator("#peek img"),
         "The preview image should never load on touch",
-      ).toBeNull();
+      ).toHaveCount(0);
     });
   });
 });
@@ -674,4 +677,74 @@ test("built _headers carries a hash for every inline script and no unsafe-inline
     .map(([, , body]) => createHash("sha256").update(body).digest("base64"));
   expect(inline.length).toBeGreaterThan(0);
   for (const h of inline) expect(scriptSrc).toContain(`'sha256-${h}'`);
+});
+
+// ── Hover finds and keyboard shortcuts ──────────────────────────────────────
+test.describe("hover finds and shortcuts", () => {
+  test.use({ viewport: { width: 1440, height: 900 } });
+
+  test("? opens the keyboard card, T switches the theme, and the card turns the letter keys off", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const card = page.locator("#keys");
+    await expect(card).toBeHidden();
+    await page.keyboard.press("?");
+    await expect(card).toBeVisible();
+    await expect(card).toContainText("switch theme");
+
+    const html = page.locator("html");
+    const wasDark = await html.evaluate((el) => el.classList.contains("dark"));
+    await page.keyboard.press("t");
+    await expect
+      .poll(() => html.evaluate((el) => el.classList.contains("dark")))
+      .toBe(!wasDark);
+
+    await card.getByRole("button", { name: "Turn letter keys off" }).click();
+    await page.keyboard.press("t");
+    await page.waitForTimeout(300);
+    expect(await html.evaluate((el) => el.classList.contains("dark"))).toBe(
+      !wasDark,
+    );
+    await page.keyboard.press("Escape");
+    await expect(card).toBeHidden();
+  });
+
+  test("letter keys do nothing while a story is open", async ({ page }) => {
+    await page.goto("/#story-rsvp");
+    await expect(page.locator("dialog[open]")).toBeVisible();
+    await page.keyboard.press("?");
+    await expect(page.locator("#keys")).toBeHidden();
+  });
+
+  test("the build link names its commit and shows the commit card on hover", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const build = page.locator("a.footer-build");
+    await expect(build).toHaveAttribute(
+      "aria-label",
+      /^build [0-9a-f]{7}, the commit this page was built from/,
+    );
+    const card = build.locator(".build-card");
+    await expect(card).toBeHidden();
+    await build.hover();
+    await expect(card).toBeVisible();
+  });
+
+  test("letters hop once per visit and join back into the same text", async ({
+    page,
+  }) => {
+    await page.goto("/#contact");
+    const h = page.locator("#contact h2");
+    const before = await h.innerHTML();
+    await h.hover();
+    await expect(h.locator(".hop-ch").first()).toBeAttached();
+    // One hop, then still: nothing loops while the pointer stays.
+    await page.waitForTimeout(1500);
+    expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+    await page.mouse.move(1400, 880);
+    await expect(h.locator(".hop-ch")).toHaveCount(0);
+    expect(await h.innerHTML()).toBe(before);
+  });
 });
