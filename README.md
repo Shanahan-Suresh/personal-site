@@ -68,7 +68,7 @@ Useful filters: `npm test -- --project=chromium` (one browser),
 
 Current coverage (`tests/home.spec.ts`): home-page smoke (hero headline, major
 sections, nav + theme toggle presence, contact mailto), the theme button (dark class,
-localStorage, keyboard, `aria-pressed`), the 600px layout and the mobile menu (open,
+localStorage, keyboard, `aria-pressed`, mouse clicks during a running switch), the 600px layout and the mobile menu (open,
 Escape returning focus to the burger, outside tap, link), the project stories (paragraph
 split, the modal with Next, Previous and the arrow keys, Back closing a story, Escape, the
 close button and a backdrop click returning focus to its opener, the numbers strip and the
@@ -76,7 +76,8 @@ hero frame opening stories, a shared `#story` link, Previous and Next without Ja
 the pointer preview (mouse shows it clear of its row, touch never does), the row focus
 outline, the email Copy button, reduced-motion static render, the interactions (scrolled
 nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
-placeholders and CSP hashes. `tests/guard.spec.ts` runs the
+placeholders, CSP hashes, and no border or hard shadow cut by a clipping box at 390 and
+1440px. `tests/guard.spec.ts` runs the
 placeholder guard against throwaway folders to prove it blocks a placeholder file or
 reference.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
@@ -121,7 +122,7 @@ Project captures, the retouched real headshot and licensed real photography live
 prompts. Astro produces responsive WebP with explicit dimensions. The hero portrait and RSVP capture load
 eagerly; other media loads lazily. Story images load only when their dialog opens. Photographer
 credits remain accessible HTML links. Project captions describe the product and workflow; capture
-fixtures and presentation choices are documented with the assets. The portrait sits on a flat butter
+fixtures and presentation choices are documented with the assets. The portrait sits on a flat cream
 ground in an ink frame. Both mascot poses remain unreferenced assets.
 
 Capture harnesses live under gitignored `design-previews/media` and leave source projects unchanged.

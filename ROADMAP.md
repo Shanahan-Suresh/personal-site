@@ -21,14 +21,14 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Settled decisions
 
-1. **Palette.** Five slab colours plus paper and card, light and dark, taken from the spec's `:root`
+1. **Palette.** Six slab colours plus paper and card, light and dark, taken from the spec's `:root`
    and dark blocks. The six old accents (`--accent-1/2/pop` and the rest) go.
-   - Light: tomato `#ff6a45`, butter `#ffd24a`, cobalt `#3d52ea`, green `#0c7a4d`,
+   - Light: sky `#8ec5ff`, tomato `#ff6a45`, butter `#ffd24a`, cobalt `#3d52ea`, green `#0c7a4d`,
      night `#15120e`, paper `#f5f0e4`, card `#fffdf7`.
-   - Dark: tomato `#e9583a`, butter `#eec23d`, cobalt `#3346dc`, green `#0a6c44`,
+   - Dark: sky `#6aa6e8`, tomato `#e9583a`, butter `#eec23d`, cobalt `#3346dc`, green `#0a6c44`,
      night `#0a0907`, paper `#14120f`, card `#1f1c17`, text `#f3eee3`.
-   - Slab text colour is fixed per slab (ink on tomato and butter, white on cobalt, green and
-     night) and does not invert with the theme. Only paper, card, text and edge invert.
+   - Slab text colour is fixed per slab (ink on sky, tomato and butter, white on cobalt, green
+     and night) and does not invert with the theme. Only paper, card, text and edge invert.
 2. **Theme switch.** Keep the existing mechanism: the `.dark` class on `<html>`, the `theme` key in
    `localStorage` and the inline boot script in `BaseLayout.astro`. The spec's
    `[data-theme="dark"]` and `prefers-color-scheme` blocks become one `.dark` block, because the
@@ -39,10 +39,10 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
    the `wdth` axis. If they do not, subset Google's variable font with `fonttools` into one
    latin woff2 file in `src/assets/fonts/` and record its source and licence (OFL) there.
 4. **Hero.** The headline, the lead card with two buttons, and a picture stack: the portrait
-   (`portrait-cutout-v4.png` on a butter ground) with the RSVP capture overlapping its lower right
+   (`portrait-cutout-v4.png` on a cream ground) with the RSVP capture overlapping its lower right
    corner. The copper-coil photograph leaves the site with its provenance entry.
-5. **Homepage order.** Nav, hero (tomato), numbers strip (butter), work (cobalt), the short
-   version (green), rules I build by (paper), what I'm into lately (butter), off hours (photo strip),
+5. **Homepage order.** Nav, hero (sky), numbers strip (cobalt), work (green), the short
+   version (cobalt), rules I build by (paper), what I'm into lately (butter), off hours (photo strip),
    contact (night), footer. The marquee goes. `Now` merges into "What I'm into lately".
 6. **Projects.** One ordered list of seven rows: RSVP, HR, OHSE, Tech Scout Digest, OpenAPI to
    MCP, artwork censoring, HeatGen. Each row shows index, group, title, one fact, a one-line
@@ -63,7 +63,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 10. **Photo credits.** The off-hours strip keeps each photographer credit from
     `src/data/interests.ts` as a small mono line in its caption.
 11. **Motion.** Six moves only: headline lines rising on scroll, the hero frames fading up, the
-    pointer preview, the dialog opening and sliding between stories, the theme wipe, and lazy
+    pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), and lazy
     pictures fading in. Each respects reduced motion. Stickers, magnetic buttons, tilt,
     scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site.
 12. **New copy.** Only short labels and headings are new: "Things I've built", "Seven projects from
@@ -99,7 +99,7 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 ### 3. Homepage, top half: hero, numbers and work
 
 - Data changes for decision 6.
-- `Hero.astro` (decision 4) with the line-reveal headline, `AI tooling.` on the butter marker, a
+- `Hero.astro` (decision 4) with the line-reveal headline, `AI tooling.` on a tilted butter label (full ink frame, small hard shadow), a
   non-breaking `full-stack`, and the headline sized to its column (`container-type: inline-size`
   with a `cqi` font size, as in the spec).
 - New `Numbers.astro`: four results. Take the values from the project facts so they cannot drift.
@@ -175,7 +175,7 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
   file on dense screens and carries the capture's caption.
 - Phone rows lead with a 16:9 thumbnail with the Story tab on its corner; the OHSE crop anchors
   left. Dark mode dims white captures a step. Lazy pictures fade in.
-- A Copy button beside the email, the theme wipe, and a 404 page.
+- A Copy button beside the email, the theme switch, and a 404 page.
 
 ## Checks
 
