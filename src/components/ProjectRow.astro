@@ -4,11 +4,9 @@ import type { ListedProject } from "@/data/projects";
 
 interface Props {
   project: ListedProject;
-  index: number;
 }
 
-const { project: p, index } = Astro.props;
-const num = String(index + 1).padStart(2, "0");
+const { project: p } = Astro.props;
 const crop = p.media?.objectPosition ?? "top";
 
 /* The pointer preview loads one of these on first hover, never with the page:
@@ -32,9 +30,6 @@ const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
     data-peek-cap={p.media?.caption}
     aria-haspopup="dialog"
   >
-    <span class="ix" aria-hidden="true"
-      ><span class="n">{num}</span><span class="a">→</span></span
-    >
     <span class="hd">
       <span class="grp label">{p.group}</span>
       <span class="t">{p.title}</span>
@@ -71,35 +66,13 @@ const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
   }
   .pr {
     display: grid;
-    grid-template-columns: 56px minmax(0, 1.25fr) minmax(0, 1fr) 150px;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr) 150px;
     gap: 28px;
     align-items: center;
     padding: 28px 20px;
   }
 
-  /* The index turns into an arrow and the title steps forward on hover. */
-  .ix {
-    position: relative;
-    align-self: start;
-    padding-top: 6px;
-    overflow: hidden;
-    font: 500 14px/1 var(--font-mono);
-    letter-spacing: 0.06em;
-  }
-  .ix > span {
-    display: block;
-    transition:
-      transform 0.18s var(--ease-out),
-      opacity 0.18s;
-  }
-  .ix .a {
-    position: absolute;
-    left: 0;
-    top: 6px;
-    font: 800 22px/0.6 var(--font-display);
-    opacity: 0;
-    transform: translateX(-100%);
-  }
+  /* The title steps forward on hover. */
   .t {
     display: block;
     font: 800 clamp(30px, 3.6vw, 54px) / 0.92 var(--font-display);
@@ -158,40 +131,19 @@ const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
     .pr:focus-visible .t {
       transform: translateX(10px);
     }
-    .pr:hover .ix .n,
-    .pr:focus-visible .ix .n {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    .pr:hover .ix .a,
-    .pr:focus-visible .ix .a {
-      opacity: 1;
-      transform: none;
-    }
   }
 
-  /* Phones and tablets: the picture leads, the Story tab sits on its corner,
-     and the index shares a line with the group label. */
+  /* Phones and tablets: the picture leads and the Story tab sits on its
+     corner. */
   @media (max-width: 960px) {
     .pr {
-      /* A fixed index column: the thumbnail spans both columns and would
-         otherwise inflate an auto one. */
-      grid-template-columns: 22px minmax(0, 560px);
+      grid-template-columns: minmax(0, 560px);
       grid-template-areas:
-        "pic pic"
-        "ix hd"
-        "fa fa";
+        "pic"
+        "hd"
+        "fa";
       gap: 14px 14px;
       padding: 24px 20px 26px;
-    }
-    .ix {
-      grid-area: ix;
-      padding: 0;
-      font-size: 13px;
-      line-height: 1.3;
-    }
-    .ix .a {
-      display: none;
     }
     .hd {
       grid-area: hd;
@@ -234,8 +186,7 @@ const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
   }
   @media (prefers-reduced-motion: reduce) {
     .go,
-    .t,
-    .ix > span {
+    .t {
       transition: none;
     }
   }

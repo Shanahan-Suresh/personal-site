@@ -253,7 +253,7 @@
       "bytes": 322152,
       "sha256": "a490afa51a3a2c52821eab73c79687115dd12ed91039a5ca7c9c665ef7795a07",
       "source_root": "D:\\Projects\\archive\\gbmc\\gbmc-enroll",
-      "caption": "From signing up to a scan at the door.",
+      "caption": "The sign-up form, and the ticket a guest shows at the door.",
       "appearance": "Invitation-style redesign in isolated wrapper and capture CSS; production appearance is not represented.",
       "source_files_preserved_byte_for_byte": 27,
       "source_hash_manifest": "design-previews/media/rsvp/source-hashes.json",
@@ -337,52 +337,15 @@
       ]
     },
     "hr": {
-      "asset": "work/hr-redesign-v4.png",
-      "dimensions": [960, 740],
-      "bytes": 286467,
-      "sha256": "d5c7aafea67128ba4272281e3e0d2b1fc65bd0aacf7edcd5dffdcf8daf3d46d9",
-      "source_root": "D:/Projects/archive/reimagine/reimagine-front",
-      "caption": "A clearer view of the team, with less waiting around.",
-      "appearance": "Illustrative manager workspace built from the real Svelte 4 UserCategoryView and UserTiles workflow, derivative UserCard and UserPerformanceFooter presentation, and original SearchBar, DataFilter and pagination logic.",
-      "fixture": "Six synthetic team members, invented roles and organisation labels, example.com addresses, three acknowledged and three awaiting, with five KPIs created. Initials replace the source silhouette presentation.",
-      "interaction": "First two actual checkbox controls selected before capture. Search, selection, filter application/reset, pagination and Details popover verified by verify-harness.mjs.",
-      "intentional_presentation_derivatives": [
-        {
-          "path": "src/routes/manager_dashboard/(manager)/my_team/UserCategoryView.svelte",
-          "sha256": "a43d3b2047d84cc95f147e4a33aa65a3f5dc1e47d8322e5989c617be8c3269fb",
-          "deviation": "Toolbar receives a presentation CSS class. Source filtering, pagination and dispatch logic are retained."
-        },
-        {
-          "path": "src/routes/manager_dashboard/(manager)/my_team/UserCard.svelte",
-          "sha256": "2984fb8b5aafb924ba03e584c53f8b6649de118a005f8b00aaa4bf62eb2fdd1a",
-          "deviation": "Derivative presentation uses initials, compact identity, explicit KPI state and an accessible selection label. Source checkbox handler and account-link constants are retained."
-        },
-        {
-          "path": "src/routes/manager_dashboard/(manager)/my_team/UserPerformanceFooter.svelte",
-          "sha256": "1095eefed21446bbfaf06d732f1922e7bd440c98029f41d523d470f004c9ff31",
-          "deviation": "Derivative presentation uses local meaningful icons and compact inline acknowledgement wording. The acknowledged boolean controls the same two states."
-        },
-        {
-          "path": "src/scss/custom.scss",
-          "sha256": "6d84d329bfce941118317a1e2402044b700908799a1a7636a1e7b103fa1b0057",
-          "deviation": "Geist is served locally; the primary colour is navy. Other copied source SCSS is retained."
-        }
-      ],
-      "deviations": [
-        "Appearance is an illustrative redesign. Original production appearance is not represented.",
-        "Local wrapper adds an unbranded narrow navigation rail and a fixture-derived summary. Navigation labels are presentational only.",
-        "UserCard and UserPerformanceFooter retain underlying selection and status data while changing layout, initials presentation, hierarchy, labels and local icons.",
-        "UserCategoryView receives one toolbar CSS class; its source state and event logic are unchanged.",
-        "KPI slot actions are presentational controls. No API or production callbacks are mounted.",
-        "Corporate app shell, logo, authentication, analytics, services and private data are excluded.",
-        "List view is compiled but not activated; its DataTable runtime is outside this fixture.",
-        "Geist fonts and Font Awesome icons are served locally. Custom SCSS uses a navy primary colour.",
-        "Original account-link constants point only to inert fixture destinations. Navigation service throws.",
-        "CUA pixels are decoded to PNG without resizing, retouching or synthesis."
-      ],
-      "receipt": "design-previews/media/corporate-v3/hr/receipt-v4.json",
-      "source_repository_unchanged": true,
-      "all_harness_files_byte_identical": false,
+      "asset": "work/hr-mock-v5.png",
+      "dimensions": [1920, 1480],
+      "bytes": 375247,
+      "sha256": "4ff4da85eaf43d4cc338f482ebe17367eafd0c9e084b5e90e1387fe0a39b6257",
+      "source_root": "design-previews/media/hr-mock-v5",
+      "caption": "A manager's view of one person on the team.",
+      "appearance": "A design mock-up of a manager's person-detail page, written as standalone HTML and CSS (h2.html, base.css). It is not a capture of the production platform, whose internal screens are not shown.",
+      "fixture": "Eight invented people with invented roles, goals, activity and courses. No real employee records.",
+      "render": "shot.mjs renders h2.html at 960 x 740 CSS pixels with deviceScaleFactor 2 in Chromium.",
       "company_branding_rendered": false,
       "external_services_called": false
     },

@@ -5,13 +5,11 @@ import type { ListedProject } from "@/data/projects";
 
 interface Props {
   project: ListedProject;
-  index: number;
-  total: number;
   prev: ListedProject;
   next: ListedProject;
 }
 
-const { project: p, index, total, prev, next } = Astro.props;
+const { project: p, prev, next } = Astro.props;
 /* The capture at its own size, opened from the caption so small UI text can be read. */
 const full = p.media
   ? await getImage({ src: p.media.image, format: "webp", quality: 85 })
@@ -19,7 +17,6 @@ const full = p.media
 const paragraphs = [p.description].flat();
 const nextTitle =
   next.title.length > 26 ? next.title.slice(0, 24).trim() + "…" : next.title;
-const pad = (n: number) => String(n).padStart(2, "0");
 ---
 
 <dialog
@@ -31,7 +28,7 @@ const pad = (n: number) => String(n).padStart(2, "0");
 >
   <div class="st-head">
     <div>
-      <span class="label">{p.group} · {pad(index + 1)} of {pad(total)}</span>
+      <span class="label">{p.group}</span>
       <h2 id={`story-${p.id}-title`}>{p.title}</h2>
     </div>
     <a class="st-x" href={`#row-${p.id}`} data-close aria-label="Close story"

@@ -1,6 +1,6 @@
 import { site } from "@/lib/site-config";
 
-/** Deep link into the repo, so every claim on the colophon is one click from its source. */
+/** Deep link into the repo, so each stack row on the colophon links to its source file. */
 export const repoFile = (path: string) => `${site.repo}/blob/main/${path}`;
 
 export interface Stat {
@@ -19,23 +19,23 @@ export const measuredOn = "7 Nov 2026";
 export const stats: Stat[] = [
   {
     label: "Home page on arrival",
-    value: "~156–197 KiB",
+    value: "~161–234 KiB",
     note: "Fresh mobile/desktop contexts across all three engines",
   },
   {
     label: "Home page after scrolling",
-    value: "~211–408 KiB",
+    value: "~216–427 KiB",
     note: "Includes every responsive image, fonts, CSS and JavaScript",
   },
   {
     label: "Framework JavaScript",
     value: "0 KB",
-    note: "No React, no hydration, no client router",
+    note: "Astro sends plain HTML with no React",
   },
   {
     label: "Interaction bundle",
-    value: "2.6 KiB",
-    note: "One TypeScript module, gzipped",
+    value: "4.8 KiB",
+    note: "One bundled script, gzipped",
   },
   {
     label: "Browsers in the test matrix",
@@ -71,7 +71,7 @@ export const stack: StackItem[] = [
   {
     name: "One interaction module",
     detail:
-      "The headline reveal, scroll spy, mobile menu, pointer preview, story dialogs and copy button live in a single file with a cleanup path.",
+      "The headline reveal, scroll spy, mobile menu, pointer preview, story dialogs, copy button and keyboard shortcuts live in a single file with a cleanup path.",
     path: "src/scripts/home-interactions.ts",
   },
   {

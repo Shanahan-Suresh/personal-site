@@ -42,25 +42,24 @@ const testCount = countTests(listing.suites);
 
 <BaseLayout
   title="Colophon — Shanahan Suresh"
-  description="How shanahansuresh.com is built: Astro 7, Tailwind 4, self-hosted fonts, no framework JavaScript, a three-browser Playwright suite, and the numbers to back it up."
+  description="shanahansuresh.com is built with Astro 7 and Tailwind 4, with no framework JavaScript, and tested with Playwright in three browsers."
 >
   <PageHead
     label="Colophon"
     title="How this site is built"
-    intro="The site doubles as a code sample. The source is public, and every claim below links to the file that backs it."
+    intro="The code for this site is on GitHub. Each tool in the first list links to the file where the site uses it."
   />
 
   <section class="slab s-paper">
     <div class="wrap split">
-      <h2>The stack, and why it is small</h2>
+      <h2>What it runs on</h2>
       <div>
         <p class="body">
-          A personal site should load fast and get out of the way, so there is
-          no framework runtime on the page. Astro renders everything to HTML at
-          build time. The styling is a hand-written token system on top of
-          Tailwind 4. The only JavaScript is one small module for the
-          interactive bits (the headline reveal, the pointer preview on the
-          projects and the story dialogs).
+          A personal site should load fast, so there is no framework runtime on
+          the page. Astro renders everything to HTML at build time. The styling
+          is a hand-written token system on top of Tailwind 4. The only
+          JavaScript is one small module for the interactive bits (the headline
+          reveal, the pointer preview on the projects and the story dialogs).
         </p>
         <ul class="ruled" role="list">
           {
@@ -117,7 +116,7 @@ const testCount = countTests(listing.suites);
     <ul class="wrap cols" role="list">
       <li>
         <span class="label">Design system</span>
-        <h2>A poster on purpose</h2>
+        <h2>Colour slabs and ink seams</h2>
         <p>
           Full-width colour slabs joined by 3px ink seams, condensed display
           type, and hard shadows only on the things you can press or open. Text
@@ -125,7 +124,7 @@ const testCount = countTests(listing.suites);
           slabs and inverts only the paper.
         </p>
         <p>
-          Motion is rationed to six moves, and each one waits for <code
+          Every animation waits for <code
             >prefers-reduced-motion: no-preference</code
           >. With script off, every headline sits in place and every project
           story still opens.
@@ -139,12 +138,12 @@ const testCount = countTests(listing.suites);
       </li>
       <li>
         <span class="label">Testing and shipping</span>
-        <h2>Checked before it ships</h2>
+        <h2>Tests and hosting</h2>
         <p>
-          <code>npm run build</code> type-checks first, so a bad type fails the deploy
-          rather than shipping. Playwright runs the suite against the built output
-          in Chromium, Firefox and WebKit, including a performance budget of 350 KiB
-          on arrival and 1.5 MiB after scrolling through every section.
+          <code>npm run build</code> type-checks first, so a type error stops the
+          deploy. Playwright runs the suite against the built output in Chromium,
+          Firefox and WebKit, including a performance budget of 350 KiB on arrival
+          and 1.5 MiB after scrolling through every section.
         </p>
         <p>
           Cloudflare Pages serves the static output behind CSP, HSTS and

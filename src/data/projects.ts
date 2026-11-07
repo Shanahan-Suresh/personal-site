@@ -2,7 +2,7 @@ import type { Project, ProjectCategory } from "@/lib/types";
 import digestVisual from "@/assets/work/digest.png";
 import rsvpVisual from "@/assets/work/rsvp-redesign-v4.png";
 import censoritVisual from "@/assets/work/censorit-venus-v4.png";
-import hrVisual from "@/assets/work/hr-redesign-v4.png";
+import hrVisual from "@/assets/work/hr-mock-v5.png";
 import ohseVisual from "@/assets/work/ohse-unbranded-v3.png";
 import mcpVisual from "@/assets/work/mcp.png";
 import heatgenVisual from "@/assets/work/heatgen.png";
@@ -12,15 +12,15 @@ const personal: Project[] = [
     id: "digest",
     title: "Tech Scout Digest",
     summary:
-      "A daily newsletter where an LLM picks the news that matters to each team's stack.",
-    fact: { value: "Daily", label: "picks for each team's stack" },
+      "An LLM reads the tech feeds and writes one short newsletter for each team.",
+    fact: { value: "Daily", label: "email for each team" },
     description:
-      "A daily newsletter for teams who want to keep up with the tools they use. An LLM reads the news, picks the stories that matter to each team's stack and puts them into one short email. Each team is set up in config, and it runs on GCP, scaling to zero between editions.",
+      "A daily newsletter for teams who want to keep up with the tools they use. An LLM reads the news, picks the stories about the tools each team uses and puts them into one short email. Each team is set up in config, and it runs on GCP, scaling to zero between editions.",
     tags: ["Python", "GCP", "Terraform", "LLMs"],
     media: {
       image: digestVisual,
       alt: "Tech Scout Digest newsletter showing its masthead and a curated sample story.",
-      caption: "A few good stories to start the day.",
+      caption: "One team's morning email.",
     },
   },
   {
@@ -45,15 +45,16 @@ const personal: Project[] = [
   {
     id: "mcp",
     title: "OpenAPI → MCP server + chat UI",
-    summary: "Turns any API schema into tools an AI assistant can call.",
-    fact: { value: "1", label: "schema is all it needs" },
+    summary:
+      "Turns a Django API into tools an AI assistant can call, with a chat UI to try them.",
+    fact: { value: "1", label: "schema to point it at" },
     description:
       "Point it at an API's OpenAPI schema and it writes the tools an AI assistant needs to use that API. A Next.js chat interface sits on top, and if one model stalls, it moves on to the next. Hooking up a new API takes seconds.",
     tags: ["Python", "MCP", "FastAPI", "Next.js"],
     media: {
       image: mcpVisual,
       alt: "MCP Inspector listing four generated tools and a successful toy-shop product lookup.",
-      caption: "Give an AI assistant a new set of tools.",
+      caption: "Four tools made from a toy-shop API, open in MCP Inspector.",
     },
     link: {
       label: "Read the write-up",
@@ -67,7 +68,7 @@ const product: Project[] = [
     id: "rsvp",
     title: "Automated RSVP & check-in web app",
     summary:
-      "Serverless RSVPs, confirmations and QR check-in for 75,000 guests.",
+      "Sign-ups, email and WhatsApp confirmations, and a QR ticket for the door.",
     fact: { value: "75,000", label: "guests welcomed" },
     description: [
       "A serverless Next.js app built for 75,000 guests. It takes RSVPs, sends confirmations by email and WhatsApp (through SendGrid and Respond.io), and gives every guest a QR ticket to scan at the door.",
@@ -78,30 +79,31 @@ const product: Project[] = [
       image: rsvpVisual,
       aspectRatio: "1040 / 820",
       alt: "An invitation-style registration form alongside a confirmed ticket with a scannable QR code for a Developer Meetup.",
-      caption: "From signing up to a scan at the door.",
+      caption: "The sign-up form, and the ticket a guest shows at the door.",
     },
   },
   {
     id: "ohse",
     title: "OHSE incident-reporting module",
-    summary: "Role-based incident workflows across 10 business units.",
+    summary:
+      "Managers, safety officers and investigators each get their own incident workflow.",
     fact: { value: "10", label: "business units" },
     description: [
       "Ten business units use this module to report worksite incidents and see each one through to a fix. Managers, safety officers and investigators each need something different from it, so every role gets its own workflow.",
-      "I owned it from planning to the GCP rollout. Along the way I set up the team's first Playwright tests and added an MCP server, so an AI assistant can work with the module through its API.",
+      "I owned it from planning to the GCP rollout. I also set up the team's first Playwright tests and added an MCP server, so an AI assistant can work with the module through its API.",
     ],
     tags: ["Next.js", "Django", "GCP", "MCP"],
     media: {
       image: ohseVisual,
       objectPosition: "left top",
       alt: "An incident-reporting workspace with reports, status filters, search and pagination.",
-      caption: "Every report and its status, in one place.",
+      caption: "The incident list, with a filter for each status.",
     },
   },
   {
     id: "hr",
     title: "Enterprise HR platform",
-    summary: "Page loads cut by 63% for 20,000 employees.",
+    summary: "Faster pages and encrypted personal data for 20,000 employees.",
     fact: { value: "63%", label: "faster page loads" },
     description: [
       "The platform serves 20,000 employees, and some of its pages were slow. I reworked the heaviest modules, the query serialization and the bulk processing, and page loads got 63% faster.",
@@ -111,8 +113,8 @@ const product: Project[] = [
     media: {
       image: hrVisual,
       aspectRatio: "960 / 740",
-      alt: "A My Team workspace with six people, initials avatars, two selected cards and performance acknowledgement states.",
-      caption: "A clearer view of the team, with less waiting around.",
+      alt: "A manager's team view: a list of eight people on the left, and one person's profile with goal progress, review status, goals, recent activity and a learning path.",
+      caption: "A manager's view of one person on the team.",
     },
   },
 ];
@@ -122,7 +124,7 @@ const academic: Project[] = [
     id: "heatgen",
     title: "HeatGen",
     summary:
-      "Predicts thermal images of pavement from materials and weather. Published 2023.",
+      "Predicts thermal images of pavement from its materials and the weather.",
     fact: { value: "2023", label: "published in JESTEC" },
     description:
       "A university team project that predicts thermal images of pavement bricks from material and weather variables. Our work was published in the peer-reviewed JESTEC journal in 2023.",

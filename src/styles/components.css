@@ -319,3 +319,133 @@ a:focus-visible .arrow.back {
     transition: none;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Small finds: text selection, crop marks, hopping letters and the
+ * keyboard shortcuts card.
+ * ------------------------------------------------------------------ */
+::selection {
+  background: var(--butter);
+  color: var(--ink);
+}
+.s-butter ::selection {
+  background: var(--ink);
+  color: var(--butter);
+}
+
+/* Under a mouse, printer's crop marks draw in at the corners of the slab
+   under the pointer, as if it were a sheet about to be cut. Each mark is
+   two strokes in the slab's text colour; --mark is their length. */
+@property --mark {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@media (hover: hover) {
+  .slab {
+    position: relative;
+  }
+  .slab::after {
+    --mark: 0px;
+    content: "";
+    position: absolute;
+    inset: 14px;
+    z-index: 1;
+    background:
+      linear-gradient(currentColor, currentColor) 0 0 / var(--mark) 2px,
+      linear-gradient(currentColor, currentColor) 0 0 / 2px var(--mark),
+      linear-gradient(currentColor, currentColor) 100% 0 / var(--mark) 2px,
+      linear-gradient(currentColor, currentColor) 100% 0 / 2px var(--mark),
+      linear-gradient(currentColor, currentColor) 0 100% / var(--mark) 2px,
+      linear-gradient(currentColor, currentColor) 0 100% / 2px var(--mark),
+      linear-gradient(currentColor, currentColor) 100% 100% / var(--mark) 2px,
+      linear-gradient(currentColor, currentColor) 100% 100% / 2px var(--mark);
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+  .slab:hover::after {
+    --mark: 26px;
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .slab::after {
+    transition: --mark 0.35s var(--ease-out);
+  }
+}
+
+/* Letters split by script for one hop (`data-hop`), then joined again.
+   Split letters lose their kerning, so the hop text sets none at rest
+   either: otherwise the line changes width on split and join, and the
+   text beside it jumps. */
+.hop-ch {
+  display: inline-block;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-hop]:not(:has([data-hop-letters])),
+  [data-hop-letters] {
+    font-kerning: none;
+    font-variant-ligatures: none;
+  }
+}
+
+/* The keyboard shortcuts card, opened with "?". */
+.keys {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 60;
+  width: min(300px, calc(100vw - 48px));
+  padding: 18px 20px;
+  border: var(--seam) solid var(--edge);
+  background: var(--card);
+  color: var(--text);
+  box-shadow: var(--hard-8) var(--edge);
+  font: 500 14px/1.5 var(--font-mono);
+}
+.keys h2 {
+  margin: 0 0 10px;
+  font: 700 22px/1 var(--font-display);
+  text-transform: uppercase;
+}
+.keys ul {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+.keys li + li {
+  margin-top: 6px;
+}
+.keys kbd {
+  display: inline-block;
+  min-width: 26px;
+  margin-right: 10px;
+  padding: 1px 6px;
+  border: 2px solid currentColor;
+  font: inherit;
+  text-align: center;
+}
+.keys.off li:not(:last-child) {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+.keys-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.keys-actions button {
+  padding: 7px 10px 6px;
+  border: 2px solid currentColor;
+  background: none;
+  color: inherit;
+  font: 500 12px/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.keys-actions button:hover,
+.keys-actions button:focus-visible {
+  border-color: var(--edge);
+  background: var(--butter);
+  color: var(--ink);
+}

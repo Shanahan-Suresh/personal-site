@@ -6,7 +6,7 @@
     .name { font: 800 40px "Bricolage Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.02em; fill: #ffffff; }
     .url { font: 500 20px "DM Mono", ui-monospace, monospace; letter-spacing: 0.08em; fill: #ffd24a; }
   </style>
-  <rect width="1200" height="630" fill="#ff6a45"/>
+  <rect width="1200" height="630" fill="#8ec5ff"/>
   <rect width="1200" height="92" fill="#15120e"/>
   <text class="name" x="64" y="60.0">SHANAHAN SURESH</text>
   <text class="url" x="1136" y="53.0" text-anchor="end">SHANAHANSURESH.COM</text>

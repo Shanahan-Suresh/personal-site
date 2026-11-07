@@ -11,6 +11,8 @@ export interface Interest {
   image: ImageMetadata;
   alt: string;
   objectPosition?: string;
+  /** The photographer and source page, kept as a record. The Unsplash
+      License needs no credit on the page, so the page does not show it. */
   credit: { label: string; href: string };
 }
 

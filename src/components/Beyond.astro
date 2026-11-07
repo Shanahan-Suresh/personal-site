@@ -7,36 +7,31 @@ import { interests } from "@/data/interests";
   <h2 id="beyond-title" class="sr-only">When I'm not building</h2>
   <ul class="off" role="list">
     {
-      interests.map(
-        ({ title, caption, image, alt, objectPosition, credit }) => (
-          <li>
-            <figure>
-              <div class="pic">
-                <Image
-                  src={image}
-                  alt={alt}
-                  format="webp"
-                  quality={78}
-                  widths={[240, 360, 520]}
-                  sizes="(max-width: 960px) 50vw, 25vw"
-                  loading="lazy"
-                  decoding="async"
-                  style={
-                    objectPosition ? `object-position:${objectPosition}` : ""
-                  }
-                />
-              </div>
-              <figcaption>
-                <b>{title}</b>
-                {caption}
-                <span class="media-credit">
-                  <a href={credit.href}>{credit.label}</a>
-                </span>
-              </figcaption>
-            </figure>
-          </li>
-        ),
-      )
+      interests.map(({ title, caption, image, alt, objectPosition }) => (
+        <li>
+          <figure>
+            <div class="pic">
+              <Image
+                src={image}
+                alt={alt}
+                format="webp"
+                quality={78}
+                widths={[240, 360, 520]}
+                sizes="(max-width: 960px) 50vw, 25vw"
+                loading="lazy"
+                decoding="async"
+                style={
+                  objectPosition ? `object-position:${objectPosition}` : ""
+                }
+              />
+            </div>
+            <figcaption>
+              <b>{title}</b>
+              {caption}
+            </figcaption>
+          </figure>
+        </li>
+      ))
     }
   </ul>
 </section>
@@ -88,22 +83,6 @@ import { interests } from "@/data/interests";
     font: 800 22px/1 var(--font-display);
     letter-spacing: 0.008em;
     text-transform: uppercase;
-  }
-  .media-credit {
-    display: block;
-    margin-top: 10px;
-    font: 400 11.5px/1.35 var(--font-mono);
-    letter-spacing: 0.02em;
-  }
-  .media-credit a {
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
-    transition: background var(--dur-fast);
-  }
-  .media-credit a:hover,
-  .media-credit a:focus-visible {
-    background: var(--ink);
-    color: var(--white);
   }
   @media (max-width: 960px) {
     .off {

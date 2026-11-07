@@ -1,7 +1,8 @@
 /* Page behaviour for the poster design: headline reveal, scroll spy, scrolled
-   nav, mobile menu, the pointer preview on project rows and the story
-   dialogs. Every part works from server-rendered markup; script only adds
-   motion and the modal. `init` runs once per page and is safe to call again:
+   nav, mobile menu, the pointer preview on project rows, the story dialogs,
+   the hover finds (label wipe, hopping letters, typing chip), keyboard
+   shortcuts and a note in the console. Every part works from server-rendered
+   markup; script only adds motion, the modal and the shortcuts. `init` runs once per page and is safe to call again:
    it first undoes every listener a previous run added. */
 
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -145,44 +146,98 @@ export function initMobileNav(): void {
 }
 
 /* Pointer preview: a screenshot follows the mouse across the project rows.
-   It never covers the row being read: it sits below a row in the top half
-   of the screen and above a row in the bottom half. CSS hides it on touch
-   screens and below 960px. */
+   It never covers the row being read: it sits below the row or above it, and
+   keeps that side while it fits, so moving between rows glides a short way.
+   When it no longer fits, it hops to the other side with a quick fade rather
+   than sliding across the row. CSS hides it on touch screens and below 960px.
+   Every row's picture decodes when the mouse first reaches the list, and a
+   new picture wipes in over the last only once it is ready, with its caption. */
 /* Preview placement, in CSS pixels. The panel is 400px wide (Work.astro). */
 const PEEK_MARGIN = 12; // kept clear between the panel and the window edges
 const PEEK_GAP_ABOVE = 16; // between a row's top and the panel above it
 const PEEK_GAP_BELOW = 44; // between a row's bottom and the panel below it; clears the caption tab
 const PEEK_TAB = 32; // the caption tab's height above the panel
-const PEEK_FALLBACK_H = 256; // panel height before its image has loaded
 const PEEK_FOCUS_AT = 0.42; // keyboard focus: the panel centres this far across the row
+const PEEK_EASE = 0.16; // share of the remaining distance covered per 60 Hz frame
+const PEEK_WIPE_MS = 320; // a new picture wiping down over the last
+const PEEK_HOP_MS = 140; // the fade when the panel changes sides
+
+type Side = "below" | "above";
 
 export function initPreview(): void {
   const peek = document.getElementById("peek");
-  const img = peek?.querySelector("img");
+  const pics = peek?.querySelector<HTMLElement>(".peek-pics");
   const cap = peek?.querySelector<HTMLElement>(".peek-cap");
-  if (!peek || !img) return;
+  const list = document.querySelector<HTMLElement>("#work .projects");
+  if (!peek || !pics || !list) return;
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
+  const rows = Array.from(list.querySelectorAll<HTMLElement>(".pr"));
   let tx = 0;
   let x = 0;
   let y = 0;
   let raf = 0;
+  let then = 0;
   let shown = false;
   let row: HTMLElement | null = null;
-  const ease = reduce ? 1 : 0.16;
+  let side: Side = "below";
+  let want = ""; // the picture asked for last
+  let showing = ""; // the picture on top of the stack
   const dense = window.devicePixelRatio > 1.25;
+  const srcOf = (el: HTMLElement) =>
+    (dense && el.dataset.peek2x) || el.dataset.peek || "";
 
+  const ready = new Map<string, Promise<void>>();
+  const load = (src: string) => {
+    let done = ready.get(src);
+    if (!done) {
+      const im = new Image();
+      im.src = src;
+      done = im.decode().catch(() => {});
+      ready.set(src, done);
+    }
+    return done;
+  };
+  const warm = () =>
+    rows.forEach((el) => {
+      const src = srcOf(el);
+      if (src) void load(src);
+    });
+
+  const fits = (r: DOMRect, h: number, s: Side) =>
+    s === "below"
+      ? r.bottom + PEEK_GAP_BELOW + h <= window.innerHeight - PEEK_MARGIN
+      : r.top - h - PEEK_GAP_ABOVE >= PEEK_MARGIN + PEEK_TAB;
+  /* Returns true when the panel changes sides under a visible pointer. */
+  const pickSide = (fresh: boolean): boolean => {
+    if (!row) return false;
+    const r = row.getBoundingClientRect();
+    const h = peek.offsetHeight;
+    const prefer: Side =
+      r.top + r.height / 2 < window.innerHeight / 2 ? "below" : "above";
+    const other: Side = side === "below" ? "above" : "below";
+    const next = fresh
+      ? prefer
+      : fits(r, h, side)
+        ? side
+        : fits(r, h, other)
+          ? other
+          : prefer;
+    const flipped = next !== side;
+    side = next;
+    return flipped && !fresh;
+  };
   const target = (): [number, number] => {
     const w = peek.offsetWidth;
-    const h = peek.offsetHeight || PEEK_FALLBACK_H;
+    const h = peek.offsetHeight;
     const px = Math.max(
       PEEK_MARGIN,
       Math.min(tx - w / 2, window.innerWidth - w - PEEK_MARGIN),
     );
     if (!row) return [px, y];
     const r = row.getBoundingClientRect();
-    const below = r.top + r.height / 2 < window.innerHeight / 2;
-    const py = below ? r.bottom + PEEK_GAP_BELOW : r.top - h - PEEK_GAP_ABOVE;
+    const py =
+      side === "below" ? r.bottom + PEEK_GAP_BELOW : r.top - h - PEEK_GAP_ABOVE;
     return [
       px,
       Math.max(
@@ -191,41 +246,85 @@ export function initPreview(): void {
       ),
     ];
   };
-  const tick = () => {
+  const tick = (now: number) => {
+    if (pickSide(false)) {
+      [x, y] = target();
+      if (!reduce)
+        peek.animate(
+          { opacity: [0, 1] },
+          { duration: PEEK_HOP_MS, easing: "ease-out" },
+        );
+    }
     const [px, py] = target();
-    x += (px - x) * ease;
-    y += (py - y) * ease;
+    const frames = then ? Math.min(4, (now - then) / (1000 / 60)) : 1;
+    const k = reduce ? 1 : 1 - Math.pow(1 - PEEK_EASE, frames);
+    then = now;
+    x += (px - x) * k;
+    y += (py - y) * k;
     peek.style.transform = `translate3d(${x}px,${y}px,0)`;
     raf = shown ? requestAnimationFrame(tick) : 0;
+    if (!raf) then = 0;
   };
 
-  /* Each new picture wipes in once it has loaded. */
-  listen(img, "load", () => {
-    peek.classList.remove("wipe");
-    void peek.offsetWidth; // restart the animation
-    peek.classList.add("wipe");
-  });
-
-  const show = (next: HTMLElement) => {
-    const src = (dense && next.dataset.peek2x) || next.dataset.peek;
+  /* Puts the row's picture on top once it has decoded. A newer row wins. */
+  const swap = async (el: HTMLElement, instant: boolean) => {
+    const src = srcOf(el);
     if (!src) return;
-    if (img.getAttribute("src") !== src) {
-      img.style.objectPosition = next.dataset.peekPos || "top";
-      img.src = src;
-      if (cap) cap.textContent = next.dataset.peekCap || "";
+    if (src !== want) {
+      want = src;
+      await load(src);
+      if (want !== src) return;
+      const pic = document.createElement("img");
+      pic.alt = "";
+      pic.src = src;
+      pic.style.objectPosition = el.dataset.peekPos || "top";
+      pics.append(pic);
+      showing = src;
+      if (cap) cap.textContent = el.dataset.peekCap || "";
+      const drop = () => {
+        while (pics.firstElementChild && pics.firstElementChild !== pic)
+          pics.firstElementChild.remove();
+      };
+      if (reduce || instant || !peek.classList.contains("on")) drop();
+      else
+        pic
+          .animate(
+            { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0 0)"] },
+            {
+              duration: PEEK_WIPE_MS,
+              easing: "cubic-bezier(0.2, 0.85, 0.2, 1)",
+            },
+          )
+          .finished.then(drop, drop);
     }
-    row = next;
-    if (!shown) [x, y] = target();
+    if (shown && showing === src) peek.classList.add("on");
+  };
+
+  const show = (el: HTMLElement) => {
+    const fresh = !shown;
+    row = el;
     shown = true;
-    peek.classList.add("on");
-    if (!raf) tick();
+    if (fresh) {
+      pickSide(true);
+      [x, y] = target();
+    }
+    void swap(el, fresh);
+    if (!raf) raf = requestAnimationFrame(tick);
   };
   const hide = () => {
     shown = false;
     peek.classList.remove("on");
   };
 
-  document.querySelectorAll<HTMLElement>(".pr").forEach((el) => {
+  /* The list, not each row, decides when the panel goes: crossing the seam
+     between two rows never starts a fade. */
+  listen(list, "pointerenter", (e) => {
+    if (e.pointerType === "mouse") warm();
+  });
+  listen(list, "pointerleave", (e) => {
+    if (e.pointerType === "mouse") hide();
+  });
+  rows.forEach((el) => {
     listen(el, "pointerenter", (e) => {
       if (e.pointerType !== "mouse") return;
       tx = e.clientX;
@@ -235,9 +334,9 @@ export function initPreview(): void {
       if (e.pointerType !== "mouse") return;
       tx = e.clientX;
     });
-    listen(el, "pointerleave", hide);
     listen(el, "focus", () => {
       if (!el.matches(":focus-visible")) return;
+      warm();
       const r = el.getBoundingClientRect();
       tx = r.left + r.width * PEEK_FOCUS_AT;
       show(el);
@@ -275,6 +374,14 @@ export function initStories(): void {
   const byId = (id: string) =>
     document.getElementById(`story-${id}`) as HTMLDialogElement | null;
   const openDialog = () => dialogs.find((d) => d.open) ?? null;
+  /* A story's picture loads lazily. Pointing at a story link, or opening the
+     story beside it, starts the load, so the picture is there when it opens. */
+  const warm = (id?: string) => {
+    if (!id) return;
+    byId(id)
+      ?.querySelectorAll<HTMLImageElement>('img[loading="lazy"]')
+      .forEach((im) => (im.loading = "eager"));
+  };
 
   const show = (id: string, enter?: "next" | "prev"): boolean => {
     const next = byId(id);
@@ -286,6 +393,8 @@ export function initStories(): void {
     current = id;
     if (!next.open) next.showModal();
     next.scrollTop = 0;
+    warm(next.dataset.prev);
+    warm(next.dataset.next);
     return true;
   };
 
@@ -315,6 +424,8 @@ export function initStories(): void {
   document
     .querySelectorAll<HTMLAnchorElement>("a[data-story]")
     .forEach((el) => {
+      listen(el, "pointerenter", () => warm(el.dataset.story));
+      listen(el, "focus", () => warm(el.dataset.story));
       listen(el, "click", (e) => {
         const id = el.dataset.story;
         if (!id || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -460,8 +571,302 @@ export function initImageFade(): void {
     });
 }
 
+/* Effects that need a mouse: the label wipe, hopping letters and the typing
+   chip. Touch screens and reduced motion keep the page as it is. */
+const fineHover = () => !reduce && window.matchMedia("(hover: hover)").matches;
+
+/* `data-brush`: the hero label's butter plate (`.brushing` in Hero.astro)
+   becomes a band under the pointer and widens to cover every part the
+   pointer passes over. Leaving fills the whole plate again. */
+const BRUSH_SHARE = 0.12; // half the band's starting width, as a share of the label
+
+export function initBrush(): void {
+  if (!fineHover()) return;
+  document.querySelectorAll<HTMLElement>("[data-brush]").forEach((el) => {
+    let a = 0;
+    let b = 0;
+    const paint = (e: PointerEvent, fresh: boolean) => {
+      const r = el.getBoundingClientRect();
+      const half = Math.max(24, r.width * BRUSH_SHARE);
+      const x = e.clientX - r.left;
+      const lo = Math.max(0, x - half);
+      const hi = Math.min(r.width, x + half);
+      a = fresh ? lo : Math.min(a, lo);
+      b = fresh ? hi : Math.max(b, hi);
+      el.style.setProperty("--brush-a", `${a}px`);
+      el.style.setProperty("--brush-b", `${b}px`);
+    };
+    listen(el, "pointerenter", (e) => {
+      paint(e, true);
+      el.classList.add("brushing");
+    });
+    listen(el, "pointermove", (e) => paint(e, false));
+    listen(el, "pointerleave", () => el.classList.remove("brushing"));
+  });
+}
+
+/* `data-hop`: when the pointer or keyboard focus arrives, the letters jump
+   one after another. The letters are those of the element itself, or of a
+   `data-hop-letters` element inside it. The text is split into spans only
+   for the hop and joined again after it, so the type keeps its kerning at
+   rest. */
+const HOP_MS = 420;
+const HOP_STAGGER_MS = 45;
+
+function splitLetters(root: HTMLElement): HTMLElement[] {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const texts: Text[] = [];
+  while (walker.nextNode()) texts.push(walker.currentNode as Text);
+  const letters: HTMLElement[] = [];
+  for (const t of texts) {
+    const frag = document.createDocumentFragment();
+    for (const ch of t.data) {
+      if (/\s/.test(ch)) {
+        frag.append(ch);
+        continue;
+      }
+      const s = document.createElement("span");
+      s.className = "hop-ch";
+      s.textContent = ch;
+      frag.append(s);
+      letters.push(s);
+    }
+    t.replaceWith(frag);
+  }
+  return letters;
+}
+
+export function initHop(): void {
+  if (!fineHover()) return;
+  document.querySelectorAll<HTMLElement>("[data-hop]").forEach((host) => {
+    const target =
+      host.querySelector<HTMLElement>("[data-hop-letters]") ?? host;
+    let busy = false;
+    let inside = false;
+    let before: Node[] | null = null;
+    let letters: HTMLElement[] = [];
+    // Joining removes the letter under the pointer, which Chromium reads as
+    // a fresh pointerenter. So the letters join only once the pointer is out.
+    const join = () => {
+      if (!before) return;
+      target.replaceChildren(...before);
+      before = null;
+    };
+    const hop = () => {
+      if (busy) return;
+      busy = true;
+      if (!before) {
+        before = [...target.childNodes].map((n) => n.cloneNode(true));
+        letters = splitLetters(target);
+      }
+      const lift = target === host ? "-0.12em" : "-0.14em";
+      const runs = letters.map((ch, i) =>
+        ch.animate(
+          [
+            { transform: "translateY(0)" },
+            { transform: `translateY(${lift})`, offset: 0.4 },
+            { transform: "translateY(0)" },
+          ],
+          {
+            duration: HOP_MS,
+            delay: i * HOP_STAGGER_MS,
+            easing: "cubic-bezier(.3,.7,.4,1)",
+          },
+        ),
+      );
+      Promise.all(runs.map((a) => a.finished.catch(() => undefined))).then(
+        () => {
+          busy = false;
+          if (!inside) join();
+        },
+      );
+    };
+    listen(host, "pointerenter", () => {
+      inside = true;
+      hop();
+    });
+    listen(host, "pointerleave", () => {
+      inside = false;
+      if (!busy) join();
+    });
+    listen(host, "focus", hop);
+  });
+}
+
+/* `data-type`: the code chip in About types a new line while the pointer is
+   on it. When the pointer leaves, it deletes back and types its own words
+   again. Either way it first deletes to the part both texts share, so a
+   pointer that comes back mid-way carries on from where the chip is. The
+   chip keeps at least its own width, so the pointer never falls off it. */
+const TYPE_MS = 45;
+const DELETE_MS = 22;
+
+export function initTypeChip(): void {
+  if (!fineHover()) return;
+  document.querySelectorAll<HTMLElement>("[data-type]").forEach((chip) => {
+    const own = chip.textContent ?? "";
+    const line = chip.dataset.type ?? "";
+    let timer = 0;
+    chip.style.display = "inline-block";
+    const goTo = (goal: string) => {
+      window.clearTimeout(timer);
+      if (!chip.style.minWidth) chip.style.minWidth = `${chip.offsetWidth}px`;
+      chip.classList.add("typing");
+      const step = () => {
+        const now = chip.textContent ?? "";
+        if (now === goal) {
+          if (goal === own) {
+            chip.style.minWidth = "";
+            chip.classList.remove("typing");
+          }
+          return;
+        }
+        const typing = goal.startsWith(now);
+        chip.textContent = typing
+          ? goal.slice(0, now.length + 1)
+          : now.slice(0, -1);
+        timer = window.setTimeout(step, typing ? TYPE_MS : DELETE_MS);
+      };
+      step();
+    };
+    listen(chip, "pointerenter", () => goTo(line));
+    listen(chip, "pointerleave", () => goTo(own));
+    teardowns.push(() => window.clearTimeout(timer));
+  });
+}
+
+/* Keyboard shortcuts: "?" opens a card that lists them. T switches the
+   theme; W, A and C go to Work, About and Contact. The card can turn the
+   letter keys off (remembered in localStorage), and they never fire while
+   a story is open, with a modifier key, or in a text field. */
+const SHORTCUTS_KEY = "shortcuts";
+const JUMPS: Record<string, string> = { w: "work", a: "about", c: "contact" };
+
+function shortcutsOn(): boolean {
+  try {
+    return localStorage.getItem(SHORTCUTS_KEY) !== "off";
+  } catch {
+    return true;
+  }
+}
+
+function buildKeysCard(): HTMLElement {
+  const card = document.createElement("aside");
+  card.className = "keys";
+  card.id = "keys";
+  card.hidden = true;
+  card.setAttribute("aria-labelledby", "keys-title");
+  const title = document.createElement("h2");
+  title.id = "keys-title";
+  title.textContent = "Keyboard";
+  const list = document.createElement("ul");
+  list.setAttribute("role", "list");
+  for (const [key, what] of [
+    ["T", "switch theme"],
+    ["W", "work"],
+    ["A", "about"],
+    ["C", "contact"],
+    ["?", "open or close this card"],
+  ]) {
+    const li = document.createElement("li");
+    const kbd = document.createElement("kbd");
+    kbd.textContent = key;
+    li.append(kbd, what);
+    list.append(li);
+  }
+  const actions = document.createElement("div");
+  actions.className = "keys-actions";
+  const toggle = document.createElement("button");
+  toggle.type = "button";
+  toggle.dataset.keysToggle = "";
+  const close = document.createElement("button");
+  close.type = "button";
+  close.textContent = "Close";
+  close.dataset.keysClose = "";
+  actions.append(toggle, close);
+  card.append(title, list, actions);
+  return card;
+}
+
+export function initShortcuts(): void {
+  const card = document.querySelector<HTMLElement>("#keys") ?? buildKeysCard();
+  if (!card.isConnected) document.body.append(card);
+  const toggle = card.querySelector<HTMLButtonElement>("[data-keys-toggle]")!;
+  const close = card.querySelector<HTMLButtonElement>("[data-keys-close]")!;
+  const paint = () => {
+    const on = shortcutsOn();
+    card.classList.toggle("off", !on);
+    toggle.textContent = on ? "Turn letter keys off" : "Turn letter keys on";
+  };
+  paint();
+  listen(toggle, "click", () => {
+    try {
+      localStorage.setItem(SHORTCUTS_KEY, shortcutsOn() ? "off" : "on");
+    } catch {
+      // Storage can be blocked; the keys stay as they are.
+    }
+    paint();
+  });
+  listen(close, "click", () => (card.hidden = true));
+  listen(document, "keydown", (e) => {
+    if (e.defaultPrevented || e.repeat || e.ctrlKey || e.metaKey || e.altKey)
+      return;
+    const t = e.target as HTMLElement | null;
+    if (t?.closest("input, textarea, select, [contenteditable]")) return;
+    if (document.querySelector("dialog[open]")) return;
+    if (e.key === "?") {
+      card.hidden = !card.hidden;
+      return;
+    }
+    if (e.key === "Escape" && !card.hidden) {
+      card.hidden = true;
+      return;
+    }
+    if (!shortcutsOn()) return;
+    const key = e.key.toLowerCase();
+    if (key === "t") {
+      document.getElementById("theme-toggle")?.click();
+    } else if (JUMPS[key]) {
+      const id = JUMPS[key];
+      const section = document.getElementById(id);
+      if (section) {
+        section.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+        history.replaceState(null, "", `#${id}`);
+      } else {
+        location.href = `/#${id}`;
+      }
+    }
+  });
+}
+
+/* A note for developers who open the browser console. Once per page load. */
+let greeted = false;
+
+export function greetConsole(): void {
+  if (greeted) return;
+  greeted = true;
+  console.log(
+    "%cLET'S BUILD.",
+    "padding:4px 12px;background:#ffd84a;color:#111;border:3px solid #111;font:900 26px/1.2 Impact,'Arial Narrow',sans-serif;",
+  );
+  console.log(
+    [
+      "Hi. This site is plain Astro and Tailwind, with no framework runtime.",
+      `How it is built: ${location.origin}/colophon`,
+      "The source: https://github.com/Shanahan-Suresh/personal-site",
+      "Press ? on the page for keyboard shortcuts.",
+      "Hiring, or want to build something? hello@shanahansuresh.com",
+    ].join("\n"),
+  );
+}
+
 export function init(): void {
   cleanup();
+  greetConsole();
+  initBrush();
+  initHop();
+  initTypeChip();
+  initShortcuts();
   initReveal();
   initScrollSpy();
   initScrolledNav();

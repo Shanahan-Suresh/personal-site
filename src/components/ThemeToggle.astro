@@ -56,6 +56,57 @@
       background var(--dur-fast),
       color var(--dur-fast);
   }
+  /* Under a mouse or keyboard focus, the icon rocks and lemon pixels pop out
+     around the button: a small taste of the pixel switch. Each pseudo-element
+     is an empty point whose shadows are the pixels. */
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-btn {
+      position: relative;
+    }
+    .theme-btn svg {
+      transition: transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+    }
+    .theme-btn::before,
+    .theme-btn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      margin: -2.5px;
+      opacity: 0;
+      transform: scale(0.2);
+      transition:
+        opacity 0.12s,
+        transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+      pointer-events: none;
+    }
+    .theme-btn::before {
+      box-shadow:
+        -28px -16px 0 var(--lemon),
+        26px -22px 0 var(--lemon),
+        30px 14px 0 var(--lemon);
+    }
+    .theme-btn::after {
+      box-shadow:
+        -24px 22px 0 var(--lemon),
+        4px 31px 0 var(--lemon),
+        -6px -32px 0 var(--lemon);
+      transition-delay: 0.06s;
+    }
+    .theme-btn:hover svg,
+    .theme-btn:focus-visible svg {
+      transform: rotate(-24deg);
+    }
+    .theme-btn:hover::before,
+    .theme-btn:hover::after,
+    .theme-btn:focus-visible::before,
+    .theme-btn:focus-visible::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
   .theme-btn:hover {
     background: var(--white);
     color: var(--ink);
@@ -99,16 +150,101 @@
         // Storage can be blocked; the theme still applies for this visit.
       }
     };
-    /* With a mouse, the new theme spreads from this button as a wave: a
-       butter band between two ink seams rides the edge of a growing circle.
+    /* With a mouse, the switch is a pixel dissolve from this button. Going to
+       dark, the dark page is cut in through a growing circle whose edge breaks
+       into square pixels in an ordered dither, so the new theme arrives square
+       by square over the page as it is. Going to light, it plays backwards:
+       the dark page shrinks into the button and breaks up square by square.
+       Every square shows one page or the other, never a painted colour; a
+       lemon sparkle marks each square as it flips.
        On a touch screen the page cross-fades. Without view transitions, or
        when the visitor asks for less motion, it switches at once.
        A click during a switch finishes that one and starts the next from
        the current theme, so the button can be pressed again and again. */
     const WAVE_MS = 720;
-    const BAND = 24; // ink 3px, butter 18px, ink 3px
+    const PIXEL = 10; // one dither square, in CSS px
+    const SPAN = 160; // how far the dither reaches ahead of the edge
+    // 8 x 8 ordered-dither thresholds (Bayer), 0 to 63.
+    const BAYER = [
+      0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26, 12, 44, 4,
+      36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33,
+      9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63,
+      31, 55, 23, 61, 29, 53, 21,
+    ].map((v) => (v + 0.5) / 64);
     let current: ViewTransition | null = null;
     let lastClick = 0;
+
+    /* Returns a frame builder for the dissolve around (x, y). Given the edge
+       radius r it paints the lemon sparkle on the canvas and returns the clip
+       path for the page on top: the new page while it grows (`grow`), or the
+       old page while it shrinks. The path is a smooth disk for the settled
+       middle plus one rectangle per run of visible squares in the dither. */
+    const dissolve = (
+      canvas: HTMLCanvasElement,
+      x: number,
+      y: number,
+      grow: boolean,
+    ) => {
+      const ctx = canvas.getContext("2d");
+      const w = canvas.width;
+      const h = canvas.height;
+      const img = ctx?.createImageData(w, h);
+      const px = img ? new Uint32Array(img.data.buffer) : null;
+      // The lemon token as one pixel: ImageData is RGBA bytes, which a
+      // little-endian Uint32Array reads as ABGR.
+      const n = parseInt(
+        getComputedStyle(root).getPropertyValue("--lemon").trim().slice(1),
+        16,
+      );
+      const lemon =
+        (0xff000000 |
+          ((n & 0xff) << 16) |
+          (n & 0xff00) |
+          ((n >> 16) & 0xff)) >>>
+        0;
+      // Both arcs and every rectangle run clockwise, so they add up.
+      const disk = (rad: number) =>
+        rad > 0
+          ? `M${x - rad} ${y}A${rad} ${rad} 0 1 1 ${x + rad} ${y}A${rad} ${rad} 0 1 1 ${x - rad} ${y}Z`
+          : "";
+      return (r: number) => {
+        px?.fill(0);
+        const parts = [disk(grow ? r - PIXEL : r - SPAN)];
+        for (let j = 0; j < h; j++) {
+          const dy = (j + 0.5) * PIXEL - y;
+          let run = -1;
+          for (let i = 0; i <= w; i++) {
+            let show = false;
+            if (i < w) {
+              const dist = Math.hypot((i + 0.5) * PIXEL - x, dy);
+              // How far this square sits ahead of the edge as it moves.
+              const d = grow ? dist - r : r - dist;
+              if (d > -PIXEL * 2 && d <= SPAN + PIXEL) {
+                const density = 1 - (d - PIXEL) / (SPAN - PIXEL);
+                const at = BAYER[(j & 7) * 8 + (i & 7)];
+                const flipped = d <= PIXEL || at < density;
+                // Growing shows the new page where flipped; shrinking keeps
+                // the old page where not flipped yet.
+                show = grow ? flipped : !flipped && d > PIXEL;
+                if (px && d > PIXEL && at < density && density - at < 0.1)
+                  px[j * w + i] = lemon;
+              }
+            }
+            if (show && run < 0) run = i;
+            if (!show && run >= 0) {
+              const len = (i - run) * PIXEL;
+              parts.push(
+                `M${run * PIXEL} ${j * PIXEL}h${len}v${PIXEL}h${-len}z`,
+              );
+              run = -1;
+            }
+          }
+        }
+        if (ctx && img) ctx.putImageData(img, 0, 0);
+        return parts.join("") || "M0 0";
+      };
+    };
+
     const press = (e: MouseEvent) => {
       const still = window.matchMedia("(prefers-reduced-motion: reduce)");
       if (!document.startViewTransition || still.matches) {
@@ -122,40 +258,60 @@
       lastClick = now;
       current?.skipTransition();
       document.getElementById("theme-ring")?.remove();
+      document.getElementById("theme-clip")?.remove();
 
       const touch = window.matchMedia("(hover: none) and (pointer: coarse)");
       const mode = touch.matches ? "theme-fade" : "theme-circle";
-      root.classList.remove("theme-fade", "theme-circle");
+      const grow = !root.classList.contains("dark");
+      root.classList.remove("theme-fade", "theme-circle", "theme-shrink");
       root.classList.add(mode);
+      if (mode === "theme-circle" && !grow) root.classList.add("theme-shrink");
 
       const r = btn.getBoundingClientRect();
       const x = r.left + r.width / 2;
       const y = r.top + r.height / 2;
+      const far = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      );
+      // Each way starts and ends with the dither just off-screen.
+      const [from, to] = grow ? [0, far + PIXEL * 2] : [far + SPAN, 0];
+      const pseudo = grow
+        ? "::view-transition-new(root)"
+        : "::view-transition-old(root)";
       let ring: HTMLElement | null = null;
+      let clip: HTMLStyleElement | null = null;
+      let frameAt: ((r: number) => string) | null = null;
       const t = document.startViewTransition(() => {
         apply();
         if (mode !== "theme-circle") return;
         ring = document.createElement("div");
         ring.id = "theme-ring";
         ring.setAttribute("aria-hidden", "true");
-        ring.style.setProperty("--ring-x", `${x}px`);
-        ring.style.setProperty("--ring-y", `${y}px`);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.ceil(window.innerWidth / PIXEL);
+        canvas.height = Math.ceil(window.innerHeight / PIXEL);
+        canvas.style.width = `${canvas.width * PIXEL}px`;
+        canvas.style.height = `${canvas.height * PIXEL}px`;
+        ring.append(canvas);
         document.body.append(ring);
+        frameAt = dissolve(canvas, x, y, grow);
+        // The first frame is in place before the pages are drawn.
+        clip = document.createElement("style");
+        clip.id = "theme-clip";
+        clip.textContent = `${pseudo}{clip-path:path("${frameAt(from)}")}`;
+        document.head.append(clip);
       });
       current = t;
       t.finished.finally(() => {
         if (current !== t) return; // a newer switch owns the page now
         current = null;
-        root.classList.remove(mode);
+        root.classList.remove(mode, "theme-shrink");
         document.getElementById("theme-ring")?.remove();
+        document.getElementById("theme-clip")?.remove();
       });
       if (mode !== "theme-circle") return;
 
-      const end =
-        Math.hypot(
-          Math.max(x, window.innerWidth - x),
-          Math.max(y, window.innerHeight - y),
-        ) + BAND;
       const timing = {
         duration: WAVE_MS,
         easing: "cubic-bezier(0.45, 0, 0.2, 1)",
@@ -163,16 +319,30 @@
       };
       t.ready
         .then(() => {
+          const el = ring as HTMLElement | null;
+          const sheet = clip as HTMLStyleElement | null;
+          const build = frameAt as ((r: number) => string) | null;
+          if (!el || !sheet || !build) return;
+          // The switch lasts as long as an animation on its pages does.
           root.animate(
-            {
-              clipPath: [
-                `circle(0px at ${x}px ${y}px)`,
-                `circle(${end}px at ${x}px ${y}px)`,
-              ],
-            },
-            { ...timing, pseudoElement: "::view-transition-new(root)" },
+            { opacity: [1, 1] },
+            { ...timing, pseudoElement: "::view-transition-group(root)" },
           );
-          ring?.animate({ "--ring-r": ["0px", `${end}px`] }, timing);
+          /* The radius runs as an animated custom property, and each frame
+             builds the clip and the sparkle from its current value. */
+          const radius = el.animate(
+            { "--ring-r": [`${from}px`, `${to}px`] },
+            timing,
+          );
+          const frame = () => {
+            if (!el.isConnected || !sheet.isConnected) return;
+            const now = parseFloat(
+              getComputedStyle(el).getPropertyValue("--ring-r"),
+            );
+            sheet.textContent = `${pseudo}{clip-path:path("${build(now)}")}`;
+            if (radius.playState !== "finished") requestAnimationFrame(frame);
+          };
+          frame();
         })
         .catch(() => {
           // Skipped by a newer click before it started; nothing to animate.
