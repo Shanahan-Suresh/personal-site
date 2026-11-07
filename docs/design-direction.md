@@ -117,7 +117,7 @@ because black headline type on a bright slab is the strongest part of the look. 
 settled decisions, the phases and what is still owed. On top of the spec, the site adds a
 polish layer (ROADMAP phase 9): every number and the hero's RSVP frame open their story, stories
 browse with Previous, Next, arrow keys, swipe and the Back button, the pointer preview sits clear
-of the row it shows, and the theme switch grows in a circle from its button (a cross-fade on touch screens). The spec file does not carry these; the code
+of the row it shows, and the theme switch is an 8-bit pixel dissolve from its button (a cross-fade on touch screens). A mouse also finds small rewards: a name plate on the portrait, crop marks on the slab under the pointer, hopping letters, a commit card on the build link, and a keyboard card on `?`. The spec file does not carry these; the code
 is their reference. The other mockups stay as reference for later work.
 
 Traps met in the polish layer:
@@ -127,8 +127,21 @@ Traps met in the polish layer:
 - While a view transition runs, Chromium sends every click to `<html>`, and `pointer-events: none`
   on the pseudo-elements does not change that. The theme button counts a click on `<html>` that
   falls inside its own box, so a press during a switch is not lost.
-- An item that spans an `auto` grid column gives that column its spare width. The phone project
-  row spans its thumbnail over the index column, so that column has a fixed width.
+- A transition effect plays over the page as it is. It never paints a fill over content ahead of
+  the reveal (the owner rejected squares of page colour that blacked the page out first). The theme
+  dissolve's squares clip the pages, so each square shows one real page or the other; only the
+  lemon sparkle draws on top. With no animation on its pseudo-elements a view transition ends at
+  once, so a per-frame clip needs one held animation (a no-op opacity on the root group).
+- A hover panel over a list of rows hides on the list's `pointerleave`, not each row's: the seams
+  between rows otherwise start a fade on every crossing. Swap its picture only after `decode()`,
+  on a new layer over the old one, or the frame flashes empty and the caption runs ahead.
+- A hover effect that swaps the element under the pointer (splitting text into letters and joining
+  it back) makes Chromium fire `pointerenter` again, so the effect loops. Change the DOM under the
+  pointer only once it has left.
+- A hidden overlay inside a clipping box stays inside it: clip it (`clip-path: inset(0 0 100% 0)`)
+  rather than moving it out, or its border counts as cut.
+- An item that spans an `auto` grid column gives that column its spare width. Give such a column
+  a fixed width.
 - The lower slabs do not use `content-visibility: auto`. Its estimated heights can move the
   target of an anchor jump (`/#contact`), and the gain on a page this size is small.
 

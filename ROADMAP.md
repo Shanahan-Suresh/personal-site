@@ -60,14 +60,13 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
    screenshot inline instead.
 9. **Mobile nav.** The spec hides the nav links below 560px. The site keeps its menu button and
    sheet (the tests cover it), restyled as a night slab.
-10. **Photo credits.** The off-hours strip keeps each photographer credit from
-    `src/data/interests.ts` as a small mono line in its caption.
-11. **Motion.** Six moves only: headline lines rising on scroll, the hero frames fading up, the
-    pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), and lazy
-    pictures fading in. Each respects reduced motion. Stickers, magnetic buttons, tilt,
+10. **Photo credits.** The off-hours strip shows no photographer credits. Each one stays in
+    `src/data/interests.ts` with its source page, as a record.
+11. **Motion.** Headline lines rising on scroll, the hero frames fading up, the
+    pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), lazy
+    pictures fading in, and the hover finds in `CLAUDE.md`. Each respects reduced motion. Stickers, magnetic buttons, tilt,
     scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site.
-12. **New copy.** Only short labels and headings are new: "Things I've built", "Seven projects from
-    work, side projects and university. Open any row for the full story.", "The short version",
+12. **New copy.** Only short labels and headings are new: "Things I've built", "The short version",
     "I build by", "What I'm into lately", "Learning next", "Story", "Let's build.". All other
     words stay as they are.
 
@@ -138,7 +137,7 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 
 ### 7. Assets, metadata and docs
 
-- A new `public/og-image.jpg` and `og-image.svg` in the poster style: the tomato slab with the
+- A new `public/og-image.jpg` and `og-image.svg` in the poster style: the sky slab with the
   headline and the name.
 - A new `favicon.svg`: a condensed "S" in butter on night.
 - Remove the copper-coil file and its entry in `hero-provenance-v5.json`. Record the new hero
@@ -171,8 +170,9 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
   capture at full size.
 - Hover grammar on every control: rows slide their title and turn the index into an arrow, the
   nav underline wipes in, arrows nudge, buttons lift on focus too, photos lean in, a tap fills a
-  row. The pointer preview sits above or below its row, wipes between pictures, loads a 960px
-  file on dense screens and carries the capture's caption.
+  row. The pointer preview sits above or below its row and keeps that side while it fits (a
+  short fade when it must change sides), wipes each decoded picture over the last, loads a
+  960px file on dense screens and carries the capture's caption.
 - Phone rows lead with a 16:9 thumbnail with the Story tab on its corner; the OHSE crop anchors
   left. Dark mode dims white captures a step. Lazy pictures fade in.
 - A Copy button beside the email, the theme switch, and a 404 page.
