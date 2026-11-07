@@ -61,20 +61,43 @@
   }
 }
 
-/* The theme switch: the new theme wipes down over the old one, hard-edged. */
-.theme-wipe::view-transition-old(root),
-.theme-wipe::view-transition-new(root) {
+/* The theme switch. With a mouse, the new theme grows in a circle from the
+   button, led by a butter wave (ThemeToggle.astro animates both). On a touch
+   screen the page cross-fades. Most slabs only deepen a shade, so a moving hard edge
+   that is not anchored to the button reads as a tear. */
+.theme-circle::view-transition-old(root),
+.theme-circle::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
-.theme-wipe::view-transition-new(root) {
-  animation: theme-wipe 0.38s var(--ease-out);
+/* The wave's edge: a butter band between two ink seams, just outside the
+   growing circle. It exists only during the switch, as its own layer. */
+@property --ring-r {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
 }
-@keyframes theme-wipe {
-  from {
-    clip-path: inset(0 0 100% 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
+#theme-ring {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  view-transition-name: theme-ring;
+  background: radial-gradient(
+    circle at var(--ring-x) var(--ring-y),
+    transparent var(--ring-r),
+    var(--ink) var(--ring-r) calc(var(--ring-r) + 3px),
+    var(--butter) calc(var(--ring-r) + 3px) calc(var(--ring-r) + 21px),
+    var(--ink) calc(var(--ring-r) + 21px) calc(var(--ring-r) + 24px),
+    transparent calc(var(--ring-r) + 24px)
+  );
+}
+::view-transition-group(theme-ring),
+::view-transition-new(theme-ring),
+::view-transition-old(theme-ring) {
+  animation: none;
+}
+.theme-fade::view-transition-old(root),
+.theme-fade::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: ease-out;
 }
