@@ -72,7 +72,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 9 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 10 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
 
 ### 1. Foundation: tokens, type and base styles
 
@@ -176,6 +176,16 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 - Phone rows lead with a 16:9 thumbnail with the Story tab on its corner; the OHSE crop anchors
   left. Dark mode dims white captures a step. Lazy pictures fade in.
 - A Copy button beside the email, the theme switch, and a 404 page.
+
+### 10. Phone pass: touch that feels native
+
+- Stories open as a bottom sheet on phones: a grab bar to pull it closed, a slide down on close,
+  and Previous and Next pinned in a bar under the thumb.
+- The nav bar slides away on a scroll down and returns on a scroll up. The menu sheet drops over
+  a dimmed page that holds still, and a tap on the dim closes it.
+- Hover lifts wait for a real pointer, so a tapped button does not stay raised. Small links get
+  44px hit areas under a coarse pointer. No tap flash, no font boost on rotation, and the gutter
+  clears a notch.
 
 ## Checks
 

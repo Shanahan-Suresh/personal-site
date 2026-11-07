@@ -8,8 +8,18 @@
   box-sizing: border-box;
 }
 
+/* Touch: no grey flash on tap (every control has its own press state),
+   no font boost when a phone turns sideways, and no double-tap zoom wait. */
 html {
   scroll-padding-top: calc(var(--nav-h) + 12px);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+a,
+button,
+summary {
+  touch-action: manipulation;
 }
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -73,10 +83,13 @@ main {
   flex: 1;
 }
 
+/* A phone on its side puts the notch over the page edge; the gutter grows
+   to clear it. */
 .wrap {
   max-width: var(--wrap);
   margin-inline: auto;
-  padding-inline: var(--gut);
+  padding-inline: max(var(--gut), env(safe-area-inset-left, 0px))
+    max(var(--gut), env(safe-area-inset-right, 0px));
 }
 
 .sr-only {
@@ -247,10 +260,17 @@ h3 {
   background: var(--btn2-bg);
   color: var(--btn2-fg);
 }
-.btn:hover,
+/* A touch screen keeps :hover on the last element tapped, so the lift
+   waits for a real pointer; a finger gets the press below. */
 .btn:focus-visible {
   transform: translate(-2px, -2px);
   box-shadow: var(--hard-6) var(--ink);
+}
+@media (hover: hover) {
+  .btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--hard-6) var(--ink);
+  }
 }
 .btn:active {
   transform: translate(4px, 4px);

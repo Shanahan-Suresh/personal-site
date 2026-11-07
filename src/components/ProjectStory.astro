@@ -89,7 +89,8 @@ const nextTitle =
           data-go={prev.id}
           data-dir="prev"
           aria-label={`Previous story: ${prev.title}`}
-          ><span class="arrow back" aria-hidden="true">←</span> Previous</a
+          ><span class="arrow back" aria-hidden="true">←</span>
+          <span class="st-go">Previous</span></a
         >
         <a
           class="btn btn-alt"
@@ -97,7 +98,8 @@ const nextTitle =
           data-go={next.id}
           data-dir="next"
           data-next={next.id}
-          >Next: {nextTitle} <span class="arrow" aria-hidden="true">→</span></a
+          ><span class="st-go">Next: {nextTitle}</span>
+          <span class="arrow" aria-hidden="true">→</span></a
         >
       </nav>
     </div>
@@ -163,9 +165,19 @@ const nextTitle =
       transform 0.1s,
       box-shadow 0.1s;
   }
-  .st-x:hover {
+  .st-x:focus-visible {
     transform: translate(-2px, -2px);
     box-shadow: var(--hard-3) var(--edge);
+  }
+  @media (hover: hover) {
+    .st-x:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--hard-3) var(--edge);
+    }
+  }
+  .st-x:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
   }
   .st-body {
     display: grid;
@@ -226,11 +238,21 @@ const nextTitle =
     font-size: 15px;
     white-space: normal;
   }
-  .st-actions .btn:hover,
+  /* The arrow and its label are separate spans, so the gap spaces them. */
+  .st-nav .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
   .st-actions .btn:focus-visible,
-  .st-nav .btn:hover,
   .st-nav .btn:focus-visible {
     box-shadow: var(--hard-6) var(--edge);
+  }
+  @media (hover: hover) {
+    .st-actions .btn:hover,
+    .st-nav .btn:hover {
+      box-shadow: var(--hard-6) var(--edge);
+    }
   }
   .st-actions .btn:active,
   .st-nav .btn:active {
@@ -239,6 +261,14 @@ const nextTitle =
   @media (prefers-reduced-motion: no-preference) {
     .story[open] {
       animation: story-pop 0.18s ease-out;
+    }
+    .story[open]::backdrop {
+      animation: story-dim 0.2s ease-out;
+    }
+    @keyframes story-dim {
+      from {
+        opacity: 0;
+      }
     }
     /* Moving between stories slides the new one in from the side it comes from. */
     .story[open][data-enter="next"] {
@@ -266,15 +296,50 @@ const nextTitle =
       }
     }
   }
+  @media (prefers-reduced-motion: no-preference) and (max-width: 560px) {
+    .story[open]:not([data-enter]) {
+      animation: story-rise 0.3s var(--ease-out);
+    }
+    @keyframes story-rise {
+      from {
+        transform: translateY(100%);
+      }
+    }
+  }
   @media (max-width: 960px) {
     .st-body {
       grid-template-columns: 1fr;
     }
   }
-  /* On a phone the head stays small, so the picture shows on the first screen. */
+  /* On a phone the story is a sheet that rises from the bottom edge and
+     fills the screen but for a strip of dimmed page at the top. The head
+     stays small, so the picture shows on the first screen, and carries a
+     grab bar: pulling it down closes the sheet (home-interactions.ts).
+     Previous and Next ride in a bar pinned to the bottom, under the thumb. */
   @media (max-width: 560px) {
+    .story {
+      width: 100%;
+      max-width: 100%;
+      height: calc(100dvh - 12px);
+      max-height: calc(100dvh - 12px);
+      margin: auto 0 0;
+      border-width: var(--seam) 0 0;
+      box-shadow: none;
+      overscroll-behavior: contain;
+    }
     .st-head {
-      padding: 12px 14px 12px 18px;
+      padding: 20px 14px 12px 18px;
+    }
+    .st-head::before {
+      content: "";
+      position: absolute;
+      top: 7px;
+      left: 50%;
+      width: 40px;
+      height: 4px;
+      margin-left: -20px;
+      background: var(--muted);
+      opacity: 0.6;
     }
     .st-head h2 {
       margin-top: 4px;
@@ -282,11 +347,30 @@ const nextTitle =
     }
     .st-body {
       gap: 24px;
-      padding: 18px;
+      padding: 18px 18px 0;
+    }
+    .st-nav {
+      position: sticky;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      margin: 28px -18px 0;
+      padding: 12px 18px calc(14px + env(safe-area-inset-bottom, 0px));
+      border-top: var(--seam) solid var(--edge);
+      background: var(--card);
     }
     .st-nav .btn {
-      flex: 1 1 auto;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 14px;
+      box-shadow: var(--hard-3) var(--edge);
+      white-space: nowrap;
+    }
+    .st-go {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
   @media (prefers-reduced-motion: reduce) {

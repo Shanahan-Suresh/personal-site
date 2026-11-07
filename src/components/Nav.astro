@@ -39,6 +39,7 @@ import { navLinks } from "@/data/navigation";
     position: sticky;
     top: 0;
     z-index: 50;
+    padding-top: env(safe-area-inset-top, 0px);
     background: var(--night);
     color: var(--white);
     border-bottom: var(--seam) solid var(--ink);
@@ -120,16 +121,21 @@ import { navLinks } from "@/data/navigation";
     transform: translateY(-7px) rotate(-45deg);
   }
 
-  /* Mobile: the links become a night sheet under the bar. */
+  /* Mobile: the links become a night sheet that drops from the bar over a
+     dimmed page, which stays still until the sheet closes. */
   @media (max-width: 768px) {
     .nav-inner {
       gap: 12px;
+    }
+    /* The name is a 44px target for a thumb, like the two buttons. */
+    .nav-name {
+      padding-block: 12px;
     }
     .nav-burger {
       display: inline-flex;
     }
     .nav-links {
-      display: none;
+      display: flex;
       position: absolute;
       top: 100%;
       left: 0;
@@ -138,9 +144,55 @@ import { navLinks } from "@/data/navigation";
       gap: 0;
       background: var(--night);
       border-bottom: var(--seam) solid var(--ink);
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition:
+        opacity 0.16s,
+        transform 0.22s var(--ease-out),
+        visibility 0s 0.22s;
     }
     .nav-header.nav-open .nav-links {
-      display: flex;
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      transition:
+        opacity 0.16s,
+        transform 0.22s var(--ease-out);
+    }
+    /* The dim layer paints under the bar (z-index -1 inside the header's
+       stacking context) and starts below its seam. A tap on it closes. */
+    .nav-header::after {
+      content: "";
+      position: fixed;
+      inset: calc(var(--nav-h) + var(--seam) + env(safe-area-inset-top, 0px)) 0
+        0;
+      z-index: -1;
+      background: rgb(10 9 7 / 0.55);
+      visibility: hidden;
+      opacity: 0;
+      transition:
+        opacity 0.2s,
+        visibility 0s 0.2s;
+    }
+    .nav-header.nav-open::after {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+    :global(html:has(.nav-header.nav-open)) {
+      overflow: hidden;
+    }
+    /* Scrolling down slides the bar away, as phone browsers do with their
+       own; any scroll up, or focus inside it, brings it back. */
+    .nav-header {
+      transition: transform 0.25s var(--ease-out);
+    }
+    .nav-header.nav-away:not(:focus-within) {
+      transform: translateY(-100%);
+    }
+    .nav-link:active {
+      background: #2a2620;
     }
     .nav-links li + li {
       border-top: 1px solid #3a362f;
@@ -165,10 +217,16 @@ import { navLinks } from "@/data/navigation";
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .nav-header,
+    .nav-header::after,
+    .nav-links,
     .nav-name,
     .nav-link,
     .nav-burger span {
       transition: none;
+    }
+    .nav-links {
+      transform: none;
     }
   }
 </style>

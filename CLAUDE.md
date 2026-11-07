@@ -127,6 +127,15 @@ tools and capture traps.
   hero's RSVP frame. Opening pushes `#story-<id>`, so Back closes it. Previous, Next, the arrow
   keys and a sideways swipe move between stories and replace that entry. Focus returns to the
   link that opened the story.
+- **On a phone** (touch, 560px and below for stories, 768px and below for the nav): a story is a
+  sheet that rises from the bottom edge, with a grab bar on its head (pull it down to close) and
+  Previous and Next pinned in a bar under the thumb. The nav bar slides away on a scroll down and
+  returns on any scroll up (`.nav-away`); the menu sheet drops over a dimmed, still page, and a tap
+  on the dim closes it. Hover lifts on `.btn`, the story buttons and Copy wait for
+  `(hover: hover)`, because a touch screen keeps `:hover` on the last thing tapped. Small links
+  (footer, LinkedIn, GitHub, the email) grow a 44px hit area under `(pointer: coarse)` without
+  moving the layout. Tests that scroll use `behavior: "instant"`: the page scrolls smoothly, so
+  a second jump otherwise starts before the first one lands.
 - **Favicon and share image:** `python scripts/brand-images.py` writes `public/favicon.svg`,
   `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. It needs Python
   with `fonttools`, `brotli`, `Pillow` and `playwright` (with Chrome). Edit the script, then rerun

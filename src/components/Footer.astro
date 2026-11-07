@@ -131,6 +131,18 @@ const built = describeCommit(commit);
   .footer-link:focus-visible {
     background-size: 100% 1px;
   }
+  /* A finger needs a 44px target: the hit area grows past the small mono
+     text, and the gap between links keeps the areas apart. */
+  @media (pointer: coarse) {
+    .footer-link {
+      position: relative;
+    }
+    .footer-link::before {
+      content: "";
+      position: absolute;
+      inset: -13px -9px;
+    }
+  }
   .footer-build {
     position: relative;
     color: #8f8a80;
