@@ -63,7 +63,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 10. **Photo credits.** The off-hours strip shows no photographer credits. Each one stays in
     `src/data/interests.ts` with its source page, as a record.
 11. **Motion.** Headline lines rising on scroll, the hero frames fading up, the
-    pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), lazy
+    pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), the phone story sheet, nav bar and menu sheet, lazy
     pictures fading in, and the hover finds in `CLAUDE.md`. Each respects reduced motion. Stickers, magnetic buttons, tilt,
     scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site.
 12. **New copy.** Only short labels and headings are new: "Things I've built", "The short version",
