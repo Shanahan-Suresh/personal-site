@@ -97,10 +97,10 @@ personal-site/
 │   ├── components/      # Astro UI components (Hero, Work, Nav, project rows and stories)
 │   ├── assets/          # project captures, portrait, licensed photography and provenance
 │   ├── content/         # MDX content (blog posts)
-│   ├── data/            # structured content (projects, learning, interests, navigation)
+│   ├── data/            # structured content (projects, learning, interests, navigation, colophon)
 │   ├── layouts/         # BaseLayout + PostLayout
 │   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts
-│   ├── pages/           # routes — index.astro, writing/, rss.xml.ts
+│   ├── pages/           # routes — index.astro, colophon.astro, 404.astro, writing/, rss.xml.ts
 │   ├── scripts/         # home-interactions.ts (bundled client JS for BaseLayout)
 │   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
 ├── scripts/             # build guards, CSP hashing, brand-images.py (favicon and OG image)
