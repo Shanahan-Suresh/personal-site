@@ -45,7 +45,7 @@ src/
 ├── assets/       # project captures, portrait, licensed photography and media provenance
 ├── components/   # UI + prose copy (see split below)
 ├── content/posts/# blog posts as .md/.mdx (collection defined in content.config.ts)
-├── data/         # structured, repeated content (projects, learning, interests, navigation)
+├── data/         # structured, repeated content (projects, learning, interests, navigation, colophon)
 ├── layouts/      # BaseLayout.astro (wraps pages), PostLayout.astro (wraps posts)
 ├── lib/          # posts.ts (post helpers), site-config.ts (identity/meta), types.ts (shared types)
 ├── pages/        # routes: index.astro (homepage), colophon.astro, 404.astro, writing/, rss.xml.ts
@@ -67,6 +67,7 @@ The split is deliberate:
   - `data/learning.ts` — `learning`, the boxed list in `Now.astro`.
   - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits.
   - `data/navigation.ts` — `navLinks`, the nav links. `Contact.astro` reads the social links from `site.social`.
+  - `data/colophon.ts` — the `/colophon` `stats` and `stack` rows, and `measuredOn`, the date of the transfer numbers.
   - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
   - `lib/types.ts` — shared `Project` and media types. Import these instead of redeclaring unions.
 - **Prose copy still lives in its component.** Hero paragraphs, About, Principles, the `Now` narrative,
@@ -189,6 +190,15 @@ No placeholder is in use. While one is, local builds and tests need `ALLOW_PLACE
   force-push and deletion.
 - Cloudflare dashboard settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP),
   Pages preview builds only from this repo's branches (never from forks).
+
+## Settled, do not reopen
+
+- `role="list"` on styled lists is a Safari fix: it keeps list semantics after `list-style` goes.
+- The sitemap leaves out `/writing` and `/rss` on purpose (`astro.config.mjs`), because `/writing`
+  is parked.
+- Breakpoints stay per component. CSS custom properties do not work in media queries.
+- Major upgrades (`@astrojs/mdx` 8, `prettier-plugin-astro` 1, TypeScript 7) each get their own
+  pass, never a routine dependency update.
 
 ## Git / deployment
 
