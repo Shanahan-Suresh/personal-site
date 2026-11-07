@@ -88,7 +88,7 @@ Before any redesign or restyle, read `docs/design-direction.md`: the owner's tas
 ten tried directions, what polished neobrutalism means, what reads as generic, and the mockup
 tools and capture traps.
 
-- **The look:** full-width colour slabs (tomato, butter, cobalt, green, night, paper) joined by
+- **The look:** full-width colour slabs (sky, tomato, butter, cobalt, green, night, paper) joined by
   3px ink seams, condensed uppercase display type, and hard offset shadows on frames, cards and
   buttons only. The spec is `design-previews/neo-2026/10-poster-v3.html`.
 - **Themes:** the `.dark` class on `<html>` swaps tokens in `tokens.css`. Slab colours deepen a
@@ -105,7 +105,7 @@ tools and capture traps.
   that shows on it.
 - **Motion:** six moves only: headline lines rising (`.reveal` with `.ln` lines), the hero frames
   fading up (`.rise`), the pointer preview on project rows, the story dialog opening and sliding
-  between stories, the theme switch wiping down (a view transition, `.theme-wipe`), and lazy
+  between stories, the theme switch (a view transition: with a mouse, a circle grows from the button led by a butter wave between ink seams, `.theme-circle` and `#theme-ring`; a press during a switch finishes it and starts the next; a 0.28s cross-fade on touch screens, `.theme-fade`), and lazy
   pictures fading in (`.fading`). All wait for `prefers-reduced-motion: no-preference`. The boot
   script in `BaseLayout.astro` sets `.js` before paint, so a page without script shows everything
   in place. Tilt, magnetic buttons, stickers, idle loops and count-up numbers stay off the site.
@@ -145,7 +145,7 @@ hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) 
 `Project.media` holds the image, alt text, caption and optional aspect ratio.
 `MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
 with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
-portrait (the cutout on a butter ground) loads first with `priority`. Each project row carries a
+portrait (the cutout on a cream ground) loads first with `priority`. Each project row carries a
 480px WebP in `data-peek` and a 960px one in `data-peek-2x`; the pointer preview loads one of them
 on first hover, by screen density. Below 960px each row shows a 16:9 thumbnail instead, cropped by
 `media.objectPosition` (default `top`). Story dialog images load only when their dialog opens, and

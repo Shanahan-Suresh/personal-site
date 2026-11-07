@@ -110,17 +110,23 @@ Capture and build traps:
 ## Current state
 
 The site is built in the Poster direction. Its spec is `design-previews/neo-2026/10-poster-v3.html`,
-with the owner's face at the top of the hero in place of the HR platform. `ROADMAP.md` holds the
+with the owner's face at the top of the hero in place of the HR platform. The hero is sky blue
+over a cobalt numbers strip, with butter only on the label and the main button: the owner found
+the tomato and butter opening too orange, and picked sky over cobalt, night and green heroes
+because black headline type on a bright slab is the strongest part of the look. `ROADMAP.md` holds the
 settled decisions, the phases and what is still owed. On top of the spec, the site adds a
 polish layer (ROADMAP phase 9): every number and the hero's RSVP frame open their story, stories
 browse with Previous, Next, arrow keys, swipe and the Back button, the pointer preview sits clear
-of the row it shows, and the theme switch wipes down. The spec file does not carry these; the code
+of the row it shows, and the theme switch grows in a circle from its button (a cross-fade on touch screens). The spec file does not carry these; the code
 is their reference. The other mockups stay as reference for later work.
 
 Traps met in the polish layer:
 
-- A view transition captures the whole page, so the theme wipe needs `mix-blend-mode: normal` and
+- A view transition captures the whole page, so the theme circle needs `mix-blend-mode: normal` and
   no default cross-fade on `::view-transition-old(root)`, or the old theme ghosts through.
+- While a view transition runs, Chromium sends every click to `<html>`, and `pointer-events: none`
+  on the pseudo-elements does not change that. The theme button counts a click on `<html>` that
+  falls inside its own box, so a press during a switch is not lost.
 - An item that spans an `auto` grid column gives that column its spare width. The phone project
   row spans its thumbnail over the index column, so that column has a fixed width.
 - The lower slabs do not use `content-visibility: auto`. Its estimated heights can move the

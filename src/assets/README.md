@@ -4,7 +4,7 @@ The homepage uses seven real project previews, four licensed camera photographs 
 
 ## Hero composition
 
-The hero pairs two frames on the tomato slab. The large frame is `scrapbook/portrait-cutout-v4.png` on a flat butter ground, a 4:5 `cover` crop at `50% 18%`. The small frame overlaps its lower-right corner: `work/rsvp-redesign-v4.png`, a 16:11 `cover` crop from the top, captioned with the RSVP guest count. Both sit in the ink `.frame` with a hard offset shadow. No photograph appears in the hero.
+The hero pairs two frames on the sky slab. The large frame is `scrapbook/portrait-cutout-v4.png` on a flat cream ground (`--cream`, light in both themes), a 4:5 `cover` crop at `50% 18%`. The small frame overlaps its lower-right corner: `work/rsvp-redesign-v4.png`, a 16:11 `cover` crop from the top, captioned with the RSVP guest count. Both sit in the ink `.frame` with a hard offset shadow. No photograph appears in the hero.
 
 Project rows and story dialogs show the captures at their own proportions, which keeps QR codes, plot labels and controls legible. The interest photographs use square `cover` crops.
 
