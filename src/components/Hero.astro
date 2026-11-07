@@ -6,7 +6,7 @@ import { projects } from "@/data/projects";
 const rsvp = projects.find((p) => p.id === "rsvp")!;
 ---
 
-<section class="slab s-tomato hero" aria-label="Introduction">
+<section class="slab s-sky hero" aria-label="Introduction">
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <h1 class="hero-headline reveal">
@@ -24,7 +24,7 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
         <p>
           I'm a software engineer and a Computer Science with AI graduate from
           the University of Nottingham. I turn ideas into products people enjoy
-          using, with as much care for how they feel as how they're built.
+          using, and I care as much about how they feel as how they're built.
         </p>
         <div class="ctas">
           <a href="#work" class="btn">See what I build</a>
@@ -40,8 +40,8 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
         fit="cover"
         objectPosition="50% 18%"
         aspectRatio="4 / 5"
-        widths={[360, 520, 720]}
-        sizes="(max-width: 560px) 84vw, (max-width: 960px) 50vw, 440px"
+        widths={[360, 520, 720, 960]}
+        sizes="(max-width: 560px) 84vw, (max-width: 960px) min(66vw, 470px), 440px"
         priority
         class="face rise"
       />
@@ -59,8 +59,8 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
               fit="cover"
               objectPosition="top"
               aspectRatio="16 / 11"
-              widths={[280, 420, 560]}
-              sizes="(max-width: 560px) 54vw, (max-width: 960px) 30vw, 280px"
+              widths={[280, 420, 560, 640]}
+              sizes="(max-width: 560px) 54vw, (max-width: 960px) min(42vw, 304px), 280px"
               loading="eager"
               class="rise rise-late"
             >
@@ -100,13 +100,19 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
   .hero-headline .m {
     display: none;
   }
+  /* A tilted label stuck on the last line. Its line gets extra room, so the
+     reveal mask still clips the rise but never the label's frame or shadow. */
+  .hero-headline .ln:has(.mk) {
+    padding: 0.14em 0.2em 0.22em;
+    margin: -0.14em -0.2em -0.22em;
+  }
   .mk {
-    margin-left: -0.04em;
-    padding: 0 0.12em 0.02em;
+    display: inline-block;
+    padding: 0.02em 0.12em 0.04em;
     background: var(--butter);
     border: var(--seam) solid var(--ink);
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+    box-shadow: var(--hard-5) var(--ink);
+    transform: rotate(-1.6deg);
   }
   .hero-card {
     max-width: 760px;
@@ -140,7 +146,7 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
     width: 84%;
   }
   .shots :global(.face .media-canvas) {
-    background: var(--butter);
+    background: var(--cream);
   }
   /* The RSVP frame is a link to its story: it lifts into a deeper shadow. */
   .f2 {

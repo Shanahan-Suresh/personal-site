@@ -1,7 +1,8 @@
 /* ================================================================== *
  * POSTER TOKENS
- * A wall of flat colour slabs held by 3px ink seams. The five slab
- * colours are one warm set, so the page reads as one print run.
+ * A wall of flat colour slabs held by 3px ink seams. Sky leads the
+ * hero; the warm slabs (tomato, butter) and the deep ones (cobalt,
+ * green, night) follow it down the page.
  * Spec: design-previews/neo-2026/10-poster-v3.html.
  * ================================================================== */
 :root {
@@ -36,11 +37,13 @@
   --white: #ffffff;
 
   /* slab colours (light) */
+  --sky: #8ec5ff;
   --tomato: #ff6a45;
   --butter: #ffd24a;
   --cobalt: #3d52ea;
   --green: #0c7a4d;
   --night: #15120e;
+  --cream: #f5f0e4; /* the portrait ground: stays light in both themes */
 
   /* page surfaces: these invert with the theme */
   --paper: #f5f0e4;
@@ -55,11 +58,13 @@
 }
 
 .dark {
+  --sky: #6aa6e8;
   --tomato: #e9583a;
   --butter: #eec23d;
   --cobalt: #3346dc;
   --green: #0a6c44;
   --night: #0a0907;
+  --cream: #e6dfcf;
   --ink: #0d0b09;
 
   --paper: #14120f;
