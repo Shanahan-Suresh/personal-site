@@ -118,25 +118,51 @@ for (const width of [390, 600, 1440]) {
           expect(frame.left).toBeGreaterThanOrEqual(0);
           expect(frame.right).toBeLessThanOrEqual(width);
         }
-        // On failure, name the innermost elements that run past the edge.
+        // On failure, name what runs past the edge: the innermost boxes,
+        // text that spills out of its box, and whether the fonts are in.
         const overflow = await page.evaluate((vw) => {
+          const name = (el: Element) => {
+            const cls = [...el.classList].join(".");
+            return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ""}`;
+          };
           const past = (el: Element) => el.getBoundingClientRect().right > vw;
-          const culprits = [...document.querySelectorAll("*")]
+          const boxes = [...document.querySelectorAll("*")]
             .filter((el) => past(el) && ![...el.children].some(past))
-            .slice(0, 5)
-            .map((el) => {
-              const r = Math.round(el.getBoundingClientRect().right);
-              const cls = [...el.classList].join(".");
-              return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ""} right=${r}`;
-            });
+            .map(
+              (el) =>
+                `${name(el)} right=${Math.round(el.getBoundingClientRect().right)}`,
+            );
+          const texts: string[] = [];
+          const walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+          );
+          const range = document.createRange();
+          while (walker.nextNode()) {
+            const node = walker.currentNode as Text;
+            if (!node.data.trim() || !node.parentElement) continue;
+            range.selectNodeContents(node);
+            const right = Math.max(
+              0,
+              ...[...range.getClientRects()].map((r) => r.right),
+            );
+            if (right > vw)
+              texts.push(
+                `text in ${name(node.parentElement)} "${node.data.trim().slice(0, 24)}" right=${Math.round(right)}`,
+              );
+          }
+          const fonts = [...document.fonts]
+            .map((f) => `${f.family} ${f.weight} ${f.status}`)
+            .join(", ");
           return {
             width: document.documentElement.scrollWidth,
-            culprits,
+            culprits: [...boxes, ...texts].slice(0, 6),
+            fonts,
           };
         }, width);
         expect(
           overflow.width,
-          `${theme}, ${reducedMotion}: ${overflow.culprits.join("; ")}`,
+          `${theme}, ${reducedMotion}: ${overflow.culprits.join("; ")} | fonts: ${overflow.fonts}`,
         ).toBeLessThanOrEqual(width);
         if (reducedMotion === "reduce") {
           await expect(page.locator(".shots .face")).toHaveCSS("opacity", "1");
