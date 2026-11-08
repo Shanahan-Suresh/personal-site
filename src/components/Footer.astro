@@ -5,10 +5,11 @@ import { execSync } from "node:child_process";
 const year = new Date().getFullYear();
 
 /* Build identity, resolved once at build time (static output, never at runtime).
-   Cloudflare Pages exposes the deployed commit; local builds fall back to git.
-   Either way the footer links to the exact commit that produced this page. */
+   Cloudflare Workers Builds exposes the deployed commit; local builds fall
+   back to git. Either way the footer links to the exact commit that produced
+   this page. */
 function resolveCommit(): string | null {
-  const fromEnv = process.env.CF_PAGES_COMMIT_SHA;
+  const fromEnv = process.env.WORKERS_CI_COMMIT_SHA;
   if (fromEnv) return fromEnv;
   try {
     return execSync("git rev-parse HEAD", {

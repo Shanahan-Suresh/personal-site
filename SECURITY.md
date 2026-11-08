@@ -1,7 +1,7 @@
 # Security
 
 This is a fully static personal site. There is no server code, no database, no login, no form
-that posts anywhere, and no user-generated content. Cloudflare Pages serves the built files from
+that posts anywhere, and no user-generated content. Cloudflare Workers serves the built files from
 `dist/` behind the headers in `public/_headers` (CSP with hashed inline scripts, HSTS, COOP,
 `frame-ancestors 'none'`, Permissions-Policy).
 

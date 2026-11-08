@@ -158,16 +158,16 @@ then the Playwright suite in Chromium. The report is uploaded as an artifact on 
 Static build (`./dist`) — deployable to any static host. No SSR adapter is needed
 (`output: 'static'`).
 
-### Cloudflare Pages
+### Cloudflare Workers
 
-Connect the GitHub repo in the Cloudflare Pages dashboard and use:
+The `personal-site` Worker is connected to this repo through Workers Builds. It serves `dist/` as
+static assets (`wrangler.jsonc`), with no server code; a push to `main` deploys to production.
 
-| Setting                | Value                       |
-| ---------------------- | --------------------------- |
-| Framework preset       | Astro                       |
-| Build command          | `npm run build`             |
-| Build output directory | `dist`                      |
-| Node version           | pinned to `22` via `.nvmrc` |
+| Setting        | Value                          |
+| -------------- | ------------------------------ |
+| Build command  | `npm run build`                |
+| Deploy command | `npx wrangler versions upload` |
+| Node version   | pinned to `22` via `.nvmrc`    |
 
 `npm run build` runs `astro check` (type-check) before `astro build`, so a deploy
 fails fast on type errors rather than shipping a broken build. The `site` value in
