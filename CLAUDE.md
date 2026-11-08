@@ -112,7 +112,9 @@ use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 - Deploys run on Cloudflare Workers Builds: `wrangler.jsonc` serves `dist/` as static assets, with
   no Worker script and no adapter.
 - Cloudflare settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP), preview
-  builds only from this repo's branches (never forks).
+  builds only from this repo's branches (never forks), minimum TLS 1.2, DNSSEC on, a 301 redirect
+  rule from www to the apex, the Worker's workers.dev address off (preview URLs on), and DMARC
+  `p=none` with Cloudflare reports (SPF allows Cloudflare Email Routing and Gmail).
 
 ## Settled, do not reopen
 
