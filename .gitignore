@@ -29,6 +29,9 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
+# raw output of the refactor audit (REFACTORING.md holds the result)
+audit-raw/
+
 # design mockups (not part of the site); only the redesign mockups and their tools are kept
 design-previews/*
 !design-previews/neo-2026/

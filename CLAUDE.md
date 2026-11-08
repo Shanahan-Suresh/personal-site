@@ -32,7 +32,7 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 ## Where content lives
 
 - **Structured, repeated data** is in `src/data/` (`projects`, `learning`, `interests`,
-  `navigation`, `colophon`) and `src/lib/site-config.ts` (name, url, job title, default meta
+  `navigation`, `colophon`, `budgets`) and `src/lib/site-config.ts` (name, url, job title, default meta
   description, social URLs). Edit the data, not the components that render it. Shared types are in
   `src/lib/types.ts`; import them instead of redeclaring unions.
 - **Prose copy lives in its component**: Hero, About, Principles, Now, Beyond and Contact. Per-page

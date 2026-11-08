@@ -2,8 +2,9 @@
 
 Every motion, hover find and touch behaviour on the homepage. Read this before changing one of
 them. The rules that bind all of them (reduced motion, `(hover: hover)`, the banned list) are in
-`CLAUDE.md`. Most of the code is in `src/scripts/home-interactions.ts`, `src/styles/motion.css` and
-the components' scoped styles.
+`CLAUDE.md`. Most of the code is in `src/scripts/home/` (one module per behaviour, started in order
+by `init` in `src/scripts/home-interactions.ts`), `src/styles/motion.css` and the components'
+scoped styles.
 
 ## Page motion
 
