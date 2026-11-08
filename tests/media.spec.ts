@@ -118,8 +118,27 @@ for (const width of [390, 600, 1440]) {
           expect(frame.left).toBeGreaterThanOrEqual(0);
           expect(frame.right).toBeLessThanOrEqual(width);
         }
+        // On failure, name the outermost elements that run past the edge.
+        const overflow = await page.evaluate((vw) => {
+          const past = (el: Element) => el.getBoundingClientRect().right > vw;
+          const culprits = [...document.querySelectorAll("body *")]
+            .filter(
+              (el) => past(el) && !(el.parentElement && past(el.parentElement)),
+            )
+            .slice(0, 5)
+            .map((el) => {
+              const r = Math.round(el.getBoundingClientRect().right);
+              const cls = [...el.classList].join(".");
+              return `${el.tagName.toLowerCase()}${cls ? `.${cls}` : ""} right=${r}`;
+            });
+          return {
+            width: document.documentElement.scrollWidth,
+            culprits,
+          };
+        }, width);
         expect(
-          await page.evaluate(() => document.documentElement.scrollWidth),
+          overflow.width,
+          `${theme}, ${reducedMotion}: ${overflow.culprits.join("; ")}`,
         ).toBeLessThanOrEqual(width);
         if (reducedMotion === "reduce") {
           await expect(page.locator(".shots .face")).toHaveCSS("opacity", "1");
