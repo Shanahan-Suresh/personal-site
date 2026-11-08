@@ -75,7 +75,7 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
 
 ## Phases
 
-Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 10 are done. The branch is on GitHub (`origin/redesign/poster`); it is not merged to `main` or deployed, and that waits for the owner's word.
+Each phase ends with the fast checks (below) and one commit. Status: phases 1 to 10 are done, and the redesign is live on `main` (PR #30). The site before it is tagged `v1-classic`.
 
 ### 1. Foundation: tokens, type and base styles
 
