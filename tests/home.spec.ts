@@ -752,6 +752,19 @@ test("built _headers carries a hash for every inline script and no unsafe-inline
   for (const h of inline) expect(scriptSrc).toContain(`'sha256-${h}'`);
 });
 
+// RFC 9116 requires an Expires date. The test fails 30 days before it, so the
+// date moves forward a year before the file goes stale.
+test("security.txt names a contact and expires more than 30 days from now", async ({
+  request,
+}) => {
+  const res = await request.get("/.well-known/security.txt");
+  expect(res.status()).toBe(200);
+  const body = await res.text();
+  expect(body).toContain("Contact: mailto:hello@shanahansuresh.com");
+  const expires = Date.parse(/^Expires:\s*(.+)$/m.exec(body)?.[1] ?? "");
+  expect(expires - Date.now()).toBeGreaterThan(30 * 24 * 60 * 60 * 1000);
+});
+
 // ── Hover finds and keyboard shortcuts ──────────────────────────────────────
 test.describe("hover finds and shortcuts", () => {
   test.use({ viewport: { width: 1440, height: 900 } });

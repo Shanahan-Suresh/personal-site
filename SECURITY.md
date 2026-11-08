@@ -18,8 +18,8 @@ a few days. Fixes ship as normal commits; there is no bounty.
 
 ## Scope notes
 
-- Secrets: the repo contains none and never has (history scanned). Cloudflare Web Analytics is
-  injected at the edge; its token is not in this repo.
+- Secrets: the repo contains none and never has (history scanned). The site loads no third-party
+  script, and the CSP allows no third-party origin.
 - Dependencies: Dependabot watches npm and GitHub Actions weekly. `npm audit` is clean as of the
   Astro 7.4.7 update (Nov 2026). Future findings that only apply to features this site does not use
   (server islands, `define:vars`, the dev server, image decoding of untrusted files) are tracked
