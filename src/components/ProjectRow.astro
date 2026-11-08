@@ -1,6 +1,7 @@
 ---
 import { Image, getImage } from "astro:assets";
 import type { ListedProject } from "@/data/projects";
+import ArrowText from "./ArrowText.astro";
 
 interface Props {
   project: ListedProject;
@@ -10,12 +11,14 @@ const { project: p } = Astro.props;
 const crop = p.media?.objectPosition ?? "top";
 
 /* The pointer preview loads one of these on first hover, never with the page:
-   the 960px file on a high-density screen, the 480px file otherwise. */
+   the 960px file on any screen denser than 1x (the panel is up to 460px wide), the 480px
+   file otherwise. The attribute is data-peek-hd: a digit after a hyphen (data-peek-2x)
+   does not map to a camelCase dataset key. */
 const peekAt = (width: number) =>
   p.media
     ? getImage({ src: p.media.image, width, format: "webp", quality: 75 })
     : null;
-const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
+const [peek, peekHd] = await Promise.all([peekAt(480), peekAt(960)]);
 ---
 
 <li>
@@ -25,14 +28,15 @@ const [peek, peek2x] = await Promise.all([peekAt(480), peekAt(960)]);
     href={`#story-${p.id}`}
     data-story={p.id}
     data-peek={peek?.src}
-    data-peek-2x={peek2x?.src}
+    data-peek-hd={peekHd?.src}
     data-peek-pos={crop}
+    data-peek-ratio={p.media && p.media.image.width / p.media.image.height}
     data-peek-cap={p.media?.caption}
     aria-haspopup="dialog"
   >
     <span class="hd">
       <span class="grp label">{p.group}</span>
-      <span class="t">{p.title}</span>
+      <span class="t"><ArrowText text={p.title} /></span>
     </span>
     <span class="fa">
       <b>{p.fact.value} {p.fact.label}</b>

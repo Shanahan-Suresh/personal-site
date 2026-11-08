@@ -248,93 +248,29 @@
   },
   "project_previews": {
     "rsvp": {
-      "asset": "work/rsvp-redesign-v4.png",
-      "dimensions": [1040, 820],
-      "bytes": 322152,
-      "sha256": "a490afa51a3a2c52821eab73c79687115dd12ed91039a5ca7c9c665ef7795a07",
-      "source_root": "D:\\Projects\\archive\\gbmc\\gbmc-enroll",
+      "asset": "work/rsvp-glass-mock.png",
+      "dimensions": [2080, 1640],
+      "bytes": 962472,
+      "sha256": "a31757562acd0cb8bba47223e44796331b4ff47d3dd552a18f2847f265dbea37",
+      "source_root": "design-previews/media/rsvp-glass",
       "caption": "The sign-up form, and the ticket a guest shows at the door.",
-      "appearance": "Invitation-style redesign in isolated wrapper and capture CSS; production appearance is not represented.",
-      "source_files_preserved_byte_for_byte": 27,
-      "source_hash_manifest": "design-previews/media/rsvp/source-hashes.json",
-      "fonts": "Locally served Fraunces and Geist",
+      "appearance": "A design mock-up after the real app's frosted-glass GlassCard (D:\\Projects\\archive\\gbmc\\gbmc-enroll), written as standalone HTML and CSS. It is not a capture of the production app.",
+      "fixture": "A synthetic Developer Meetup at Community Hall for an invented guest, Hannah Okafor (hannah@example.com), vegetarian, consent given.",
+      "render": "build.py writes a-aurora-frost.html; build_fit.py renders it at 1040 x 820 CSS pixels with deviceScaleFactor 2 in Chromium, the cards scaled as one stage to sit whole with even margins.",
+      "qr": {
+        "tool": "segno",
+        "decoded_value": "PORTFOLIO-DEMO-TICKET",
+        "decode_check": "ZXing at 280, 560 and 1040 px wide, for the story and the hero render"
+      },
       "company_branding_rendered": false,
-      "branding_options": {
-        "hideBrandLogo": true,
-        "qrLogoMode": "NONE"
-      },
-      "fixtures_and_assertions": {
-        "formCapture": "form-redesign-v4.jpg",
-        "confirmedCapture": "confirmed-redesign-v4-large-qr.jpg",
-        "formOriginalBounds": {
-          "width": 560,
-          "height": 759
-        },
-        "confirmedOriginalBounds": {
-          "width": 560,
-          "height": 815
-        },
-        "validation": {
-          "requiredFields": true,
-          "invalidEmail": true
-        },
-        "submission": {
-          "guest": "Alex Morgan",
-          "email": "alex@example.com",
-          "dietary": "Vegetarian",
-          "consent": true
-        },
-        "qr": "PORTFOLIO-DEMO-TICKET",
-        "statesCapturedSeparately": true,
-        "qrCssWidth": 440,
-        "compositionDimensions": {
-          "width": 1040,
-          "height": 820
-        }
-      },
-      "capture_tool": "Codex CUA in-app browser screenshot",
-      "state_captures": [
-        {
-          "path": "design-previews/media/rsvp/public/form-redesign-v4.jpg",
-          "dimensions": [560, 759],
-          "sha256": "ddca8f221c7ac69cc4def61c10fbad92e5b9c25efb3aee3a0cb844fd4cd2b63a"
-        },
-        {
-          "path": "design-previews/media/rsvp/public/confirmed-redesign-v4-large-qr.jpg",
-          "dimensions": [560, 815],
-          "sha256": "f3ad7e6c40b5b4d2dca4f9bbc050db71310ce78075dd813996d779614016102b"
-        }
-      ],
       "external_services_called": false,
-      "raw_composition": {
-        "path": "design-previews/media/curated-v4/rsvp-composition-v4-final.jpg",
-        "dimensions": [1040, 820],
-        "sha256": "6ee8c1350542e7023ff7fbc30b9617b81462e2871ae04eeb5ea9d5d0af810600"
-      },
-      "confirmation_presentation": {
-        "qr_svg_css_width_px": 440,
-        "qr_svg_original_viewbox_size_px": 240,
-        "encoded_qr_source_unchanged": true,
-        "success_icon": "Beside the confirmation heading",
-        "spacing": "Compact gaps; download, calendar and another-RSVP controls remain visible."
-      },
-      "qr_decode_checks": [
-        {
-          "tool": "OpenCV QRCodeDetector",
-          "image_dimensions": [1040, 820],
-          "decoded_value": "PORTFOLIO-DEMO-TICKET"
-        },
-        {
-          "tool": "OpenCV QRCodeDetector",
-          "image_dimensions": [520, 410],
-          "decoded_value": "PORTFOLIO-DEMO-TICKET"
-        },
-        {
-          "tool": "OpenCV QRCodeDetector",
-          "image_dimensions": [310, 244],
-          "decoded_value": "PORTFOLIO-DEMO-TICKET"
-        }
-      ]
+      "hero_render": {
+        "asset": "work/rsvp-glass-hero.png",
+        "dimensions": [2080, 1430],
+        "bytes": 850012,
+        "sha256": "2b838ae469e258cfc1024fca97ac2d7b2e239f63d299a450e4c1a513c83df9e6",
+        "render": "build_fit.py renders the same page at 1040 x 715 (16:11) for the hero frame."
+      }
     },
     "hr": {
       "asset": "work/hr-mock-v5.png",
@@ -414,16 +350,16 @@
       "sha256": "a748e1cc517b1f1183f8c55837e6a2e95f159a9ded7ac43ded88d9e34f6ca697"
     },
     {
-      "asset": "work/mcp.png",
-      "dimensions": [1120, 700],
-      "bytes": 300585,
-      "sha256": "7c83eca32d4983c4c1f7412e4b9607c0ef90179d008b0075b1aae1c5224e8538"
+      "asset": "work/mcp-schema-tools.png",
+      "dimensions": [2080, 1640],
+      "bytes": 661367,
+      "sha256": "2bb111194eceb8aaf72a302e3bd351ef7eb9c0be3df821a229eb907a1765547e"
     },
     {
-      "asset": "work/heatgen.png",
-      "dimensions": [1120, 700],
-      "bytes": 364098,
-      "sha256": "c941b66d84e74ad7f7c61d6f18d55ab7b4f60cc2932723ba14f204fd539c8313"
+      "asset": "work/heatgen-in-print.png",
+      "dimensions": [2240, 1400],
+      "bytes": 783634,
+      "sha256": "713314b6106c851ffabb9dc1c5db0b152d0b56e994846c3b4a15c11a9c5c30cf"
     }
   ],
   "mascot_rendered": false,

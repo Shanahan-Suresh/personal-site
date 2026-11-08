@@ -9,6 +9,7 @@ const byId = (id: string) => {
 const rsvp = byId("rsvp");
 const hr = byId("hr");
 const ohse = byId("ohse");
+const digest = byId("digest");
 
 /* The headcount is not a row fact, so the build checks the HR story still says it. */
 const employees = "20,000";
@@ -16,17 +17,28 @@ if (![hr.description].flat().some((d) => d.includes(employees))) {
   throw new Error(`Numbers strip: the HR story no longer says ${employees}`);
 }
 
-/* Each number opens the story that backs it. */
+/* Each number opens the story that backs it, and no two open the same one. */
 const items = [
   { value: rsvp.fact.value, label: "guests through one RSVP app", story: rsvp },
-  { value: employees, label: "employees on a platform I sped up", story: hr },
-  { value: hr.fact.value, label: "faster page loads", story: hr },
+  {
+    value: hr.fact.value,
+    label: `faster pages for ${employees} employees`,
+    story: hr,
+  },
   {
     value: ohse.fact.value,
-    label: "business units on one incident module",
+    label: "business units report safety incidents in one app",
     story: ohse,
   },
+  {
+    value: digest.fact.value,
+    label: "news sources an AI turns into one email",
+    story: digest,
+  },
 ];
+if (new Set(items.map((n) => n.story.id)).size !== items.length) {
+  throw new Error("Numbers strip: two numbers open the same story");
+}
 ---
 
 <section class="slab s-cobalt nums" aria-label="Results">

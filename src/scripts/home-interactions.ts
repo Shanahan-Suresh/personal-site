@@ -172,12 +172,17 @@ export function initMobileNav(): void {
    When it no longer fits, it hops to the other side with a quick fade rather
    than sliding across the row. CSS hides it on touch screens and below 960px.
    Every row's picture decodes when the mouse first reaches the list, and a
-   new picture wipes in over the last only once it is ready, with its caption. */
-/* Preview placement, in CSS pixels. The panel is 400px wide (Work.astro). */
+   new picture wipes in over the last only once it is ready, with its caption.
+   The panel takes each picture's own shape, so nothing is cropped: it is
+   30% of the window wide (380 to 460px), narrower when that would make the
+   picture taller than 42% of the window, and it eases between sizes. */
+/* Preview placement, in CSS pixels. */
 const PEEK_MARGIN = 12; // kept clear between the panel and the window edges
 const PEEK_GAP_ABOVE = 16; // between a row's top and the panel above it
-const PEEK_GAP_BELOW = 44; // between a row's bottom and the panel below it; clears the caption tab
-const PEEK_TAB = 32; // the caption tab's height above the panel
+const PEEK_GAP_BELOW = 16; // between a row's bottom and the caption tab of the panel below it
+const PEEK_W = [380, 0.3, 460]; // min px, share of the window width, max px
+const PEEK_MAX_H = 0.42; // the picture's height, as a share of the window height
+const PEEK_SEAM = 3; // the panel's border (--seam)
 const PEEK_FOCUS_AT = 0.42; // keyboard focus: the panel centres this far across the row
 const PEEK_EASE = 0.16; // share of the remaining distance covered per 60 Hz frame
 const PEEK_WIPE_MS = 320; // a new picture wiping down over the last
@@ -194,6 +199,7 @@ export function initPreview(): void {
   if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
   const rows = Array.from(list.querySelectorAll<HTMLElement>(".pr"));
+  let ratio = 16 / 10; // the shown picture's width over its height
   let tx = 0;
   let x = 0;
   let y = 0;
@@ -204,9 +210,9 @@ export function initPreview(): void {
   let side: Side = "below";
   let want = ""; // the picture asked for last
   let showing = ""; // the picture on top of the stack
-  const dense = window.devicePixelRatio > 1.25;
+  const dense = window.devicePixelRatio > 1;
   const srcOf = (el: HTMLElement) =>
-    (dense && el.dataset.peek2x) || el.dataset.peek || "";
+    (dense && el.dataset.peekHd) || el.dataset.peek || "";
 
   const ready = new Map<string, Promise<void>>();
   const load = (src: string) => {
@@ -225,32 +231,63 @@ export function initPreview(): void {
       if (src) void load(src);
     });
 
+  let roomH = Infinity; // the free height beside the row, read at each resize
+  /* The panel's size for a picture of shape `r`, borders included. It is no
+     taller than the free space on the roomier side of the row, so it never
+     covers the row or tucks under the nav bar. */
+  const sizeFor = (r: number): [number, number] => {
+    const [lo, share, hi] = PEEK_W;
+    const wide = Math.min(hi, Math.max(lo, window.innerWidth * share));
+    const w = Math.min(
+      wide,
+      window.innerHeight * PEEK_MAX_H * r,
+      (roomH - 2 * PEEK_SEAM) * r,
+    );
+    return [w + 2 * PEEK_SEAM, w / r + 2 * PEEK_SEAM];
+  };
+  const resize = (instant: boolean) => {
+    roomH = room();
+    const [w, h] = sizeFor(ratio);
+    peek.classList.toggle("snap", instant);
+    peek.style.width = `${w}px`;
+    pics.style.height = `${h - 2 * PEEK_SEAM}px`;
+  };
+  /* The caption tab rides above the panel; it may wrap to two lines. */
+  const tab = () => (cap?.textContent ? cap.offsetHeight : 0);
+  /* The panel and its tab stay clear of the sticky nav bar. */
+  const navBar = document.querySelector<HTMLElement>(".nav-header");
+  const top = () =>
+    Math.max(0, navBar?.getBoundingClientRect().bottom ?? 0) +
+    PEEK_MARGIN +
+    tab();
+  const room = () => {
+    if (!row) return Infinity;
+    const r = row.getBoundingClientRect();
+    const below =
+      window.innerHeight - PEEK_MARGIN - r.bottom - PEEK_GAP_BELOW - tab();
+    return Math.max(below, r.top - PEEK_GAP_ABOVE - top());
+  };
   const fits = (r: DOMRect, h: number, s: Side) =>
     s === "below"
-      ? r.bottom + PEEK_GAP_BELOW + h <= window.innerHeight - PEEK_MARGIN
-      : r.top - h - PEEK_GAP_ABOVE >= PEEK_MARGIN + PEEK_TAB;
+      ? r.bottom + PEEK_GAP_BELOW + tab() + h <=
+        window.innerHeight - PEEK_MARGIN
+      : r.top - h - PEEK_GAP_ABOVE >= top();
   /* Returns true when the panel changes sides under a visible pointer. */
   const pickSide = (fresh: boolean): boolean => {
     if (!row) return false;
     const r = row.getBoundingClientRect();
-    const h = peek.offsetHeight;
+    const h = sizeFor(ratio)[1];
     const prefer: Side =
       r.top + r.height / 2 < window.innerHeight / 2 ? "below" : "above";
-    const other: Side = side === "below" ? "above" : "below";
-    const next = fresh
-      ? prefer
-      : fits(r, h, side)
-        ? side
-        : fits(r, h, other)
-          ? other
-          : prefer;
+    const keep = fresh ? prefer : side;
+    const other: Side = keep === "below" ? "above" : "below";
+    const next = fits(r, h, keep) ? keep : fits(r, h, other) ? other : prefer;
     const flipped = next !== side;
     side = next;
     return flipped && !fresh;
   };
   const target = (): [number, number] => {
-    const w = peek.offsetWidth;
-    const h = peek.offsetHeight;
+    const [w, h] = sizeFor(ratio);
     const px = Math.max(
       PEEK_MARGIN,
       Math.min(tx - w / 2, window.innerWidth - w - PEEK_MARGIN),
@@ -258,16 +295,17 @@ export function initPreview(): void {
     if (!row) return [px, y];
     const r = row.getBoundingClientRect();
     const py =
-      side === "below" ? r.bottom + PEEK_GAP_BELOW : r.top - h - PEEK_GAP_ABOVE;
+      side === "below"
+        ? r.bottom + PEEK_GAP_BELOW + tab()
+        : r.top - h - PEEK_GAP_ABOVE;
     return [
       px,
-      Math.max(
-        PEEK_MARGIN + PEEK_TAB,
-        Math.min(py, window.innerHeight - h - PEEK_MARGIN),
-      ),
+      Math.max(top(), Math.min(py, window.innerHeight - h - PEEK_MARGIN)),
     ];
   };
   const tick = (now: number) => {
+    /* A scroll changes the room beside the row: refit the panel. */
+    if (showing && Math.abs(room() - roomH) > 8) resize(false);
     if (pickSide(false)) {
       [x, y] = target();
       if (!reduce)
@@ -302,6 +340,8 @@ export function initPreview(): void {
       pics.append(pic);
       showing = src;
       if (cap) cap.textContent = el.dataset.peekCap || "";
+      ratio = Number(el.dataset.peekRatio) || 16 / 10;
+      resize(reduce || instant || !peek.classList.contains("on"));
       const drop = () => {
         while (pics.firstElementChild && pics.firstElementChild !== pic)
           pics.firstElementChild.remove();
@@ -622,38 +662,6 @@ export function initStories(): void {
   teardowns.push(() => dialogs.forEach((d) => d.open && d.close()));
 }
 
-/* Copy buttons: shown only where the clipboard can be written. The label
-   reads "Copied" for a moment, and a live region says it aloud. */
-const COPIED_MS = 2000;
-
-export function initCopy(): void {
-  if (!navigator.clipboard?.writeText) return;
-  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
-    const status =
-      btn.parentElement?.querySelector<HTMLElement>("[data-copy-status]");
-    const label = btn.textContent ?? "Copy";
-    let timer = 0;
-    btn.hidden = false;
-    listen(btn, "click", async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
-      } catch {
-        return; // permission refused: the mailto link is still there
-      }
-      btn.textContent = "Copied";
-      btn.classList.add("done");
-      if (status) status.textContent = "Email address copied";
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        btn.textContent = label;
-        btn.classList.remove("done");
-        if (status) status.textContent = "";
-      }, COPIED_MS);
-    });
-    teardowns.push(() => window.clearTimeout(timer));
-  });
-}
-
 /* Pictures in frames and thumbnails fade in as they load, over their white
    canvas. Pictures already loaded (cached, or above the fold) show at once. */
 export function initImageFade(): void {
@@ -674,32 +682,172 @@ export function initImageFade(): void {
 const fineHover = () => !reduce && window.matchMedia("(hover: hover)").matches;
 
 /* `data-brush`: the hero label's butter plate (`.brushing` in Hero.astro)
-   becomes a band under the pointer and widens to cover every part the
-   pointer passes over. Leaving fills the whole plate again. */
-const BRUSH_SHARE = 0.12; // half the band's starting width, as a share of the label
+   fills from the label's left edge to the pointer, like a loading bar that
+   follows the mouse. Leaving fills the whole plate again. */
+const BRUSH_MIN = 24; // px of fill that always stays at the left edge
 
 export function initBrush(): void {
   if (!fineHover()) return;
   document.querySelectorAll<HTMLElement>("[data-brush]").forEach((el) => {
-    let a = 0;
-    let b = 0;
-    const paint = (e: PointerEvent, fresh: boolean) => {
+    // The plate is the label's face, or the label itself.
+    const face = el.querySelector<HTMLElement>(".mk-face") ?? el;
+    const paint = (e: PointerEvent) => {
+      // The fill sits inside the border, so measure from the padding edge.
+      // The label's own box stays still while its face turns.
       const r = el.getBoundingClientRect();
-      const half = Math.max(24, r.width * BRUSH_SHARE);
-      const x = e.clientX - r.left;
-      const lo = Math.max(0, x - half);
-      const hi = Math.min(r.width, x + half);
-      a = fresh ? lo : Math.min(a, lo);
-      b = fresh ? hi : Math.max(b, hi);
-      el.style.setProperty("--brush-a", `${a}px`);
-      el.style.setProperty("--brush-b", `${b}px`);
+      const x = e.clientX - r.left - face.clientLeft;
+      const fill = Math.min(face.clientWidth, Math.max(BRUSH_MIN, x));
+      el.style.setProperty("--brush", `${fill}px`);
     };
     listen(el, "pointerenter", (e) => {
-      paint(e, true);
+      paint(e);
       el.classList.add("brushing");
     });
-    listen(el, "pointermove", (e) => paint(e, false));
+    listen(el, "pointermove", paint);
     listen(el, "pointerleave", () => el.classList.remove("brushing"));
+  });
+}
+
+/* `data-flip`: the hero label is a double-sided sign on a rod through its
+   middle. A fast, steep swipe up or down across it, or a click or tap, spins
+   it. It slows with friction, then a catch settles it on whichever side is
+   nearest: every half turn shows the other side, which reads upside down,
+   as a real sign's would. Left upside down, it waits a moment, then turns
+   slowly the right way up, on in the way it last spun; a push during that
+   slow turn takes over from where it is. A slow or sideways move only fills
+   the plate (`data-brush`). The loop runs only while the label moves, and
+   the card is drawn flat again when it stops, so the type stays sharp.
+   Hero.astro reads --flip (the card's turn), --flip-s (the same turn for
+   the shadow, never `none`), --flip-m (-1 once the card shows its back, so
+   the shadow can mirror back and keep its cut-out under the card) and
+   `.turned` (the label is moving or upside down: its shadow shows). */
+const FLIP = {
+  drag: 2.2, // slowing while it spins fast, per second
+  friction: 260, // steady slowing, in deg/s²
+  catchAt: 220, // below this speed (deg/s) the catch takes over
+  spring: 160, // how hard the catch pulls to the nearest side
+  damp: 14, // how fast the catch's wobble dies out
+  gain: 900, // spin speed (deg/s) per px/ms of swipe
+  max: 1800, // top spin speed, in deg/s
+  kick: 720, // a click's spin speed: one half turn
+  minSwipe: 0.45, // px/ms: slower moves only fill
+  steep: 1.2, // a swipe counts when it is this much more vertical than sideways
+  rightAfter: 1400, // ms upside down before it turns back
+  rightFor: 1800, // ms the slow turn back takes
+};
+const easeInOut = (p: number) =>
+  p < 0.5 ? 4 * p * p * p : 1 - (-2 * p + 2) ** 3 / 2;
+
+export function initFlip(): void {
+  if (reduce) return;
+  document.querySelectorAll<HTMLElement>("[data-flip]").forEach((el) => {
+    let th = 0; // the card's turn, in degrees
+    let w = 0; // its speed, in deg/s
+    let caught = false;
+    let running = false;
+    let last = 0;
+    let dir = 1;
+    let spun = 1; // the way it last turned, for the slow turn back
+    let prev: { x: number; y: number; t: number } | null = null;
+    let rightTimer = 0;
+    // The slow turn back: from and to angles, start time.
+    let back: { from: number; to: number; at: number } | null = null;
+
+    const paint = () => {
+      const turn = running
+        ? `perspective(900px) rotateX(${th.toFixed(2)}deg)`
+        : null;
+      el.style.setProperty(
+        "--flip",
+        turn ?? (th === 0 ? "none" : "rotateX(180deg)"),
+      );
+      el.style.setProperty("--flip-s", turn ?? `rotateX(${th}deg)`);
+      el.classList.toggle("turned", running || th !== 0);
+      const showsBack = Math.cos((th * Math.PI) / 180) < 0;
+      el.style.setProperty("--flip-m", showsBack ? "-1" : "1");
+    };
+    const stop = () => {
+      th = (((Math.round(th / 180) * 180) % 360) + 360) % 360; // 0 or 180
+      w = 0;
+      running = false;
+      paint();
+      if (th === 180) rightTimer = window.setTimeout(right, FLIP.rightAfter);
+    };
+    const tick = (now: number) => {
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+      if (back) {
+        const p = Math.min(1, (now - back.at) / FLIP.rightFor);
+        th = back.from + (back.to - back.from) * easeInOut(p);
+        if (p >= 1) {
+          back = null;
+          stop();
+          return;
+        }
+        paint();
+        requestAnimationFrame(tick);
+        return;
+      }
+      const near = Math.round(th / 180) * 180;
+      if (!caught && Math.abs(w) < FLIP.catchAt) caught = true;
+      const a = caught
+        ? -FLIP.spring * (th - near) - FLIP.damp * w
+        : -FLIP.drag * w - FLIP.friction * Math.sign(w);
+      w += a * dt;
+      th += w * dt;
+      if (caught && Math.abs(w) < 2 && Math.abs(th - near) < 0.3) {
+        stop();
+        return;
+      }
+      paint();
+      requestAnimationFrame(tick);
+    };
+    const start = () => {
+      if (running) return;
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(tick);
+    };
+    const right = () => {
+      back = { from: 180, to: 180 + 180 * spun, at: performance.now() };
+      start();
+    };
+    const push = (target: number) => {
+      window.clearTimeout(rightTimer);
+      back = null; // a push takes over from wherever the slow turn is
+      const v = Math.max(-FLIP.max, Math.min(FLIP.max, target));
+      // A swipe the same way only speeds the label up; the other way turns it.
+      w =
+        Math.sign(v) === Math.sign(w)
+          ? Math.sign(w) * Math.max(Math.abs(w), Math.abs(v))
+          : v;
+      if (w !== 0) spun = Math.sign(w);
+      caught = false;
+      start();
+    };
+
+    if (fineHover()) {
+      listen(el, "pointerenter", (e) => {
+        prev = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+      });
+      listen(el, "pointerleave", () => {
+        prev = null;
+      });
+      listen(el, "pointermove", (e) => {
+        if (prev) {
+          const dt = Math.max(8, e.timeStamp - prev.t);
+          const vx = (e.clientX - prev.x) / dt;
+          const vy = (e.clientY - prev.y) / dt;
+          const steep = Math.abs(vy) > FLIP.steep * Math.abs(vx);
+          if (Math.abs(vy) > FLIP.minSwipe && steep) push(-vy * FLIP.gain);
+        }
+        prev = { x: e.clientX, y: e.clientY, t: e.timeStamp };
+      });
+    }
+    listen(el, "click", () => {
+      dir = -dir;
+      push(dir * FLIP.kick);
+    });
   });
 }
 
@@ -962,6 +1110,7 @@ export function init(): void {
   cleanup();
   greetConsole();
   initBrush();
+  initFlip();
   initHop();
   initTypeChip();
   initShortcuts();
@@ -971,6 +1120,5 @@ export function init(): void {
   initMobileNav();
   initPreview();
   initStories();
-  initCopy();
   initImageFade();
 }

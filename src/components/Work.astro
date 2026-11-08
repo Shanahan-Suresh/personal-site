@@ -48,13 +48,15 @@ import { projects } from "@/data/projects";
     left: 0;
     top: 0;
     z-index: 40;
-    width: 400px;
+    width: 406px; /* home-interactions.ts sizes it to each picture */
     pointer-events: none;
     border: var(--seam) solid var(--ink);
     box-shadow: var(--hard-8) var(--ink);
     background: var(--white);
     opacity: 0;
-    transition: opacity var(--dur-fast);
+    transition:
+      opacity var(--dur-fast),
+      width 0.2s var(--ease-out);
     will-change: transform;
   }
   #peek.on {
@@ -62,11 +64,20 @@ import { projects } from "@/data/projects";
   }
   /* Pictures stack: a new one wipes in over the last, which stays until it
      is covered, so a change of row never shows an empty frame. */
+  /* Full width: with only a height set, aspect-ratio would size the width
+     from 16:10 and crop or gap every picture of another shape. */
   .peek-pics {
     display: block;
     position: relative;
+    width: 100%;
     aspect-ratio: 16 / 10;
     overflow: hidden;
+    transition: height 0.2s var(--ease-out);
+  }
+  /* The first picture of a hover, or a reduced-motion one, takes its size at once. */
+  #peek.snap,
+  #peek.snap .peek-pics {
+    transition: opacity var(--dur-fast);
   }
   .peek-pics :global(img) {
     position: absolute;
@@ -81,6 +92,7 @@ import { projects } from "@/data/projects";
     position: absolute;
     left: -3px;
     bottom: calc(100% + 3px);
+    width: max-content;
     max-width: calc(100% + 6px);
     padding: 6px 9px 5px;
     border: var(--seam) solid var(--ink);
@@ -89,9 +101,6 @@ import { projects } from "@/data/projects";
     font: 500 11.5px/1.2 var(--font-mono);
     letter-spacing: 0.02em;
     text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .peek-cap:empty {
     display: none;
@@ -108,7 +117,8 @@ import { projects } from "@/data/projects";
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    #peek {
+    #peek,
+    .peek-pics {
       transition: none;
     }
   }

@@ -1,0 +1,24 @@
+---
+/* Prints text with each → in a system sans: the condensed display cut squashes
+   its own arrow until it reads as broken. */
+interface Props {
+  text: string;
+}
+const parts = Astro.props.text.split("→");
+---
+
+{
+  parts.map((part, i) => (
+    <Fragment>
+      {i > 0 && <span class="arw">→</span>}
+      {part}
+    </Fragment>
+  ))
+}
+
+<style>
+  .arw {
+    font-family: "Segoe UI Symbol", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+  }
+</style>
