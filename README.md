@@ -76,7 +76,7 @@ hero frame opening stories, a shared `#story` link, Previous and Next without Ja
 the pointer preview (mouse shows it clear of its row, touch never does), the phone layer (the bar
 hiding on a scroll down, the dimmed menu, the story sheet with its pinned Previous and Next,
 pulling the sheet down to close it), the row focus
-outline, the email Copy button, reduced-motion static render, the interactions (scrolled
+outline, reduced-motion static render, the interactions (scrolled
 nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
 placeholders, CSP hashes, no border or hard shadow cut by a clipping box at 390 and
 1440px, the keyboard shortcuts card, the build commit card and letters that hop once. `tests/guard.spec.ts` runs the
