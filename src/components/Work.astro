@@ -48,7 +48,10 @@ import { projects } from "@/data/projects";
     left: 0;
     top: 0;
     z-index: 40;
-    width: 406px; /* home-interactions.ts sizes it to each picture */
+    /* scripts/home/preview.ts sizes it to each picture (PEEK_W). This width
+       only holds until the first picture, and the caption tab wraps to it
+       when that first size is measured. */
+    width: 406px;
     pointer-events: none;
     border: var(--seam) solid var(--ink);
     box-shadow: var(--hard-8) var(--ink);

@@ -69,9 +69,9 @@ export const stack: StackItem[] = [
     path: "src/layouts/BaseLayout.astro",
   },
   {
-    name: "One interaction module",
+    name: "One interaction entry",
     detail:
-      "The headline reveal, scroll spy, mobile menu, pointer preview, story dialogs and keyboard shortcuts live in a single file with a cleanup path.",
+      "The headline reveal, scroll spy, mobile menu, pointer preview, story dialogs and keyboard shortcuts each live in a small module, started from one file with a shared cleanup path.",
     path: "src/scripts/home-interactions.ts",
   },
   {
