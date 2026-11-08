@@ -282,10 +282,9 @@ export function initTypeChip(): void {
       const step = () => {
         const now = chip.textContent ?? "";
         if (now === goal) {
-          if (goal === own) {
-            chip.style.minWidth = "";
-            chip.classList.remove("typing");
-          }
+          // The cursor blinks again while the line rests.
+          chip.classList.remove("typing");
+          if (goal === own) chip.style.minWidth = "";
           return;
         }
         const typing = goal.startsWith(now);
