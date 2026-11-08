@@ -118,13 +118,11 @@ for (const width of [390, 600, 1440]) {
           expect(frame.left).toBeGreaterThanOrEqual(0);
           expect(frame.right).toBeLessThanOrEqual(width);
         }
-        // On failure, name the outermost elements that run past the edge.
+        // On failure, name the innermost elements that run past the edge.
         const overflow = await page.evaluate((vw) => {
           const past = (el: Element) => el.getBoundingClientRect().right > vw;
-          const culprits = [...document.querySelectorAll("body *")]
-            .filter(
-              (el) => past(el) && !(el.parentElement && past(el.parentElement)),
-            )
+          const culprits = [...document.querySelectorAll("*")]
+            .filter((el) => past(el) && ![...el.children].some(past))
             .slice(0, 5)
             .map((el) => {
               const r = Math.round(el.getBoundingClientRect().right);
