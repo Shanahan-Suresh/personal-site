@@ -10,7 +10,7 @@ Live: [shanahansuresh.com](https://shanahansuresh.com) · [Colophon](https://sha
 ## Why this repo is public
 
 The site is meant to be its own code sample. Rather than describe how it is built, the source is
-here to read: the design-token system in `src/styles/`, the single interaction module in
+here to read: the design-token system in `src/styles/`, the interaction modules in
 `src/scripts/`, the Playwright suite that runs against the production build, and the deploy
 hardening in `public/_headers`. The footer of every page links to the exact commit it was built
 from. The code is MIT. The owner's copy, project descriptions, portrait and project captures are
@@ -82,9 +82,13 @@ placeholders, CSP hashes, no border or hard shadow cut by a clipping box at 390 
 1440px, the keyboard shortcuts card, the build commit card and letters that hop once. `tests/guard.spec.ts` runs the
 placeholder guard against throwaway folders to prove it blocks a placeholder file or
 reference.
+`tests/interactions.spec.ts` covers the list stagger, the image fade, the hero label's brush and
+flip, the typing chip, the console note, the preview's keyboard path and shape, and the story
+swipe and Forward.
 `tests/media.spec.ts` checks loaded images, reserved dimensions, captions, both themes and viewport
 overflow at 390, 600 and 1440px. Fresh desktop/mobile contexts enforce 350 KiB initial transfer
-and 1.5 MiB after scrolling through the homepage.
+and 1.5 MiB after scrolling through the homepage (`src/data/budgets.ts`, read by the specs and the
+colophon). `tests/fixtures.ts` holds the story ids and budgets the specs share.
 
 The homepage uses 12 images: the portrait, seven project captures and four photographs. Chromium captures full-page screenshots at each review width in both
 themes with reduced motion; screenshots are reviewed for crops, legibility, overlaps and CTA visibility.
@@ -100,11 +104,11 @@ personal-site/
 │   ├── components/      # Astro UI components (Hero, Work, Nav, project rows and stories)
 │   ├── assets/          # project captures, portrait, licensed photography and provenance
 │   ├── content/         # MDX content (blog posts)
-│   ├── data/            # structured content (projects, learning, interests, navigation, colophon)
+│   ├── data/            # structured content (projects, learning, interests, navigation, colophon, budgets)
 │   ├── layouts/         # BaseLayout + PostLayout
-│   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts
+│   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts, bayer.ts, test-count.ts
 │   ├── pages/           # routes — index.astro, colophon.astro, 404.astro, writing/, rss.xml.ts
-│   ├── scripts/         # home-interactions.ts (bundled client JS for BaseLayout)
+│   ├── scripts/         # home-interactions.ts + home/ modules (bundled client JS for BaseLayout)
 │   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
 ├── scripts/             # build guards, CSP hashing, brand-images.py (favicon and OG image)
 ├── tests/               # Playwright e2e checks and visual review captures

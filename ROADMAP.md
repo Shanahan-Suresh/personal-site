@@ -14,7 +14,7 @@ evolution of the current site". Why this direction won, and what the owner rejec
   `data.js` is a hand copy of them and is not ported.
 - **Rules that the spec does not override:** the copy rules in `CLAUDE.md` (no em dashes, no AI
   tells, Kuala Lumpur not foregrounded), the hashed CSP in `public/_headers`, the image provenance
-  rules in `src/assets/README.md`, and the transfer budgets in `tests/`.
+  rules in `src/assets/README.md`, and the transfer budgets in `src/data/budgets.ts`.
 
 When the code and the spec disagree on a visual detail, the spec wins. When the spec has a defect
 (contrast, overflow, a broken line), fix it in the code and in the spec file, so they stay equal.
@@ -120,7 +120,7 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 
 ### 5. Interactions and clean-up
 
-- `src/scripts/home-interactions.ts` holds only the decision 11 moves (done in phase 3, because the
+- `src/scripts/home-interactions.ts` and its modules in `src/scripts/home/` hold only the decision 11 moves (done in phase 3, because the
   rows and dialogs need it): reveal, scroll spy, scrolled nav, mobile nav, preview and dialogs.
 - Delete the retired components and their CSS: `Marquee`, `BentoTile`, `StatusChip`, the sticker
   and tilt rules, and `marqueeTools` in `src/data/skills.ts`.
