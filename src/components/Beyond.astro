@@ -5,7 +5,7 @@ import { interests } from "@/data/interests";
 
 <section class="slab s-tomato" id="beyond" aria-labelledby="beyond-title">
   <h2 id="beyond-title" class="sr-only">When I'm not building</h2>
-  <ul class="off" role="list">
+  <ul class="off" role="list" data-stagger>
     {
       interests.map(({ title, caption, image, alt, objectPosition }) => (
         <li>
