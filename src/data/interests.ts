@@ -44,7 +44,7 @@ export const interests: Interest[] = [
   {
     id: "travel",
     title: "The next trip",
-    caption: "There's usually one half-planned.",
+    caption: "Usually planned in more detail than my sprints.",
     image: travel,
     alt: "A wooden boathouse and mountain peaks reflected in the still water of Lago di Braies.",
     objectPosition: "62% center",
@@ -56,7 +56,7 @@ export const interests: Interest[] = [
   {
     id: "finance",
     title: "Investing & personal finance",
-    caption: "Something I read about most weeks.",
+    caption: "A long-term investor who refreshes the app anyway.",
     image: finance,
     alt: "Photograph of red and green candlesticks and moving-average lines on a financial market screen.",
     objectPosition: "center",

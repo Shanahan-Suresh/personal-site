@@ -397,39 +397,6 @@ test.describe("without JavaScript", () => {
     await page.locator("#story-digest [data-dir='next']").click();
     await expect(page.locator("#story-mcp")).toBeVisible();
   });
-
-  test("the copy button stays hidden; the mailto link is the control", async ({
-    page,
-  }) => {
-    await page.goto("/");
-    await expect(page.locator("#contact .copy")).toBeHidden();
-    await expect(page.locator("#contact a.mail")).toBeVisible();
-  });
-});
-
-// ── Copy email ──────────────────────────────────────────────────────────────
-test("the copy button puts the email on the clipboard and says so", async ({
-  page,
-  context,
-  browserName,
-}) => {
-  test.skip(
-    browserName !== "chromium",
-    "Only Chromium grants clipboard permissions to a test",
-  );
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await page.goto("/");
-  const copy = page.locator("#contact .copy");
-  await expect(copy).toBeVisible();
-  await copy.click();
-  await expect(copy).toHaveText("Copied");
-  await expect(page.locator("[data-copy-status]")).toHaveText(
-    "Email address copied",
-  );
-  const href = await page.locator("#contact a.mail").getAttribute("href");
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
-    href?.replace("mailto:", ""),
-  );
 });
 
 // ── 404 ─────────────────────────────────────────────────────────────────────
@@ -747,9 +714,7 @@ test("no placeholder image is rendered", async ({ page }) => {
   await page.goto("/");
   // Astro keeps the source file name in front of its hash, so a placeholder
   // would show up here. The sentinel proves the names survive.
-  await expect(
-    page.locator('img[src*="rsvp-redesign"]').first(),
-  ).toBeAttached();
+  await expect(page.locator('img[src*="rsvp-glass"]').first()).toBeAttached();
   const placeholders = page.locator('img[src*="placeholder"]');
   await expect(placeholders).toHaveCount(0);
 });
@@ -835,9 +800,21 @@ test.describe("hover finds and shortcuts", () => {
     const before = await h.innerHTML();
     await h.hover();
     await expect(h.locator(".hop-ch").first()).toBeAttached();
-    // One hop, then still: nothing loops while the pointer stays.
+    // One hop, then still: nothing loops while the pointer stays. Paused
+    // animations (the Learning next icons wait paused off hover) do not move,
+    // and the About code chip's cursor blink is an owner-approved exception.
     await page.waitForTimeout(1500);
-    expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
+    const moving = await page.evaluate(() =>
+      document
+        .getAnimations()
+        .filter(
+          (a) =>
+            a.playState === "running" &&
+            (a as CSSAnimation).animationName !== "caret-blink",
+        )
+        .map((a) => (a as CSSAnimation).animationName ?? "transition"),
+    );
+    expect(moving).toEqual([]);
     await page.mouse.move(1400, 880);
     await expect(h.locator(".hop-ch")).toHaveCount(0);
     expect(await h.innerHTML()).toBe(before);

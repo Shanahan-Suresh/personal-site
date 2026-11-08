@@ -1,13 +1,32 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
 import { navLinks } from "@/data/navigation";
+
+/* Anton's S outline, as on main's monogram (font units, flipped upright). */
+const S_PATH =
+  "M496 -16Q255 -16 148.5 104.0Q42 224 42 486V658H390V438Q390 377 408.5 342.5Q427 308 473 308Q521 308 539.5 336.0Q558 364 558 428Q558 509 542.0 563.5Q526 618 486.5 667.5Q447 717 377 783L219 933Q42 1100 42 1315Q42 1540 146.5 1658.0Q251 1776 449 1776Q691 1776 792.5 1647.0Q894 1518 894 1255H536V1376Q536 1412 515.5 1432.0Q495 1452 460 1452Q418 1452 398.5 1428.5Q379 1405 379 1368Q379 1331 399.0 1288.0Q419 1245 478 1189L681 994Q742 936 793.0 871.5Q844 807 875.0 721.5Q906 636 906 513Q906 265 814.5 124.5Q723 -16 496 -16Z";
 ---
 
 <header class="nav-header">
   <nav class="wrap nav-inner" aria-label="Main">
-    <a href="/" class="nav-name" aria-label="Shanahan Suresh, home"
-      >Shanahan Suresh</a
-    >
+    <a href="/" class="nav-name" aria-label="Shanahan Suresh, home">
+      <span class="nn-mark" aria-hidden="true">
+        {
+          ["top", "bot"].map((half) => (
+            <svg
+              class={`nn-s ${half}`}
+              viewBox="30 -1790 888 1820"
+              focusable="false"
+            >
+              <path transform="scale(1,-1)" fill="currentColor" d={S_PATH} />
+            </svg>
+          ))
+        }
+      </span>
+      <span class="nn-lines" aria-hidden="true"
+        ><span>hanahan</span><span>uresh</span></span
+      >
+    </a>
     <button
       class="nav-burger"
       type="button"
@@ -51,26 +70,83 @@ import { navLinks } from "@/data/navigation";
     gap: 28px;
     height: var(--nav-h);
   }
+  /* The name: one tall butter S (Anton's outline) with a hard cobalt shadow,
+     shared by HANAHAN over URESH. Two copies of the S sit on top of each
+     other, so at rest they read as one. Hover and focus split them: the top
+     copy shrinks toward its top-left corner, in front of HANAHAN, the bottom
+     copy toward its bottom-left corner, in front of URESH, and the lines slide
+     left, so the bar reads SHANAHAN over SURESH. --k is the small S height over
+     the tall one (the cap height of the lines). */
   .nav-name {
+    --k: 0.36;
+    --slide: -19.5px;
     margin-right: auto;
-    padding-block: 6px;
-    font: 800 21px/1 var(--font-display);
-    letter-spacing: 0.008em;
+    display: inline-flex;
+    align-items: stretch;
+    gap: 8px;
+    padding-block: 1px;
+    font: 800 19px/1 var(--font-display);
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     text-decoration: none;
   }
-  /* The butter underline wipes in from the left on hover; the active link keeps it. */
-  .nav-name,
+  .nn-mark {
+    position: relative;
+    flex: none;
+    width: 21px;
+    height: 42px;
+  }
+  .nn-s {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    height: 42px;
+    width: auto;
+    color: var(--butter);
+    filter: drop-shadow(3px 3px 0 var(--cobalt));
+    transition: transform 0.26s var(--ease-out);
+  }
+  .nn-s.top {
+    transform-origin: 0 6%;
+  }
+  .nn-s.bot {
+    transform-origin: 0 88.5%;
+  }
+  .nn-lines {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px 0 3px;
+    transition: transform 0.26s var(--ease-out);
+  }
+  .nav-name:focus-visible .nn-s {
+    transform: scale(var(--k));
+  }
+  .nav-name:focus-visible .nn-lines {
+    transform: translateX(var(--slide));
+  }
+  @media (hover: hover) {
+    .nav-name:hover .nn-s {
+      transform: scale(var(--k));
+    }
+    .nav-name:hover .nn-lines {
+      transform: translateX(var(--slide));
+    }
+  }
+  /* The butter underline sweeps through: it wipes in from the left on hover
+     and leaves to the right. Only the size animates; the anchor jumps from
+     right to left while the line is empty or full, so the jump never shows.
+     The active link keeps it. */
   .nav-link {
-    background: linear-gradient(var(--butter), var(--butter)) left bottom / 0%
+    background: linear-gradient(var(--butter), var(--butter)) right bottom / 0%
       2px no-repeat;
     transition: background-size 0.22s var(--ease-out);
   }
-  .nav-name:hover,
-  .nav-name:focus-visible,
   .nav-link:hover,
   .nav-link:focus-visible,
   .nav-link.is-active {
+    background-position: left bottom;
     background-size: 100% 2px;
   }
   .nav-links {
@@ -126,10 +202,6 @@ import { navLinks } from "@/data/navigation";
   @media (max-width: 768px) {
     .nav-inner {
       gap: 12px;
-    }
-    /* The name is a 44px target for a thumb, like the two buttons. */
-    .nav-name {
-      padding-block: 12px;
     }
     .nav-burger {
       display: inline-flex;
@@ -220,7 +292,8 @@ import { navLinks } from "@/data/navigation";
     .nav-header,
     .nav-header::after,
     .nav-links,
-    .nav-name,
+    .nn-s,
+    .nn-lines,
     .nav-link,
     .nav-burger span {
       transition: none;

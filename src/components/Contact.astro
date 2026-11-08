@@ -2,6 +2,14 @@
 import { site } from "@/lib/site-config";
 
 const social = site.social;
+
+/* What to write about. Each one is a link that starts an email with the
+   ask as its subject. */
+const asks = [
+  "A product, from idea to launch",
+  "AI tooling for your team",
+  "An app that needs to get faster",
+];
 ---
 
 <section class="s-night" id="contact">
@@ -11,22 +19,28 @@ const social = site.social;
       <span class="ln"><span>build.</span></span>
     </h2>
     <div class="row">
+      <div class="asks">
+        <p class="label asks-label">Write to me about</p>
+        <ul role="list">
+          {
+            asks.map((ask) => (
+              <li>
+                <a
+                  href={`mailto:${social.email}?subject=${encodeURIComponent(ask)}`}
+                >
+                  {ask}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
       <p>
         I'm always up for interesting work or a good chat. If something here
         caught your eye, drop me a line.
       </p>
       <div>
-        <div class="mail-row">
-          <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
-          <button
-            class="copy"
-            type="button"
-            data-copy={social.email}
-            aria-label="Copy email address"
-            hidden>Copy</button
-          >
-          <span class="sr-only" aria-live="polite" data-copy-status></span>
-        </div>
+        <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
         <ul class="links" role="list">
           <li>
             <a href={social.linkedin} target="_blank" rel="noopener noreferrer"
@@ -65,6 +79,58 @@ const social = site.social;
     margin: 0;
     font-size: 19px;
   }
+  /* Prompts for what to write about, in display type with butter markers. */
+  .asks {
+    grid-column: 1 / -1;
+  }
+  .asks-label {
+    margin-bottom: 14px;
+    color: var(--butter);
+  }
+  .asks ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .asks li {
+    display: flex;
+    gap: 0.4em;
+    font: 800 clamp(26px, 2.8vw, 40px) / 0.95 var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.008em;
+  }
+  .asks li::before {
+    content: "+";
+    color: var(--butter);
+  }
+  /* Each ask is a link: under a mouse or keyboard focus a butter bar wipes
+     in behind it like a marker pen, and the text turns ink. */
+  .asks a {
+    padding: 2px 6px;
+    margin: -2px -6px;
+    background: linear-gradient(var(--butter), var(--butter)) no-repeat 0 0 / 0%
+      100%;
+    text-decoration: none;
+  }
+  .asks a:focus-visible {
+    background-size: 100% 100%;
+    color: var(--ink);
+  }
+  @media (hover: hover) {
+    .asks a:hover {
+      background-size: 100% 100%;
+      color: var(--ink);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .asks a {
+      transition:
+        background-size 0.35s cubic-bezier(0.6, 0, 0.2, 1),
+        color 0s 0.12s;
+    }
+  }
   .mail {
     display: inline-block;
     border-bottom: 4px solid var(--butter);
@@ -77,45 +143,6 @@ const social = site.social;
   .mail:hover,
   .mail:focus-visible {
     color: var(--butter);
-  }
-  .mail-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px 18px;
-  }
-  /* Script shows this only where the clipboard can be written. */
-  .copy {
-    min-height: 44px;
-    padding: 9px 14px 8px;
-    border: 2px solid var(--white);
-    background: none;
-    color: var(--white);
-    font: 500 13px/1 var(--font-mono);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background var(--dur-fast),
-      color var(--dur-fast),
-      border-color var(--dur-fast),
-      transform 0.1s;
-  }
-  .copy:focus-visible,
-  .copy.done {
-    border-color: var(--butter);
-    background: var(--butter);
-    color: var(--ink);
-  }
-  @media (hover: hover) {
-    .copy:hover {
-      border-color: var(--butter);
-      background: var(--butter);
-      color: var(--ink);
-    }
-  }
-  .copy:active {
-    transform: translate(2px, 2px);
   }
   .links {
     display: flex;
@@ -157,11 +184,18 @@ const social = site.social;
     h2 {
       font-size: clamp(96px, 19vw, 300px);
     }
+    /* The prompts sit at the top beside "Let's"; the note and the email
+       stay at the foot beside "build." */
     .row {
       grid-template-columns: 1fr;
+      grid-template-rows: 1fr auto auto;
+      align-self: stretch;
       gap: 32px;
       margin-top: 0;
       padding-bottom: 12px;
+    }
+    .asks {
+      padding-top: 0.6em;
     }
   }
   @media (max-width: 560px) {
@@ -189,7 +223,6 @@ const social = site.social;
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .copy,
     .mail,
     .links a {
       transition: none;

@@ -49,11 +49,44 @@
     margin: 0 0 16px;
     font-size: 18.5px;
   }
+  /* A terminal line: green type on ink after a dim prompt, with a slim,
+     softened block cursor (narrower and shorter than a full cell, at 70%), in a small rounded window (the site's one rounded corner, as on
+     the earlier site). The cursor blinks while the line rests and holds still
+     while it types (`.typing`); with reduced motion it never blinks. */
   .code {
     padding: 0.04em 0.4em;
+    border-radius: 3px;
     background: var(--ink);
-    color: var(--white);
+    color: var(--term);
     font: 500 0.86em/1 var(--font-mono);
+    white-space: nowrap;
+  }
+  .code::before {
+    content: "$ ";
+    color: var(--term-dim);
+  }
+  .code::after {
+    content: "";
+    display: inline-block;
+    width: 0.4em;
+    height: 0.8em;
+    margin-left: 0.12em;
+    vertical-align: -0.05em;
+    background: var(--term);
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .code::after {
+      animation: caret-blink 1.06s steps(1) infinite;
+    }
+    .code.typing::after {
+      animation: none;
+    }
+  }
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
   }
   @media (max-width: 960px) {
     .about {

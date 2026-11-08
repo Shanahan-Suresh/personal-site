@@ -45,6 +45,9 @@
   --night: #15120e;
   --cream: #f5f0e4; /* the portrait ground: stays light in both themes */
   --lemon: #ffe680; /* the theme-switch sparkle: the same in both themes */
+  /* the About code chip, a terminal on ink: the same in both themes */
+  --term: #2fbf71;
+  --term-dim: #9b958a;
 
   /* page surfaces: these invert with the theme */
   --paper: #f5f0e4;
