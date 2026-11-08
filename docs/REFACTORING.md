@@ -25,7 +25,7 @@ Suggested order for home-interactions.ts: TEST-06 first, then the quick wins (DE
 
 ## Status
 
-The findings below are worked in the tree (uncommitted). Line numbers in the findings further down cite the audit commit aca0ac8, before the split. Measured 2026-11-09: build 0 errors; Playwright 186 passed and 4 skipped on chromium, firefox and webkit; chromium with `--repeat-each=3` 198 passed; `dist/` diff shows only the theme toggle's inline script and one merged style block on /writing; computed styles of every body element identical on 5 pages, 2 widths and 2 themes; gzipped home script 6285 B to 6426 B.
+The findings below are worked in `main` (PR #30). Line numbers in the findings further down cite the audit commit aca0ac8, before the split. Measured 2026-11-09: build 0 errors; Playwright 186 passed and 4 skipped on chromium, firefox and webkit; chromium with `--repeat-each=3` 198 passed; `dist/` diff shows only the theme toggle's inline script and one merged style block on /writing; computed styles of every body element identical on 5 pages, 2 widths and 2 themes; gzipped home script 6285 B to 6426 B.
 
 | ID      | State           | Result                                                                                                                                                                                        |
 | ------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -44,6 +44,7 @@ The findings below are worked in the tree (uncommitted). Line numbers in the fin
 | GOD-02  | Done, in part   | Placement maths are module-level pure functions. initPreview is 175 lines (target 120) and `swap` has CCN 13 (target 8).                                                                      |
 | GOD-04  | Done            | `dismiss`, `bindPull` and `bindSwipe` are module-level. initStories is 143 lines (was 239).                                                                                                   |
 | TYPE-01 | Done            | `tsc --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes`: 0 errors in src/scripts.                                                                                              |
+| DEPS-01 | Done, in part   | Every package is at its newest in-range version except `tailwindcss` and `@tailwindcss/vite` (4.3.3, newest 4.3.5), which the monthly grouped Dependabot PR brings.                           |
 
 The story tests found one race in the site: a Forward within about 10 ms of Back closes the story again, because the dialog's close event lands after the Forward. No person can press that fast, so it stays as it is.
 

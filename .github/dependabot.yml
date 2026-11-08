@@ -1,26 +1,34 @@
+# Monthly and grouped. Each update joins the first group it matches, so npm
+# gives one PR of major updates (each major still gets its own upgrade pass),
+# one PR of every other update, and one PR of security fixes. Actions give one
+# PR a month.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
     groups:
-      astro:
+      npm-security:
+        applies-to: security-updates
         patterns:
-          - "astro"
-          - "@astrojs/*"
-      tooling:
+          - "*"
+      npm-major:
+        applies-to: version-updates
         patterns:
-          - "prettier*"
-          - "typescript"
-          - "@playwright/test"
-          - "tailwindcss"
-          - "@tailwindcss/*"
-    open-pull-requests-limit: 5
+          - "*"
+        update-types:
+          - major
+      npm:
+        applies-to: version-updates
+        patterns:
+          - "*"
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: monthly
+    groups:
+      actions:
+        patterns:
+          - "*"

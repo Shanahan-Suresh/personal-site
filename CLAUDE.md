@@ -108,7 +108,8 @@ use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
   sha256 hashes of every inline `<script>` in `dist/*.html`. `script-src` has **no
   `'unsafe-inline'`**; the build fails if it does. A new inline script needs nothing from you; a new
   third-party script origin means editing the CSP in `public/_headers` deliberately.
-- CI runs with `permissions: contents: read` and SHA-pinned actions; Dependabot opens weekly PRs.
+- CI runs with `permissions: contents: read` and SHA-pinned actions; Dependabot opens grouped PRs monthly
+  (one of major updates, one of the rest, one of Actions) and one grouped PR for security fixes.
 - Deploys run on Cloudflare Workers Builds: `wrangler.jsonc` serves `dist/` as static assets, with
   no Worker script and no adapter.
 - Cloudflare settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP), preview
