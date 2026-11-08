@@ -1,0 +1,11 @@
+// Cloudflare Workers static assets: the Worker serves the built `dist/` and
+// nothing else (no server code). `_headers` in `dist/` sets the CSP and the
+// other headers; a missing path gets the site's own 404 page.
+{
+  "name": "personal-site",
+  "compatibility_date": "2026-11-04",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+}

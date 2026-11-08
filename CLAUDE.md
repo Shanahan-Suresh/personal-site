@@ -109,8 +109,10 @@ use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
   `'unsafe-inline'`**; the build fails if it does. A new inline script needs nothing from you; a new
   third-party script origin means editing the CSP in `public/_headers` deliberately.
 - CI runs with `permissions: contents: read` and SHA-pinned actions; Dependabot opens weekly PRs.
-- Cloudflare settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP), Pages
-  preview builds only from this repo's branches (never forks).
+- Deploys run on Cloudflare Workers Builds: `wrangler.jsonc` serves `dist/` as static assets, with
+  no Worker script and no adapter.
+- Cloudflare settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP), preview
+  builds only from this repo's branches (never forks).
 
 ## Settled, do not reopen
 

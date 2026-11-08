@@ -81,7 +81,7 @@ export const stack: StackItem[] = [
     path: "tests/home.spec.ts",
   },
   {
-    name: "Cloudflare Pages",
+    name: "Cloudflare Workers",
     detail:
       "Static deploy behind CSP (inline scripts allowed by hash only), HSTS, COOP and Permissions-Policy headers set in a _headers file.",
     path: "public/_headers",

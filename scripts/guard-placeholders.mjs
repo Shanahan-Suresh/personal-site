@@ -7,7 +7,7 @@
  * under src/assets/ or is referenced anywhere under src/, unless the build is
  * explicitly marked as local with ALLOW_PLACEHOLDERS=1.
  *
- * Cloudflare Pages runs `npm run build` without that variable, so a stray
+ * Cloudflare Workers Builds runs `npm run build` without that variable, so a stray
  * placeholder fails the deploy loudly and production keeps the previous build.
  *
  * The reference scan is a plain substring match over text files, comments
