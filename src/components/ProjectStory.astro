@@ -108,7 +108,10 @@ const nextTitle =
           data-go={next.id}
           data-dir="next"
           data-next={next.id}
-          ><span class="st-go">Next: <ArrowText text={nextTitle} /></span>
+          ><span class="st-go"
+            >Next: <span class="t-short"><ArrowText text={nextTitle} /></span
+            ><span class="t-full"><ArrowText text={next.title} /></span></span
+          >
           <span class="arrow" aria-hidden="true">→</span></a
         >
       </nav>
@@ -117,6 +120,11 @@ const nextTitle =
 </dialog>
 
 <style>
+  /* The Next button's title: cut to fit one line on wider screens, whole
+     on a phone, where the button wraps to two lines. */
+  .t-full {
+    display: none;
+  }
   .story {
     margin: auto; /* Tailwind's reset zeroes the margin that centres a modal */
     width: min(1080px, calc(100vw - 32px));
@@ -379,9 +387,22 @@ const nextTitle =
       box-shadow: var(--hard-3) var(--edge);
       white-space: nowrap;
     }
+    /* The Next button names the next story in full: a long title wraps to a
+       second line rather than losing its end. */
+    .st-nav .btn[data-dir="next"] {
+      align-items: center;
+      gap: 8px;
+      white-space: normal;
+      text-align: left;
+    }
     .st-go {
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-wrap: balance;
+    }
+    .t-short {
+      display: none;
+    }
+    .t-full {
+      display: inline;
     }
   }
   @media (prefers-reduced-motion: reduce) {

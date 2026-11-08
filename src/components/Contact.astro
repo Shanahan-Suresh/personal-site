@@ -209,10 +209,12 @@ const asks = [
   /* A finger needs a 44px target; the hit area grows past the text, not the
      text itself, so the layout stays as drawn. */
   @media (pointer: coarse) {
-    .mail {
+    .mail,
+    .asks a {
       position: relative;
     }
     .mail::before,
+    .asks a::before,
     .links a::before {
       content: "";
       position: absolute;
@@ -220,6 +222,10 @@ const asks = [
     }
     .links a::before {
       inset: -13px -10px;
+    }
+    /* A one-line ask is 29px tall: 8px above and below make it 45px. */
+    .asks a::before {
+      inset: -8px -4px;
     }
   }
   @media (prefers-reduced-motion: reduce) {
