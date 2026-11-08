@@ -306,6 +306,38 @@ test.describe("stories, more", () => {
     expect(new URL(page.url()).pathname).toBe("/");
   });
 
+  test("a click on the backdrop closes the story, a drag out of it does not", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.locator("#row-rsvp").click();
+    const story = page.locator("#story-rsvp");
+    await expect(story).toBeVisible();
+    // Select text from a paragraph of the story out onto the backdrop. (A
+    // press on the picture would start a native image drag instead.)
+    const box = (await story.locator("p").first().boundingBox())!;
+    await page.mouse.move(box.x + 4, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(4, 4, { steps: 4 });
+    await page.mouse.up();
+    await expect(story).toBeVisible();
+    await page.mouse.click(4, 4);
+    await expect(page.locator("dialog.story[open]")).toHaveCount(0);
+  });
+
+  test("a story link shows its story as a panel when the story script never runs", async ({
+    page,
+  }) => {
+    await page.route("**/*", (route) => {
+      const type = route.request().resourceType();
+      return type === "script" ? route.abort() : route.continue();
+    });
+    await page.goto("/");
+    await page.locator("#row-rsvp").click();
+    await expect(page).toHaveURL(/#story-rsvp$/);
+    await expect(page.locator("#story-rsvp")).toBeVisible();
+  });
+
   test.describe("on a phone", () => {
     test.use({ viewport: { width: 390, height: 844 }, hasTouch: true });
 
