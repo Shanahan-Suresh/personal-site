@@ -52,7 +52,7 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 
 ## Design system
 
-The poster redesign is live: `ROADMAP.md` holds its settled decisions, phases and status, and
+The poster redesign is live: `docs/ROADMAP.md` holds its settled decisions, phases and status, and
 the spec is `design-previews/neo-2026/10-poster-v3.html`. Before any redesign or restyle, read
 `docs/design-direction.md` (the owner's taste and verdicts, what reads as generic, mockup tools and
 capture traps). Every colour is a CSS custom-property token; use tokens only.
