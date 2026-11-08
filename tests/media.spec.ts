@@ -31,16 +31,14 @@ test("project rows and stories carry the right media, captions and links", async
   await expect(story("censorit")).toContainText(
     "Cabanel's The Birth of Venus (1875)",
   );
+  // The painting is public domain and needs no link; the record of its
+  // source lives in src/assets/README.md.
   await expect(
     story("censorit").locator('a[href^="https://www.metmuseum.org"]'),
-  ).toHaveAttribute(
-    "href",
-    "https://www.metmuseum.org/art/collection/search/435831",
-  );
-  await expect(story("censorit")).toContainText("Artwork source (The Met)");
+  ).toHaveCount(0);
   await expect(story("mcp").locator(".media-frame img")).toHaveAttribute(
     "alt",
-    /generated tools/,
+    /MCP tools generated/,
   );
   await expect(
     story("heatgen").locator('a[href*="jestec.taylors.edu.my"]'),

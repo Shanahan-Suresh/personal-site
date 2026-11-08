@@ -1,6 +1,7 @@
 ---
 import { getImage } from "astro:assets";
 import MediaFrame from "./MediaFrame.astro";
+import ArrowText from "./ArrowText.astro";
 import type { ListedProject } from "@/data/projects";
 
 interface Props {
@@ -29,11 +30,20 @@ const nextTitle =
   <div class="st-head">
     <div>
       <span class="label">{p.group}</span>
-      <h2 id={`story-${p.id}-title`}>{p.title}</h2>
+      <h2 id={`story-${p.id}-title`}><ArrowText text={p.title} /></h2>
     </div>
-    <a class="st-x" href={`#row-${p.id}`} data-close aria-label="Close story"
-      >×</a
-    >
+    <a class="st-x" href={`#row-${p.id}`} data-close aria-label="Close story">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="square"
+        aria-hidden="true"><path d="M2.5 2.5l11 11M13.5 2.5l-11 11"></path></svg
+      >
+    </a>
   </div>
   <div class="st-body">
     {
@@ -98,7 +108,7 @@ const nextTitle =
           data-go={next.id}
           data-dir="next"
           data-next={next.id}
-          ><span class="st-go">Next: {nextTitle}</span>
+          ><span class="st-go">Next: <ArrowText text={nextTitle} /></span>
           <span class="arrow" aria-hidden="true">→</span></a
         >
       </nav>
@@ -150,6 +160,8 @@ const nextTitle =
     margin-top: 8px;
     font-size: clamp(34px, 5vw, 64px);
   }
+  /* The close control: a bold drawn ink cross on butter. Hover and focus
+     lift it into its shadow; a press sinks it. */
   .st-x {
     flex: none;
     display: grid;
@@ -159,7 +171,6 @@ const nextTitle =
     border: var(--seam) solid var(--edge);
     background: var(--butter);
     color: var(--ink);
-    font: 800 24px/1 var(--font-display);
     text-decoration: none;
     transition:
       transform 0.1s,
