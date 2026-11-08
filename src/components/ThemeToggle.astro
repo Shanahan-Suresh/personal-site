@@ -1,3 +1,7 @@
+---
+import { BAYER_8 } from "@/lib/bayer";
+---
+
 <button
   id="theme-toggle"
   type="button"
@@ -7,70 +11,7 @@
 >
   <!-- 8 x 8 ordered dither (Bayer): --o is the order each square fills in. -->
   <span class="dither" aria-hidden="true">
-    <i style="--o:0"></i>
-    <i style="--o:32"></i>
-    <i style="--o:8"></i>
-    <i style="--o:40"></i>
-    <i style="--o:2"></i>
-    <i style="--o:34"></i>
-    <i style="--o:10"></i>
-    <i style="--o:42"></i>
-    <i style="--o:48"></i>
-    <i style="--o:16"></i>
-    <i style="--o:56"></i>
-    <i style="--o:24"></i>
-    <i style="--o:50"></i>
-    <i style="--o:18"></i>
-    <i style="--o:58"></i>
-    <i style="--o:26"></i>
-    <i style="--o:12"></i>
-    <i style="--o:44"></i>
-    <i style="--o:4"></i>
-    <i style="--o:36"></i>
-    <i style="--o:14"></i>
-    <i style="--o:46"></i>
-    <i style="--o:6"></i>
-    <i style="--o:38"></i>
-    <i style="--o:60"></i>
-    <i style="--o:28"></i>
-    <i style="--o:52"></i>
-    <i style="--o:20"></i>
-    <i style="--o:62"></i>
-    <i style="--o:30"></i>
-    <i style="--o:54"></i>
-    <i style="--o:22"></i>
-    <i style="--o:3"></i>
-    <i style="--o:35"></i>
-    <i style="--o:11"></i>
-    <i style="--o:43"></i>
-    <i style="--o:1"></i>
-    <i style="--o:33"></i>
-    <i style="--o:9"></i>
-    <i style="--o:41"></i>
-    <i style="--o:51"></i>
-    <i style="--o:19"></i>
-    <i style="--o:59"></i>
-    <i style="--o:27"></i>
-    <i style="--o:49"></i>
-    <i style="--o:17"></i>
-    <i style="--o:57"></i>
-    <i style="--o:25"></i>
-    <i style="--o:15"></i>
-    <i style="--o:47"></i>
-    <i style="--o:7"></i>
-    <i style="--o:39"></i>
-    <i style="--o:13"></i>
-    <i style="--o:45"></i>
-    <i style="--o:5"></i>
-    <i style="--o:37"></i>
-    <i style="--o:63"></i>
-    <i style="--o:31"></i>
-    <i style="--o:55"></i>
-    <i style="--o:23"></i>
-    <i style="--o:61"></i>
-    <i style="--o:29"></i>
-    <i style="--o:53"></i>
-    <i style="--o:21"></i>
+    {BAYER_8.map((o) => <i style={`--o:${o}`} />)}
   </span>
   <svg
     id="icon-sun"
@@ -208,6 +149,8 @@
 </style>
 
 <script>
+  import { BAYER_8 } from "@/lib/bayer";
+
   function initThemeToggle() {
     const btn = document.getElementById("theme-toggle");
     if (!btn) return;
@@ -238,13 +181,8 @@
     const WAVE_MS = 720;
     const PIXEL = 10; // one dither square, in CSS px
     const SPAN = 160; // how far the dither reaches ahead of the edge
-    // 8 x 8 ordered-dither thresholds (Bayer), 0 to 63.
-    const BAYER = [
-      0, 32, 8, 40, 2, 34, 10, 42, 48, 16, 56, 24, 50, 18, 58, 26, 12, 44, 4,
-      36, 14, 46, 6, 38, 60, 28, 52, 20, 62, 30, 54, 22, 3, 35, 11, 43, 1, 33,
-      9, 41, 51, 19, 59, 27, 49, 17, 57, 25, 15, 47, 7, 39, 13, 45, 5, 37, 63,
-      31, 55, 23, 61, 29, 53, 21,
-    ].map((v) => (v + 0.5) / 64);
+    // The dither thresholds, 0 to 1: the centre of each of the 64 steps.
+    const BAYER = BAYER_8.map((v) => (v + 0.5) / 64);
     let current: ViewTransition | null = null;
     let lastClick = 0;
 
