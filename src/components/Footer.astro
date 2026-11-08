@@ -161,6 +161,8 @@ const built = describeCommit(commit);
     box-shadow: var(--hard-5) var(--ink);
     font: 500 13px/1.45 var(--font-mono);
     white-space: normal;
+    /* A merge subject carries a 40-character hash or a long branch path. */
+    overflow-wrap: anywhere;
     opacity: 0;
     visibility: hidden;
     transform: translateY(6px);
