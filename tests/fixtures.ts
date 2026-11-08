@@ -1,15 +1,8 @@
 import { transferBudget } from "../src/data/budgets";
+import { projectOrder } from "../src/data/project-order";
 
-/** Every project's id, one row and one story each (src/data/projects.ts). */
-export const STORY_IDS = [
-  "rsvp",
-  "hr",
-  "ohse",
-  "digest",
-  "mcp",
-  "censorit",
-  "heatgen",
-] as const;
+/** Every project's id, one row and one story each, in page order. */
+export const STORY_IDS = projectOrder;
 
 /** The home page transfer budgets, in bytes. */
 export const ARRIVAL_BUDGET = transferBudget.arrivalKiB * 1024;

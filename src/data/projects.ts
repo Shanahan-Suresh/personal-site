@@ -1,4 +1,5 @@
 import type { Project, ProjectCategory } from "@/lib/types";
+import { projectOrder } from "@/data/project-order";
 import digestVisual from "@/assets/work/digest.png";
 import rsvpVisual from "@/assets/work/rsvp-glass-mock.png";
 import censoritVisual from "@/assets/work/censorit-venus-v4.png";
@@ -144,8 +145,7 @@ export const categories: ProjectCategory[] = [
   { label: "Academic", items: academic },
 ];
 
-/** The homepage order: corporate work first, then side projects, then university. */
-const order = ["rsvp", "hr", "ohse", "digest", "mcp", "censorit", "heatgen"];
+const order: readonly string[] = projectOrder;
 
 export interface ListedProject extends Project {
   group: string;
@@ -158,3 +158,12 @@ export const projects: ListedProject[] = order.map((id) => {
   }
   throw new Error(`Unknown project id in the homepage order: ${id}`);
 });
+
+// A project missing from `order` would have no row, story or number.
+for (const cat of categories) {
+  for (const p of cat.items) {
+    if (!order.includes(p.id)) {
+      throw new Error(`Project "${p.id}" is missing from the homepage order`);
+    }
+  }
+}
