@@ -142,7 +142,8 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 
 - A new `public/og-image.jpg` and `og-image.svg` in the poster style: the sky slab with the
   headline and the name.
-- A new `favicon.svg`: a condensed "S" in butter on night.
+- New icons: the nav's butter S on a cobalt slab with a butter hard shadow, as `favicon.svg`,
+  `favicon.ico` (16, 32 and 48 px) and a 180 px `apple-touch-icon.png` on cream.
 - Remove the copper-coil file and its entry in `hero-provenance-v5.json`. Record the new hero
   composition in `src/assets/README.md`.
 - Read `CLAUDE.md` and `README.md` once more against the finished site.
