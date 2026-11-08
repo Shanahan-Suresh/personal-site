@@ -1,5 +1,6 @@
 import { test, expect, type Locator } from "@playwright/test";
 import { trackTransfers } from "./transfer";
+import { ARRIVAL_BUDGET, STORY_IDS } from "./fixtures";
 
 test("home page loads with the hero headline", async ({ page }) => {
   const response = await page.goto("/");
@@ -39,8 +40,12 @@ test("major sections are present on the page", async ({ page }) => {
   // Work section — all seven project rows, each with its story dialog
   const workSection = page.locator("#work");
   await expect(workSection).toBeAttached();
-  await expect(workSection.locator(".projects .pr")).toHaveCount(7);
-  await expect(workSection.locator("dialog.story")).toHaveCount(7);
+  await expect(workSection.locator(".projects .pr")).toHaveCount(
+    STORY_IDS.length,
+  );
+  await expect(workSection.locator("dialog.story")).toHaveCount(
+    STORY_IDS.length,
+  );
 
   // Contact — headline text and email link
   const contactSection = page.locator("#contact");
@@ -574,7 +579,15 @@ for (const width of [390, 1440]) {
     await expect(page.locator(".hero-headline")).toHaveClass(/\bin\b/, {
       timeout: 3000,
     });
-    await page.waitForTimeout(1000); // let the headline lines finish rising
+    // Let the headline lines finish rising (the caret blink never ends).
+    await page.evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a.effect?.getComputedTiming().endTime !== Infinity)
+          .map((a) => a.finished.catch(() => undefined)),
+      ),
+    );
     const cut = await page.evaluate(() => {
       const found: string[] = [];
       for (const el of document.querySelectorAll<HTMLElement>("body *")) {
@@ -683,7 +696,7 @@ test("home page stays under the 350 KiB initial transfer budget", async ({
   await page.goto("/", { waitUntil: "networkidle" });
   const total = await transferredBytes();
   expect(total).toBeGreaterThan(0);
-  expect(total).toBeLessThan(350 * 1024);
+  expect(total).toBeLessThan(ARRIVAL_BUDGET);
 });
 
 // ── Colophon ────────────────────────────────────────────────────────────────
@@ -761,11 +774,28 @@ test.describe("hover finds and shortcuts", () => {
       .toBe(!wasDark);
 
     await card.getByRole("button", { name: "Turn letter keys off" }).click();
+    // T reaches the theme only through a click on its button, so count them.
+    type Win = { themeClicks: number };
+    await page.locator("#theme-toggle").evaluate((b) => {
+      (window as unknown as Win).themeClicks = 0;
+      b.addEventListener(
+        "click",
+        () => (window as unknown as Win).themeClicks++,
+      );
+    });
     await page.keyboard.press("t");
-    await page.waitForTimeout(300);
+    // "?" goes through the same key handler, so once the card hides, T has
+    // been handled too.
+    await page.keyboard.press("?");
+    await expect(card).toBeHidden();
+    expect(
+      await page.evaluate(() => (window as unknown as Win).themeClicks),
+    ).toBe(0);
     expect(await html.evaluate((el) => el.classList.contains("dark"))).toBe(
       !wasDark,
     );
+    await page.keyboard.press("?");
+    await expect(card).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(card).toBeHidden();
   });

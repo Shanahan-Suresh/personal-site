@@ -1,27 +1,20 @@
 import { test, expect } from "@playwright/test";
 import { trackTransfers } from "./transfer";
+import { ARRIVAL_BUDGET, SCROLLED_BUDGET, STORY_IDS } from "./fixtures";
 
 test("project rows and stories carry the right media, captions and links", async ({
   page,
 }) => {
   await page.goto("/");
   const rows = page.locator(".projects .pr");
-  await expect(rows).toHaveCount(7);
+  await expect(rows).toHaveCount(STORY_IDS.length);
 
   // Each row's pointer preview is a small WebP that loads on first hover.
   for (const row of await rows.all()) {
     await expect(row).toHaveAttribute("data-peek", /\.webp$/);
   }
   const story = (id: string) => page.locator(`#story-${id}`);
-  for (const id of [
-    "rsvp",
-    "hr",
-    "ohse",
-    "digest",
-    "mcp",
-    "censorit",
-    "heatgen",
-  ]) {
+  for (const id of STORY_IDS) {
     await expect(story(id).locator(".media-frame img")).toHaveCount(1);
   }
   await expect(story("rsvp").locator(".media-frame img")).toHaveAttribute(
@@ -66,7 +59,7 @@ for (const viewport of [
     await page.goto("/", { waitUntil: "networkidle" });
     const initial = await transferredBytes();
     expect(initial).toBeGreaterThan(0);
-    expect(initial).toBeLessThan(350 * 1024);
+    expect(initial).toBeLessThan(ARRIVAL_BUDGET);
 
     // Shown images only: closed story dialogs and the thumbnails hidden on
     // wide screens load on demand, which is what keeps the budget.
@@ -90,7 +83,7 @@ for (const viewport of [
     }
     await page.waitForLoadState("networkidle");
     const full = await transferredBytes();
-    expect(full).toBeLessThan(1.5 * 1024 * 1024);
+    expect(full).toBeLessThan(SCROLLED_BUDGET);
     await testInfo.attach("transfer-measurements", {
       body: JSON.stringify({ viewport, initial, full }),
       contentType: "application/json",
