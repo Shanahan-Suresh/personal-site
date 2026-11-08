@@ -71,7 +71,9 @@ These marks of the default neobrutalism kit stay off the site:
 - Many accent colours (blue, coral, acid, green, violet, pink) with no colour story.
 - The same border and shadow on every block, so nothing leads the eye.
 - Template cliches: a tool marquee with ✦ separators, rotated stickers, bento tiles, ghost numbers,
-  magnetic and tilt hover.
+  magnetic and tilt hover. Tilt hover means a card that leans toward the pointer all the time. An
+  object that moves only when pushed and acts like the real thing (the hero label's flip) is
+  the 05 lesson, not this cliché.
 - Anton, Archivo and DM Mono: the default "loud" pairing.
 - A stock photograph leading the hero instead of the owner's face or work.
 

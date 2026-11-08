@@ -54,9 +54,10 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
    rendered at build time inside `<dialog id="story-<id>">`. Each row is a link to `#story-<id>`.
    Script turns the click into `showModal()`, adds the Next button and returns focus to the row
    on close. Without script, `dialog:target` shows the story in the page.
-8. **Hover preview.** On a fine pointer above 960px, a 400px preview follows the pointer and the
-   row turns butter. The preview images are small WebP files made with `getImage` (about 480px
-   wide) and load on the first hover, not with the page. Below 960px each row shows its
+8. **Hover preview.** On a fine pointer above 960px, a preview in each picture's own shape (30%
+   of the window wide, 380 to 460px) follows the pointer and the row turns butter. The preview
+   images are small WebP files made with `getImage` (480px wide, 960px on dense screens) and load
+   on the first hover, not with the page. Below 960px each row shows its
    screenshot inline instead.
 9. **Mobile nav.** The spec hides the nav links below 560px. The site keeps its menu button and
    sheet (the tests cover it), restyled as a night slab.
@@ -64,8 +65,10 @@ When the code and the spec disagree on a visual detail, the spec wins. When the 
     `src/data/interests.ts` with its source page, as a record.
 11. **Motion.** Headline lines rising on scroll, the hero frames fading up, the
     pointer preview, the dialog opening and sliding between stories, the theme switch (circle from the button, cross-fade on touch), the phone story sheet, nav bar and menu sheet, lazy
-    pictures fading in, and the hover finds in `CLAUDE.md`. Each respects reduced motion. Stickers, magnetic buttons, tilt,
-    scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site.
+    pictures fading in, and the hover finds in `docs/interactions.md`. Each respects reduced motion. Stickers, magnetic buttons, tilt,
+    scroll-velocity skew, idle loops, count-up numbers and the marquee stay off the site. The
+    owner approved two exceptions: the hero label's flip when pushed, and the blinking cursor on
+    the About code chip (both in `CLAUDE.md` and `docs/interactions.md`).
 12. **New copy.** Only short labels and headings are new: "Things I've built", "The short version",
     "I build by", "What I'm into lately", "Learning next", "Story", "Let's build.". All other
     words stay as they are.
@@ -172,10 +175,10 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
   nav underline wipes in, arrows nudge, buttons lift on focus too, photos lean in, a tap fills a
   row. The pointer preview sits above or below its row and keeps that side while it fits (a
   short fade when it must change sides), wipes each decoded picture over the last, loads a
-  960px file on dense screens and carries the capture's caption.
+  960px file on screens denser than 1x and carries the capture's caption.
 - Phone rows lead with a 16:9 thumbnail with the Story tab on its corner; the OHSE crop anchors
   left. Dark mode dims white captures a step. Lazy pictures fade in.
-- A Copy button beside the email, the theme switch, and a 404 page.
+- The theme switch and a 404 page.
 
 ### 10. Phone pass: touch that feels native
 

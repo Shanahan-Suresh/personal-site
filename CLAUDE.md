@@ -1,194 +1,98 @@
 # CLAUDE.md
 
-Guidance for Claude Code agents working in this repo. Read this first.
-
 ## What this is
 
-Personal website + portfolio for **Shanahan Suresh** (software engineer; BSc Computer Science
-with AI, University of Nottingham). Single static site, deployed at `shanahansuresh.com`.
-Audience is _everyone_ — clients, recruiters, colleagues, friends, strangers — so it reads as a
-personal site, not a resume.
+Personal website and portfolio for **Shanahan Suresh** (software engineer; BSc Computer Science
+with AI, University of Nottingham), static, at `shanahansuresh.com`. The audience is everyone
+(clients, recruiters, colleagues, friends, strangers), so it reads as a personal site, not a resume.
 
 ## Stack
 
-- **Astro 7**, `output: 'static'` (see `astro.config.mjs`). Builds to `./dist`.
-- **Tailwind CSS 4**, config-less, wired via `@tailwindcss/vite`. There is **no `tailwind.config.js`** —
-  the entire theme (design tokens + component classes) lives in `src/styles/`, split into `tokens.css`,
-  `components.css`, `motion.css`, and `prose.css`, all imported by `global.css`.
-- **MDX** for posts (`@astrojs/mdx`), plus `@astrojs/sitemap` and `@astrojs/rss`.
-- Self-hosted fonts: a condensed cut of Bricolage Grotesque in `src/assets/fonts/` (its README records how it
-  was made), plus Archivo Variable and DM Mono via `@fontsource`.
+- **Astro 7**, `output: 'static'`, builds to `./dist`. MDX posts, sitemap, RSS.
+- **Tailwind CSS 4**, config-less (`@tailwindcss/vite`). There is no `tailwind.config.js`: the theme
+  lives in `src/styles/` (`tokens.css`, `components.css`, `motion.css`, `prose.css`, aggregated by
+  `global.css`). Each section's own layout lives in its component's scoped `<style>`.
+- Self-hosted fonts: a condensed Bricolage Grotesque cut in `src/assets/fonts/` (its README records
+  how it was made), plus Archivo Variable and DM Mono via `@fontsource`.
+- Import aliases: `@/*` maps to `src/`.
 
 ## Commands
 
 ```bash
-npm install
-npm run dev          # dev server → http://localhost:4321
-npm run build        # astro check + placeholder guard + static build + CSP hashes → ./dist
-npm run guard        # placeholder guard on its own (see "Placeholder guard")
-npm run preview      # preview the production build (detaches in an agent shell; `npx astro preview stop`)
-npm run check        # type-check only (astro check)
-npm run format       # format everything with Prettier
-npm run format:check # verify formatting (CI-style, no writes)
-npm test             # Playwright e2e/visual suite (tests/); starts and stops its own preview server; CI runs Chromium only
+npm run dev          # http://localhost:4321
+npm run build        # astro check + placeholder guard + static build + CSP hashes
+npm run guard        # placeholder guard alone
+npm run preview      # detaches in an agent shell; stop with `npx astro preview stop`
+npm run format       # Prettier (run before committing); format:check verifies
+npm test             # Playwright suite in tests/; builds, starts and stops its own preview
 ```
 
-**Verification = `npm run build` then `npm test`.** `npm run build` runs `astro check` first (so type
-errors fail the build), then the static build, which also catches broken Astro/MDX. `npm test` runs the
-Playwright e2e/visual suite in `tests/` (Chromium/Firefox/WebKit; it builds + previews the
-site). Formatting is enforced by Prettier (`prettier-plugin-astro`); run `npm run format` before committing.
+**Verification = `npm run build` then `npm test`.** Type errors fail the build.
 
-## Where things live
+## Where content lives
 
-```
-src/
-├── assets/       # project captures, portrait, licensed photography and media provenance
-├── components/   # UI + prose copy (see split below)
-├── content/posts/# blog posts as .md/.mdx (collection defined in content.config.ts)
-├── data/         # structured, repeated content (projects, learning, interests, navigation, colophon)
-├── layouts/      # BaseLayout.astro (wraps pages), PostLayout.astro (wraps posts)
-├── lib/          # posts.ts (post helpers), site-config.ts (identity/meta), types.ts (shared types)
-├── pages/        # routes: index.astro (homepage), colophon.astro, 404.astro, writing/, rss.xml.ts
-├── scripts/      # home-interactions.ts — bundled client JS extracted from BaseLayout
-└── styles/       # global.css aggregator + tokens/components/motion/prose partials
-public/           # favicon, og-image, robots.txt
-scripts/          # build steps (placeholder guard, CSP hashes) and brand-images.py
-design-previews/  # design mockups, NOT part of the site; only neo-2026/ (the redesign spec) is tracked
-```
+- **Structured, repeated data** is in `src/data/` (`projects`, `learning`, `interests`,
+  `navigation`, `colophon`) and `src/lib/site-config.ts` (name, url, job title, default meta
+  description, social URLs). Edit the data, not the components that render it. Shared types are in
+  `src/lib/types.ts`; import them instead of redeclaring unions.
+- **Prose copy lives in its component**: Hero, About, Principles, Now, Beyond and Contact. Per-page
+  meta descriptions live in `index.astro` and `writing/index.astro`. To change wording, edit the
+  component.
+- Image provenance and licensing rules are in `src/assets/README.md`. Licensed third-party images
+  and the owner's portrait and captures keep their own terms; the code's MIT licence does not cover
+  them. Visitor captions describe each creation's purpose and workflow, not capture fixtures or
+  harness details. Both mascots stay off pages. `design-previews/` is not part of the site; only
+  `neo-2026/` (the redesign spec) is tracked.
+- Data files use Prettier's double quotes. An unescaped apostrophe inside a hand-written
+  single-quoted literal breaks the build; escape it or run `npm run format`.
+- Favicon and share image come from `python scripts/brand-images.py` (needs `fonttools`, `brotli`,
+  `Pillow`, `playwright`). Edit the script and rerun it; never edit `public/favicon.svg` or
+  `og-image.*` by hand.
 
-### Where content lives: structured data vs prose copy
+## Design system
 
-The split is deliberate:
+The poster redesign is in progress: `ROADMAP.md` holds its settled decisions, phases and status, and
+the spec is `design-previews/neo-2026/10-poster-v3.html`. Before any redesign or restyle, read
+`docs/design-direction.md` (the owner's taste and verdicts, what reads as generic, mockup tools and
+capture traps). Every colour is a CSS custom-property token; use tokens only.
 
-- **Structured / repeated data lives in `src/data/` and `src/lib/site-config.ts`.** Edit these to
-  change the data, not the components that render them:
-  - `data/projects.ts` — `categories` (personal / corporate / academic, each project's group label) and
-    `projects`, the ordered list that `Work.astro`, `Hero.astro` and `Numbers.astro` render.
-  - `data/learning.ts` — `learning`, the boxed list in `Now.astro`.
-  - `data/interests.ts` — the `Beyond.astro` photographs, captions, crop settings and photographer credits (kept as a record, not shown).
-  - `data/navigation.ts` — `navLinks`, the nav links. `Contact.astro` reads the social links from `site.social`.
-  - `data/colophon.ts` — the `/colophon` `stats` and `stack` rows, and `measuredOn`, the date of the transfer numbers.
-  - `lib/site-config.ts` — `site` object: name, url, jobTitle, default meta description, social URLs. Consumed by `BaseHead.astro`, `Nav.astro`, `Footer.astro`.
-  - `lib/types.ts` — shared `Project` and media types. Import these instead of redeclaring unions.
-- **Prose copy still lives in its component.** Hero paragraphs, About, Principles, the `Now` narrative,
-  the `Beyond` narrative, and `Contact` copy are hardcoded in `Hero.astro`, `About.astro`,
-  `Principles.astro`, `Now.astro`, `Beyond.astro`, `Contact.astro`. Per-page meta descriptions live in
-  `index.astro` / `writing/index.astro`. To change wording, edit the component.
-
-Use `@/*` import aliases (`@/data/...`, `@/lib/...`) — the alias maps to `src/`.
-
-## Design system / theming
-
-`src/styles/` holds the shared layer (`global.css` imports the tokens, components, motion and prose
-partials); each section's own layout lives in its component's scoped `<style>`. Every colour is a
-CSS custom-property token.
-
-The poster redesign is in progress: `ROADMAP.md` holds its settled decisions, phases and status.
-Before any redesign or restyle, read `docs/design-direction.md`: the owner's taste and verdicts on
-ten tried directions, what polished neobrutalism means, what reads as generic, and the mockup
-tools and capture traps.
-
-- **The look:** full-width colour slabs (sky, tomato, butter, cobalt, green, night, paper) joined by
-  3px ink seams, condensed uppercase display type, and hard offset shadows on frames, cards and
-  buttons only. The spec is `design-previews/neo-2026/10-poster-v3.html`.
-- **Themes:** the `.dark` class on `<html>` swaps tokens in `tokens.css`. Slab colours deepen a
-  little, but text on a slab is fixed per slab class (`.s-tomato`, `.s-cobalt` and the rest) and
-  never inverts. Only `--paper`, `--card`, `--text`, `--muted` and `--edge` invert.
+- **Themes:** `.dark` on `<html>` swaps tokens. Text on a slab is fixed per slab class (`.s-tomato`,
+  `.s-cobalt` and the rest) and never inverts. Only `--paper`, `--card`, `--text`, `--muted` and
+  `--edge` invert.
 - **Two stroke tokens:** `--ink` stays near-black in both themes, for seams, borders and shadows on
   slabs. `--edge` inverts with the page, for borders and shadows on paper and card surfaces.
-- **Shadows:** `tokens.css` names the offsets (`--hard-3` to `--hard-10`); each use adds its colour,
-  as in `box-shadow: var(--hard-4) var(--ink)`. `.row-link` in `components.css` is the shared butter
-  hover and focus for rows that are one link.
-- **Butter as text** reads only on night or ink fills (the contact headline, the active mobile
-  link). On light surfaces butter is a fill under ink text.
-- **Focus:** one `:focus-visible` ring in `var(--focus)`. Each slab class sets `--focus` to a colour
+- **`@property` is global:** a registered custom property applies on every element, so give it a
+  name no component uses for anything else (`--shadow-off`, `--mark`, `--ring-r`).
+- **Shadows:** use the `--hard-3` to `--hard-10` offsets and add the colour:
+  `box-shadow: var(--hard-4) var(--ink)`. Hard shadows go on frames, cards and buttons only.
+- **Butter as text** reads only on night or ink fills. On light surfaces butter is a fill under ink
+  text. `.row-link` is the shared butter hover and focus for rows that are one link.
+- **Focus:** one `:focus-visible` ring in `var(--focus)`; each slab class sets `--focus` to a colour
   that shows on it.
-- **Motion:** headline lines rising (`.reveal` with `.ln` lines), the hero frames
-  fading up (`.rise`), the pointer preview on project rows, the story dialog opening and sliding
-  between stories, the theme switch (a view transition: with a mouse, a pixel dissolve from the button: the dark page is cut in through a growing circle whose edge is an ordered dither of squares, and on the way to light the dark page shrinks back into it; the squares only clip the pages, never paint over them (`.theme-circle`, `.theme-shrink`, the `#theme-clip` style and the `#theme-ring` sparkle canvas); a press during a switch finishes it and starts the next; a 0.28s cross-fade on touch screens, `.theme-fade`), lazy
-  pictures fading in (`.fading`), on a phone the story sheet rising, the nav bar sliding away and the menu sheet dropping, and the hover finds below. All wait for `prefers-reduced-motion: no-preference`. The boot
-  script in `BaseLayout.astro` sets `.js` before paint, so a page without script shows everything
-  in place. Tilt, magnetic buttons, stickers, idle loops and count-up numbers stay off the site.
-- **Hover finds** (a mouse only, `(hover: hover)`): an ink name plate over the portrait, the hero
-  label's butter plate shrinking to a band under the pointer and widening wherever it moves
-  (`data-brush`), letters that hop once (`data-hop`; the letters join back only after the pointer
-  leaves, because removing the span under the pointer makes Chromium fire `pointerenter` again),
-  printer's crop marks on the slab under the pointer (`.slab::after`, `--mark`), underlines that
-  draw in under the footer and contact links, lemon pixels around the theme button, the learning
-  chips filling like an 8-bit loading bar, and the About code chip typing a line and typing back
-  (`data-type`). Selected text is butter. `?` opens a keyboard card (T theme; W, A, C jump; the card
-  turns the letter keys off), and the console greets developers. All of it lives in
-  `home-interactions.ts` and the components' styles.
-- **Hover grammar:** hover lifts into the hard shadow, press sinks and drops it, and a butter or
-  night fill means "this is one link". Every hover state also shows on `:focus-visible`. A tile
-  that is not a link takes no fill. An arrow in a link (`.arrow`, `.arrow.out` for ↗, `.arrow.back`
-  for ←) nudges the way it points.
-- **Stories:** any `a[data-story]` opens its dialog: the project rows, the numbers strip and the
-  hero's RSVP frame. Opening pushes `#story-<id>`, so Back closes it. Previous, Next, the arrow
-  keys and a sideways swipe move between stories and replace that entry. Focus returns to the
-  link that opened the story.
-- **On a phone** (touch, 560px and below for stories, 768px and below for the nav): a story is a
-  sheet that rises from the bottom edge, with a grab bar on its head (pull it down to close) and
-  Previous and Next pinned in a bar under the thumb. The nav bar slides away on a scroll down and
-  returns on any scroll up (`.nav-away`); the menu sheet drops over a dimmed, still page, and a tap
-  on the dim closes it. Hover lifts on `.btn`, the story buttons and Copy wait for
-  `(hover: hover)`, because a touch screen keeps `:hover` on the last thing tapped. Small links
-  (footer, LinkedIn, GitHub, the email) grow a 44px hit area under `(pointer: coarse)` without
-  moving the layout. Tests that scroll use `behavior: "instant"`: the page scrolls smoothly, so
-  a second jump otherwise starts before the first one lands.
-- **Favicon and share image:** `python scripts/brand-images.py` writes `public/favicon.svg`,
-  `og-image.svg` and `og-image.jpg` from the poster tokens and the display font. It needs Python
-  with `fonttools`, `brotli`, `Pillow` and `playwright` (with Chrome). Edit the script, then rerun
-  it, rather than editing the files by hand.
+- **Hover grammar:** hover lifts into the hard shadow, press sinks; a butter or night fill means
+  "this is one link". Every hover state also shows on `:focus-visible`.
+- **Motion:** every motion waits for `prefers-reduced-motion: no-preference`; hover-only effects
+  wait for `(hover: hover)`. Banned: tilt hover, magnetic buttons, stickers, idle loops, count-up
+  numbers, marquee. Two owner-approved exceptions: the hero label flip (moves only when pushed, like
+  a real sign) and the blinking cursor on the About code chip. Every motion, hover find, the theme
+  switch, stories and phone behaviour are catalogued in `docs/interactions.md`.
 
-## Writing conventions (the copy has a deliberate voice — keep it)
+## Writing conventions (the copy has a deliberate voice, keep it)
 
-- **Human and confident, not corporate or resume-like.** Lead with the person; support with the engineer.
-- **No em-dashes (`—`) in prose.** This is a hard rule the owner cares about (it reads as AI-written).
-  Use periods, commas, or parentheses instead. Em-dashes are only acceptable in page `<title>`
-  separators and code comments.
+- **Human and confident, not corporate or resume-like.** Lead with the person; support with the
+  engineer.
+- **No em dashes (`—`) in prose.** A hard rule the owner cares about (it reads as AI-written). Use
+  periods, commas or parentheses. Allowed only in page `<title>` separators and code comments.
 - **Avoid AI tells:** "not X, it's Y" antithesis, explainer colons ("In plain terms:"), hedge words
   (genuinely/actually/just/a little), and decorative rule-of-three triads.
 - **Positioning:** emphasize the UK / University of Nottingham education; do **not** foreground the
   Kuala Lumpur location (deliberately omitted). Don't undersell real work with self-deprecation.
 
-## String quotes in data files
-
-Project descriptions and other copy live in `src/data/*.ts`. Prettier normalizes strings to
-**double quotes**, so apostrophes need no escaping (`"don't"`, `"team's"` are fine). If you
-hand-write a _single_-quoted literal with an apostrophe, escape it (`'don\'t'`) or just let
-`npm run format` convert it — an unescaped apostrophe in a single-quoted literal breaks the build.
-
-## Homepage media
-
-`Project.media` holds the image, alt text, caption and optional aspect ratio.
-`MediaFrame.astro` wraps an image in the ink `.frame` with a mono caption and emits responsive WebP
-with reserved dimensions, lazy loading, optional crop position and linked credit metadata. The hero
-portrait (the cutout on a cream ground) loads first with `priority`. Each project row carries a
-480px WebP in `data-peek` and a 960px one in `data-peek-2x`; the pointer preview decodes every row's
-file, by screen density, when the mouse first reaches the list. Below 960px each row shows a 16:9 thumbnail instead, cropped by
-`media.objectPosition` (default `top`). Story dialog images load when a story link is pointed at or focused, or when the story beside
-them opens, and
-each caption links the capture at full size. Interest photographs
-are square `cover` crops placed by each one's `objectPosition`. Both mascots stay off pages.
-
-Final assets and their provenance live in `src/assets/`. Capture harnesses live under gitignored
-`design-previews/media`, excluded from Astro type-checking. Preserve source-project repositories.
-Visitor captions describe each creation's purpose and workflow. Keep capture fixtures, isolated
-harness details and presentation changes in the asset documentation rather than homepage copy.
-Licensed Unsplash originals and retained museum sources keep their own terms; do not apply the
-code's MIT licence to third-party images or the owner's portrait and project captures.
-
-`scripts/guard-placeholders.mjs` runs before `astro build` and fails if any `_placeholder-` file
-exists under `src/` or is referenced from it. Normal builds and tests require no override.
-`tests/media.spec.ts` checks image loading, dimensions and overflow at 390, 600 and 1440px, with
-cold-load budgets of 350 KiB initially and 1.5 MiB after scrolling through the homepage.
-
 ## Placeholder guard
 
-`scripts/guard-placeholders.mjs` runs inside `npm run build` and fails while any `_placeholder-`
-file exists under `src/` or is referenced from it, so placeholder art can never deploy by accident.
-No placeholder is in use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
+`scripts/guard-placeholders.mjs` runs inside `npm run build` and fails while any `_placeholder-` file
+exists under `src/` or is referenced from it, so placeholder art cannot deploy. No placeholder is in
+use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 
 - The guard is a substring match that also hits comments, so never write the literal marker under
   `src/` except in the import that uses the file.
@@ -199,28 +103,23 @@ No placeholder is in use. While one is, local builds and tests need `ALLOW_PLACE
 
 - Static site, no secrets in the repo or its history, no forms, no user content. `SECURITY.md` is the
   public statement; keep it true.
-- `public/_headers` is a template: `scripts/csp-hashes.mjs` runs at the end of `npm run build` and
-  replaces `__CSP_SCRIPT_HASHES__` with sha256 hashes of every inline `<script>` in `dist/*.html`.
-  `script-src` has **no `'unsafe-inline'`**; the build fails if it ever does. Adding a new inline
-  script needs nothing from you (it gets hashed); adding a new third-party script origin means
-  editing the CSP in `public/_headers` deliberately.
-- CI runs with `permissions: contents: read` and SHA-pinned actions. Dependabot (`.github/dependabot.yml`)
-  opens weekly PRs for npm and actions. Repo settings: secret scanning + push protection, Dependabot
-  alerts and security updates, private vulnerability reporting, branch `main` protected from
-  force-push and deletion.
-- Cloudflare dashboard settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP),
-  Pages preview builds only from this repo's branches (never from forks).
+- `public/_headers` is a template: `scripts/csp-hashes.mjs` replaces `__CSP_SCRIPT_HASHES__` with
+  sha256 hashes of every inline `<script>` in `dist/*.html`. `script-src` has **no
+  `'unsafe-inline'`**; the build fails if it does. A new inline script needs nothing from you; a new
+  third-party script origin means editing the CSP in `public/_headers` deliberately.
+- CI runs with `permissions: contents: read` and SHA-pinned actions; Dependabot opens weekly PRs.
+- Cloudflare settings this repo cannot enforce: Rocket Loader OFF (breaks the hashed CSP), Pages
+  preview builds only from this repo's branches (never forks).
 
 ## Settled, do not reopen
 
 - `role="list"` on styled lists is a Safari fix: it keeps list semantics after `list-style` goes.
-- The sitemap leaves out `/writing` and `/rss` on purpose (`astro.config.mjs`), because `/writing`
-  is parked.
+- The sitemap leaves out `/writing` and `/rss` on purpose (`astro.config.mjs`), because `/writing` is
+  parked.
 - Breakpoints stay per component. CSS custom properties do not work in media queries.
-- Major upgrades (`@astrojs/mdx` 8, `prettier-plugin-astro` 1, TypeScript 7) each get their own
-  pass, never a routine dependency update.
+- Major upgrades (`@astrojs/mdx` 8, `prettier-plugin-astro` 1, TypeScript 7) each get their own pass,
+  never a routine dependency update.
 
-## Git / deployment
+## Git
 
-- Work on the current branch. Create a branch, commit, push or deploy only when the owner requests it.
-- Static `./dist` deploys to any static host.
+Work on the current branch. Create a branch, commit, push or deploy only when the owner requests it.
