@@ -1,7 +1,8 @@
 """Build the site icons and the share image in the poster style.
 
-Needs Python with Pillow and playwright (with its Chromium). Run from the
-repo root: python scripts/brand-images.py
+Needs Python with Pillow and playwright, plus an installed Google Chrome: the
+renders launch Chrome (channel="chrome"), not Playwright's bundled Chromium.
+Run from the repo root: python scripts/brand-images.py
 
 - favicon.svg: a cobalt slab with a butter hard shadow and the nav's butter S (Anton's
   outline, read from Nav.astro), so the tab and the nav carry the same letter. The S is a

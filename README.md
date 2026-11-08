@@ -1,6 +1,6 @@
 # personal-site
 
-Personal website and portfolio for **Shanahan Suresh** — product-minded software engineer building full-stack products and AI tooling.
+Personal website and portfolio for **Shanahan Suresh**, a product-minded software engineer building full-stack products and AI tooling.
 
 Live: [shanahansuresh.com](https://shanahansuresh.com) · [Colophon](https://shanahansuresh.com/colophon) (how it is built, with numbers)
 
@@ -22,13 +22,13 @@ their public-domain or CC0 terms. Sources and licences are recorded in
 
 ## Tech stack
 
-- **[Astro 7](https://astro.build/)** — static site generator (`output: 'static'`)
-- **[Tailwind CSS 4](https://tailwindcss.com/)** — CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/`, split across `tokens.css`/`components.css`/`motion.css`/`prose.css` and aggregated by `global.css`)
-- **MDX** (`@astrojs/mdx`) — blog/writing content
+- **[Astro 7](https://astro.build/)**: static site generator (`output: 'static'`)
+- **[Tailwind CSS 4](https://tailwindcss.com/)**: CSS-first setup via `@tailwindcss/vite` (no `tailwind.config.js`; theme lives in `src/styles/`, split across `tokens.css`/`components.css`/`motion.css`/`prose.css` and aggregated by `global.css`)
+- **MDX** (`@astrojs/mdx`): blog/writing content
 - **Sitemap + RSS** (`@astrojs/sitemap`, `@astrojs/rss`)
 - Self-hosted fonts: a condensed Bricolage Grotesque cut in `src/assets/fonts/`, plus Archivo and DM Mono via `@fontsource`
 - **Prettier** (`prettier-plugin-astro`) and `astro check` for formatting and type-checking
-- **[Playwright](https://playwright.dev/)** — end-to-end tests and visual review captures (Chromium, Firefox, WebKit)
+- **[Playwright](https://playwright.dev/)**: end-to-end tests and visual review captures (Chromium, Firefox, WebKit)
 
 ## Prerequisites
 
@@ -107,7 +107,7 @@ personal-site/
 │   ├── data/            # structured content (projects, learning, interests, navigation, colophon, budgets)
 │   ├── layouts/         # BaseLayout + PostLayout
 │   ├── lib/             # helpers: posts.ts, site-config.ts, types.ts, bayer.ts, test-count.ts
-│   ├── pages/           # routes — index.astro, colophon.astro, 404.astro, writing/, rss.xml.ts
+│   ├── pages/           # routes: index.astro, colophon.astro, 404.astro, writing/, rss.xml.ts
 │   ├── scripts/         # home-interactions.ts + home/ modules (bundled client JS for BaseLayout)
 │   └── styles/          # global.css aggregator + tokens/components/motion/prose partials
 ├── scripts/             # build guards, CSP hashing, brand-images.py (favicon and OG image)
@@ -159,7 +159,7 @@ check before a merge.
 
 ## Deployment
 
-Static build (`./dist`) — deployable to any static host. No SSR adapter is needed
+Static build (`./dist`), deployable to any static host. No SSR adapter is needed
 (`output: 'static'`).
 
 ### Cloudflare Workers
@@ -175,5 +175,5 @@ static assets (`wrangler.jsonc`), with no server code; a push to `main` deploys 
 
 `npm run build` runs `astro check` (type-check) before `astro build`, so a deploy
 fails fast on type errors rather than shipping a broken build. The `site` value in
-`astro.config.mjs` (`https://shanahansuresh.com`) drives the sitemap/canonical URLs —
-update it if the production domain changes.
+`astro.config.mjs` (`https://shanahansuresh.com`) drives the sitemap/canonical URLs.
+Update it if the production domain changes.

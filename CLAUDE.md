@@ -31,7 +31,7 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 
 ## Where content lives
 
-- **Structured, repeated data** is in `src/data/` (`projects`, `learning`, `interests`,
+- **Structured, repeated data** is in `src/data/` (`projects`, `project-order`, `learning`, `interests`,
   `navigation`, `colophon`, `budgets`) and `src/lib/site-config.ts` (name, url, job title, default meta
   description, social URLs). Edit the data, not the components that render it. Shared types are in
   `src/lib/types.ts`; import them instead of redeclaring unions.
@@ -46,7 +46,7 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 - Data files use Prettier's double quotes. An unescaped apostrophe inside a hand-written
   single-quoted literal breaks the build; escape it or run `npm run format`.
 - The icons (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`) and the share image come from
-  `python scripts/brand-images.py` (needs `Pillow` and `playwright`). Edit the
+  `python scripts/brand-images.py` (needs `Pillow`, `playwright` and an installed Google Chrome). Edit the
   script and rerun it; never edit those files in `public/` by hand. The icon's S is read from
   `Nav.astro`, so a change to the nav's S reaches the icons on the next run.
 
