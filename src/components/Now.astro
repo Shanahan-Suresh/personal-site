@@ -1,5 +1,8 @@
 ---
 import { learning } from "@/data/learning";
+
+/* The wheel's seven spokes. */
+const spokes = Array.from({ length: 7 }, (_, i) => (i * 360) / 7);
 ---
 
 <section id="lately" class="slab s-butter">
@@ -20,7 +23,41 @@ import { learning } from "@/data/learning";
       <div class="learn">
         <span class="label" id="learning-next">Learning next</span>
         <ul role="list" aria-labelledby="learning-next">
-          {learning.map((t) => <li>{t}</li>)}
+          {
+            learning.map(({ name, glyph }) => (
+              <li>
+                <span class="badge" aria-hidden="true">
+                  {glyph === "cloud" ? (
+                    <svg class="drift" viewBox="0 0 24 24">
+                      <path
+                        fill="currentColor"
+                        d="M6.5 19a4.5 4.5 0 0 1-.4-8.98A6 6 0 0 1 17.6 8.7 5.2 5.2 0 0 1 17.3 19z"
+                      />
+                    </svg>
+                  ) : (
+                    <svg class="spin" viewBox="0 0 24 24">
+                      <g
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.4"
+                        stroke-linecap="round"
+                      >
+                        <circle cx="12" cy="12" r="6" />
+                        {spokes.map((a) => (
+                          <path
+                            transform={`rotate(${a} 12 12)`}
+                            d="M12 12V2.5"
+                          />
+                        ))}
+                      </g>
+                      <circle cx="12" cy="12" r="2.6" fill="currentColor" />
+                    </svg>
+                  )}
+                </span>
+                <span class="name">{name}</span>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
@@ -57,39 +94,80 @@ import { learning } from "@/data/learning";
     padding: 0;
     list-style: none;
   }
+  /* The chip's fill is its own layer (::before), so the badge can hide
+     between it and the border: the border is drawn first, the badge (z -1)
+     next, then the fill and the name. At rest the icon hides behind the fill
+     and the ink border, so it never shows. */
   li {
+    position: relative;
+    isolation: isolate;
     padding: 8px 12px;
     border: var(--seam) solid var(--ink);
-    background: var(--card);
     color: var(--text);
     font: 800 17px/1 var(--font-display);
     text-transform: uppercase;
   }
-  /* Under a mouse each chip fills like an 8-bit loading bar, in eight
-     steps: these are still loading. */
+  li::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--card);
+  }
+  .name {
+    position: relative;
+  }
+  .badge {
+    position: absolute;
+    top: calc(-1 * var(--seam));
+    left: 50%;
+    z-index: -1;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    margin-left: -13px;
+    color: var(--ink);
+  }
+  .badge svg {
+    width: 22px;
+    height: 22px;
+  }
+  /* Under a mouse an ink icon springs up from behind the middle of the
+     chip: a cloud for AWS, a ship's wheel for Kubernetes. While the pointer
+     stays, the wheel spins in place and the cloud drifts from side to side.
+     Both loops are always attached and only pause when the pointer leaves,
+     so a quick off and on never snaps the icon back to its start. */
   @media (hover: hover) {
-    li {
-      background:
-        linear-gradient(var(--text), var(--text)) no-repeat 0 0 / 0% 100%,
-        var(--card);
-    }
-    li:hover {
-      background-size:
-        100% 100%,
-        auto;
-      color: var(--card);
+    li:hover .badge {
+      translate: 0 calc(-26px - var(--seam));
     }
   }
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    li {
-      transition:
-        background-size 0.48s steps(8, end),
-        color 0s 0.24s;
+    .badge {
+      transition: translate 0.42s cubic-bezier(0.3, 1.7, 0.5, 1);
     }
-    li:hover {
-      transition:
-        background-size 0.48s steps(8, end),
-        color 0s 0.24s;
+    .spin {
+      animation: spin 2.4s linear infinite paused;
+    }
+    .drift {
+      animation: drift 1.6s ease-in-out infinite alternate paused;
+    }
+    li:hover .spin,
+    li:hover .drift {
+      animation-play-state: running;
+    }
+  }
+  @keyframes spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+  @keyframes drift {
+    from {
+      translate: -2px 0;
+    }
+    to {
+      translate: 2px 0;
     }
   }
   @media (max-width: 960px) {
