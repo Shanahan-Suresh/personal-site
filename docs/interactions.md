@@ -104,6 +104,10 @@ frame.
 - Opening pushes `#story-<id>`, so Back closes it.
 - Previous, Next, the arrow keys and a sideways swipe move between stories and replace that entry.
 - Focus returns to the link that opened the story.
+- A click on the backdrop closes the story. A text selection dragged out of the story onto the
+  backdrop does not.
+- Until the story script runs (it adds `.stories` to `<html>`), each link shows its story as a
+  `:target` panel, so the stories stay reachable when the script fails to load.
 
 ## On a phone
 

@@ -140,8 +140,9 @@ const nextTitle =
   .story::backdrop {
     background: rgb(10 9 7 / 0.72);
   }
-  /* Without script, the link target shows the story as a fixed panel. */
-  :global(html:not(.js)) .story:target {
+  /* Until the story script runs (stories.ts adds `.stories`), the link
+     target shows the story as a fixed panel. */
+  :global(html:not(.stories)) .story:target {
     display: block;
     position: fixed;
     inset: 16px;

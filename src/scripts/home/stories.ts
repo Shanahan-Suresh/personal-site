@@ -132,6 +132,11 @@ export function initStories(): void {
     document.querySelectorAll<HTMLDialogElement>("dialog.story"),
   );
   if (!dialogs.length || typeof HTMLDialogElement !== "function") return;
+  /* Until this runs, a story link shows its story as a :target panel
+     (ProjectStory.astro), so the stories stay reachable when this module
+     fails to load or the browser has no <dialog>. */
+  document.documentElement.classList.add("stories");
+  teardowns.push(() => document.documentElement.classList.remove("stories"));
 
   let current: string | null = null;
   let opener: HTMLElement | null = null;
@@ -204,9 +209,15 @@ export function initStories(): void {
   const sheet = window.matchMedia("(max-width: 560px)");
 
   dialogs.forEach((d) => {
+    /* A backdrop click must start on the backdrop too: a text selection that
+       starts in the story and ends outside it also clicks the dialog. */
+    let downOnBackdrop = false;
+    listen(d, "pointerdown", (e) => {
+      downOnBackdrop = e.target === d;
+    });
     listen(d, "click", (e) => {
       const t = e.target as HTMLElement;
-      if (t === d || t.closest("[data-close]")) {
+      if ((t === d && downOnBackdrop) || t.closest("[data-close]")) {
         e.preventDefault();
         dismiss(d, sheet);
         return;
