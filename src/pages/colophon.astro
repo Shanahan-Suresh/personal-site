@@ -1,9 +1,9 @@
 ---
-import { execFileSync } from "node:child_process";
-import { join } from "node:path";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PageHead from "../components/PageHead.astro";
 import { site } from "@/lib/site-config";
+import { playwrightTestCount } from "@/lib/test-count";
+import { transferBudget } from "@/data/budgets";
 import {
   measuredOn,
   repoFile,
@@ -12,32 +12,7 @@ import {
   writingElsewhere,
 } from "@/data/colophon";
 
-// Ask Playwright to expand parameterized cases and every configured browser.
-interface TestSuite {
-  suites?: TestSuite[];
-  specs?: { tests: unknown[] }[];
-}
-const listing = JSON.parse(
-  execFileSync(
-    process.execPath,
-    [
-      join(process.cwd(), "node_modules/@playwright/test/cli.js"),
-      "test",
-      "--list",
-      "--reporter=json",
-    ],
-    { encoding: "utf8" },
-  ),
-);
-const countTests = (suites: TestSuite[]): number =>
-  suites.reduce(
-    (total, suite) =>
-      total +
-      (suite.specs?.reduce((n, spec) => n + spec.tests.length, 0) ?? 0) +
-      countTests(suite.suites ?? []),
-    0,
-  );
-const testCount = countTests(listing.suites);
+const testCount = playwrightTestCount();
 ---
 
 <BaseLayout
@@ -142,8 +117,10 @@ const testCount = countTests(listing.suites);
         <p>
           <code>npm run build</code> type-checks first, so a type error stops the
           deploy. Playwright runs the suite against the built output in Chromium,
-          Firefox and WebKit, including a performance budget of 350 KiB on arrival
-          and 1.5 MiB after scrolling through every section.
+          Firefox and WebKit, including a performance budget of {
+            transferBudget.arrivalKiB
+          } KiB on arrival and {transferBudget.scrolledMiB} MiB after scrolling through
+          every section.
         </p>
         <p>
           Cloudflare Pages serves the static output behind CSP, HSTS and
