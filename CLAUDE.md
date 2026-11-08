@@ -45,9 +45,10 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
   `neo-2026/` (the redesign spec) is tracked.
 - Data files use Prettier's double quotes. An unescaped apostrophe inside a hand-written
   single-quoted literal breaks the build; escape it or run `npm run format`.
-- Favicon and share image come from `python scripts/brand-images.py` (needs `fonttools`, `brotli`,
-  `Pillow`, `playwright`). Edit the script and rerun it; never edit `public/favicon.svg` or
-  `og-image.*` by hand.
+- The icons (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`) and the share image come from
+  `python scripts/brand-images.py` (needs `Pillow` and `playwright`). Edit the
+  script and rerun it; never edit those files in `public/` by hand. The icon's S is read from
+  `Nav.astro`, so a change to the nav's S reaches the icons on the next run.
 
 ## Design system
 

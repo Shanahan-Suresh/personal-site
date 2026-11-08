@@ -1,10 +1,14 @@
-"""Build public/favicon.svg, public/og-image.svg and public/og-image.jpg in the poster style.
+"""Build the site icons and the share image in the poster style.
 
-Needs Python with fonttools, brotli, Pillow and playwright (with its Chromium). Run from the
+Needs Python with Pillow and playwright (with its Chromium). Run from the
 repo root: python scripts/brand-images.py
 
-- favicon.svg: a condensed "S" in butter on night. The glyph is drawn as a path from the
-  display font, so the icon needs no font at all.
+- favicon.svg: a cobalt slab with a butter hard shadow and the nav's butter S (Anton's
+  outline, read from Nav.astro), so the tab and the nav carry the same letter. The S is a
+  path, so the icon needs no font at all.
+- favicon.ico: the same mark at 16, 32 and 48 px, for browsers without SVG favicons.
+- apple-touch-icon.png: the mark on cream, 180 x 180, for phone home screens. iOS rounds
+  its corners and fills transparency with black, so the ground is solid.
 - og-image.svg: the sky slab with the hero headline and the name, 1200 x 630. It embeds the
   display face and DM Mono as data URIs, so it renders the same anywhere.
 - og-image.jpg: Chromium's render of og-image.svg. Social sites read this one.
@@ -13,11 +17,8 @@ repo root: python scripts/brand-images.py
 import base64
 import io
 import pathlib
+import re
 
-from fontTools.pens.boundsPen import BoundsPen
-from fontTools.pens.svgPathPen import SVGPathPen
-from fontTools.pens.transformPen import TransformPen
-from fontTools.ttLib import TTFont
 from PIL import Image
 from playwright.sync_api import sync_playwright
 
@@ -25,10 +26,13 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DISPLAY = ROOT / "src/assets/fonts/bricolage-condensed-latin.woff2"
 MONO = ROOT / "node_modules/@fontsource/dm-mono/files/dm-mono-latin-500-normal.woff2"
 PUBLIC = ROOT / "public"
+NAV = ROOT / "src/components/Nav.astro"
 
 # Poster tokens, light theme (src/styles/tokens.css).
 SKY = "#8ec5ff"
 BUTTER = "#ffd24a"
+COBALT = "#3d52ea"
+CREAM = "#f5f0e4"
 INK = "#15120e"
 WHITE = "#ffffff"
 
@@ -37,27 +41,47 @@ MARGIN = 64
 LINES = ["I build full-stack", "products &", "AI tooling."]
 
 
+def mark() -> str:
+    """The icon's shapes on a 64 x 64 grid: shadow, slab, S."""
+    s_path = re.search(r'S_PATH =\s*"([^"]+)"', NAV.read_text(encoding="utf-8")).group(1)
+    # Anton's S spans x 42..906 and y -16..1776 in font units (centre 474, 880, flipped).
+    # Centre it in the 56-unit slab at 42 units tall.
+    k = 42 / 1792
+    return (
+        f'  <rect x="8" y="8" width="56" height="56" fill="{BUTTER}"/>\n'
+        f'  <rect width="56" height="56" fill="{COBALT}"/>\n'
+        f'  <path fill="{BUTTER}" transform="translate(28 28) scale({k:.5f}) '
+        f'translate(-474 880) scale(1 -1)" d="{s_path}"/>\n'
+    )
+
+
 def favicon() -> str:
-    font = TTFont(DISPLAY)
-    glyphs = font.getGlyphSet()
-    glyph = glyphs[font.getBestCmap()[ord("S")]]
-    # Centre the glyph's ink box in a 64 x 64 square.
-    bp = BoundsPen(glyphs)
-    glyph.draw(bp)
-    x0, y0, x1, y1 = bp.bounds
-    target_h = 52
-    scale = target_h / (y1 - y0)
-    gw = (x1 - x0) * scale
-    dx = (64 - gw) / 2 - x0 * scale
-    dy = (64 + target_h) / 2 + y0 * scale
-    pen = SVGPathPen(glyphs, ntos=lambda v: f"{v:.2f}".rstrip("0").rstrip("."))
-    glyph.draw(TransformPen(pen, (scale, 0, 0, -scale, dx, dy)))
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n'
-        f'  <rect width="64" height="64" fill="{INK}"/>\n'
-        f'  <path fill="{BUTTER}" d="{pen.getCommands()}"/>\n'
-        "</svg>\n"
+        + mark()
+        + "</svg>\n"
     )
+
+
+def touch_icon_svg() -> str:
+    """The mark at 72% on a cream ground, centred, for a 180 px render."""
+    return (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="180" height="180">\n'
+        f'  <rect width="64" height="64" fill="{CREAM}"/>\n'
+        '  <g transform="translate(8.96 8.96) scale(0.72)">\n'
+        + mark()
+        + "  </g>\n</svg>\n"
+    )
+
+
+def render(page, svg: str, size: int, transparent: bool) -> Image.Image:
+    page.set_viewport_size({"width": size, "height": size})
+    sized = re.sub(r'width="\d+" height="\d+"', f'width="{size}" height="{size}"', svg, count=1)
+    page.set_content(
+        f'<html><body style="margin:0;background:transparent">{sized}</body></html>'
+    )
+    png = page.screenshot(type="png", omit_background=transparent)
+    return Image.open(io.BytesIO(png)).convert("RGBA")
 
 
 def data_uri(path: pathlib.Path) -> str:
@@ -120,6 +144,18 @@ def main() -> None:
         widths = measure(og_svg(size, 0))
         measure(og_svg(size, widths[2]))
         png = page.screenshot(type="png")
+
+        # A fresh page: the share-image page holds an SVG document, which cannot take HTML.
+        page = browser.new_page()
+        icons = [render(page, favicon(), n, transparent=True) for n in (48, 32, 16)]
+        icons[0].save(
+            PUBLIC / "favicon.ico",
+            sizes=[(48, 48), (32, 32), (16, 16)],
+            append_images=icons[1:],
+        )
+        render(page, touch_icon_svg(), 180, transparent=False).convert("RGB").save(
+            PUBLIC / "apple-touch-icon.png", optimize=True
+        )
         browser.close()
     Image.open(io.BytesIO(png)).convert("RGB").save(
         PUBLIC / "og-image.jpg", quality=88, optimize=True, progressive=True
