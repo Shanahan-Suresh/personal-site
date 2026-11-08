@@ -1,82 +1,72 @@
 # shanahansuresh.com
 
-The personal site and portfolio of **Shanahan Suresh**, a software engineer who builds full-stack
-products and AI tooling.
-
-**[shanahansuresh.com](https://shanahansuresh.com)** · [Colophon](https://shanahansuresh.com/colophon)
-(how the site is built, with numbers)
+The source for my personal site and portfolio, live at
+[shanahansuresh.com](https://shanahansuresh.com).
 
 [![CI](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml/badge.svg)](https://github.com/Shanahan-Suresh/personal-site/actions/workflows/ci.yml)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-3d52ea.svg)](LICENSE)
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/home-desktop-dark.webp">
-  <img alt="The homepage: a condensed headline reading 'I build full-stack products and AI tooling' on a sky-blue slab, beside a framed portrait." src="docs/screenshots/home-desktop-light.webp">
-</picture>
+I build full-stack products and AI tooling, and this site is where that work lives. I made the repo
+public so anyone curious can read the code behind it. The
+[colophon](https://shanahansuresh.com/colophon) covers how it's built, with numbers.
 
-The site is its own code sample. It is a static Astro build with no framework JavaScript: full-width
-colour slabs, condensed display type, hard offset shadows on everything you can press, and light and
-dark themes.
+## What's in here
 
-## Worth a look
+It's a static [Astro](https://astro.build/) site styled with
+[Tailwind CSS 4](https://tailwindcss.com/). The browser gets a small amount of TypeScript and no
+framework. Some parts you might want to look at:
 
-| What                                                                                                                             | Where                                                                                    |
-| -------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Design tokens for both themes. Every colour is a custom property.                                                                | [`src/styles/tokens.css`](src/styles/tokens.css)                                         |
-| Page behaviour, one small module per behaviour: scroll spy, the pointer preview, story dialogs, keyboard shortcuts.              | [`src/scripts/home/`](src/scripts/home)                                                  |
-| Project stories that open as modals, and still open as plain panels without JavaScript.                                          | [`src/components/ProjectStory.astro`](src/components/ProjectStory.astro)                 |
-| A Content Security Policy that allows inline scripts by SHA-256 hash only, with no `unsafe-inline`. The build writes the hashes. | [`scripts/csp-hashes.mjs`](scripts/csp-hashes.mjs), [`public/_headers`](public/_headers) |
-| Transfer budgets the tests enforce: 350 KiB on arrival and 1.5 MiB after a full scroll.                                          | [`src/data/budgets.ts`](src/data/budgets.ts)                                             |
-| A Playwright suite that runs against the production build in Chromium, Firefox and WebKit.                                       | [`tests/`](tests)                                                                        |
-| Every page footer links to the exact commit that built it.                                                                       | [`src/components/Footer.astro`](src/components/Footer.astro)                             |
-| A catalogue of every motion, hover and phone behaviour.                                                                          | [`docs/interactions.md`](docs/interactions.md)                                           |
+- `src/styles/tokens.css` holds every colour for the light and dark themes as CSS custom
+  properties.
+- `src/scripts/home/` has the page behaviour, with one small module per feature.
+- `src/components/ProjectStory.astro` is a project story. It opens as a modal, and it still works
+  as a plain panel if the script never loads.
+- `scripts/csp-hashes.mjs` hashes every inline script at build time, so the Content Security Policy
+  in `public/_headers` doesn't need `unsafe-inline`.
+- `src/data/budgets.ts` sets the page weight limits: 350 KiB on first load and 1.5 MiB after
+  scrolling to the bottom. The tests fail if the homepage goes over either one.
+- `src/components/Footer.astro` links every page to the commit it was built from.
+- `tests/` is a Playwright suite that runs against the production build in Chromium, Firefox and
+  WebKit.
+- `docs/interactions.md` lists every animation and hover effect, and how the site behaves on a
+  phone.
 
-## Stack
+## Running it
 
-- [Astro 7](https://astro.build/), static output, with MDX, a sitemap and RSS
-- [Tailwind CSS 4](https://tailwindcss.com/), configured in CSS (`src/styles/`), with no `tailwind.config.js`
-- TypeScript, checked by `astro check` on every build
-- Self-hosted fonts: a condensed cut of Bricolage Grotesque, Archivo and DM Mono
-- [Playwright](https://playwright.dev/) for end-to-end tests
-- Deployed on Cloudflare Workers as static assets, with no server code
-
-## Run it locally
-
-Needs Node.js 22.12 or newer (`.nvmrc`).
+You'll need Node.js 22.12 or newer (there's an `.nvmrc`).
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # type-check, static build to ./dist, CSP hashes
-npm run preview    # serve the production build
+npm run build      # type-check, build to ./dist and hash the inline scripts
+npm run preview    # serve the built site
 ```
 
-## Tests
+To run the tests:
 
 ```bash
-npx playwright install   # once: download Chromium, Firefox and WebKit
-npm test                 # builds the site, then runs every test in all three browsers
-npm test -- --project=chromium
-npm run test:ui          # Playwright's interactive mode
+npx playwright install           # first time only, downloads the browsers
+npm test                         # builds the site and runs every test in all three browsers
+npm test -- --project=chromium   # one browser
 ```
 
-CI runs formatting, the build and the Chromium suite on every pull request. `main` accepts a merge
-only when that check passes.
+CI runs the format check, the build and the Chromium tests on every pull request. `main` won't take
+a merge until they pass.
 
-## Deployment
+## Deploying
 
-Cloudflare Workers Builds deploys every push to `main`: it runs `npm run build`, then
-`npx wrangler versions upload`. `wrangler.jsonc` serves `dist/` as static assets. Security headers live in `public/_headers`. To report a security issue, see
-[`SECURITY.md`](SECURITY.md).
+Every push to `main` deploys through Cloudflare Workers Builds, which runs `npm run build` and then
+`npx wrangler versions upload`. The site is served as static files from `dist/` (see
+`wrangler.jsonc`), and the security headers live in `public/_headers`. If you find a security
+problem, [`SECURITY.md`](SECURITY.md) says how to report it.
 
 ## Licence
 
-The **code** is MIT licensed ([`LICENSE`](LICENSE)).
+The code is MIT licensed (see [`LICENSE`](LICENSE)), so feel free to borrow from it.
 
-The **content** is not: the written copy, project descriptions, the portrait, the project captures,
-and the Shanahan Suresh name and likeness are not licensed for reuse.
+The content is a different matter. Please don't reuse my writing, project descriptions, portrait
+or project screenshots, or my name and likeness.
 
-Third-party material keeps its own terms. The photographs are under the
-[Unsplash License](https://unsplash.com/license), the museum images are public domain or CC0, and
-the display font is under the SIL Open Font License 1.1. Each source and its terms are recorded in
-[`src/assets/README.md`](src/assets/README.md).
+Photos from Unsplash are under the [Unsplash License](https://unsplash.com/license), the museum
+images are public domain or CC0, and the display font uses the SIL Open Font License 1.1.
+[`src/assets/README.md`](src/assets/README.md) lists every source.
