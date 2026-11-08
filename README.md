@@ -78,7 +78,7 @@ hiding on a scroll down, the dimmed menu, the story sheet with its pinned Previo
 pulling the sheet down to close it), the row focus
 outline, reduced-motion static render, the interactions (scrolled
 nav, scroll spy, hero entrance), skip link, footer, colophon, the 404 page, writing noindex,
-placeholders, CSP hashes, no border or hard shadow cut by a clipping box at 390 and
+placeholders, CSP hashes, security.txt, no border or hard shadow cut by a clipping box at 390 and
 1440px, the keyboard shortcuts card, the build commit card and letters that hop once. `tests/guard.spec.ts` runs the
 placeholder guard against throwaway folders to prove it blocks a placeholder file or
 reference.
@@ -144,14 +144,18 @@ local review; asset sources, licences and generation notes are versioned under `
 
 Static output, no secrets, no forms. `public/_headers` ships a CSP whose `script-src` allows inline
 scripts by sha256 hash only (`scripts/csp-hashes.mjs` writes the hashes at the end of every build),
-plus HSTS, COOP, `frame-ancestors 'none'` and a Permissions-Policy. CI has a read-only token and
+plus HSTS, COOP, `frame-ancestors 'none'` and a Permissions-Policy; it allows no third-party
+origin. `/.well-known/security.txt` names the contact, and a test fails 30 days before its
+`Expires` date. CI has a read-only token and
 SHA-pinned actions; Dependabot watches npm and actions weekly. See `SECURITY.md` to report an issue.
 
 ## CI
 
 `.github/workflows/ci.yml` runs on every push and pull request to `main`: `npm ci`, `format:check`,
 `npm run build` (type-check + placeholder guard + static build, the same command Cloudflare runs),
-then the Playwright suite in Chromium. The report is uploaded as an artifact on failure.
+then the Playwright suite in Chromium. CI uses Playwright's `github` reporter, so a failure shows in
+the run log and on the PR; the HTML report is local only. `main` requires the `build-and-test`
+check before a merge.
 
 ## Deployment
 
