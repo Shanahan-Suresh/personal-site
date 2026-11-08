@@ -12,6 +12,8 @@ sets `.js` before paint, so a page without script shows everything in place.
 
 - Headline lines rise (`.reveal` with `.ln` lines).
 - The hero frames fade up (`.rise`).
+- The project rows, number cells, principles and Beyond photos fade up 32px one after another as
+  they scroll in, 70ms apart within each batch (`data-stagger`, `initStagger`).
 - The pointer preview follows the pointer over the project rows. It takes each picture's own
   shape, so nothing is cropped: 30% of the window wide (380 to 460px), narrower when the picture
   would pass 42% of the window height, easing between sizes. Its caption tab wraps to a second
@@ -107,12 +109,13 @@ frame.
 Touch; 560px and below for stories, 768px and below for the nav.
 
 - A story is a sheet that rises from the bottom edge, with a grab bar on its head (pull it down to
-  close) and Previous and Next pinned in a bar under the thumb.
+  close) and Previous and Next pinned in a bar under the thumb. Next names the next story in full,
+  on two lines when it needs them; wider screens cut a long title to one line.
 - The nav bar slides away on a scroll down and returns on any scroll up (`.nav-away`).
 - The menu sheet drops over a dimmed, still page. A tap on the dim closes it.
 - Hover lifts on `.btn` and the story buttons wait for `(hover: hover)`, because a touch
   screen keeps `:hover` on the last thing tapped.
-- Small links (footer, LinkedIn, GitHub, the email) grow a 44px hit area under `(pointer: coarse)`
+- Small links (footer, LinkedIn, GitHub, the email, the Contact asks) grow a 44px hit area under `(pointer: coarse)`
   without moving the layout.
 - Tests that scroll use `behavior: "instant"`. The page scrolls smoothly, so a second jump
   otherwise starts before the first one lands.
