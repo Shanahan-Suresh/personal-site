@@ -39,10 +39,14 @@ interface Bounds {
 function sizeFor(r: number, roomH: number): [number, number] {
   const [lo, share, hi] = PEEK_W;
   const wide = Math.min(hi, Math.max(lo, window.innerWidth * share));
-  const w = Math.min(
-    wide,
-    window.innerHeight * PEEK_MAX_H * r,
-    (roomH - 2 * PEEK_SEAM) * r,
+  // A very short window can leave no room at all: the panel then has no size.
+  const w = Math.max(
+    0,
+    Math.min(
+      wide,
+      window.innerHeight * PEEK_MAX_H * r,
+      (roomH - 2 * PEEK_SEAM) * r,
+    ),
   );
   return [w + 2 * PEEK_SEAM, w / r + 2 * PEEK_SEAM];
 }
@@ -217,7 +221,9 @@ export function initPreview(): void {
     if (src !== want) {
       want = src;
       await load(src);
-      if (want !== src) return;
+      /* A newer row asked since, or an earlier wait for this same picture
+         (rows A, B, A in quick turn) has already put it on top. */
+      if (want !== src || showing === src) return;
       const pic = document.createElement("img");
       pic.alt = "";
       pic.src = src;
