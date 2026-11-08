@@ -42,7 +42,7 @@ if (new Set(items.map((n) => n.story.id)).size !== items.length) {
 ---
 
 <section class="slab s-cobalt nums" aria-label="Results">
-  <ul class="nums-grid" role="list">
+  <ul class="nums-grid" role="list" data-stagger>
     {
       items.map((n) => (
         <li>

@@ -10,7 +10,7 @@ import { projects } from "@/data/projects";
       <span class="ln"><span>Things I've</span></span>
       <span class="ln"><span>built</span></span>
     </h2>
-    <ul class="projects" role="list">
+    <ul class="projects" role="list" data-stagger>
       {projects.map((p) => <ProjectRow project={p} />)}
     </ul>
   </div>

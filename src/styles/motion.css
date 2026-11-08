@@ -48,6 +48,23 @@
     opacity: 1;
     transform: none;
   }
+
+  /* Repeated items (project rows, number cells, principles, Beyond photos)
+     fade up one after another as they scroll in (`data-stagger`,
+     initStagger). --i is the item's place among those that arrived
+     together. `translate` is its own property, so hovers that use
+     `transform` still work. */
+  .js [data-stagger] > * {
+    opacity: 0;
+    translate: 0 32px;
+    transition:
+      opacity 0.5s calc(var(--i, 0) * 70ms),
+      translate 0.7s calc(var(--i, 0) * 70ms) var(--ease-out);
+  }
+  .js [data-stagger] > .in {
+    opacity: 1;
+    translate: none;
+  }
 }
 
 /* Lazy pictures fade in once loaded (script adds .fading, then .loaded). */

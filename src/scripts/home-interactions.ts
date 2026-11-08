@@ -52,6 +52,33 @@ export function initReveal(): void {
   teardowns.push(() => io.disconnect());
 }
 
+/* `data-stagger`: the items of a list fade up one after another as they
+   scroll in. Items that arrive in the same batch take 70ms steps (--i), so
+   a screenful rises in order and a later item never waits for the ones
+   above it. */
+export function initStagger(): void {
+  const items = document.querySelectorAll<HTMLElement>("[data-stagger] > *");
+  if (reduce || !("IntersectionObserver" in window)) {
+    items.forEach((el) => el.classList.add("in"));
+    return;
+  }
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries
+        .filter((e) => e.isIntersecting)
+        .forEach((e, i) => {
+          const el = e.target as HTMLElement;
+          el.style.setProperty("--i", String(i));
+          el.classList.add("in");
+          io.unobserve(el);
+        });
+    },
+    { rootMargin: "0px 0px -40px 0px", threshold: 0 },
+  );
+  items.forEach((el) => io.observe(el));
+  teardowns.push(() => io.disconnect());
+}
+
 /* Scroll spy: mark the nav link whose section crosses the middle band. */
 export function initScrollSpy(): void {
   if (!("IntersectionObserver" in window)) return;
@@ -1115,6 +1142,7 @@ export function init(): void {
   initTypeChip();
   initShortcuts();
   initReveal();
+  initStagger();
   initScrollSpy();
   initScrolledNav();
   initMobileNav();
