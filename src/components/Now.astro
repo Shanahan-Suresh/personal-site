@@ -8,8 +8,12 @@ const spokes = Array.from({ length: 7 }, (_, i) => (i * 360) / 7);
 <section id="lately" class="slab s-butter">
   <div class="wrap lately">
     <h2 class="reveal">
-      <span class="ln"><span>What I'm into</span></span>
-      <span class="ln"><span>lately</span></span>
+      <span class="ln">
+        <span>What I'm into</span>
+      </span>
+      <span class="ln">
+        <span>lately</span>
+      </span>
     </h2>
     <div>
       <p>
@@ -21,43 +25,40 @@ const spokes = Array.from({ length: 7 }, (_, i) => (i * 360) / 7);
         build useful systems with LLMs, and how they change the way I work.
       </p>
       <div class="learn">
-        <span class="label" id="learning-next">Learning next</span>
+        <span class="label" id="learning-next">
+          Learning next
+        </span>
         <ul role="list" aria-labelledby="learning-next">
-          {
-            learning.map(({ name, glyph }) => (
-              <li>
-                <span class="badge" aria-hidden="true">
-                  {glyph === "cloud" ? (
-                    <svg class="drift" viewBox="0 0 24 24">
-                      <path
-                        fill="currentColor"
-                        d="M6.5 19a4.5 4.5 0 0 1-.4-8.98A6 6 0 0 1 17.6 8.7 5.2 5.2 0 0 1 17.3 19z"
-                      />
-                    </svg>
-                  ) : (
-                    <svg class="spin" viewBox="0 0 24 24">
-                      <g
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.4"
-                        stroke-linecap="round"
-                      >
-                        <circle cx="12" cy="12" r="6" />
-                        {spokes.map((a) => (
-                          <path
-                            transform={`rotate(${a} 12 12)`}
-                            d="M12 12V2.5"
-                          />
-                        ))}
-                      </g>
-                      <circle cx="12" cy="12" r="2.6" fill="currentColor" />
-                    </svg>
-                  )}
-                </span>
-                <span class="name">{name}</span>
-              </li>
-            ))
-          }
+          {learning.map(({ name, glyph }) => (
+            <li>
+              <span class="badge" aria-hidden="true">
+                {glyph === "cloud" ? (
+                  <svg class="drift" viewBox="0 0 24 24">
+                    <path
+                      fill="currentColor"
+                      d="M6.5 19a4.5 4.5 0 0 1-.4-8.98A6 6 0 0 1 17.6 8.7 5.2 5.2 0 0 1 17.3 19z"
+                    />
+                  </svg>
+                ) : (
+                  <svg class="spin" viewBox="0 0 24 24">
+                    <g
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    >
+                      <circle cx="12" cy="12" r="6" />
+                      {spokes.map((a) => (
+                        <path transform={`rotate(${a} 12 12)`} d="M12 12V2.5" />
+                      ))}
+                    </g>
+                    <circle cx="12" cy="12" r="2.6" fill="currentColor" />
+                  </svg>
+                )}
+              </span>
+              <span class="name">{name}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

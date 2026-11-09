@@ -7,25 +7,30 @@ import { projects } from "@/data/projects";
 <section id="work" class="slab s-green">
   <div class="wrap work">
     <h2 class="huge reveal">
-      <span class="ln"><span>Things I've</span></span>
-      <span class="ln"><span>built</span></span>
+      <span class="ln">
+        <span>Things I've</span>
+      </span>
+      <span class="ln">
+        <span>built</span>
+      </span>
     </h2>
     <ul class="projects" role="list" data-stagger>
-      {projects.map((p) => <ProjectRow project={p} />)}
+      {projects.map((p) => (
+        <ProjectRow project={p} />
+      ))}
     </ul>
   </div>
-  {
-    projects.map((p, i) => (
-      <ProjectStory
-        project={p}
-        prev={projects[(i - 1 + projects.length) % projects.length]}
-        next={projects[(i + 1) % projects.length]}
-      />
-    ))
-  }
+  {projects.map((p, i) => (
+    <ProjectStory
+      project={p}
+      prev={projects[(i - 1 + projects.length) % projects.length]}
+      next={projects[(i + 1) % projects.length]}
+    />
+  ))}
 </section>
 <div id="peek" aria-hidden="true">
-  <span class="peek-pics"></span><span class="peek-cap"></span>
+  <span class="peek-pics"></span>
+  <span class="peek-cap"></span>
 </div>
 
 <style>

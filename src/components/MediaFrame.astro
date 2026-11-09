@@ -55,18 +55,16 @@ const {
     />
     <slot name="overlay" />
   </div>
-  {
-    (caption || credit || Astro.slots.has("caption")) && (
-      <figcaption>
-        <slot name="caption">{caption}</slot>
-        {credit && (
-          <span class="media-credit">
-            <a href={credit.href}>{credit.label}</a>
-          </span>
-        )}
-      </figcaption>
-    )
-  }
+  {(caption || credit || Astro.slots.has("caption")) && (
+    <figcaption>
+      <slot name="caption">{caption}</slot>
+      {credit && (
+        <span class="media-credit">
+          <a href={credit.href}>{credit.label}</a>
+        </span>
+      )}
+    </figcaption>
+  )}
 </figure>
 
 <style>

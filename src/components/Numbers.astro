@@ -43,25 +43,23 @@ if (new Set(items.map((n) => n.story.id)).size !== items.length) {
 
 <section class="slab s-cobalt nums" aria-label="Results">
   <ul class="nums-grid" role="list" data-stagger>
-    {
-      items.map((n) => (
-        <li>
-          <a
-            class="num"
-            data-hop
-            href={`#story-${n.story.id}`}
-            data-story={n.story.id}
-            aria-haspopup="dialog"
-          >
-            <b data-hop-letters>{n.value}</b>
-            <span class="what">{n.label}</span>
-            <span class="cue label" aria-hidden="true">
-              Story <span class="arrow">→</span>
-            </span>
-          </a>
-        </li>
-      ))
-    }
+    {items.map((n) => (
+      <li>
+        <a
+          class="num"
+          data-hop
+          href={`#story-${n.story.id}`}
+          data-story={n.story.id}
+          aria-haspopup="dialog"
+        >
+          <b data-hop-letters>{n.value}</b>
+          <span class="what">{n.label}</span>
+          <span class="cue label" aria-hidden="true">
+            Story <span class="arrow">→</span>
+          </span>
+        </a>
+      </li>
+    ))}
   </ul>
 </section>
 

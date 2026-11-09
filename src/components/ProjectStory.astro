@@ -30,7 +30,9 @@ const nextTitle =
   <div class="st-head">
     <div>
       <span class="label">{p.group}</span>
-      <h2 id={`story-${p.id}-title`}><ArrowText text={p.title} /></h2>
+      <h2 id={`story-${p.id}-title`}>
+        <ArrowText text={p.title} />
+      </h2>
     </div>
     <a class="st-x" href={`#row-${p.id}`} data-close aria-label="Close story">
       <svg
@@ -41,57 +43,58 @@ const nextTitle =
         stroke="currentColor"
         stroke-width="3"
         stroke-linecap="square"
-        aria-hidden="true"><path d="M2.5 2.5l11 11M13.5 2.5l-11 11"></path></svg
+        aria-hidden="true"
       >
+        <path d="M2.5 2.5l11 11M13.5 2.5l-11 11"></path>
+      </svg>
     </a>
   </div>
   <div class="st-body">
-    {
-      p.media && (
-        <MediaFrame
-          image={p.media.image}
-          alt={p.media.alt}
-          aspectRatio={p.media.aspectRatio}
-          widths={[480, 720, 1040]}
-          sizes="(max-width: 960px) 90vw, 560px"
-        >
-          <Fragment slot="caption">
-            {p.media.caption}
-            {full && (
-              <a class="st-full" href={full.src} target="_blank" rel="noopener">
-                Open full size <span class="arrow out">↗</span>
-              </a>
-            )}
-          </Fragment>
-        </MediaFrame>
-      )
-    }
-    <div>
-      <p class="st-fact">{p.fact.value}<small>{p.fact.label}</small></p>
-      {paragraphs.map((d) => <p>{d}</p>)}
-      {
-        p.tags && (
-          <ul class="tags chips" role="list">
-            {p.tags.map((t) => (
-              <li>{t}</li>
-            ))}
-          </ul>
-        )
-      }
-      {
-        p.link && (
-          <div class="st-actions">
-            <a
-              class="btn"
-              href={p.link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {p.link.label} <span class="arrow out">↗</span>
+    {p.media && (
+      <MediaFrame
+        image={p.media.image}
+        alt={p.media.alt}
+        aspectRatio={p.media.aspectRatio}
+        widths={[480, 720, 1040]}
+        sizes="(max-width: 960px) 90vw, 560px"
+      >
+        <Fragment slot="caption">
+          {p.media.caption}
+          {full && (
+            <a class="st-full" href={full.src} target="_blank" rel="noopener">
+              Open full size <span class="arrow out">↗</span>
             </a>
-          </div>
-        )
-      }
+          )}
+        </Fragment>
+      </MediaFrame>
+    )}
+    <div>
+      <p class="st-fact">
+        {p.fact.value}
+        <small>{p.fact.label}</small>
+      </p>
+      {paragraphs.map((d) => (
+        <p>{d}</p>
+      ))}
+      {p.tags && (
+        <ul class="tags chips" role="list">
+          {p.tags.map((t) => (
+            <li>{t}</li>
+          ))}
+        </ul>
+      )}
+      {p.link && (
+        <div class="st-actions">
+          <a
+            class="btn"
+            href={p.link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {p.link.label} <span class="arrow out">↗</span>
+          </a>
+        </div>
+      )}
       <nav class="st-nav" aria-label="More stories">
         <a
           class="btn btn-alt"
@@ -99,21 +102,32 @@ const nextTitle =
           data-go={prev.id}
           data-dir="prev"
           aria-label={`Previous story: ${prev.title}`}
-          ><span class="arrow back" aria-hidden="true">←</span>
-          <span class="st-go">Previous</span></a
         >
+          <span class="arrow back" aria-hidden="true">
+            ←
+          </span>
+          <span class="st-go">Previous</span>
+        </a>
         <a
           class="btn btn-alt"
           href={`#story-${next.id}`}
           data-go={next.id}
           data-dir="next"
           data-next={next.id}
-          ><span class="st-go"
-            >Next: <span class="t-short"><ArrowText text={nextTitle} /></span
-            ><span class="t-full"><ArrowText text={next.title} /></span></span
-          >
-          <span class="arrow" aria-hidden="true">→</span></a
         >
+          <span class="st-go">
+            Next:{" "}
+            <span class="t-short">
+              <ArrowText text={nextTitle} />
+            </span>
+            <span class="t-full">
+              <ArrowText text={next.title} />
+            </span>
+          </span>
+          <span class="arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
       </nav>
     </div>
   </div>

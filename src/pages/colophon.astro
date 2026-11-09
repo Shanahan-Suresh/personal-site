@@ -37,26 +37,24 @@ const testCount = playwrightTestCount();
           reveal, the pointer preview on the projects and the story dialogs).
         </p>
         <ul class="ruled" role="list">
-          {
-            stack.map((item) => (
-              <li>
-                <span class="name">
-                  {item.path ? (
-                    <a
-                      href={repoFile(item.path)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {item.name}
-                    </a>
-                  ) : (
-                    item.name
-                  )}
-                </span>
-                <span class="detail">{item.detail}</span>
-              </li>
-            ))
-          }
+          {stack.map((item) => (
+            <li>
+              <span class="name">
+                {item.path ? (
+                  <a
+                    href={repoFile(item.path)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  item.name
+                )}
+              </span>
+              <span class="detail">{item.detail}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
@@ -68,21 +66,19 @@ const testCount = playwrightTestCount();
       <span class="label">Measured {measuredOn}</span>
     </div>
     <ul class="wrap stats" role="list">
-      {
-        stats.map((s) => (
-          <li>
-            <span class="stat-value">{s.value}</span>
-            <span class="stat-label">{s.label}</span>
-            {s.note && <span class="stat-note">{s.note}</span>}
-          </li>
-        ))
-      }
+      {stats.map((s) => (
+        <li>
+          <span class="stat-value">{s.value}</span>
+          <span class="stat-label">{s.label}</span>
+          {s.note && <span class="stat-note">{s.note}</span>}
+        </li>
+      ))}
       <li>
         <span class="stat-value">{testCount}</span>
         <span class="stat-label">End-to-end checks</span>
-        <span class="stat-note"
-          >Cases across the three-browser matrix, counted at build time</span
-        >
+        <span class="stat-note">
+          Cases across the three-browser matrix, counted at build time
+        </span>
       </li>
     </ul>
   </section>
@@ -99,10 +95,9 @@ const testCount = playwrightTestCount();
           slabs and inverts only the paper.
         </p>
         <p>
-          Every animation waits for <code
-            >prefers-reduced-motion: no-preference</code
-          >. With script off, every headline sits in place and every project
-          story still opens.
+          Every animation waits for{" "}
+          <code>prefers-reduced-motion: no-preference</code>. With script off,
+          every headline sits in place and every project story still opens.
         </p>
         <ul class="chips" role="list">
           <li>tokens.css</li>
@@ -115,12 +110,12 @@ const testCount = playwrightTestCount();
         <span class="label">Testing and shipping</span>
         <h2>Tests and hosting</h2>
         <p>
-          <code>npm run build</code> type-checks first, so a type error stops the
-          deploy. Playwright runs the suite against the built output in Chromium,
-          Firefox and WebKit, including a performance budget of {
-            transferBudget.arrivalKiB
-          } KiB on arrival and {transferBudget.scrolledMiB} MiB after scrolling through
-          every section.
+          <code>npm run build</code> type-checks first, so a type error stops
+          the deploy. Playwright runs the suite against the built output in
+          Chromium, Firefox and WebKit, including a performance budget of{" "}
+          {transferBudget.arrivalKiB} KiB on arrival and{" "}
+          {transferBudget.scrolledMiB} MiB after scrolling through every
+          section.
         </p>
         <p>
           Cloudflare Workers serves the static output behind CSP, HSTS and
@@ -144,8 +139,10 @@ const testCount = playwrightTestCount();
         <a
           href={writingElsewhere.href}
           target="_blank"
-          rel="noopener noreferrer">{writingElsewhere.title} ↗</a
+          rel="noopener noreferrer"
         >
+          {writingElsewhere.title} ↗
+        </a>
       </h2>
       <p class="label meta">{writingElsewhere.meta}</p>
       <div class="actions">
@@ -153,20 +150,26 @@ const testCount = playwrightTestCount();
           class="btn"
           href={writingElsewhere.repo.href}
           target="_blank"
-          rel="noopener noreferrer">{writingElsewhere.repo.label} ↗</a
+          rel="noopener noreferrer"
         >
+          {writingElsewhere.repo.label} ↗
+        </a>
         <a
           class="btn btn-alt"
           href={site.repo}
           target="_blank"
-          rel="noopener noreferrer">This site's source ↗</a
+          rel="noopener noreferrer"
         >
+          This site's source ↗
+        </a>
         <a
           class="btn btn-alt"
           href={repoFile("src/pages/colophon.astro")}
           target="_blank"
-          rel="noopener noreferrer">This page's source ↗</a
+          rel="noopener noreferrer"
         >
+          This page's source ↗
+        </a>
       </div>
     </div>
   </section>
