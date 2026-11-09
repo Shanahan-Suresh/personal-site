@@ -29,6 +29,12 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 
 **Verification = `npm run build` then `npm test`.** Type errors fail the build.
 
+On Windows, `core.autocrlf=true` checks files out with CRLF, so `format:check` flags almost every
+file there while CI (LF) passes. Check and format only the files you changed:
+`npx prettier --check --end-of-line auto <files>`, then `--write --end-of-line lf` on the ones that
+fail. A stale `node_modules` (an old `prettier-plugin-astro`) reformats `.astro` files differently
+from CI; run `npm ci` first.
+
 On a busy machine (Forge or other test suites running), WebKit's "the bar slides away on a scroll
 down and comes back on a scroll up" in `tests/phone.spec.ts` can fail: `scrollY` drops about
 17px after the jump, and the bar comes back. On a quiet machine it passes (6 of 6 runs, 3 of them the full suite).
