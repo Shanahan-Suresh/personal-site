@@ -29,6 +29,11 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 
 **Verification = `npm run build` then `npm test`.** Type errors fail the build.
 
+On a busy machine (Forge or other test suites running), WebKit's "the bar slides away on a scroll
+down and comes back on a scroll up" in `tests/phone.spec.ts` can fail: `scrollY` drops about
+17px after the jump, and the bar comes back. On a quiet machine it passes (6 of 6 runs, 3 of them the full suite).
+CI runs only Chromium. Ignore this one failure; any other failure is real.
+
 ## Where content lives
 
 - **Structured, repeated data** is in `src/data/` (`projects`, `project-order`, `learning`, `interests`,
