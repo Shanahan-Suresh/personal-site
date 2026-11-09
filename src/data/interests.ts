@@ -1,20 +1,8 @@
-import type { ImageMetadata } from "astro";
+import type { Interest } from "@/lib/types";
 import offClock from "@/assets/scrapbook/free-use-v5/gaming-joy-con-v5.jpg";
 import gym from "@/assets/scrapbook/free-use-v5/sunlit-gym-v5.jpg";
 import travel from "@/assets/scrapbook/free-use-v5/alpine-lake-v5.jpg";
 import finance from "@/assets/scrapbook/free-use-v5/market-chart-v5.jpg";
-
-export interface Interest {
-  id: "off-clock" | "gym" | "travel" | "finance";
-  title: string;
-  caption: string;
-  image: ImageMetadata;
-  alt: string;
-  objectPosition?: string;
-  /** The photographer and source page, kept as a record. The Unsplash
-      License needs no credit on the page, so the page does not show it. */
-  credit: { label: string; href: string };
-}
 
 export const interests: Interest[] = [
   {

@@ -1,10 +1,12 @@
 ---
+import type { SlabTone } from "@/lib/types";
+
 /* The title slab that opens every page except the homepage. */
 interface Props {
   label?: string;
   title: string;
   intro?: string;
-  tone?: "cobalt" | "tomato" | "green";
+  tone?: SlabTone;
 }
 
 const { label, title, intro, tone = "cobalt" } = Astro.props;

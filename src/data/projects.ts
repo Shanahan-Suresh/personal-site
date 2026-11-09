@@ -1,4 +1,4 @@
-import type { Project, ProjectCategory } from "@/lib/types";
+import type { ListedProject, Project, ProjectCategory } from "@/lib/types";
 import { projectOrder } from "@/data/project-order";
 import digestVisual from "@/assets/work/digest.png";
 import rsvpVisual from "@/assets/work/rsvp-glass-mock.png";
@@ -139,17 +139,13 @@ const academic: Project[] = [
   },
 ];
 
-export const categories: ProjectCategory[] = [
+const categories: ProjectCategory[] = [
   { label: "Personal", items: personal },
   { label: "Corporate work", items: product },
   { label: "Academic", items: academic },
 ];
 
 const order: readonly string[] = projectOrder;
-
-export interface ListedProject extends Project {
-  group: string;
-}
 
 export const projects: ListedProject[] = order.map((id) => {
   for (const cat of categories) {

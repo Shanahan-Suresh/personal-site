@@ -48,6 +48,15 @@
   /* the About code chip, a terminal on ink: the same in both themes */
   --term: #2fbf71;
   --term-dim: #9b958a;
+  /* text, rules and the pressed fill on the night slab (footer, phone menu):
+     the same in both themes */
+  --night-text: #c9c5bb;
+  --night-dim: #8f8a80;
+  --night-rule: #3a362f;
+  --night-press: #2a2620;
+  /* the dim layer under the phone menu and behind a story: the same in both
+     themes, mixed with transparent where it is used */
+  --scrim: #0a0907;
 
   /* page surfaces: these invert with the theme */
   --paper: #f5f0e4;

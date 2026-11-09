@@ -17,7 +17,7 @@
  * resulting script-src still contains 'unsafe-inline'.
  */
 import { createHash } from "node:crypto";
-import { readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
@@ -25,21 +25,19 @@ const DIST = join(ROOT, "dist");
 const HEADERS = join(DIST, "_headers");
 const TOKEN = "__CSP_SCRIPT_HASHES__";
 
-function walk(dir, out = []) {
-  for (const name of readdirSync(dir)) {
-    const full = join(dir, name);
-    if (statSync(full).isDirectory()) walk(full, out);
-    else if (full.endsWith(".html")) out.push(full);
-  }
-  return out;
-}
+/** Every file under dir, in a fixed order on every OS. */
+const filesUnder = (dir) =>
+  readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile())
+    .map((e) => join(e.parentPath, e.name))
+    .sort();
 
 // Inline = a <script> with no src attribute. Data blocks (type="application/ld+json")
 // never execute, so CSP does not apply to them; skip to keep the header short.
 const SCRIPT_RE = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
 const hashes = new Map(); // hash -> first file seen
 
-const htmlFiles = walk(DIST);
+const htmlFiles = filesUnder(DIST).filter((f) => f.endsWith(".html"));
 if (htmlFiles.length === 0) {
   console.error("[csp-hashes] no HTML under dist/; run astro build first");
   process.exit(1);
