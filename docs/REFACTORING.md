@@ -25,7 +25,7 @@ Suggested order for home-interactions.ts: TEST-06 first, then the quick wins (DE
 
 ## Status
 
-Every finding below is worked, in PR #30 and the refactor PR after it. Line numbers in the findings
+Every finding below is worked, in PR #30 and PR #37. Line numbers in the findings
 further down cite the audit commit aca0ac8. Measured 2026-11-09 on the finished tree: build 0
 errors; strict tsc 0 errors; knip 0 unused exports; Playwright 203 passed, 4 skipped and 1 failed
 on chromium, firefox and webkit (208 tests). The one failure is a WebKit flake that `main` shows
