@@ -2,8 +2,8 @@
 /**
  * CSP inline-script hashes. Runs as the last step of `npm run build`.
  *
- * The site ships two inline scripts (the pre-paint theme snippet and the
- * theme-toggle module Astro inlines). Rather than allow `'unsafe-inline'` for
+ * The site ships one inline script (the pre-paint theme snippet), and Astro
+ * may inline a small module script. Rather than allow `'unsafe-inline'` for
  * every script on the page, this script hashes the exact inline bodies found
  * in the built HTML and writes them into dist/_headers, replacing the
  * `__CSP_SCRIPT_HASHES__` token in public/_headers.

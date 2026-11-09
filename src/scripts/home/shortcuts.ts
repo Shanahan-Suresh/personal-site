@@ -4,6 +4,7 @@
    a story is open, with a modifier key, or in a text field. */
 import { navLinks } from "@/data/navigation";
 import { listen, reduce } from "./runtime";
+import { toggleTheme } from "./theme";
 
 const SHORTCUTS_KEY = "shortcuts";
 /* Letter to section id, from the nav: each section's first letter jumps to
@@ -81,7 +82,7 @@ function jump(id: string): void {
 
 /* What each letter key does while the letter keys are on. */
 const letters = new Map<string, () => void>([
-  ["t", () => document.getElementById("theme-toggle")?.click()],
+  ["t", () => toggleTheme()],
   ...Object.entries(JUMPS).map(([key, id]): [string, () => void] => [
     key,
     () => jump(id),
