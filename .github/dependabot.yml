@@ -8,6 +8,11 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    # TypeScript stays on 6: `astro check` refuses 7.0, and its successor
+    # `@astrojs/ts-content-mapper` needs 7.1. Remove this in the TypeScript 7 pass.
+    ignore:
+      - dependency-name: typescript
+        versions: [">=7"]
     groups:
       npm-security:
         applies-to: security-updates
