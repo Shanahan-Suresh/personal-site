@@ -746,8 +746,13 @@ test("built _headers carries a hash for every inline script and no unsafe-inline
 
   const html = readFileSync("dist/index.html", "utf8");
   const inline = [...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
-    .filter(([, attrs]) => !/\bsrc=/.test(attrs) && !/ld\+json/.test(attrs))
-    .map(([, , body]) => createHash("sha256").update(body).digest("base64"));
+    .map(([, attrs, body]) => {
+      if (attrs === undefined || body === undefined)
+        throw new Error("inline script regex matched without its groups");
+      return { attrs, body };
+    })
+    .filter(({ attrs }) => !/\bsrc=/.test(attrs) && !/ld\+json/.test(attrs))
+    .map(({ body }) => createHash("sha256").update(body).digest("base64"));
   expect(inline.length).toBeGreaterThan(0);
   for (const h of inline) expect(scriptSrc).toContain(`'sha256-${h}'`);
 });
