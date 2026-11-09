@@ -1,53 +1,10 @@
 ---
 import { site } from "@/lib/site-config";
-import { execSync } from "node:child_process";
+import { getBuildInfo } from "@/lib/build-info";
 
 const year = new Date().getFullYear();
-
-/* Build identity, resolved once at build time (static output, never at runtime).
-   Cloudflare Workers Builds exposes the deployed commit; local builds fall
-   back to git. Either way the footer links to the exact commit that produced
-   this page. */
-function resolveCommit(): string | null {
-  const fromEnv = process.env.WORKERS_CI_COMMIT_SHA;
-  if (fromEnv) return fromEnv;
-  try {
-    return execSync("git rev-parse HEAD", {
-      stdio: ["ignore", "pipe", "ignore"],
-    })
-      .toString()
-      .trim();
-  } catch {
-    return null;
-  }
-}
-const commit = resolveCommit();
-const shortSha = commit ? commit.slice(0, 7) : null;
-
-/* The commit's subject and date for the build card. A shallow clone that
-   lacks the commit leaves the card out. */
-function describeCommit(sha: string | null) {
-  if (!sha) return null;
-  try {
-    const [subject, date] = execSync(`git log -1 --format=%s%n%cI ${sha}`, {
-      stdio: ["ignore", "pipe", "ignore"],
-    })
-      .toString()
-      .trim()
-      .split("\n");
-    if (!subject || !date) return null;
-    const day = new Date(date).toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      timeZone: "UTC",
-    });
-    return { subject, day };
-  } catch {
-    return null;
-  }
-}
-const built = describeCommit(commit);
+/* The footer links to the exact commit that produced this page. */
+const build = getBuildInfo();
 ---
 
 <footer class="site-footer">
@@ -74,24 +31,24 @@ const built = describeCommit(commit);
           </span>
         </a>
       </li>
-      {shortSha && (
+      {build && (
         <li>
           <a
-            href={`${site.repo}/commit/${commit}`}
+            href={`${site.repo}/commit/${build.commit}`}
             class="footer-link footer-build"
             target="_blank"
             rel="noopener noreferrer"
             aria-label={
-              built
-                ? `build ${shortSha}, the commit this page was built from: ${built.subject}`
-                : `build ${shortSha}, the commit this page was built from`
+              build.described
+                ? `build ${build.shortSha}, the commit this page was built from: ${build.described.subject}`
+                : `build ${build.shortSha}, the commit this page was built from`
             }
           >
-            build {shortSha}
-            {built && (
+            build {build.shortSha}
+            {build.described && (
               <span class="build-card" aria-hidden="true">
-                <b>{built.subject}</b>
-                {shortSha} · {built.day} · view on GitHub ↗
+                <b>{build.described.subject}</b>
+                {build.shortSha} · {build.described.day} · view on GitHub ↗
               </span>
             )}
           </a>
@@ -104,7 +61,7 @@ const built = describeCommit(commit);
 <style>
   .site-footer {
     background: var(--night);
-    color: #c9c5bb;
+    color: var(--night-text);
     --focus: var(--white);
   }
   .footer-inner {
@@ -114,7 +71,7 @@ const built = describeCommit(commit);
     justify-content: space-between;
     gap: 10px 24px;
     padding-block: 18px calc(18px + env(safe-area-inset-bottom, 0px));
-    border-top: 1px solid #3a362f;
+    border-top: 1px solid var(--night-rule);
     font: 400 13px/1.4 var(--font-mono);
   }
   .footer-text {
@@ -154,7 +111,7 @@ const built = describeCommit(commit);
   }
   .footer-build {
     position: relative;
-    color: #8f8a80;
+    color: var(--night-dim);
   }
   /* The build card: the commit this page was built from, over the link. */
   .build-card {

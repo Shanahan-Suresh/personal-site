@@ -3,9 +3,8 @@
 # content-hashed build assets.
 #
 # CSP notes:
-# - script-src has NO 'unsafe-inline'. The two inline scripts the site ships
-#   (pre-paint theme snippet, inlined theme-toggle module) are allowed by
-#   sha256 hash. `scripts/csp-hashes.mjs` runs at the end of `npm run build`,
+# - script-src has NO 'unsafe-inline'. The one inline script the site ships
+#   (the pre-paint theme snippet) is allowed by sha256 hash. `scripts/csp-hashes.mjs` runs at the end of `npm run build`,
 #   hashes the inline bodies found in dist/*.html and replaces the hashes
 #   token in the script-src below, in dist/_headers only. Any other inline
 #   script is blocked by the browser. Do not hand-edit the hashes.

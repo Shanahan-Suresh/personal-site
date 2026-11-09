@@ -1,13 +1,8 @@
 import { site } from "@/lib/site-config";
+import type { StackItem, Stat } from "@/lib/types";
 
 /** Deep link into the repo, so each stack row on the colophon links to its source file. */
 export const repoFile = (path: string) => `${site.repo}/blob/main/${path}`;
-
-export interface Stat {
-  label: string;
-  value: string;
-  note?: string;
-}
 
 /**
  * Cold production-preview responses at 390px and 1440px across all three
@@ -44,12 +39,6 @@ export const stats: Stat[] = [
   },
 ];
 
-export interface StackItem {
-  name: string;
-  detail: string;
-  path?: string;
-}
-
 export const stack: StackItem[] = [
   {
     name: "Astro 7",
@@ -78,7 +67,7 @@ export const stack: StackItem[] = [
     name: "Playwright",
     detail:
       "End-to-end and visual checks run against the built site in three browser engines.",
-    path: "tests/home.spec.ts",
+    path: "tests",
   },
   {
     name: "Cloudflare Workers",

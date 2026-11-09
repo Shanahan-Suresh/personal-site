@@ -25,7 +25,8 @@ sets `.js` before paint, so a page without script shows everything in place.
 
 ## Theme switch
 
-A view transition.
+A view transition, run by `src/scripts/home/theme.ts`. The T shortcut calls the same
+`toggleTheme`.
 
 - **With a mouse**, a pixel dissolve from the button. The dark page is cut in through a growing
   circle whose edge is an ordered dither of squares. On the way to light, the dark page shrinks

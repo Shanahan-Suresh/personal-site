@@ -126,6 +126,33 @@ function pictureLoader(): (src: string) => Promise<void> {
   };
 }
 
+/* Puts a decoded picture on top of the panel's stack. Unless `atOnce`, it
+   wipes in from the top; the pictures under it go once it covers them. */
+function stackPicture(
+  pics: HTMLElement,
+  src: string,
+  position: string,
+  atOnce: boolean,
+): void {
+  const pic = document.createElement("img");
+  pic.alt = "";
+  pic.src = src;
+  pic.style.objectPosition = position;
+  pics.append(pic);
+  const drop = () => {
+    while (pics.firstElementChild && pics.firstElementChild !== pic)
+      pics.firstElementChild.remove();
+  };
+  if (atOnce) drop();
+  else
+    pic
+      .animate(
+        { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0 0)"] },
+        { duration: PEEK_WIPE_MS, easing: "cubic-bezier(0.2, 0.85, 0.2, 1)" },
+      )
+      .finished.then(drop, drop);
+}
+
 export function initPreview(): void {
   const peek = document.getElementById("peek");
   const pics = peek?.querySelector<HTMLElement>(".peek-pics");
@@ -224,32 +251,13 @@ export function initPreview(): void {
       /* A newer row asked since, or an earlier wait for this same picture
          (rows A, B, A in quick turn) has already put it on top. */
       if (want !== src || showing === src) return;
-      const pic = document.createElement("img");
-      pic.alt = "";
-      pic.src = src;
-      pic.style.objectPosition = el.dataset.peekPos || "top";
-      pics.append(pic);
       showing = src;
       if (cap) cap.textContent = el.dataset.peekCap || "";
       ratio = Number(el.dataset.peekRatio) || 16 / 10;
       // The first picture of a hover, or a reduced-motion one, lands at once.
       const atOnce = reduce || instant || !peek.classList.contains("on");
       resize(atOnce);
-      const drop = () => {
-        while (pics.firstElementChild && pics.firstElementChild !== pic)
-          pics.firstElementChild.remove();
-      };
-      if (atOnce) drop();
-      else
-        pic
-          .animate(
-            { clipPath: ["inset(0 0 100% 0)", "inset(0 0 0 0)"] },
-            {
-              duration: PEEK_WIPE_MS,
-              easing: "cubic-bezier(0.2, 0.85, 0.2, 1)",
-            },
-          )
-          .finished.then(drop, drop);
+      stackPicture(pics, src, el.dataset.peekPos || "top", atOnce);
     }
     if (shown && showing === src) peek.classList.add("on");
   };

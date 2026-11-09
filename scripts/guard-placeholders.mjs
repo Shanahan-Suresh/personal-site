@@ -17,7 +17,7 @@
  *   local build with placeholders:  ALLOW_PLACEHOLDERS=1 npm run build
  *   PowerShell:                     $env:ALLOW_PLACEHOLDERS=1; npm run build
  */
-import { readdirSync, readFileSync, statSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
@@ -35,16 +35,14 @@ const TEXT_EXT = new Set([
   ".json",
 ]);
 
-function walk(dir, out = []) {
-  for (const name of readdirSync(dir)) {
-    const full = join(dir, name);
-    if (statSync(full).isDirectory()) walk(full, out);
-    else out.push(full);
-  }
-  return out;
-}
+/** Every file under dir, in a fixed order on every OS. */
+const filesUnder = (dir) =>
+  readdirSync(dir, { recursive: true, withFileTypes: true })
+    .filter((e) => e.isFile())
+    .map((e) => join(e.parentPath, e.name))
+    .sort();
 
-const files = walk(SRC);
+const files = filesUnder(SRC);
 const offendingFiles = files.filter((f) =>
   f.split(/[\\/]/).pop().startsWith(MARKER),
 );

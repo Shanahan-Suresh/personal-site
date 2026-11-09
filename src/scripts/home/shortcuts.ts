@@ -2,11 +2,19 @@
    theme; W, A and C go to Work, About and Contact. The card can turn the
    letter keys off (remembered in localStorage), and they never fire while
    a story is open, with a modifier key, or in a text field. */
+import { navLinks } from "@/data/navigation";
 import { listen, reduce } from "./runtime";
+import { toggleTheme } from "./theme";
 
 const SHORTCUTS_KEY = "shortcuts";
-/* Letter to section id. The card names each jump by its section. */
-const JUMPS: Record<string, string> = { w: "work", a: "about", c: "contact" };
+/* Letter to section id, from the nav: each section's first letter jumps to
+   it ("Work" is W to #work). The card names each jump by its section. */
+const JUMPS: Record<string, string> = Object.fromEntries(
+  navLinks.map(({ label, href }) => [
+    label.charAt(0).toLowerCase(),
+    href.slice(href.indexOf("#") + 1),
+  ]),
+);
 
 function shortcutsOn(): boolean {
   try {
@@ -74,7 +82,7 @@ function jump(id: string): void {
 
 /* What each letter key does while the letter keys are on. */
 const letters = new Map<string, () => void>([
-  ["t", () => document.getElementById("theme-toggle")?.click()],
+  ["t", () => toggleTheme()],
   ...Object.entries(JUMPS).map(([key, id]): [string, () => void] => [
     key,
     () => jump(id),

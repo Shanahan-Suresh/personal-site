@@ -239,7 +239,7 @@ const S_PATH =
       inset: calc(var(--nav-h) + var(--seam) + env(safe-area-inset-top, 0px)) 0
         0;
       z-index: -1;
-      background: rgb(10 9 7 / 0.55);
+      background: color-mix(in srgb, var(--scrim) 55%, transparent);
       visibility: hidden;
       opacity: 0;
       transition:
@@ -263,10 +263,10 @@ const S_PATH =
       transform: translateY(-100%);
     }
     .nav-link:active {
-      background: #2a2620;
+      background: var(--night-press);
     }
     .nav-links li + li {
-      border-top: 1px solid #3a362f;
+      border-top: 1px solid var(--night-rule);
     }
     .nav-link {
       display: flex;
