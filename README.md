@@ -33,7 +33,7 @@ framework. Some parts you might want to look at:
 
 ## Running it
 
-You'll need Node.js 22.12 or newer (there's an `.nvmrc`).
+You'll need Node.js 22.23.4 or newer (there's an `.nvmrc`).
 
 ```bash
 npm install

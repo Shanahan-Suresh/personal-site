@@ -123,8 +123,9 @@ use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 - The sitemap leaves out `/writing` and `/rss` on purpose (`astro.config.mjs`), because `/writing` is
   parked.
 - Breakpoints stay per component. CSS custom properties do not work in media queries.
-- Major upgrades (`@astrojs/mdx` 8, `prettier-plugin-astro` 1, TypeScript 7) each get their own pass,
-  never a routine dependency update.
+- A major upgrade gets its own pass (build, `astro check`, a `dist/` diff), never a routine
+  dependency update. TypeScript stays on 6: `astro check` refuses TypeScript 7.0, and its
+  successor `@astrojs/ts-content-mapper` needs TypeScript 7.1.
 
 ## Git
 

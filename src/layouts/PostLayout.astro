@@ -34,16 +34,16 @@ const formattedDate = pubDate ? formatPostDateLong(pubDate) : null;
     title={title}
     intro={description}
   >
-    <a slot="before" href="/writing" class="back">← Writing</a>
-    {
-      tags && tags.length > 0 && (
-        <ul class="tags chips" role="list">
-          {tags.map((tag) => (
-            <li>{tag}</li>
-          ))}
-        </ul>
-      )
-    }
+    <a slot="before" href="/writing" class="back">
+      ← Writing
+    </a>
+    {tags && tags.length > 0 && (
+      <ul class="tags chips" role="list">
+        {tags.map((tag) => (
+          <li>{tag}</li>
+        ))}
+      </ul>
+    )}
   </PageHead>
   <article class="slab s-paper">
     <div class="wrap">

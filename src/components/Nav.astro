@@ -11,21 +11,20 @@ const S_PATH =
   <nav class="wrap nav-inner" aria-label="Main">
     <a href="/" class="nav-name" aria-label="Shanahan Suresh, home">
       <span class="nn-mark" aria-hidden="true">
-        {
-          ["top", "bot"].map((half) => (
-            <svg
-              class={`nn-s ${half}`}
-              viewBox="30 -1790 888 1820"
-              focusable="false"
-            >
-              <path transform="scale(1,-1)" fill="currentColor" d={S_PATH} />
-            </svg>
-          ))
-        }
+        {["top", "bot"].map((half) => (
+          <svg
+            class={`nn-s ${half}`}
+            viewBox="30 -1790 888 1820"
+            focusable="false"
+          >
+            <path transform="scale(1,-1)" fill="currentColor" d={S_PATH} />
+          </svg>
+        ))}
       </span>
-      <span class="nn-lines" aria-hidden="true"
-        ><span>hanahan</span><span>uresh</span></span
-      >
+      <span class="nn-lines" aria-hidden="true">
+        <span>hanahan</span>
+        <span>uresh</span>
+      </span>
     </a>
     <button
       class="nav-burger"
@@ -39,15 +38,13 @@ const S_PATH =
       <span></span>
     </button>
     <ul class="nav-links" role="list" id="mobile-nav">
-      {
-        navLinks.map((l) => (
-          <li>
-            <a href={l.href} class="nav-link">
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
+      {navLinks.map((l) => (
+        <li>
+          <a href={l.href} class="nav-link">
+            {l.label}
+          </a>
+        </li>
+      ))}
     </ul>
     <ThemeToggle />
   </nav>

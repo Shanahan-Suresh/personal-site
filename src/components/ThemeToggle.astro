@@ -11,7 +11,9 @@ import { BAYER_8 } from "@/lib/bayer";
 >
   <!-- 8 x 8 ordered dither (Bayer): --o is the order each square fills in. -->
   <span class="dither" aria-hidden="true">
-    {BAYER_8.map((o) => <i style={`--o:${o}`} />)}
+    {BAYER_8.map((o) => (
+      <i style={`--o:${o}`} />
+    ))}
   </span>
   <svg
     id="icon-sun"
@@ -26,9 +28,8 @@ import { BAYER_8 } from "@/lib/bayer";
     stroke-linejoin="round"
     aria-hidden="true"
   >
-    <circle cx="12" cy="12" r="4"></circle><path
-      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-    ></path>
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
   </svg>
   <svg
     id="icon-moon"

@@ -4,35 +4,33 @@ import { interests } from "@/data/interests";
 ---
 
 <section class="slab s-tomato" id="beyond" aria-labelledby="beyond-title">
-  <h2 id="beyond-title" class="sr-only">When I'm not building</h2>
+  <h2 id="beyond-title" class="sr-only">
+    When I'm not building
+  </h2>
   <ul class="off" role="list" data-stagger>
-    {
-      interests.map(({ title, caption, image, alt, objectPosition }) => (
-        <li>
-          <figure>
-            <div class="pic">
-              <Image
-                src={image}
-                alt={alt}
-                format="webp"
-                quality={78}
-                widths={[240, 360, 520]}
-                sizes="(max-width: 960px) 50vw, 25vw"
-                loading="lazy"
-                decoding="async"
-                style={
-                  objectPosition ? `object-position:${objectPosition}` : ""
-                }
-              />
-            </div>
-            <figcaption>
-              <b>{title}</b>
-              {caption}
-            </figcaption>
-          </figure>
-        </li>
-      ))
-    }
+    {interests.map(({ title, caption, image, alt, objectPosition }) => (
+      <li>
+        <figure>
+          <div class="pic">
+            <Image
+              src={image}
+              alt={alt}
+              format="webp"
+              quality={78}
+              widths={[240, 360, 520]}
+              sizes="(max-width: 960px) 50vw, 25vw"
+              loading="lazy"
+              decoding="async"
+              style={objectPosition ? `object-position:${objectPosition}` : ""}
+            />
+          </div>
+          <figcaption>
+            <b>{title}</b>
+            {caption}
+          </figcaption>
+        </figure>
+      </li>
+    ))}
   </ul>
 </section>
 

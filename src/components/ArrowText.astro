@@ -7,14 +7,12 @@ interface Props {
 const parts = Astro.props.text.split("→");
 ---
 
-{
-  parts.map((part, i) => (
-    <Fragment>
-      {i > 0 && <span class="arw">→</span>}
-      {part}
-    </Fragment>
-  ))
-}
+{parts.map((part, i) => (
+  <Fragment>
+    {i > 0 && <span class="arw">→</span>}
+    {part}
+  </Fragment>
+))}
 
 <style>
   .arw {

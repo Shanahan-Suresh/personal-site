@@ -18,7 +18,9 @@ const posts = await getPublishedPosts();
   />
   <section class="slab s-paper">
     <ul class="wrap posts" role="list">
-      {posts.map((post) => <PostCard post={post} showTags />)}
+      {posts.map((post) => (
+        <PostCard post={post} showTags />
+      ))}
     </ul>
   </section>
 </BaseLayout>

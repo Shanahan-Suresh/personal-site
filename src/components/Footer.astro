@@ -52,43 +52,51 @@ const built = describeCommit(commit);
 
 <footer class="site-footer">
   <div class="wrap footer-inner">
-    <p class="footer-text">&copy; {year} {site.name}</p>
+    <p class="footer-text">
+      &copy; {year} {site.name}
+    </p>
     <ul class="footer-links" role="list">
-      <li><a href="/colophon" class="footer-link">Colophon</a></li>
+      <li>
+        <a href="/colophon" class="footer-link">
+          Colophon
+        </a>
+      </li>
       <li>
         <a
           href={site.repo}
           class="footer-link"
           target="_blank"
           rel="noopener noreferrer"
-          >Source <span class="arrow out" aria-hidden="true">↗</span></a
         >
+          Source{" "}
+          <span class="arrow out" aria-hidden="true">
+            ↗
+          </span>
+        </a>
       </li>
-      {
-        shortSha && (
-          <li>
-            <a
-              href={`${site.repo}/commit/${commit}`}
-              class="footer-link footer-build"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={
-                built
-                  ? `build ${shortSha}, the commit this page was built from: ${built.subject}`
-                  : `build ${shortSha}, the commit this page was built from`
-              }
-            >
-              build {shortSha}
-              {built && (
-                <span class="build-card" aria-hidden="true">
-                  <b>{built.subject}</b>
-                  {shortSha} · {built.day} · view on GitHub ↗
-                </span>
-              )}
-            </a>
-          </li>
-        )
-      }
+      {shortSha && (
+        <li>
+          <a
+            href={`${site.repo}/commit/${commit}`}
+            class="footer-link footer-build"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={
+              built
+                ? `build ${shortSha}, the commit this page was built from: ${built.subject}`
+                : `build ${shortSha}, the commit this page was built from`
+            }
+          >
+            build {shortSha}
+            {built && (
+              <span class="build-card" aria-hidden="true">
+                <b>{built.subject}</b>
+                {shortSha} · {built.day} · view on GitHub ↗
+              </span>
+            )}
+          </a>
+        </li>
+      )}
     </ul>
   </div>
 </footer>

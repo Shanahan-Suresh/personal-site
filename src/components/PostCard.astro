@@ -12,23 +12,23 @@ const tags = showTags ? (post.data.tags ?? []) : [];
 
 <li>
   <a class="post row-link" href={`/writing/${post.id}`}>
-    <time class="label" datetime={post.data.pubDate.toISOString()}
-      >{formatPostDate(post.data.pubDate)}</time
-    >
+    <time class="label" datetime={post.data.pubDate.toISOString()}>
+      {formatPostDate(post.data.pubDate)}
+    </time>
     <span class="text">
       <span class="title">{post.data.title}</span>
       <span class="desc">{post.data.description}</span>
-      {
-        tags.length > 0 && (
-          <span class="tags chips">
-            {tags.map((tag) => (
-              <span>{tag}</span>
-            ))}
-          </span>
-        )
-      }
+      {tags.length > 0 && (
+        <span class="tags chips">
+          {tags.map((tag) => (
+            <span>{tag}</span>
+          ))}
+        </span>
+      )}
     </span>
-    <span class="go" aria-hidden="true">Read →</span>
+    <span class="go" aria-hidden="true">
+      Read →
+    </span>
   </a>
 </li>
 

@@ -12,24 +12,30 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
   <div class="wrap hero-inner">
     <div class="hero-copy">
       <h1 class="hero-headline reveal">
-        <span class="ln"
-          ><span class="l"
-            >I build <br class="m" /><span class="keep">full-stack</span></span
-          ></span
-        >
-        <span class="ln"><span class="l">products &amp;</span></span>
-        <span class="ln"
-          ><span class="l"
-            ><span class="mk" data-brush data-flip
-              ><span class="mk-shadow"></span><span class="mk-card"
-                ><span class="mk-face">AI tooling.</span><span
+        <span class="ln">
+          <span class="l">
+            I build <br class="m" />
+            <span class="keep">full-stack</span>
+          </span>
+        </span>
+        <span class="ln">
+          <span class="l">products &amp;</span>
+        </span>
+        <span class="ln">
+          <span class="l">
+            <span class="mk" data-brush data-flip>
+              <span class="mk-shadow"></span>
+              <span class="mk-card">
+                <span class="mk-face">AI tooling.</span>
+                <span
                   class="mk-face mk-back"
                   data-text="AI tooling."
-                  aria-hidden="true"></span></span
-              ></span
-            ></span
-          ></span
-        >
+                  aria-hidden="true"
+                ></span>
+              </span>
+            </span>
+          </span>
+        </span>
       </h1>
       <div class="hero-card">
         <p>
@@ -39,8 +45,12 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
           product people enjoy using.
         </p>
         <div class="ctas">
-          <a href="#work" class="btn">See what I build</a>
-          <a href="#contact" class="btn btn-alt">Say hi</a>
+          <a href="#work" class="btn">
+            See what I build
+          </a>
+          <a href="#contact" class="btn btn-alt">
+            Say hi
+          </a>
         </div>
       </div>
     </div>
@@ -57,39 +67,37 @@ const rsvp = projects.find((p) => p.id === "rsvp")!;
         priority
         class="face rise"
       >
-        <span slot="overlay" class="plate" aria-hidden="true"
-          >Hi, I'm Shanahan 👋</span
-        >
+        <span slot="overlay" class="plate" aria-hidden="true">
+          Hi, I'm Shanahan 👋
+        </span>
       </MediaFrame>
-      {
-        rsvp.media && (
-          <a
-            class="f2"
-            href={`#story-${rsvp.id}`}
-            data-story={rsvp.id}
-            aria-haspopup="dialog"
+      {rsvp.media && (
+        <a
+          class="f2"
+          href={`#story-${rsvp.id}`}
+          data-story={rsvp.id}
+          aria-haspopup="dialog"
+        >
+          <MediaFrame
+            image={rsvpHero}
+            alt={rsvp.media.alt}
+            fit="cover"
+            objectPosition="top"
+            aspectRatio="16 / 11"
+            widths={[280, 420, 560, 640]}
+            sizes="(max-width: 560px) 54vw, (max-width: 960px) min(42vw, 304px), 280px"
+            loading="eager"
+            class="rise rise-late"
           >
-            <MediaFrame
-              image={rsvpHero}
-              alt={rsvp.media.alt}
-              fit="cover"
-              objectPosition="top"
-              aspectRatio="16 / 11"
-              widths={[280, 420, 560, 640]}
-              sizes="(max-width: 560px) 54vw, (max-width: 960px) min(42vw, 304px), 280px"
-              loading="eager"
-              class="rise rise-late"
-            >
-              <Fragment slot="caption">
-                RSVP app · {rsvp.fact.value} guests{" "}
-                <span class="arrow" aria-hidden="true">
-                  →
-                </span>
-              </Fragment>
-            </MediaFrame>
-          </a>
-        )
-      }
+            <Fragment slot="caption">
+              RSVP app · {rsvp.fact.value} guests{" "}
+              <span class="arrow" aria-hidden="true">
+                →
+              </span>
+            </Fragment>
+          </MediaFrame>
+        </a>
+      )}
     </div>
   </div>
 </section>

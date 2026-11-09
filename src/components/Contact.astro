@@ -15,24 +15,26 @@ const asks = [
 <section class="s-night" id="contact">
   <div class="wrap contact">
     <h2 class="contact-headline reveal" data-hop>
-      <span class="ln"><span>Let's</span></span>
-      <span class="ln"><span>build.</span></span>
+      <span class="ln">
+        <span>Let's</span>
+      </span>
+      <span class="ln">
+        <span>build.</span>
+      </span>
     </h2>
     <div class="row">
       <div class="asks">
         <p class="label asks-label">Write to me about</p>
         <ul role="list">
-          {
-            asks.map((ask) => (
-              <li>
-                <a
-                  href={`mailto:${social.email}?subject=${encodeURIComponent(ask)}`}
-                >
-                  {ask}
-                </a>
-              </li>
-            ))
-          }
+          {asks.map((ask) => (
+            <li>
+              <a
+                href={`mailto:${social.email}?subject=${encodeURIComponent(ask)}`}
+              >
+                {ask}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
       <p>
@@ -40,17 +42,25 @@ const asks = [
         caught your eye, drop me a line.
       </p>
       <div>
-        <a class="mail" href={`mailto:${social.email}`}>{social.email}</a>
+        <a class="mail" href={`mailto:${social.email}`}>
+          {social.email}
+        </a>
         <ul class="links" role="list">
           <li>
-            <a href={social.linkedin} target="_blank" rel="noopener noreferrer"
-              >LinkedIn <span class="arrow out" aria-hidden="true">↗</span></a
-            >
+            <a href={social.linkedin} target="_blank" rel="noopener noreferrer">
+              LinkedIn{" "}
+              <span class="arrow out" aria-hidden="true">
+                ↗
+              </span>
+            </a>
           </li>
           <li>
-            <a href={social.github} target="_blank" rel="noopener noreferrer"
-              >GitHub <span class="arrow out" aria-hidden="true">↗</span></a
-            >
+            <a href={social.github} target="_blank" rel="noopener noreferrer">
+              GitHub{" "}
+              <span class="arrow out" aria-hidden="true">
+                ↗
+              </span>
+            </a>
           </li>
         </ul>
       </div>
