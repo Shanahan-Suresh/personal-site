@@ -82,5 +82,25 @@ export interface StackItem {
   path?: string;
 }
 
+/** The /agencies page (src/data/agencies.ts). */
+export interface AgencyService {
+  name: string;
+  detail: string;
+}
+
+export interface AgencyTerm {
+  title: string;
+  detail: string;
+}
+
+export interface AgencySample {
+  name: string;
+  href: string;
+  kind: string;
+  detail: string;
+  stack: string[];
+  scores: Stat[];
+}
+
 /** The slab classes a page head can take (`.s-cobalt` and the others). */
 export type SlabTone = "cobalt" | "tomato" | "green";

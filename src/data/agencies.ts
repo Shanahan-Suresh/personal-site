@@ -1,31 +1,12 @@
 /* The /agencies page: what I take on for agencies, the terms, the starting
    prices and the sample sites. Scores are Lighthouse mobile results measured
    on the live samples; re-measure when a sample changes. */
-
-export interface AgencyService {
-  name: string;
-  detail: string;
-}
-
-export interface AgencyTerm {
-  title: string;
-  detail: string;
-}
-
-export interface AgencyPrice {
-  value: string;
-  label: string;
-  note: string;
-}
-
-export interface AgencySample {
-  name: string;
-  href: string;
-  kind: string;
-  detail: string;
-  stack: string[];
-  scores: { label: string; value: string }[];
-}
+import type {
+  AgencySample,
+  AgencyService,
+  AgencyTerm,
+  Stat,
+} from "@/lib/types";
 
 export const services: AgencyService[] = [
   {
@@ -73,7 +54,7 @@ export const terms: AgencyTerm[] = [
   },
 ];
 
-export const prices: AgencyPrice[] = [
+export const prices: Stat[] = [
   {
     value: "£150",
     label: "First job",
