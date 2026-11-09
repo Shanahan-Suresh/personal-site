@@ -151,7 +151,7 @@ Each phase ends with the fast checks (below) and one commit. Status: phases 1 to
 
 ### 8. Tests, release check and launch
 
-- Update `tests/home.spec.ts` and `tests/media.spec.ts` to the new structure. Keep what they
+- Update the specs in `tests/` to the new structure. Keep what they
   guard: hero headline, nav and theme toggle, mailto link, theme persistence, mobile nav, reduced
   motion, scrolled nav, scroll spy, skip link, footer links, writing noindex, colophon count, no
   placeholders, CSP hashes, transfer budgets and no overflow at 390, 600 and 1440px.

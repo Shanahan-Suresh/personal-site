@@ -1,5 +1,5 @@
 /**
- * Transfer budgets for the home page. tests/home.spec.ts and
+ * Transfer budgets for the home page. tests/build-output.spec.ts and
  * tests/media.spec.ts enforce them, and the colophon quotes them.
  */
 export const transferBudget = {
