@@ -67,7 +67,7 @@ export const stack: StackItem[] = [
     name: "Playwright",
     detail:
       "End-to-end and visual checks run against the built site in three browser engines.",
-    path: "tests/home.spec.ts",
+    path: "tests",
   },
   {
     name: "Cloudflare Workers",
