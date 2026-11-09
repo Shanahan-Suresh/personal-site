@@ -49,7 +49,7 @@ const disk = (x: number, y: number, rad: number) =>
  *  w x h squares. `path` clips the page on top: a smooth disk for the
  *  settled middle plus one rectangle per run of visible squares. `sparks`
  *  holds the index (row * w + column) of each square that sparkles. */
-export function dissolveFrame(
+function dissolveFrame(
   w: number,
   h: number,
   x: number,
