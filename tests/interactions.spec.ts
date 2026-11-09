@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 
-/* Behaviour of src/scripts/home/ that home.spec.ts does not
+/* Behaviour of src/scripts/home/ that the other page specs do not
    reach: the list stagger, the image fade, the hero label's brush and flip,
    the typing chip, the console note, the preview's keyboard path and shape,
    and the story swipe and Forward. */
