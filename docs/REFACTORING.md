@@ -44,7 +44,8 @@ The findings below are worked in `main` (PR #30). Line numbers in the findings f
 | GOD-02  | Done, in part   | Placement maths are module-level pure functions. initPreview is 175 lines (target 120) and `swap` has CCN 13 (target 8).                                                                      |
 | GOD-04  | Done            | `dismiss`, `bindPull` and `bindSwipe` are module-level. initStories is 143 lines (was 239).                                                                                                   |
 | TYPE-01 | Done            | `tsc --strict --noUncheckedIndexedAccess --exactOptionalPropertyTypes`: 0 errors in src/scripts.                                                                                              |
-| DEPS-01 | Done, in part   | Every package is at its newest in-range version except `tailwindcss` and `@tailwindcss/vite` (4.3.3, newest 4.3.5), which the monthly grouped Dependabot PR brings.                           |
+| DEPS-01 | Done            | Every package is at its newest in-range version. `npm audit`: 0 vulnerabilities.                                                                                                              |
+| DEPS-02 | Done, in part   | `@astrojs/mdx` 8 and `prettier-plugin-astro` 1 are in, with `dist/` identical. TypeScript is at 6.0.3: `astro check` refuses 7.0.                                                             |
 
 The story tests found one race in the site: a Forward within about 10 ms of Back closes the story again, because the dialog's close event lands after the Forward. No person can press that fast, so it stays as it is.
 
