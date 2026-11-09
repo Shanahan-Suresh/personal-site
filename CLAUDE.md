@@ -125,7 +125,8 @@ use. While one is, local builds and tests need `ALLOW_PLACEHOLDERS=1`.
 - Breakpoints stay per component. CSS custom properties do not work in media queries.
 - A major upgrade gets its own pass (build, `astro check`, a `dist/` diff), never a routine
   dependency update. TypeScript stays on 6: `astro check` refuses TypeScript 7.0, and its
-  successor `@astrojs/ts-content-mapper` needs TypeScript 7.1.
+  successor `@astrojs/ts-content-mapper` needs TypeScript 7.1. `.github/dependabot.yml` ignores
+  TypeScript 7 until that pass; remove the ignore rule in it.
 
 ## Git
 
