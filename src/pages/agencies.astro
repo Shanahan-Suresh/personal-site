@@ -1,0 +1,364 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHead from "../components/PageHead.astro";
+import { site } from "@/lib/site-config";
+import { prices, samples, services, terms } from "@/data/agencies";
+
+const mail = `mailto:${site.social.email}?subject=${encodeURIComponent("Agency work")}`;
+---
+
+<BaseLayout
+  title="For agencies — Shanahan Suresh"
+  description="Shanahan Suresh builds and fixes WordPress and Next.js sites for design and marketing agencies, under the agency's name, at fixed prices, in UK office hours."
+>
+  <PageHead
+    label="For agencies"
+    title="Your developer when the team is full"
+    intro="I build and fix WordPress and Next.js sites for design and marketing agencies. Your name goes on the work, and the price is fixed before I start."
+  >
+    <div class="head-actions">
+      <a class="btn" href={mail}>
+        Email me about a job
+      </a>
+      <a class="btn btn-alt" href="#samples">
+        See the sample sites
+      </a>
+    </div>
+  </PageHead>
+
+  <section class="slab s-paper" aria-labelledby="take-on-title">
+    <div class="wrap split">
+      <h2 id="take-on-title">What I take on</h2>
+      <ul class="ruled" role="list">
+        {services.map((s) => (
+          <li>
+            <span class="name">{s.name}</span>
+            <span class="detail">{s.detail}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="slab s-butter" aria-labelledby="terms-title">
+    <div class="wrap block-head">
+      <h2 id="terms-title">How we work together</h2>
+    </div>
+    <ul class="wrap cells" role="list">
+      {terms.map((t) => (
+        <li>
+          <h3>{t.title}</h3>
+          <p>{t.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-paper" id="samples" aria-labelledby="samples-title">
+    <div class="wrap block-head">
+      <h2 id="samples-title">Sample sites</h2>
+      <p class="lead">
+        Each sample is for a made-up business. Each one starts from a free Figma
+        design, the way an agency hands work over. Scores are Lighthouse results
+        on a simulated phone, out of 100.
+      </p>
+    </div>
+    <ul class="wrap samples" role="list">
+      {samples.map((s) => (
+        <li class="sample">
+          <span class="label">{s.kind}</span>
+          <h3>
+            <a href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.name}{" "}
+              <span class="arrow out" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </h3>
+          <p>{s.detail}</p>
+          <dl class="scores">
+            {s.scores.map((sc) => (
+              <div>
+                <dt>{sc.label}</dt>
+                <dd>{sc.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <ul class="chips" role="list">
+            {s.stack.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-cobalt" aria-labelledby="prices-title">
+    <div class="wrap block-head">
+      <h2 id="prices-title">Starting prices</h2>
+      <p class="lead">
+        Every job gets a fixed quote from a one-page scope. Prices are in pounds
+        and paid by UK bank transfer.
+      </p>
+    </div>
+    <ul class="wrap stats" role="list">
+      {prices.map((p) => (
+        <li>
+          <span class="stat-value">{p.value}</span>
+          <span class="stat-label">{p.label}</span>
+          <span class="stat-note">{p.note}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-night" aria-labelledby="start-title">
+    <div class="wrap start">
+      <h2 id="start-title">Start with one small job</h2>
+      <p>
+        Send me one fix, or one page from your design. It costs £150, and you
+        see how I work before anything bigger. Tell me about the job and your
+        deadline, and I reply within one UK working day.
+      </p>
+      <a class="mail" href={mail}>
+        {site.social.email}
+      </a>
+      <p class="small">
+        I trained in the UK, with a BSc in Computer Science with AI from the
+        University of Nottingham. My own work is on the{" "}
+        <a href="/">home page</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+  .head-actions .btn {
+    white-space: normal;
+  }
+  h2 {
+    font-size: clamp(40px, 5vw, 72px);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 56px;
+    align-items: start;
+    padding-block: 72px 80px;
+  }
+  .ruled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--seam) solid var(--edge);
+  }
+  .ruled li {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+    gap: 20px;
+    padding-block: 18px;
+    border-bottom: 1px solid var(--edge);
+  }
+  .name {
+    font: 800 22px/1.1 var(--font-display);
+    text-transform: uppercase;
+  }
+  .detail {
+    color: var(--muted);
+    font-size: 16.5px;
+    line-height: 1.5;
+  }
+
+  .block-head {
+    padding-block: 64px 32px;
+  }
+  .lead {
+    max-width: 60ch;
+    margin: 20px 0 0;
+    font-size: 18px;
+  }
+
+  /* Ink shows through the gaps as seams between the cells. */
+  .cells,
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--seam);
+    margin-block: 0 64px;
+    list-style: none;
+    background: var(--ink);
+    background-clip: content-box;
+  }
+  .cells li {
+    padding: 26px 28px 30px;
+    background: var(--butter);
+  }
+  .cells li:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+  .cells h3 {
+    margin: 0 0 10px;
+    font: 800 26px/1.05 var(--font-display);
+    text-transform: uppercase;
+  }
+  .cells p {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 26px 28px 30px;
+    background: var(--cobalt);
+  }
+  .stats li:first-child {
+    padding-left: 0;
+  }
+  .stat-value {
+    font: 800 clamp(48px, 6vw, 84px) / 0.95 var(--font-body);
+  }
+  .stat-label {
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .stat-note {
+    max-width: 30ch;
+    font-size: 15.5px;
+    line-height: 1.45;
+  }
+
+  .samples {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    margin-block: 0;
+    padding-bottom: 72px;
+    list-style: none;
+  }
+  .sample {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 26px 26px 28px;
+    border: var(--seam) solid var(--edge);
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .sample h3 {
+    margin: 0;
+    font: 800 clamp(28px, 3vw, 38px) / 1 var(--font-display);
+    text-transform: uppercase;
+  }
+  .sample h3 a {
+    text-decoration: none;
+  }
+  .sample h3 a:hover,
+  .sample h3 a:focus-visible {
+    background: var(--butter);
+    color: var(--ink);
+  }
+  .sample p {
+    margin: 0;
+    font-size: 16.5px;
+  }
+  .scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin: 4px 0 0;
+  }
+  .scores dt {
+    font: 500 13px/1.3 var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .scores dd {
+    margin: 2px 0 0;
+    font: 800 30px/1 var(--font-body);
+  }
+
+  .start {
+    padding-block: 72px 80px;
+  }
+  .start p {
+    max-width: 56ch;
+    margin: 22px 0 0;
+    font-size: 18.5px;
+  }
+  .start .small {
+    font-size: 16px;
+    opacity: 0.85;
+  }
+  .start .small a {
+    color: inherit;
+  }
+  .mail {
+    display: inline-block;
+    margin-top: 28px;
+    padding-bottom: 4px;
+    border-bottom: 4px solid var(--butter);
+    color: var(--white);
+    font: 800 clamp(26px, 4vw, 48px) / 1.1 var(--font-display);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .mail:hover,
+  .mail:focus-visible {
+    background: var(--butter);
+    color: var(--ink);
+  }
+
+  @media (max-width: 960px) {
+    .split,
+    .samples {
+      grid-template-columns: 1fr;
+    }
+    .split {
+      gap: 28px;
+    }
+    .stats {
+      grid-template-columns: 1fr;
+    }
+    .stats li,
+    .stats li:first-child {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 720px) {
+    .cells {
+      grid-template-columns: 1fr;
+    }
+    .cells li,
+    .cells li:nth-child(2n + 1) {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 560px) {
+    .split,
+    .start {
+      padding-block: 48px 56px;
+    }
+    .ruled li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .sample {
+      padding: 20px;
+    }
+  }
+</style>
