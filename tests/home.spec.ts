@@ -1,6 +1,7 @@
-import { test, expect, type Locator } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 import { trackTransfers } from "./transfer";
 import { ARRIVAL_BUDGET, STORY_IDS } from "./fixtures";
+import { findClippedFrames } from "./helpers/clipped-frames";
 
 test("home page loads with the hero headline", async ({ page }) => {
   const response = await page.goto("/");
@@ -570,6 +571,18 @@ test("hero entrance: the headline and its frames reveal after page load", async 
 
 // A border or hard shadow inside a clipping box (the headline's reveal mask,
 // say) loses the sides that fall outside it, leaving stray bars of ink.
+// Let the headline lines finish rising (the caret blink never ends).
+async function settleHeadline(page: Page) {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getComputedTiming().endTime !== Infinity)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
+}
+
 for (const width of [390, 1440]) {
   test(`no border or hard shadow is cut off by a clipping box at ${width}px`, async ({
     page,
@@ -579,52 +592,8 @@ for (const width of [390, 1440]) {
     await expect(page.locator(".hero-headline")).toHaveClass(/\bin\b/, {
       timeout: 3000,
     });
-    // Let the headline lines finish rising (the caret blink never ends).
-    await page.evaluate(() =>
-      Promise.all(
-        document
-          .getAnimations()
-          .filter((a) => a.effect?.getComputedTiming().endTime !== Infinity)
-          .map((a) => a.finished.catch(() => undefined)),
-      ),
-    );
-    const cut = await page.evaluate(() => {
-      const found: string[] = [];
-      for (const el of document.querySelectorAll<HTMLElement>("body *")) {
-        const s = getComputedStyle(el);
-        const r = el.getBoundingClientRect();
-        if (s.display === "none" || r.width === 0 || el.closest("dialog"))
-          continue;
-        const framed =
-          s.boxShadow !== "none" ||
-          ["Top", "Right", "Bottom", "Left"].some(
-            (k) =>
-              parseFloat(
-                s.getPropertyValue(`border-${k.toLowerCase()}-width`),
-              ) > 0,
-          );
-        if (!framed) continue;
-        for (
-          let a = el.parentElement;
-          a && a !== document.body;
-          a = a.parentElement
-        ) {
-          const as = getComputedStyle(a);
-          if (!/hidden|clip/.test(as.overflowX + as.overflowY)) continue;
-          const ar = a.getBoundingClientRect();
-          if (
-            r.top < ar.top - 1 ||
-            r.left < ar.left - 1 ||
-            r.bottom > ar.bottom + 1 ||
-            r.right > ar.right + 1
-          )
-            found.push(`${el.tagName.toLowerCase()}.${el.className}`);
-          break;
-        }
-      }
-      return found;
-    });
-    expect(cut).toEqual([]);
+    await settleHeadline(page);
+    expect(await findClippedFrames(page)).toEqual([]);
   });
 }
 
