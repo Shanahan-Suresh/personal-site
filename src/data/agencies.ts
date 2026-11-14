@@ -87,6 +87,19 @@ export const samples: AgencySample[] = [
     ],
   },
   {
+    name: "Fernhollow Physiotherapy",
+    href: "https://fernhollow.shanahansuresh.com/",
+    kind: "Clinic, WordPress",
+    detail:
+      "A WordPress block theme built from a Figma design, with treatment pages, clear prices, a team page and a booking enquiry form.",
+    stack: ["WordPress", "Block theme", "Cloudflare"],
+    scores: [
+      { label: "Speed", value: "100" },
+      { label: "Accessibility", value: "100" },
+      { label: "Best practices", value: "100" },
+    ],
+  },
+  {
     name: "Pennywort Bakehouse",
     href: "https://pennywort.shanahansuresh.com/",
     kind: "Café and bakery, Next.js",
