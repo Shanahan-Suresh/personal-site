@@ -164,3 +164,19 @@ export const faqs: AgencyFaq[] = [
       "Yes. I work in your Git repository, on your staging site and your hosting, with the access you give me. Nothing goes live until you sign it off.",
   },
 ];
+
+/* The three steps under "Start with a free quote". The terms type fits: a title and one line. */
+export const quoteSteps: AgencyTerm[] = [
+  {
+    title: "Send the brief",
+    detail: "The job, your deadline and a link to the design.",
+  },
+  {
+    title: "Get a fixed quote",
+    detail: "A one-page scope and one price, within one working day.",
+  },
+  {
+    title: "Sign and start",
+    detail: "You sign the scope, and the work starts.",
+  },
+];
