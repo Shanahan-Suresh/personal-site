@@ -1,0 +1,655 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHead from "../components/PageHead.astro";
+import { site } from "@/lib/site-config";
+import {
+  currencies,
+  faqs,
+  prices,
+  samples,
+  services,
+  terms,
+} from "@/data/agencies";
+
+/* The email starts with prompts for what a quote needs. */
+const brief = "The job:\r\n\r\nDeadline:\r\n\r\nLink to the design:\r\n";
+const mail = `mailto:${site.social.email}?subject=${encodeURIComponent("Agency work")}&body=${encodeURIComponent(brief)}`;
+---
+
+<BaseLayout
+  title="For agencies — Shanahan Suresh"
+  description="Shanahan Suresh builds and fixes websites and web apps for agencies, under the agency's name, at fixed prices, in your office hours."
+  image="/og-agencies.jpg"
+>
+  <PageHead
+    label="For agencies"
+    title="Your developer when the team is full"
+    intro="I build and fix websites and web apps for agencies, from WordPress themes to custom back ends. You keep the client and the credit, and you know the price before I start."
+  >
+    <div class="head-actions">
+      <a class="btn" href={mail}>
+        Get a free quote
+      </a>
+      <a class="btn btn-alt" href="#samples">
+        See the sample sites
+      </a>
+    </div>
+    <div slot="aside" class="collage" aria-hidden="true">
+      {[...samples].reverse().map((s, i) => (
+        <Image
+          src={s.shot}
+          alt=""
+          widths={[480, 720, 960]}
+          sizes="(max-width: 960px) 1px, 420px"
+          format="webp"
+          quality={80}
+          class={`collage-shot c${i}`}
+        />
+      ))}
+    </div>
+  </PageHead>
+
+  <section class="slab s-paper" aria-labelledby="take-on-title">
+    <div class="wrap split">
+      <h2 id="take-on-title">What I take on</h2>
+      <ul class="ruled" role="list">
+        {services.map((s) => (
+          <li>
+            <span class="name">{s.name}</span>
+            <span class="detail">{s.detail}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="slab s-paper" id="samples" aria-labelledby="samples-title">
+    <div class="wrap block-head">
+      <h2 id="samples-title">Sample sites</h2>
+      <p class="lead">
+        Three sites for made-up businesses, each built to match a designer's
+        Figma file. Scores are Google Lighthouse results on a phone, out of 100.
+      </p>
+    </div>
+    <ul class="wrap samples" role="list">
+      {samples.map((s) => (
+        <li class="sample">
+          <Image
+            src={s.shot}
+            alt={`The home page of the ${s.name} sample site`}
+            widths={[400, 640, 880]}
+            sizes="(max-width: 960px) 90vw, 400px"
+            format="webp"
+            quality={80}
+            class="shot"
+          />
+          <span class="label">{s.kind}</span>
+          <h3>
+            <a href={s.href} target="_blank" rel="noopener noreferrer">
+              {s.name}{" "}
+              <span class="arrow out" aria-hidden="true">
+                ↗
+              </span>
+            </a>
+          </h3>
+          <p>{s.detail}</p>
+          <dl class="scores">
+            {s.scores.map((sc) => (
+              <div>
+                <dt>{sc.label}</dt>
+                <dd>{sc.value}</dd>
+              </div>
+            ))}
+          </dl>
+          <ul class="chips" role="list">
+            {s.stack.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-butter" aria-labelledby="terms-title">
+    <div class="wrap block-head">
+      <h2 id="terms-title">How we work together</h2>
+    </div>
+    <ul class="wrap cells" role="list">
+      {terms.map((t) => (
+        <li>
+          <h3>{t.title}</h3>
+          <p>{t.detail}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-cobalt prices" aria-labelledby="prices-title">
+    <div class="wrap block-head">
+      <h2 id="prices-title">Starting prices</h2>
+      <p class="lead">
+        Every job gets a fixed quote from a one-page scope, paid by bank
+        transfer in your currency.
+      </p>
+      <fieldset class="currency">
+        <legend>Currency</legend>
+        {currencies.map((c) => (
+          <label>
+            <input
+              type="radio"
+              name="currency"
+              value={c.code}
+              checked={c.code === "GBP"}
+            />
+            <span>{c.label}</span>
+          </label>
+        ))}
+      </fieldset>
+    </div>
+    <ul class="wrap stats" role="list">
+      {prices.map((p) => (
+        <li>
+          {currencies.map((c) => (
+            <span class="stat-value" data-cur={c.code}>
+              {p.values[c.code]}
+              {c.code !== "GBP" && <span class="stat-code"> {c.code}</span>}
+            </span>
+          ))}
+          <span class="stat-label">{p.label}</span>
+          <span class="stat-note">{p.note}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="slab s-paper" aria-labelledby="faq-title">
+    <div class="wrap split">
+      <h2 id="faq-title">Questions agencies ask</h2>
+      <div class="faq">
+        {faqs.map((f) => (
+          <details>
+            <summary>
+              <span>{f.question}</span>
+            </summary>
+            <p>{f.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="slab s-night" aria-labelledby="start-title">
+    <div class="wrap start">
+      <h2 id="start-title">Start with a free quote</h2>
+      <p>
+        Send me the brief and your deadline. You get a fixed quote within one
+        working day, free and with no obligation.
+      </p>
+      <a class="mail" href={mail}>
+        {site.social.email}
+      </a>
+      <p class="small">
+        Full-stack engineer with a Computer Science degree from the University
+        of Nottingham.
+      </p>
+      <p class="small">
+        Find more of my work on the{" "}
+        <a class="home-link" href="/">
+          <span class="home-text">home page</span>{" "}
+          <span class="arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  /* The currency buttons work without this. It only starts a visitor on
+     their own currency, read from the browser's time zone. */
+  const zone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+  const pick = zone.startsWith("Australia/")
+    ? "AUD"
+    : zone === "Asia/Singapore"
+      ? "SGD"
+      : zone.startsWith("America/")
+        ? "USD"
+        : "";
+  const radio = document.querySelector<HTMLInputElement>(
+    `.currency input[value="${pick}"]`,
+  );
+  if (radio) radio.checked = true;
+</script>
+
+<style>
+  .head-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+  .head-actions .btn {
+    white-space: normal;
+  }
+  h2 {
+    font-size: clamp(40px, 5vw, 72px);
+  }
+
+  /* The three sample home pages, stacked like prints on a desk. The order is
+     reversed so dark Pennywort sits in front: at the back, its black border and
+     shadow merge into its photo. */
+  .collage {
+    position: relative;
+    aspect-ratio: 5 / 4;
+  }
+  .collage-shot {
+    position: absolute;
+    width: 72%;
+    height: auto;
+    border: var(--seam) solid var(--ink);
+    box-shadow: var(--hard-8) var(--ink);
+  }
+  .c0 {
+    top: 44%;
+    left: 0;
+    z-index: 3;
+  }
+  .c1 {
+    top: 22%;
+    left: 14%;
+    z-index: 2;
+  }
+  .c2 {
+    top: 0;
+    left: 28%;
+    z-index: 1;
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 56px;
+    align-items: start;
+    padding-block: 72px 80px;
+  }
+  .ruled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--seam) solid var(--edge);
+  }
+  .ruled li {
+    display: grid;
+    grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr);
+    gap: 20px;
+    padding-block: 18px;
+    border-bottom: 1px solid var(--edge);
+  }
+  .name {
+    font: 800 22px/1.1 var(--font-display);
+    text-transform: uppercase;
+  }
+  .detail {
+    color: var(--muted);
+    font-size: 16.5px;
+    line-height: 1.5;
+  }
+
+  .block-head {
+    padding-block: 64px 32px;
+  }
+  .lead {
+    max-width: 60ch;
+    margin: 20px 0 0;
+    font-size: 18px;
+  }
+
+  /* Ink shows through the gaps as seams between the cells. */
+  .cells,
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--seam);
+    margin-block: 0 64px;
+    list-style: none;
+    background: var(--ink);
+    background-clip: content-box;
+  }
+  .cells li {
+    padding: 26px 28px 30px;
+    background: var(--butter);
+  }
+  .cells li:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+  .cells h3 {
+    margin: 0 0 10px;
+    font: 800 26px/1.05 var(--font-display);
+    text-transform: uppercase;
+  }
+  .cells p {
+    max-width: 46ch;
+    margin: 0;
+    font-size: 17px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .stats li {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 26px 28px 30px;
+    background: var(--cobalt);
+  }
+  .stats li:first-child {
+    padding-left: 0;
+  }
+  .stat-value {
+    display: block;
+    font: 800 clamp(44px, 5vw, 72px) / 0.95 var(--font-body);
+  }
+  /* One price shows at a time, picked by the currency buttons. Browsers
+     without :has() show the pound prices. */
+  .stat-value[data-cur]:not([data-cur="GBP"]) {
+    display: none;
+  }
+  .stat-code {
+    font: 700 0.3em/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    vertical-align: 0.25em;
+  }
+  /* A new price rises into place when the currency changes, like a sign
+     flipping over. It moves only when a button is pressed. */
+  @media (prefers-reduced-motion: no-preference) {
+    .stat-value[data-cur] {
+      animation: price-in 0.4s var(--ease-out);
+    }
+  }
+  @keyframes price-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.35em);
+    }
+  }
+  @supports selector(:has(*)) {
+    .stat-value[data-cur] {
+      display: none;
+    }
+    .prices:has(input[value="GBP"]:checked) [data-cur="GBP"],
+    .prices:has(input[value="USD"]:checked) [data-cur="USD"],
+    .prices:has(input[value="AUD"]:checked) [data-cur="AUD"],
+    .prices:has(input[value="SGD"]:checked) [data-cur="SGD"] {
+      display: block;
+    }
+  }
+  .currency {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 26px 0 0;
+    padding: 0;
+    border: 0;
+  }
+  .currency legend {
+    margin-bottom: 10px;
+    padding: 0;
+    font: 500 13px/1.3 var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .currency label {
+    position: relative;
+    cursor: pointer;
+  }
+  .currency input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .currency span {
+    display: inline-block;
+    padding: 9px 14px;
+    border: var(--seam) solid var(--ink);
+    font: 700 15px/1 var(--font-mono);
+  }
+  .currency input:checked + span {
+    background: var(--butter);
+    color: var(--ink);
+    box-shadow: var(--hard-3) var(--ink);
+  }
+  .currency input:focus-visible + span {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+  .stat-label {
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .stat-note {
+    max-width: 30ch;
+    font-size: 15.5px;
+    line-height: 1.45;
+  }
+
+  .samples {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    margin-block: 0;
+    padding-bottom: 72px;
+    list-style: none;
+  }
+  .sample {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 26px 26px 28px;
+    border: var(--seam) solid var(--edge);
+    background: var(--card);
+    box-shadow: var(--shadow);
+  }
+  .shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1440 / 826;
+    object-fit: cover;
+    object-position: top;
+    border: var(--seam) solid var(--edge);
+  }
+  .sample h3 {
+    margin: 0;
+    font: 800 clamp(28px, 3vw, 38px) / 1 var(--font-display);
+    text-transform: uppercase;
+  }
+  .sample {
+    position: relative;
+  }
+  .sample h3 a {
+    text-decoration: none;
+  }
+  /* The name's link covers the whole card, so the card is one link. */
+  .sample h3 a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  /* Hover and focus lift the card into its shadow, and the arrow turns
+     tomato as it jumps. */
+  .sample:has(h3 a:focus-visible) {
+    transform: translate(-3px, -3px);
+    box-shadow: var(--hard-10) var(--edge);
+  }
+  .sample:has(h3 a:focus-visible) .arrow {
+    transform: translate(4px, -4px);
+    color: var(--tomato);
+  }
+  @media (hover: hover) {
+    .sample:has(h3 a:hover) {
+      transform: translate(-3px, -3px);
+      box-shadow: var(--hard-10) var(--edge);
+    }
+    .sample:has(h3 a:hover) .arrow {
+      transform: translate(4px, -4px);
+      color: var(--tomato);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .sample {
+      transition:
+        transform 0.18s var(--ease-out),
+        box-shadow 0.18s var(--ease-out);
+    }
+  }
+  .sample p {
+    margin: 0;
+    font-size: 16.5px;
+  }
+  .scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin: 4px 0 0;
+  }
+  .scores dt {
+    font: 500 13px/1.3 var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .scores dd {
+    margin: 2px 0 0;
+    font: 800 30px/1 var(--font-body);
+  }
+
+  .faq {
+    border-top: var(--seam) solid var(--edge);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--edge);
+  }
+  .faq summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 18px;
+    font: 800 22px/1.15 var(--font-display);
+    text-transform: uppercase;
+    list-style: none;
+    cursor: pointer;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    content: "+";
+    font: 700 24px/1 var(--font-mono);
+  }
+  .faq details[open] summary::after {
+    content: "\2212";
+  }
+  @media (hover: hover) {
+    .faq summary:hover span {
+      text-decoration: underline 2px;
+      text-underline-offset: 4px;
+    }
+  }
+  .faq p {
+    max-width: 60ch;
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 16.5px;
+    line-height: 1.5;
+  }
+
+  .start {
+    padding-block: 72px 80px;
+  }
+  .start p {
+    max-width: 56ch;
+    margin: 22px 0 0;
+    font-size: 18.5px;
+  }
+  .start .small {
+    font-size: 16px;
+    opacity: 0.85;
+  }
+  .home-link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .home-text {
+    text-decoration: underline 2px var(--butter);
+    text-underline-offset: 4px;
+  }
+  .home-link:focus-visible {
+    color: var(--butter);
+  }
+  @media (hover: hover) {
+    .home-link:hover {
+      color: var(--butter);
+    }
+  }
+  .mail {
+    display: inline-block;
+    margin-top: 28px;
+    padding-bottom: 4px;
+    border-bottom: 4px solid var(--butter);
+    color: var(--white);
+    font: 800 clamp(26px, 4vw, 48px) / 1.1 var(--font-display);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .mail:hover,
+  .mail:focus-visible {
+    background: var(--butter);
+    color: var(--ink);
+  }
+
+  @media (max-width: 960px) {
+    .split,
+    .samples {
+      grid-template-columns: 1fr;
+    }
+    .split {
+      gap: 28px;
+    }
+    .stats {
+      grid-template-columns: 1fr;
+    }
+    .stats li,
+    .stats li:first-child {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 720px) {
+    .cells {
+      grid-template-columns: 1fr;
+    }
+    .cells li,
+    .cells li:nth-child(2n + 1) {
+      padding-left: 0;
+    }
+  }
+  @media (max-width: 560px) {
+    .split,
+    .start {
+      padding-block: 48px 56px;
+    }
+    .ruled li {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .sample {
+      padding: 20px;
+    }
+  }
+</style>

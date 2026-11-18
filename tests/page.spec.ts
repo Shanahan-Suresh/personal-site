@@ -131,6 +131,7 @@ test("footer links to the colophon, the source repo, and the build commit", asyn
   await page.goto("/");
   const footer = page.locator(".site-footer");
   await expect(footer.locator('a[href="/colophon"]')).toBeVisible();
+  await expect(footer.locator('a[href="/agencies"]')).toBeVisible();
   await expect(
     footer.locator(
       'a[href="https://github.com/Shanahan-Suresh/personal-site"]',
@@ -142,4 +143,23 @@ test("footer links to the colophon, the source repo, and the build commit", asyn
     "href",
     /github\.com\/Shanahan-Suresh\/personal-site\/commit\/[0-9a-f]{40}/,
   );
+});
+
+// ── Agencies page ────────────────────────────────────────────────────────────
+test("the agencies page shows the offer, the samples and the email", async ({
+  page,
+}) => {
+  const response = await page.goto("/agencies/");
+  expect(response?.ok()).toBeTruthy();
+  await expect(page.locator("h1")).toContainText(/team is full/i);
+  await expect(
+    page.locator('a[href="https://thornwick.shanahansuresh.com/"]'),
+  ).toBeVisible();
+  await expect(
+    page.locator('a[href="https://pennywort.shanahansuresh.com/"]'),
+  ).toBeVisible();
+  await expect(
+    page.locator('.start a[href^="mailto:hello@shanahansuresh.com"]'),
+  ).toBeVisible();
+  expect(await page.locator("main").innerText()).not.toMatch(/white.?label|—/i);
 });

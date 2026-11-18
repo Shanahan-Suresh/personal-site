@@ -22,6 +22,9 @@ sets `.js` before paint, so a page without script shows everything in place.
 - The story dialog opens and slides between stories.
 - Lazy pictures fade in (`.fading`).
 - On a phone, the story sheet rises, the nav bar slides away and the menu sheet drops.
+- On `/agencies`, a new currency's prices rise into place when a currency button is pressed
+  (`price-in`). The currency buttons are radio inputs, so they work without script; a short
+  script only starts the visitor on their time zone's currency.
 
 ## Theme switch
 
@@ -61,6 +64,8 @@ Mouse only, under `(hover: hover)`.
   removing the span under the pointer makes Chromium fire `pointerenter` again.
 - Printer's crop marks on the slab under the pointer (`.slab::after`, `--mark`).
 - Underlines draw in under the footer and contact links.
+- Each sample site card on `/agencies` is one link. Hover or keyboard focus lifts the card into
+  its shadow, and its arrow jumps up and right and turns tomato.
 - Each Contact ask ("Write to me about") is a link that starts an email with the ask as its
   subject. A butter bar wipes in behind it like a marker pen, and the text turns ink.
 - The round theme button fades in with butter square by square, in an 8 x 8 ordered dither, a

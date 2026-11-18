@@ -10,15 +10,23 @@ interface Props {
 }
 
 const { label, title, intro, tone = "cobalt" } = Astro.props;
+const hasAside = Astro.slots.has("aside");
 ---
 
 <header class={`slab s-${tone}`}>
-  <div class="wrap page-head">
-    <slot name="before" />
-    {label && <span class="label">{label}</span>}
-    <h1>{title}</h1>
-    {intro && <p class="intro">{intro}</p>}
-    <slot />
+  <div class={`wrap page-head${hasAside ? " has-aside" : ""}`}>
+    <div>
+      <slot name="before" />
+      {label && <span class="label">{label}</span>}
+      <h1>{title}</h1>
+      {intro && <p class="intro">{intro}</p>}
+      <slot />
+    </div>
+    {hasAside && (
+      <div class="page-head-aside">
+        <slot name="aside" />
+      </div>
+    )}
   </div>
 </header>
 
@@ -38,6 +46,25 @@ const { label, title, intro, tone = "cobalt" } = Astro.props;
     max-width: 56ch;
     margin: 28px 0 0;
     font-size: 19px;
+  }
+  /* A page that gives the title a picture: title left, picture right. The
+     picture drops out below 960px, where the title needs the width. */
+  .has-aside {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 56px;
+    align-items: center;
+  }
+  .has-aside h1 {
+    font-size: clamp(56px, 7vw, 112px);
+  }
+  @media (max-width: 960px) {
+    .has-aside {
+      display: block;
+    }
+    .page-head-aside {
+      display: none;
+    }
   }
   @media (max-width: 560px) {
     .page-head {

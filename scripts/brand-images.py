@@ -13,6 +13,8 @@ Run from the repo root: python scripts/brand-images.py
 - og-image.svg: the sky slab with the hero headline and the name, 1200 x 630. It embeds the
   display face and DM Mono as data URIs, so it renders the same anywhere.
 - og-image.jpg: Chromium's render of og-image.svg. Social sites read this one.
+- og-agencies.svg and og-agencies.jpg: the same card for /agencies, on the cobalt slab with the
+  page's headline, so a link in an outreach email or post shows that page.
 """
 
 import base64
@@ -40,6 +42,7 @@ WHITE = "#ffffff"
 W, H = 1200, 630
 MARGIN = 64
 LINES = ["I build full-stack", "products &", "AI tooling."]
+AGENCY_LINES = ["Your developer", "when the team", "is full."]
 
 
 def mark() -> str:
@@ -89,8 +92,16 @@ def data_uri(path: pathlib.Path) -> str:
     return "data:font/woff2;base64," + base64.b64encode(path.read_bytes()).decode()
 
 
-def og_svg(size: float, mark_w: float) -> str:
-    """The share card. `size` is the headline font size; `mark_w` the width of the last line."""
+def og_svg(
+    size: float,
+    mark_w: float,
+    lines_text: list[str] = LINES,
+    ground: str = SKY,
+    fill: str = INK,
+    url: str = "SHANAHANSURESH.COM",
+) -> str:
+    """The share card. `size` is the headline font size; `mark_w` the width of the last line.
+    The last line always sits in ink on its butter box; `fill` colours the lines above it."""
     lh = size * 0.9
     band = 92
     # Three lines sit in the space under the name band, the last one in a butter box.
@@ -102,49 +113,65 @@ def og_svg(size: float, mark_w: float) -> str:
     esc = lambda t: t.replace("&", "&amp;")
     lines = "\n".join(
         f'  <text class="hl" x="{MARGIN}" y="{y:.1f}">{esc(t.upper())}</text>'
-        for t, y in zip(LINES, baselines)
+        for t, y in zip(lines_text, baselines)
     )
     return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">
   <style>
     @font-face {{ font-family: "Bricolage Condensed"; font-weight: 800; src: url({data_uri(DISPLAY)}) format("woff2"); }}
     @font-face {{ font-family: "DM Mono"; font-weight: 500; src: url({data_uri(MONO)}) format("woff2"); }}
-    .hl {{ font: 800 {size:.1f}px "Bricolage Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.008em; fill: {INK}; }}
+    .hl {{ font: 800 {size:.1f}px "Bricolage Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.008em; fill: {fill}; }}
+    .hl:last-of-type {{ fill: {INK}; }}
     .name {{ font: 800 40px "Bricolage Condensed", "Arial Narrow", sans-serif; letter-spacing: 0.02em; fill: {WHITE}; }}
     .url {{ font: 500 20px "DM Mono", ui-monospace, monospace; letter-spacing: 0.08em; fill: {BUTTER}; }}
   </style>
-  <rect width="{W}" height="{H}" fill="{SKY}"/>
+  <rect width="{W}" height="{H}" fill="{ground}"/>
   <rect width="{W}" height="{band}" fill="{INK}"/>
   <text class="name" x="{MARGIN}" y="{band / 2 + 14:.1f}">SHANAHAN SURESH</text>
-  <text class="url" x="{W - MARGIN}" y="{band / 2 + 7:.1f}" text-anchor="end">SHANAHANSURESH.COM</text>
+  <text class="url" x="{W - MARGIN}" y="{band / 2 + 7:.1f}" text-anchor="end">{url}</text>
   <rect x="{MARGIN - pad_x:.1f}" y="{box_top:.1f}" width="{mark_w + pad_x * 2:.1f}" height="{box_h:.1f}" fill="{BUTTER}" stroke="{INK}" stroke-width="4"/>
 {lines}
 </svg>
 """
 
 
+def share_card(page, name: str, max_size: float = 1000, **card) -> tuple[bytes, float, list[float]]:
+    """Render one share card to public/<name>.svg and return its PNG, headline size and widths.
+    `max_size` caps the headline when short lines would fill the slab to its edges."""
+    svg_path = PUBLIC / f"{name}.svg"
+
+    def measure(svg: str) -> list[float]:
+        svg_path.write_text(svg, encoding="utf-8")
+        page.goto(svg_path.as_uri())
+        page.evaluate("document.fonts.ready")
+        return page.evaluate(
+            "[...document.querySelectorAll('.hl')].map(t => t.getBBox().width)"
+        )
+
+    # Fit the widest line to the slab, within a 1px tolerance.
+    widths = measure(og_svg(100, 0, **card))
+    size = 100 * (W - MARGIN * 2) / max(widths)
+    widths = measure(og_svg(size, 0, **card))
+    size = min(size * (W - MARGIN * 2) / max(widths), max_size)
+    widths = measure(og_svg(size, 0, **card))
+    measure(og_svg(size, widths[2], **card))
+    return page.screenshot(type="png"), size, widths
+
+
 def main() -> None:
     (PUBLIC / "favicon.svg").write_text(favicon(), encoding="utf-8")
-    svg_path = PUBLIC / "og-image.svg"
     with sync_playwright() as p:
         browser = p.chromium.launch(channel="chrome")
         page = browser.new_page(viewport={"width": W, "height": H})
-
-        def measure(svg: str) -> list[float]:
-            svg_path.write_text(svg, encoding="utf-8")
-            page.goto(svg_path.as_uri())
-            page.evaluate("document.fonts.ready")
-            return page.evaluate(
-                "[...document.querySelectorAll('.hl')].map(t => t.getBBox().width)"
-            )
-
-        # Fit the widest line to the slab, within a 1px tolerance.
-        widths = measure(og_svg(100, 0))
-        size = 100 * (W - MARGIN * 2) / max(widths)
-        widths = measure(og_svg(size, 0))
-        size *= (W - MARGIN * 2) / max(widths)
-        widths = measure(og_svg(size, 0))
-        measure(og_svg(size, widths[2]))
-        png = page.screenshot(type="png")
+        png, size, widths = share_card(page, "og-image")
+        agency_png, _, _ = share_card(
+            page,
+            "og-agencies",
+            max_size=150,
+            lines_text=AGENCY_LINES,
+            ground=COBALT,
+            fill=WHITE,
+            url="SHANAHANSURESH.COM/AGENCIES",
+        )
 
         # A fresh page: the share-image page holds an SVG document, which cannot take HTML.
         page = browser.new_page()
@@ -158,9 +185,10 @@ def main() -> None:
             PUBLIC / "apple-touch-icon.png", optimize=True
         )
         browser.close()
-    Image.open(io.BytesIO(png)).convert("RGB").save(
-        PUBLIC / "og-image.jpg", quality=88, optimize=True, progressive=True
-    )
+    for shot, name in ((png, "og-image"), (agency_png, "og-agencies")):
+        Image.open(io.BytesIO(shot)).convert("RGB").save(
+            PUBLIC / f"{name}.jpg", quality=88, optimize=True, progressive=True
+        )
     print(f"headline {size:.1f}px, widths {[round(w) for w in widths]}")
 
 

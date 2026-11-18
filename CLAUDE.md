@@ -29,6 +29,12 @@ npm test             # Playwright suite in tests/; builds, starts and stops its 
 
 **Verification = `npm run build` then `npm test`.** Type errors fail the build.
 
+On Windows, `core.autocrlf=true` checks files out with CRLF, so `format:check` flags almost every
+file there while CI (LF) passes. Check and format only the files you changed:
+`npx prettier --check --end-of-line auto <files>`, then `--write --end-of-line lf` on the ones that
+fail. A stale `node_modules` (an old `prettier-plugin-astro`) reformats `.astro` files differently
+from CI; run `npm ci` first.
+
 On a busy machine (Forge or other test suites running), WebKit's "the bar slides away on a scroll
 down and comes back on a scroll up" in `tests/phone.spec.ts` can fail: `scrollY` drops about
 17px after the jump, and the bar comes back. On a quiet machine it passes (6 of 6 runs, 3 of them the full suite).
@@ -37,7 +43,7 @@ CI runs only Chromium. Ignore this one failure; any other failure is real.
 ## Where content lives
 
 - **Structured, repeated data** is in `src/data/` (`projects`, `project-order`, `learning`, `interests`,
-  `navigation`, `colophon`, `budgets`) and `src/lib/site-config.ts` (name, url, job title, default meta
+  `navigation`, `colophon`, `budgets`, `agencies`) and `src/lib/site-config.ts` (name, url, job title, default meta
   description, social URLs). Edit the data, not the components that render it. Shared types are in
   `src/lib/types.ts`; import them instead of redeclaring unions.
 - **Prose copy lives in its component**: Hero, About, Principles, Now, Beyond and Contact. Per-page
@@ -50,7 +56,8 @@ CI runs only Chromium. Ignore this one failure; any other failure is real.
   `neo-2026/` (the redesign spec) is tracked.
 - Data files use Prettier's double quotes. An unescaped apostrophe inside a hand-written
   single-quoted literal breaks the build; escape it or run `npm run format`.
-- The icons (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`) and the share image come from
+- The icons (`favicon.svg`, `favicon.ico`, `apple-touch-icon.png`) and the share images
+  (`og-image.jpg` for the site, `og-agencies.jpg` for `/agencies`) come from
   `python scripts/brand-images.py` (needs `Pillow`, `playwright` and an installed Google Chrome). Edit the
   script and rerun it; never edit those files in `public/` by hand. The icon's S is read from
   `Nav.astro`, so a change to the nav's S reaches the icons on the next run.
