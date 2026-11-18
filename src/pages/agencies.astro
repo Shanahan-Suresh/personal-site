@@ -7,6 +7,7 @@ import {
   currencies,
   faqs,
   prices,
+  quoteSteps,
   samples,
   services,
   terms,
@@ -184,9 +185,20 @@ const mail = `mailto:${site.social.email}?subject=${encodeURIComponent("Agency w
     <div class="wrap start">
       <h2 id="start-title">Start with a free quote</h2>
       <p>
-        Send me the brief and your deadline. You get a fixed quote within one
-        working day, free and with no obligation.
+        You get a fixed quote within one working day, free and with no
+        obligation.
       </p>
+      <ol class="steps" role="list">
+        {quoteSteps.map((st, i) => (
+          <li>
+            <span class="step-num" aria-hidden="true">
+              0{i + 1}
+            </span>
+            <h3>{st.title}</h3>
+            <p>{st.detail}</p>
+          </li>
+        ))}
+      </ol>
       <a class="mail" href={mail}>
         {site.social.email}
       </a>
@@ -569,13 +581,48 @@ const mail = `mailto:${site.social.email}?subject=${encodeURIComponent("Agency w
     line-height: 1.5;
   }
 
+  /* Centered, with the three steps across the width. */
   .start {
-    padding-block: 72px 80px;
+    padding-block: 64px 72px;
+    text-align: center;
   }
   .start p {
     max-width: 56ch;
-    margin: 22px 0 0;
+    margin: 22px auto 0;
     font-size: 18.5px;
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 960px;
+    margin: 40px auto 8px;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+  }
+  .steps li {
+    padding: 18px 24px;
+    border-left: 2px solid var(--night-rule);
+  }
+  .steps li:first-child {
+    border-left: 0;
+  }
+  .step-num {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--butter);
+    font: 700 14px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+  }
+  .steps h3 {
+    margin: 0;
+    font: 800 22px/1.15 var(--font-display);
+    text-transform: uppercase;
+  }
+  .start .steps p {
+    margin: 6px 0 0;
+    color: var(--night-text);
+    font-size: 15.5px;
   }
   .start .small {
     font-size: 16px;
@@ -643,6 +690,14 @@ const mail = `mailto:${site.social.email}?subject=${encodeURIComponent("Agency w
     .split,
     .start {
       padding-block: 48px 56px;
+    }
+    .steps {
+      grid-template-columns: 1fr;
+    }
+    .steps li {
+      padding-inline: 0;
+      border-left: 0;
+      border-top: 2px solid var(--night-rule);
     }
     .ruled li {
       grid-template-columns: 1fr;
