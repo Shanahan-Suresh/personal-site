@@ -93,9 +93,23 @@ export interface AgencyTerm {
   detail: string;
 }
 
+export type Currency = "GBP" | "USD" | "AUD" | "SGD";
+
+export interface AgencyPrice {
+  label: string;
+  note: string;
+  values: Record<Currency, string>;
+}
+
+export interface AgencyFaq {
+  question: string;
+  answer: string;
+}
+
 export interface AgencySample {
   name: string;
   href: string;
+  shot: ImageMetadata;
   kind: string;
   detail: string;
   stack: string[];

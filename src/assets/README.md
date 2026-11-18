@@ -51,6 +51,17 @@ Homepage captions describe each product's purpose and workflow. RSVP and HR are 
 
 Harnesses and receipts live under gitignored `design-previews/media`. The RSVP, MCP and HR mock-ups keep their HTML, CSS and render scripts in `rsvp-glass`, `mcp-visual` and `hr-mock-v5`; OHSE uses `corporate-v3/ohse/receipt.json`; Censorit uses `curated-v4/censorit-venus-provenance.json`. Source-project repositories remain unchanged. Browser captures use CUA. The Qt capture uses `MainWindow.centralWidget().grab()`.
 
+## Agency sample captures
+
+`agencies/thornwick.webp`, `agencies/fernhollow.webp` and `agencies/pennywort.webp` are the top
+1440 x 826 of each live sample site's home page, captured headless in Chromium at a 1440 x 900
+window and saved as WebP at quality 88. The capture hides the sample-notice bar
+(`aside.sample-banner`), which is too small to read in the pictures, and crops at 826px, where
+Pennywort's hero ends. The samples are the owner's own builds for made-up businesses; their photos
+are Pexels images and their designs are CC BY 4.0 Figma Community files, credited on each sample's
+credits page and in `agency-studio/designs/CREDITS.md`. Recapture them when a sample's home page
+changes. The `/agencies` cards and the stacked pictures in its title slab both use them.
+
 ## Censorit artwork
 
 `samples/cabanel-birth-of-venus-1875-v4.jpg` preserves the unaltered 4000 × 2371 image of [The Birth of Venus](https://www.metmuseum.org/art/collection/search/435831), Alexandre Cabanel, 1875, oil on canvas, The Metropolitan Museum of Art, object 435831 (accession 94.24.1). Credit: Gift of John Wolfe, 1893. The museum identifies this photograph as public domain. It is Cabanel's 1875 replica of his 1863 composition.
