@@ -18,7 +18,7 @@ test("major sections are present on the page", async ({ page }) => {
   const aboutSection = page.locator("#about");
   await expect(aboutSection).toBeAttached();
 
-  // Work section — all seven project rows, each with its story dialog
+  // Work section — every project row, each with its story dialog
   const workSection = page.locator("#work");
   await expect(workSection).toBeAttached();
   await expect(workSection.locator(".projects .pr")).toHaveCount(

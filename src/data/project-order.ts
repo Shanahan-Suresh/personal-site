@@ -8,6 +8,7 @@ export const projectOrder = [
   "rsvp",
   "hr",
   "ohse",
+  "tanyadewan",
   "digest",
   "mcp",
   "censorit",
