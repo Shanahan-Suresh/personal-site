@@ -18,7 +18,7 @@ const personal: Project[] = [
     fact: { value: "361,676", label: "speeches in Parliament, searchable" },
     description: [
       "A search engine for Malaysia's Acts and eight years of Dewan Rakyat debates. Ask in English or Malay, and the answer quotes the section or the speech it came from, with the speaker, date and page.",
-      "Claude read every debate once and turned it into records: oral questions joined to the minister's answer, and 18,523 ministers' commitments whose quotes are checked by code. Hybrid search with an LLM reranker finds the right Act section in the top ten for 91% of law questions, and an MCP server lets Claude search it too.",
+      "AI read every debate once and turned it into records: oral questions joined to the minister's answer, and 18,523 ministers' commitments whose quotes are checked by code. Hybrid search with an LLM reranker finds the right Act section in the top ten for 91% of law questions, and an MCP server lets AI assistants search it too.",
     ],
     tags: ["Python", "RAG", "FastAPI", "MCP"],
     media: {
