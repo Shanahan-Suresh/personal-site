@@ -70,9 +70,9 @@ test("the arrow keys and Previous move between stories; Back closes the story an
   await expect(page.locator("#story-ohse")).toBeVisible();
 
   await page.keyboard.press("ArrowRight");
-  await expect(page.locator("#story-digest")).toBeVisible();
+  await expect(page.locator("#story-tanyadewan")).toBeVisible();
   await expect(page.locator("#story-ohse")).toBeHidden();
-  expect(new URL(page.url()).hash).toBe("#story-digest");
+  expect(new URL(page.url()).hash).toBe("#story-tanyadewan");
 
   await page.keyboard.press("ArrowLeft");
   await expect(page.locator("#story-ohse")).toBeVisible();

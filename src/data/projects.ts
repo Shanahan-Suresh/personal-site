@@ -7,8 +7,31 @@ import hrVisual from "@/assets/work/hr-mock-v5.png";
 import ohseVisual from "@/assets/work/ohse-unbranded-v3.png";
 import mcpVisual from "@/assets/work/mcp-schema-tools.png";
 import heatgenVisual from "@/assets/work/heatgen-in-print.png";
+import tanyaDewanVisual from "@/assets/work/tanya-dewan-answer.png";
 
 const personal: Project[] = [
+  {
+    id: "tanyadewan",
+    title: "Tanya Dewan",
+    summary:
+      "Ask Malaysian law and Parliament in English or Malay, and every answer cites its source.",
+    fact: { value: "361,676", label: "speeches in Parliament, searchable" },
+    description: [
+      "A search engine for Malaysia's Acts and eight years of Dewan Rakyat debates. Ask in English or Malay, and the answer quotes the section or the speech it came from, with the speaker, date and page.",
+      "Claude read every debate once and turned it into records: oral questions joined to the minister's answer, and 18,523 ministers' commitments whose quotes are checked by code. Hybrid search with an LLM reranker finds the right Act section in the top ten for 91% of law questions, and an MCP server lets Claude search it too.",
+    ],
+    tags: ["Python", "RAG", "FastAPI", "MCP"],
+    media: {
+      image: tanyaDewanVisual,
+      aspectRatio: "1040 / 820",
+      alt: "An answer to 'Can my employer cut my salary?' with numbered citations, the cited section of the Employment Act 1955 open in a preview, and the sources listed beside it.",
+      caption: "An answer about salary deductions, with its source open.",
+    },
+    link: {
+      label: "Try the demo",
+      href: "https://shanahan-suresh.github.io/tanya-dewan/",
+    },
+  },
   {
     id: "digest",
     title: "Tech Scout Digest",

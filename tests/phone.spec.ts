@@ -62,7 +62,7 @@ test.describe("on a phone", () => {
     expect((bar?.y ?? 0) + (bar?.height ?? 0)).toBeLessThanOrEqual(844);
     expect(bar?.y ?? 0).toBeGreaterThan(700);
     await story.locator("[data-dir='next']").tap();
-    await expect(page.locator("#story-digest")).toBeVisible();
+    await expect(page.locator("#story-tanyadewan")).toBeVisible();
   });
 
   test("pulling the sheet down by its head closes it", async ({

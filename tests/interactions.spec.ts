@@ -370,7 +370,7 @@ test.describe("stories, more", () => {
         });
       };
       await swipe(320, 120);
-      await expect(page.locator("#story-digest")).toBeVisible();
+      await expect(page.locator("#story-tanyadewan")).toBeVisible();
       await swipe(120, 320);
       await expect(page.locator("#story-ohse")).toBeVisible();
     });
